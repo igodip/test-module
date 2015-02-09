@@ -62,16 +62,18 @@ namespace ns3 {
 		{
 		case HRWPAN_FRAME_BEACON:
 			return HRWPAN_FRAME_BEACON;
-			break;
 		case HRWPAN_FRAME_IMM_ACK:
-			return HRWPAN_IMM_ACK;
-			break;
-		case 2:
-			return HRWPAN_MAC_ACKNOWLEDGMENT;
-			break;
-		case 3:
-			return HRWPAN_MAC_COMMAND;
-			break;
+			return HRWPAN_FRAME_IMM_ACK;
+		case HRWPAN_FRAME_DEL_ACK:
+			return HRWPAN_FRAME_DEL_ACK;
+		case HRWPAN_FRAME_COMMAND:
+			return HRWPAN_FRAME_COMMAND;
+		case HRWPAN_FRAME_DATA:
+			return HRWPAN_FRAME_DATA;
+		case HRWPAN_FRAME_LLC:
+			return HRWPAN_FRAME_LLC;
+		case HRWPAN_FRAME_SYNC:
+			return HRWPAN_FRAME_SYNC;
 		default:
 			return HRWPAN_MAC_RESERVED;
 		}
@@ -102,7 +104,7 @@ namespace ns3 {
 	bool
 		HrWpanMacHeader::IsSecEnable(void) const
 	{
-		return (m_fctrlSEC == HPWPAN_FRAME_PROT);
+		return (m_fctrlSEC == HRWPAN_FRAME_PROT);
 	}
 
 	bool
@@ -114,25 +116,13 @@ namespace ns3 {
 	bool
 		HrWpanMacHeader::IsAckReq(void) const
 	{
-		return (m_fctrlAckReq == 1);
-	}
-
-	bool
-		HrWpanMacHeader::IsPanIdComp(void) const
-	{
-		return (m_fctrlPanIdComp == 1);
+		return 0;//(m_fctrlT == 1);
 	}
 
 	uint8_t
 		HrWpanMacHeader::GetFrmCtrlRes(void) const
 	{
 		return (m_fctrlReserved);
-	}
-
-	uint8_t
-		HrWpanMacHeader::GetDstAddrMode(void) const
-	{
-		return m_fctrlDstAddrMode;
 	}
 
 	uint8_t
