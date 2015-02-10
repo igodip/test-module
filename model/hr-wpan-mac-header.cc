@@ -1,6 +1,6 @@
 /* -*-  Mode: C++; c-file-style: "gnu"; indent-tabs-mode:nil; -*- */
 /*
- * Copyright (c) 2011 The Boeing Company
+ * Copyright (c) 2015 
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * Author: kwong yin <kwong-sang.yin@boeing.com>
+ * Author: Igor Di Paolo <igor.di.paolo@gmail.com>
  */
 #include "hr-wpan-mac-header.h"
 #include <ns3/address-utils.h>
@@ -24,16 +24,16 @@ namespace ns3 {
 
 	NS_OBJECT_ENSURE_REGISTERED(HrWpanMacHeader);
 
-	// TODO: Test Compressed PAN Id, Security Enabled, different size Key
+	
 
 	HrWpanMacHeader::HrWpanMacHeader()
 	{
-		SetType(HRWPAN_FRAME_DATA);     // Assume Data frame
+		SetType(HRWPAN_FRAME_DATA);   // Assume Data frame
 		SetSecDisable();              // Assume there is No Aux Sec but
-		SetNoFrmPend();               // No Frame Pending
-		SetNoAckReq();                // No Ack Frame will be expected from recepient
+		SetNoMoreData();               // No Frame Pending
+										// No Ack Frame will be expected from recepient
 		SetFrmCtrlRes(0);             // Initialize the 3 reserved bits to 0
-		SetFrameVer(1);               //Indicates an IEEE 802.15.4 frame
+		SetProtocolVer(0);               //Indicates an IEEE 802.15.4 frame
 	}
 
 
@@ -41,12 +41,12 @@ namespace ns3 {
 		uint8_t seqNum)
 	{
 		SetType(wpanMacType);
-		SetSeqNum(seqNum);
+		//SetSeqNum(seqNum);
 		SetSecDisable();              // Assume there is No Aux Sec but
-		SetNoFrmPend();               // No Frame Pending
-		SetNoAckReq();                // No Ack Frame will be expected from recepient
+		SetNoMoreData();               // No Frame Pending
+										// No Ack Frame will be expected from recepient
 		SetFrmCtrlRes(0);             // Initialize the 3 reserved bits to 0
-		SetFrameVer(1);               //Indicates an IEEE 802.15.4 frame
+		SetProtocolVer(0);               //Indicates an IEEE 802.15.4 frame
 	}
 
 
@@ -107,11 +107,6 @@ namespace ns3 {
 		return (m_fctrlSEC == HRWPAN_FRAME_PROT);
 	}
 
-	bool
-		HrWpanMacHeader::IsFrmPend(void) const
-	{
-		return (m_fctrlFrmPending == 1);
-	}
 
 	bool
 		HrWpanMacHeader::IsAckReq(void) const
@@ -126,123 +121,28 @@ namespace ns3 {
 	}
 
 	uint8_t
-		HrWpanMacHeader::GetFrameVer(void) const
+		HrWpanMacHeader::GetProtocolVer(void) const
 	{
-		return m_fctrlFrmVer;
+		return m_fctrlPtclVrs;
 	}
 
-	uint8_t
-		HrWpanMacHeader::GetSrcAddrMode(void) const
-	{
-		return m_fctrlSrcAddrMode;
+	void HrWpanMacHeader::SetAckPolicyType(enum HrWpanAckPolicy ackPolicy){
+		m_fctrlAckPolicy = ackPolicy & (0x3); //Bit 0-1
+		m_fctrlImpAckReq = (ackPolicy >> 2) & (0x1); //Bit 2
+		m_fctrlBlk_ACK = (ackPolicy >> 3) & 0x1; // Bit 3
 	}
 
+	enum HrWpanMacHeader::HrWpanAckPolicy HrWpanMacHeader::GetAckPolicyType(void) const {
+		HrWpanAckPolicy ackPolicy = HRWPAN_POLICY_NOACK;
+		return ackPolicy;
 
-	uint8_t
-		HrWpanMacHeader::GetSeqNum(void) const
-	{
-		return(m_SeqNum);
-	}
-
-
-	uint16_t
-		HrWpanMacHeader::GetDstPanId(void) const
-	{
-		return(m_addrDstPanId);
-	}
-
-
-	Mac16Address
-		HrWpanMacHeader::GetShortDstAddr(void) const
-	{
-		return(m_addrShortDstAddr);
-	}
-	Mac64Address
-		HrWpanMacHeader::GetExtDstAddr(void) const
-	{
-		return(m_addrExtDstAddr);
-	}
-
-	uint16_t
-		HrWpanMacHeader::GetSrcPanId(void) const
-	{
-		return(m_addrSrcPanId);
-	}
-
-
-
-	Mac16Address
-		HrWpanMacHeader::GetShortSrcAddr(void) const
-	{
-		return(m_addrShortSrcAddr);
-	}
-	Mac64Address
-		HrWpanMacHeader::GetExtSrcAddr(void) const
-	{
-		return(m_addrExtSrcAddr);
-	}
-
-
-	uint8_t
-		HrWpanMacHeader::GetSecControl(void) const
-	{
-		uint8_t val = 0;
-
-		val = m_secctrlSecLevel & (0x7);              // Bit 0-2
-		val |= (m_secctrlKeyIdMode << 3) & (0x3 << 3);  // Bit 3-4
-		val |= (m_secctrlReserved << 5) & (0x7 << 5);   // Bit 5-7
-
-		return(val);
-	}
-
-	uint32_t
-		HrWpanMacHeader::GetFrmCounter(void) const
-	{
-		return(m_auxFrmCntr);
-	}
-
-	uint8_t
-		HrWpanMacHeader::GetSecLevel(void) const
-	{
-		return (m_secctrlSecLevel);
-	}
-
-	uint8_t
-		HrWpanMacHeader::GetKeyIdMode(void) const
-	{
-		return(m_secctrlKeyIdMode);
-	}
-
-	uint8_t
-		HrWpanMacHeader::GetSecCtrlReserved(void) const
-	{
-		return (m_secctrlReserved);
-	}
-
-	uint32_t
-		HrWpanMacHeader::GetKeyIdSrc32(void) const
-	{
-		return(m_auxKeyIdKeySrc32);
-	}
-
-	uint64_t
-		HrWpanMacHeader::GetKeyIdSrc64(void) const
-	{
-
-		return(m_auxKeyIdKeySrc64);
-	}
-
-	uint8_t
-		HrWpanMacHeader::GetKeyIdIndex(void) const
-	{
-		return(m_auxKeyIdKeyIndex);
 	}
 
 
 	bool
 		HrWpanMacHeader::IsBeacon(void) const
 	{
-		return(m_fctrlFrmType == HRWPAN_MAC_BEACON);
+		return(m_fctrlFrameType == HRWPAN_FRAME_BEACON);
 	}
 
 
@@ -250,15 +150,18 @@ namespace ns3 {
 	bool
 		HrWpanMacHeader::IsData(void) const
 	{
-		return(m_fctrlFrmType == HRWPAN_MAC_DATA);
+		return(m_fctrlFrameType == HRWPAN_FRAME_DATA);
 	}
 
 
 
+
+
 	bool
-		HrWpanMacHeader::IsAcknowledgment(void) const
+		HrWpanMacHeader::IsImmediateAck(void) const
 	{
-		return(m_fctrlFrmType == HRWPAN_MAC_ACKNOWLEDGMENT);
+		//TODO: How to do this? :D
+		return(true);
 	}
 
 
@@ -266,204 +169,79 @@ namespace ns3 {
 	bool
 		HrWpanMacHeader::IsCommand(void) const
 	{
-		return(m_fctrlFrmType == HRWPAN_MAC_COMMAND);
+		return(m_fctrlFrameType == HRWPAN_FRAME_COMMAND);
 	}
 
 
 
 	void
-		HrWpanMacHeader::SetType(enum HrWpanMacType wpanMacType)
+		HrWpanMacHeader::SetType(enum HrWpanFrameType frameType)
 	{
-		m_fctrlFrmType = wpanMacType;
+		m_fctrlFrameType = frameType;
 	}
 
 
 	void
 		HrWpanMacHeader::SetFrameControl(uint16_t frameControl)
 	{
-		m_fctrlFrmType = (frameControl)& (0x07);             // Bit 0-2
-		m_fctrlSecU = (frameControl >> 3) & (0x01);           // Bit 3
-		m_fctrlFrmPending = (frameControl >> 4) & (0x01);     // Bit 4
-		m_fctrlAckReq = (frameControl >> 5) & (0x01);         // Bit 5
-		m_fctrlPanIdComp = (frameControl >> 6) & (0x01);      // Bit 6
-		m_fctrlReserved = (frameControl >> 7) & (0x07);       // Bit 7-9
-		m_fctrlDstAddrMode = (frameControl >> 10) & (0x03);   // Bit 10-11
-		m_fctrlFrmVer = (frameControl >> 12) & (0x03);        // Bit 12-13
-		m_fctrlSrcAddrMode = (frameControl >> 14) & (0x03);   // Bit 14-15
+		m_fctrlPtclVrs = (frameControl)& (0x07);				//Bit 0-2
+		m_fctrlFrameType = (frameControl >> 3) & (0x07);        //Bit 3-5
+		m_fctrlSEC = (frameControl >> 6) & (0x01);				//Bit 6
+		m_fctrlAckPolicy = (frameControl >> 7) & (0x03);        //Bit 7-8
+		m_fctrlRetry = (frameControl >> 9) & (0x01);			//Bit 9
+		m_fctrlMoreData = (frameControl >> 10) & (0x01);        //Bit 10
+		m_fctrlImpAckReq = (frameControl >> 11) & (0x01);		//Bit 11
+		m_fctrlImpAckNack = (frameControl >> 12) & (0x01);      //Bit 12
+		m_fctrlCTARelinquish = (frameControl >> 13) & (0x01);   //Bit 13
+		m_fctrlBlk_ACK = (frameControl >> 14) & (0x01);			//Bit 14
+		m_fctrlReserved = (frameControl >> 15) & (0x01);		//Bit 15
 	}
 
 
 	void
 		HrWpanMacHeader::SetSecEnable(void)
 	{
-		m_fctrlSecU = 1;
+		m_fctrlSEC = 1;
 	}
 
 
 	void
 		HrWpanMacHeader::SetSecDisable(void)
 	{
-		m_fctrlSecU = 0;
+		m_fctrlSEC = 0;
 	}
 
 
 	void
-		HrWpanMacHeader::SetFrmPend(void)
+		HrWpanMacHeader::SetMoreData(void)
 	{
-		m_fctrlFrmPending = 1;
+		m_fctrlMoreData = 1;
 	}
 
 
 	void
-		HrWpanMacHeader::SetNoFrmPend(void)
+		HrWpanMacHeader::SetNoMoreData(void)
 	{
-		m_fctrlFrmPending = 0;
+		m_fctrlMoreData = 0;
 	}
 
-
-	void
-		HrWpanMacHeader::SetAckReq(void)
+	void 
+		HrWpanMacHeader::SetRetry(void)
 	{
-		m_fctrlAckReq = 1;
+		m_fctrlRetry = 1;
 	}
 
-
-	void
-		HrWpanMacHeader::SetNoAckReq(void)
+	void 
+		HrWpanMacHeader::SetNoRetry(void)
 	{
-		m_fctrlAckReq = 0;
+		m_fctrlRetry = 0;
 	}
 
-
-	void
-		HrWpanMacHeader::SetPanIdComp(void)
-	{
-		m_fctrlPanIdComp = 1;
-	}
-
-
-	void HrWpanMacHeader::SetNoPanIdComp(void)
-	{
-		m_fctrlPanIdComp = 0;
-	}
 
 	void
 		HrWpanMacHeader::SetFrmCtrlRes(uint8_t res)
 	{
 		m_fctrlReserved = res;
-	}
-
-	void
-		HrWpanMacHeader::SetDstAddrMode(uint8_t addrMode)
-	{
-		m_fctrlDstAddrMode = addrMode;
-	}
-
-
-	void
-		HrWpanMacHeader::SetFrameVer(uint8_t ver)
-	{
-		m_fctrlFrmVer = ver;
-	}
-
-
-	void
-		HrWpanMacHeader::SetSrcAddrMode(uint8_t addrMode)
-	{
-		m_fctrlSrcAddrMode = addrMode;
-	}
-
-
-	void
-		HrWpanMacHeader::SetSeqNum(uint8_t seqNum)
-	{
-		m_SeqNum = seqNum;
-	}
-
-	void
-		HrWpanMacHeader::SetSrcAddrFields(uint16_t panId,
-		Mac16Address addr)
-	{
-		m_addrSrcPanId = panId;
-		m_addrShortSrcAddr = addr;
-	}
-
-	void
-		HrWpanMacHeader::SetSrcAddrFields(uint16_t panId,
-		Mac64Address addr)
-	{
-		m_addrSrcPanId = panId;
-		m_addrExtSrcAddr = addr;
-	}
-
-	void
-		HrWpanMacHeader::SetDstAddrFields(uint16_t panId,
-		Mac16Address addr)
-	{
-		m_addrDstPanId = panId;
-		m_addrShortDstAddr = addr;
-	}
-	void
-		HrWpanMacHeader::SetDstAddrFields(uint16_t panId,
-		Mac64Address addr)
-	{
-		m_addrDstPanId = panId;
-		m_addrExtDstAddr = addr;
-	}
-	void
-		HrWpanMacHeader::SetSecControl(uint8_t secControl)
-	{
-		m_secctrlSecLevel = (secControl)& (0x07);            // Bit 0-2
-		m_secctrlKeyIdMode = (secControl >> 3) & (0x03);      // Bit 3-4
-		m_secctrlReserved = (secControl >> 5) & (0x07);       // Bit 5-7
-	}
-
-	void
-		HrWpanMacHeader::SetFrmCounter(uint32_t frmCntr)
-	{
-		m_auxFrmCntr = frmCntr;
-	}
-
-	void
-		HrWpanMacHeader::SetSecLevel(uint8_t secLevel)
-	{
-		m_secctrlSecLevel = secLevel;
-	}
-
-	void
-		HrWpanMacHeader::SetKeyIdMode(uint8_t keyIdMode)
-	{
-		m_secctrlKeyIdMode = keyIdMode;
-	}
-
-	void
-		HrWpanMacHeader::SetSecCtrlReserved(uint8_t res)
-	{
-		m_secctrlReserved = res;
-	}
-
-	void
-		HrWpanMacHeader::SetKeyId(uint8_t keyIndex)
-	{
-		m_auxKeyIdKeyIndex = keyIndex;
-	}
-
-
-	void
-		HrWpanMacHeader::SetKeyId(uint32_t keySrc,
-		uint8_t keyIndex)
-	{
-		m_auxKeyIdKeyIndex = keyIndex;
-		m_auxKeyIdKeySrc32 = keySrc;
-	}
-
-
-	void
-		HrWpanMacHeader::SetKeyId(uint64_t keySrc,
-		uint8_t keyIndex)
-	{
-		m_auxKeyIdKeyIndex = keyIndex;
-		m_auxKeyIdKeySrc64 = keySrc;
 	}
 
 	TypeId
@@ -484,64 +262,10 @@ namespace ns3 {
 	void
 		HrWpanMacHeader::Print(std::ostream &os) const
 	{
-		os << "  Frame Type = " << (uint32_t)m_fctrlFrmType << ", Sec Enable = " << (uint32_t)m_fctrlSecU
-			<< ", Frame Pending = " << (uint32_t)m_fctrlFrmPending << ", Ack Request = " << (uint32_t)m_fctrlAckReq
-			<< ", PAN ID Compress = " << (uint32_t)m_fctrlPanIdComp << ", Frame Vers = " << (uint32_t)m_fctrlFrmVer
-			<< ", Dst Addrs Mode = " << (uint32_t)m_fctrlDstAddrMode << ", Src Addr Mode = " << (uint32_t)m_fctrlSrcAddrMode;
+		
+		//TODO
+		
 
-		os << ", Sequence Num = " << static_cast<uint16_t> (m_SeqNum);
-
-		switch (m_fctrlDstAddrMode)
-		{
-		case NOADDR:
-			break;
-		case SHORTADDR:
-			os << ", Dst Addr Pan ID = " << static_cast<uint16_t> (m_addrDstPanId)
-				<< ", m_addrShortDstAddr = " << m_addrShortDstAddr;
-			break;
-		case EXTADDR:
-			os << ", Dst Addr Pan ID = " << static_cast<uint16_t> (m_addrDstPanId)
-				<< ", m_addrExtDstAddr = " << m_addrExtDstAddr;
-			break;
-		}
-
-		switch (m_fctrlSrcAddrMode)
-		{
-		case NOADDR:
-			break;
-		case SHORTADDR:
-			os << ", Src Addr Pan ID = " << static_cast<uint16_t> (m_addrSrcPanId)
-				<< ", m_addrShortSrcAddr = " << m_addrShortSrcAddr;
-			break;
-		case EXTADDR:
-			os << ", Src Addr Pan ID = " << static_cast<uint32_t> (m_addrSrcPanId)
-				<< ", m_addrExtSrcAddr = " << m_addrExtDstAddr;
-			break;
-		}
-
-		if (IsSecEnable())
-		{
-			os << "  Security Level = " << static_cast<uint32_t> (m_secctrlSecLevel)
-				<< ", Key Id Mode = " << static_cast<uint32_t> (m_secctrlKeyIdMode)
-				<< ", Frame Counter = " << static_cast<uint32_t> (m_auxFrmCntr);
-
-			switch (m_secctrlKeyIdMode)
-			{
-			case IMPLICIT:
-				break;
-			case NOKEYSOURCE:
-				os << ", Key Id - Key Index = " << static_cast<uint32_t> (m_auxKeyIdKeyIndex);
-				break;
-			case SHORTKEYSOURCE:
-				os << ", Key Id - Key Source 32 =" << static_cast<uint32_t> (m_auxKeyIdKeySrc32)
-					<< ", Key Id - Key Index = " << static_cast<uint32_t> (m_auxKeyIdKeyIndex);
-				break;
-			case LONGKEYSOURCE:
-				os << ", Key Id - Key Source 64 =" << static_cast<uint64_t> (m_auxKeyIdKeySrc64)
-					<< ", Key Id - Key Index = " << static_cast<uint32_t> (m_auxKeyIdKeyIndex);
-				break;
-			}
-		}
 	}
 
 	uint32_t
@@ -550,77 +274,16 @@ namespace ns3 {
 		/*
 		 * Each mac header will have
 		 * Frame Control      : 2 octet
-		 * Sequence Number    : 1 Octet
-		 * Dst PAN Id         : 0/2 Octet
-		 * Dst Address        : 0/2/8 octet
-		 * Src PAN Id         : 0/2 octet
-		 * Src Address        : 0/2/8 octet
-		 * Aux Sec Header     : 0/5/6/10/14 octet
+		 * PNID				  : 2 Octet
+		 * DestId			  : 1 Octet
+		 * SrcId			  : 1 Octet
+		 * FragmatationControl:	3 Octet
+		 * Stream index		  : 1 octet
 		 */
 
-		uint32_t size = 3;
-
-		switch (m_fctrlDstAddrMode)
-		{
-		case NOADDR:
-			break;
-		case SHORTADDR:
-			size += 4;
-			break;
-		case EXTADDR:
-			size += 10;
-			break;
-		}
-
-		switch (m_fctrlSrcAddrMode)
-		{
-		case NOADDR:
-			break;
-		case SHORTADDR:
-			// check if PAN Id compression is enabled
-			if (!IsPanIdComp())
-			{
-				size += 4;
-			}
-			else
-			{
-				size += 2;
-			}
-			break;
-		case EXTADDR:
-			// check if PAN Id compression is enabled
-			if (!IsPanIdComp())
-			{
-				size += 10;
-			}
-			else
-			{
-				size += 8;
-			}
-			break;
-		}
-
-
-		// check if security is enabled
-		if (IsSecEnable())
-		{
-			size += 5;
-			switch (m_secctrlKeyIdMode)
-			{
-			case IMPLICIT:
-				break;
-			case NOKEYSOURCE:
-				size += 1;
-				break;
-			case SHORTKEYSOURCE:
-				size += 5;
-				break;
-			case LONGKEYSOURCE:
-				size += 9;
-				break;
-			}
-		}
-		return (size);
+		uint32_t size = 10;
+		
+		return size;
 	}
 
 
@@ -628,9 +291,11 @@ namespace ns3 {
 		HrWpanMacHeader::Serialize(Buffer::Iterator start) const
 	{
 		Buffer::Iterator i = start;
-		uint16_t frameControl = GetFrameControl();
+		
+		//Writing first 2 bytes
+		i.WriteHtolsbU16(GetFrameControl());
 
-		i.WriteHtolsbU16(frameControl);
+		//i.WriteU8(GetPN)
 		i.WriteU8(GetSeqNum());
 
 		switch (m_fctrlDstAddrMode)

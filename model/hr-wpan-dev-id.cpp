@@ -22,5 +22,18 @@
 #include "hr-wpan-dev-id.h"
 
 namespace ns3{
+	/**/
+	HrWpanDevId::HrWpanDevId(void){
+
+	}
+
+	HrWpanDevId::HrWpanDevId(const char* str){
+
+	}
+
+	HrWpanDevId HrWpanDevId::convertFrom(const Address & address){
+		
+	}
+	
 
 }

@@ -19,15 +19,18 @@
  */
 
 /*
- * the following classes implements the 802.15.4 Mac Header
- * There are 4 types of 802.15.4 Mac Headers Frames, and they have these fields
+ * the following classes implements the 802.15.3 Mac Header
+ * There are 4 types of 802.15.3 Mac Headers Frames, and they have these fields
  *
  *    Headers Frames  : Fields
  *    -------------------------------------------------------------------------------------------
- *    Beacon          : Frame Control, Sequence Number, Address Fields+, Auxiliary Security Header++.
- *    Data            : Frame Control, Sequence Number, Address Fields++, Auxiliary Security Header++.
- *    Acknowledgment  : Frame Control, Sequence Number.
- *    Command         : Frame Control, Sequence Number, Address Fields++, Auxiliary Security Header++.
+ *    Beacon          : 
+ *	  Immediate Ack	  : FrameType,DestId,SrcId
+ *	  Delayed Ack	  : FrameType,DestId,SrcId
+ *    Command		  : All but StreamIndex
+ *    Data            : All
+ *    LLC			  : 
+ *	  Sync			  :
  *
  *    + - The Address fields in Beacon frame is made up of the Source PAN Id and address only and size
  *        is  4 or 8 octets whereas the other frames may contain the Destination PAN Id and address as
@@ -71,7 +74,7 @@ namespace ns3 {
 		};
 
 		/**
-		*  The possible value of SEC bit, see IEEE 802.15.3, 7.2.1.3
+		*  The possible values of SEC bit, see IEEE 802.15.3, 7.2.1.3
 		*/
 		enum HrWpanSecBit
 		{
@@ -80,11 +83,11 @@ namespace ns3 {
 		};
 
 		/**
-		 *
+		 * The possibile ack policies, see IEEE 802.15.3c, 7.2.1.4 Table 40
 		 */
 		enum HrWpanAckPolicy
 		{
-			HRWPAN_POLICY_NOACK = 0x0,
+			HRWPAN_POLICY_NOACK = 0x0,  
 			HRWPAN_POLICY_IMMACK = 0x1,
 			HRWPAN_POLICY_DACK = 0x2,
 			HRWPAN_POLICY_DACK_REQ = 0x3,
@@ -151,11 +154,6 @@ namespace ns3 {
 		 */
 		bool IsAckReq(void) const;
 
-		/**
-		 * Check if PAN ID Compression bit of Frame Control is enabled
-		 * \return true if PAN ID Compression bit is enabled
-		 */
-		bool IsPanIdComp(void) const;
 
 		/**
 		 * Get the Reserved bits of Frame control field
@@ -164,10 +162,10 @@ namespace ns3 {
 		uint8_t GetFrmCtrlRes(void) const;
 
 		/**
-		 * Get the Frame Version of Frame control field
+		 * Get the Protocol Version of Frame control field
 		 * \return the Frame Version bits
 		 */
-		uint8_t GetFrameVer(void) const;
+		uint8_t GetProtocolVer(void) const;
 
 
 		/**
@@ -176,31 +174,7 @@ namespace ns3 {
 		 */
 		uint8_t GetSeqNum(void) const;
 
-		/**
-		 * Get the Destination PAN ID
-		 * \return the Destination PAN ID
-		 */
-		uint16_t GetDstPanId(void) const;
-		/**
-		 * Get the Destination Extended address
-		 * \return the Destination Extended address
-		 */
-		Mac64Address GetExtDstAddr(void) const;
-		/**
-		 * Get the Source PAN ID
-		 * \return the Source PAN ID
-		 */
-		uint16_t GetSrcPanId(void) const;
-		/**
-		 * Get the Source Short address
-		 * \return the Source Short address
-		 */
-		Mac16Address GetShortSrcAddr(void) const;
-		/**
-		 * Get the Source Extended address
-		 * \return the Source Extended address
-		 */
-		Mac64Address GetExtSrcAddr(void) const;
+		void get
 
 		/**
 		 * Get the Auxiliary Security Header - Security Control Octect
@@ -218,32 +192,6 @@ namespace ns3 {
 		 * \return the Auxiliary Security Header - Security Control - Security Level bits
 		 */
 		uint8_t GetSecLevel(void) const;
-		/**
-		 * Get the Auxiliary Security Header - Security Control - Key Identifier Mode bits
-		 * \return the Auxiliary Security Header - Security Control - Key Identifier Mode bits
-		 */
-		uint8_t GetKeyIdMode(void) const;
-		/**
-		 * Get the Auxiliary Security Header - Security Control - Reserved bits
-		 * \return the Auxiliary Security Header - Security Control - Reserved bits
-		 */
-		uint8_t GetSecCtrlReserved(void) const;
-
-		/**
-		 * Get the Auxiliary Security Header - Key Identifier - Key Source (2 Octects)
-		 * \return the Auxiliary Security Header - Key Identifier - Key Source  (2 Octects)
-		 */
-		uint32_t GetKeyIdSrc32(void) const;
-		/**
-		 * Get the Auxiliary Security Header - Key Identifier - Key Source (4 Octects)
-		 * \return the Auxiliary Security Header - Key Identifier - Key Source  (4 Octects)
-		 */
-		uint64_t GetKeyIdSrc64(void) const;
-		/**
-		 * Get the Auxiliary Security Header - Key Identifier - Key Index
-		 * \return the Auxiliary Security Header - Key Identifier - Key Index
-		 */
-		uint8_t GetKeyIdIndex(void) const;
 
 		/**
 		 * Returns true if the header is a beacon
@@ -256,19 +204,24 @@ namespace ns3 {
 		 */
 		bool IsData(void) const;
 		/**
-		 * Returns true if the header is an ack
-		 * \return true if the header is an ack
+		 * Returns true if the header is an immediate ack
+		 * \return true if the header is an immediate ack
 		 */
-		bool IsAcknowledgment(void) const;
+		bool IsImmediateAck(void) const;
 		/**
 		 * Returns true if the header is a command
 		 * \return true if the header is a command
 		 */
 		bool IsCommand(void) const;
+		/**
+		*	Returns true if the header is a delayed ack
+		* \return true if the header is a delayed ack
+		*/
+		bool IsDelayedAck(void) const;
 
 		/**
 		 * Set the Frame Control field "Frame Type" bits
-		 * \param wpanMacType the frame type
+		 * \param HrWpanMacType the frame type
 		 */
 		void SetType(enum HrWpanFrameType wpanFrameType);
 
@@ -291,22 +244,22 @@ namespace ns3 {
 		/**
 		 * Set the Frame Control field "Frame Pending" bit to true
 		 */
-		void SetFrmPend(void);
+		void SetMoreData(void);
 
 		/**
 		 * Set the Frame Control field "Frame Pending" bit to false
 		 */
-		void SetNoFrmPend(void);
-
+		void SetNoMoreData(void);
 		/**
-		 * Set the Frame Control field "Ack. Request" bit to true
-		 */
-		void SetAckReq(void);
-
+		* Set the Ack Policy type
+		* \param ackPolicy Ack Policy
+		*/
+		void SetAckPolicyType(enum HrWpanAckPolicy ackPolicy);
 		/**
-		 * Set the Frame Control field "Ack. Request" bit to false
-		 */
-		void SetNoAckReq(void);
+		*	Get the Ack Policy type
+		*
+		*/
+		enum HrWpanAckPolicy GetAckPolicyType(void) const;
 
 		/**
 		 * Set the Frame Control field "Reserved" bits
@@ -314,90 +267,29 @@ namespace ns3 {
 		 */
 		void SetFrmCtrlRes(uint8_t res);
 		/**
-		 * Set the Frame version
+		 * Set the Protcol version
 		 * \param ver frame version
 		 */
-		void SetFrameVer(uint8_t ver);
+		void SetProtocolVer(uint8_t ver);
+		/**
+		* Set the Frame Retry bit to true
+		*/
+		void SetRetry(void);
+		/**
+		* Set the Frame Retry bit to false
+		*/
+		void SetNoRetry(void);
+		/**
+		* getPiconetId
+		* \return piconetId
+		*/
+		uint8_t getPicoNetId(void) const;
+		/**
+		* setPiconetId
+		* \return piconetId
+		*/
+		void setPicoNetId(uint8_t piconetId);
 
-		/**
-		 * Set the Sequence number
-		 * \param seqNum sequence number
-		 */
-		void SetSeqNum(uint8_t seqNum);
-
-		/* The Source/Destination Addressing fields are only set if SrcAddrMode/DstAddrMode are set */
-		/**
-		 * Set Source address fields
-		 * \param panId source PAN ID
-		 * \param addr source address (16 bit)
-		 */
-		void SetSrcAddrFields(uint16_t panId, Mac16Address addr);
-		/**
-		 * Set Source address fields
-		 * \param panId source PAN ID
-		 * \param addr source address (64 bit)
-		 */
-		void SetSrcAddrFields(uint16_t panId, Mac64Address addr);
-		/**
-		 * Set Destination address fields
-		 * \param panId destination PAN ID
-		 * \param addr destination address (16 bit)
-		 */
-		void SetDstAddrFields(uint16_t panId, Mac16Address addr);
-		/**
-		 * Set Destination address fields
-		 * \param panId destination PAN ID
-		 * \param addr destination address (64 bit)
-		 */
-		void SetDstAddrFields(uint16_t panId, Mac64Address addr);
-
-		/* Auxiliary Security Header is only set if Sec Enable (SecU) field is set to 1 */
-		/**
-		 * Set the auxiliary security header "Security Control" octet
-		 * \param secLevel the "Security Control" octect
-		 */
-		void SetSecControl(uint8_t secLevel);
-		/**
-		 * Set the auxiliary security header "Frame Counter" octet
-		 * \param frmCntr the "Frame Counter" octect
-		 */
-		void SetFrmCounter(uint32_t frmCntr);
-
-		/**
-		 * Set the Security Control field "Security Level" bits (3 bits)
-		 * \param secLevel the "Security Level" bits
-		 */
-		void SetSecLevel(uint8_t secLevel);
-		/**
-		 * Set the Security Control field "Key Identifier Mode" bits (2 bits)
-		 * \param keyIdMode the "Key Identifier Mode" bits
-		 */
-		void SetKeyIdMode(uint8_t keyIdMode);
-
-		/**
-		 * Set the Security Control field "Reserved" bits (3 bits)
-		 * \param res the "Reserved" bits
-		 */
-		void SetSecCtrlReserved(uint8_t res);
-
-		/* Variable length will be dependent on Key Id Mode*/
-		/**
-		 * Set the Key Index
-		 * \param keyIndex the Key index
-		 */
-		void SetKeyId(uint8_t keyIndex);
-		/**
-		 * Set the Key Index and originator
-		 * \param keySrc the originator of a group key
-		 * \param keyIndex the Key index
-		 */
-		void SetKeyId(uint32_t keySrc, uint8_t keyIndex);
-		/**
-		 * Set the Key Index and originator
-		 * \param keySrc the originator of a group key
-		 * \param keyIndex the Key index
-		 */
-		void SetKeyId(uint64_t keySrc, uint8_t keyIndex);
 
 		/**
 		 * \brief Get the type ID.
