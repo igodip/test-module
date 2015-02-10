@@ -19,8 +19,8 @@
  */
 
 /*
- * the following classes implements the 802.15.3 Mac Header
- * There are 4 types of 802.15.3 Mac Headers Frames, and they have these fields
+ * the following classes implements the 802.15.3c Mac Header
+ * There are 7 types of 802.15.3c Mac Headers Frames, and they have these fields
  *
  *    Headers Frames  : Fields
  *    -------------------------------------------------------------------------------------------
@@ -42,8 +42,7 @@
 #define HR_WPAN_MAC_HEADER_H
 
 #include <ns3/header.h>
-#include <ns3/mac16-address.h>
-#include <ns3/mac64-address.h>
+#include <ns3/hr-wpan-dev-id.h>
 
 
 namespace ns3 {
@@ -260,7 +259,7 @@ namespace ns3 {
 		*/
 		void setPicoNetId(uint8_t piconetId);
 
-		void setSrcId(uint8_t )
+		
 
 		/**
 		 * \brief Get the type ID.
@@ -294,8 +293,8 @@ namespace ns3 {
 		uint8_t m_picoNetID;			  //!< Piconet ID (1 Octet)
 
 		/* Addressing fields */
-		uint8_t m_addrDstId;              //!< Dst id (1 Octet)
-		uint8_t m_addrSrcId;			  //!< Src id (1 Octet);
+		HrWpanDevId m_addrDstId;              //!< Dst id (1 Octet)
+		HrWpanDevId m_addrSrcId;			  //!< Src id (1 Octet);
 
 		/* Fragmentation Control*/
 		uint16_t m_fragControlMSDUnumber;	//!< Fragmentation control MSDU number Bit 0-8

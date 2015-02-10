@@ -26,7 +26,6 @@
 
 #include <ns3/object.h>
 #include <ns3/traced-callback.h>
-#include <ns3/mac16-address.h>
 #include <ns3/mac64-address.h>
 #include <ns3/sequence-number.h>
 #include <ns3/hr-wpan-phy.h>
@@ -42,7 +41,7 @@ class HrWpanCsmaCa;
 /**
  * \defgroup hr-wpan HR-WPAN models
  *
- * This section documents the API of the IEEE 802.15.4-related models.  For a generic functional description, please refer to the ns-3 manual.
+ * This section documents the API of the IEEE 802.15.3c-related models.  For a generic functional description, please refer to the ns-3 manual.
  */
 
 /**
@@ -73,6 +72,8 @@ typedef enum
   CHANNEL_IDLE,          //!< CHANNEL_IDLE
   SET_PHY_TX_ON          //!< SET_PHY_TX_ON
 } HrWpanMacState;
+
+
 
 /**
  * \ingroup hr-wpan
@@ -122,6 +123,37 @@ typedef enum
   IEEE_802_15_4_INVALID_PARAMETER      = 11
 } HrWpanMcpsDataConfirmStatus;
 
+// 802.15.3c SAP Starts here
+struct MacAsyncDataRequestParams
+{
+	//TODO
+};
+
+struct MacAsyncDataIndicationParams
+{
+	//TODO
+};
+
+struct MacAsyncDataConfirmationParams
+{
+	//TODO
+};
+
+struct MacIsochDataRequestParams
+{
+	//TODO
+};
+
+struct MacIsochDataIndicationParams
+{
+	//TODO
+};
+
+struct MacIsochDataConfirmationParams
+{
+	//TODO
+};
+//802.15.3c SAP Ends here
 
 /**
  * \ingroup Hr-wpan
