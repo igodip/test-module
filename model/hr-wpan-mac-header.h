@@ -143,19 +143,6 @@ namespace ns3 {
 		bool IsSecEnable(void) const;
 
 		/**
-		 * Check if Frame Pending bit of Frame Control is enabled
-		 * \return true if Frame Pending bit is enabled
-		 */
-		bool IsFrmPend(void) const;
-
-		/**
-		 * Check if Ack. Request bit of Frame Control is enabled
-		 * \return true if Ack. Request bit is enabled
-		 */
-		bool IsAckReq(void) const;
-
-
-		/**
 		 * Get the Reserved bits of Frame control field
 		 * \return the Reserved bits
 		 */
@@ -174,24 +161,7 @@ namespace ns3 {
 		 */
 		uint8_t GetSeqNum(void) const;
 
-		void get
-
-		/**
-		 * Get the Auxiliary Security Header - Security Control Octect
-		 * \return the Auxiliary Security Header - Security Control Octect
-		 */
-		uint8_t GetSecControl(void) const;
-		/**
-		 * Get the Auxiliary Security Header - Frame Counter Octects
-		 * \return the Auxiliary Security Header - Frame Counter Octects
-		 */
-		uint32_t GetFrmCounter(void) const;
-
-		/**
-		 * Get the Auxiliary Security Header - Security Control - Security Level bits
-		 * \return the Auxiliary Security Header - Security Control - Security Level bits
-		 */
-		uint8_t GetSecLevel(void) const;
+		//void get
 
 		/**
 		 * Returns true if the header is a beacon
@@ -290,6 +260,7 @@ namespace ns3 {
 		*/
 		void setPicoNetId(uint8_t piconetId);
 
+		void setSrcId(uint8_t )
 
 		/**
 		 * \brief Get the type ID.

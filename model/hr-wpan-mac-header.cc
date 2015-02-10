@@ -1,6 +1,6 @@
 /* -*-  Mode: C++; c-file-style: "gnu"; indent-tabs-mode:nil; -*- */
 /*
- * Copyright (c) 2015 
+ * Copyright (c) 2015
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -24,14 +24,14 @@ namespace ns3 {
 
 	NS_OBJECT_ENSURE_REGISTERED(HrWpanMacHeader);
 
-	
+
 
 	HrWpanMacHeader::HrWpanMacHeader()
 	{
 		SetType(HRWPAN_FRAME_DATA);   // Assume Data frame
 		SetSecDisable();              // Assume there is No Aux Sec but
 		SetNoMoreData();               // No Frame Pending
-										// No Ack Frame will be expected from recepient
+		SetAckPolicyType(HRWPAN_POLICY_NOACK);// No Ack Frame will be expected from recepient
 		SetFrmCtrlRes(0);             // Initialize the 3 reserved bits to 0
 		SetProtocolVer(0);               //Indicates an IEEE 802.15.4 frame
 	}
@@ -44,7 +44,7 @@ namespace ns3 {
 		//SetSeqNum(seqNum);
 		SetSecDisable();              // Assume there is No Aux Sec but
 		SetNoMoreData();               // No Frame Pending
-										// No Ack Frame will be expected from recepient
+		SetAckPolicyType(HRWPAN_POLICY_NOACK);// No Ack Frame will be expected from recepient
 		SetFrmCtrlRes(0);             // Initialize the 3 reserved bits to 0
 		SetProtocolVer(0);               //Indicates an IEEE 802.15.4 frame
 	}
@@ -107,13 +107,6 @@ namespace ns3 {
 		return (m_fctrlSEC == HRWPAN_FRAME_PROT);
 	}
 
-
-	bool
-		HrWpanMacHeader::IsAckReq(void) const
-	{
-		return 0;//(m_fctrlT == 1);
-	}
-
 	uint8_t
 		HrWpanMacHeader::GetFrmCtrlRes(void) const
 	{
@@ -133,8 +126,39 @@ namespace ns3 {
 	}
 
 	enum HrWpanMacHeader::HrWpanAckPolicy HrWpanMacHeader::GetAckPolicyType(void) const {
-		HrWpanAckPolicy ackPolicy = HRWPAN_POLICY_NOACK;
-		return ackPolicy;
+
+		switch (m_fctrlAckPolicy)
+		{
+		case 0x0:
+			return HRWPAN_POLICY_NOACK;
+			break;
+
+		case 0x1:
+			
+			if (m_fctrlImpAckReq == 1) {
+				return HRWPAN_POLICY_IMPACK;
+			}
+
+			if (m_fctrlBlk_ACK == 1){
+				return HRWPAN_POLICY_BLKACK;
+			}
+
+			return HRWPAN_POLICY_IMMACK;
+			break;
+		case 0x2:
+			
+			return HRWPAN_POLICY_DACK;
+			break;
+		case 0x3:
+
+			return HRWPAN_POLICY_DACK_REQ;
+			break;
+
+
+		}
+
+
+		
 
 	}
 
@@ -225,13 +249,13 @@ namespace ns3 {
 		m_fctrlMoreData = 0;
 	}
 
-	void 
+	void
 		HrWpanMacHeader::SetRetry(void)
 	{
 		m_fctrlRetry = 1;
 	}
 
-	void 
+	void
 		HrWpanMacHeader::SetNoRetry(void)
 	{
 		m_fctrlRetry = 0;
@@ -262,9 +286,9 @@ namespace ns3 {
 	void
 		HrWpanMacHeader::Print(std::ostream &os) const
 	{
-		
+
 		//TODO
-		
+
 
 	}
 
@@ -282,7 +306,7 @@ namespace ns3 {
 		 */
 
 		uint32_t size = 10;
-		
+
 		return size;
 	}
 
@@ -291,7 +315,7 @@ namespace ns3 {
 		HrWpanMacHeader::Serialize(Buffer::Iterator start) const
 	{
 		Buffer::Iterator i = start;
-		
+
 		//Writing first 2 bytes
 		i.WriteHtolsbU16(GetFrameControl());
 
