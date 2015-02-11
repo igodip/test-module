@@ -42,7 +42,7 @@
 #define HR_WPAN_MAC_HEADER_H
 
 #include <ns3/header.h>
-#include <ns3/hr-wpan-dev-id.h>
+#include "hr-wpan-dev-id.h"
 
 
 namespace ns3 {
@@ -99,16 +99,6 @@ namespace ns3 {
 			HRWPAN_RETRY_YES = 1
 		};
 
-		/**
-		 * The addressing mode types, see IEEE 802.15.4-2006, Table 80.
-		 */
-		enum KeyIdModeType
-		{
-			IMPLICIT = 0,
-			NOKEYSOURCE = 1,
-			SHORTKEYSOURCE = 2,
-			LONGKEYSOURCE = 3
-		};
 
 		HrWpanMacHeader(void);
 
@@ -255,11 +245,53 @@ namespace ns3 {
 		uint8_t getPicoNetId(void) const;
 		/**
 		* setPiconetId
-		* \return piconetId
+		* \param piconetId
 		*/
 		void setPicoNetId(uint8_t piconetId);
 
 		
+		//Address
+
+		/**
+		* setDstAddress
+		* \return piconetId
+		*/
+		void setDstAddress(const HrWpanDevId & addrDistId);
+		/**
+		* getDstAddress
+		* \return piconetId
+		*/
+		HrWpanDevId getDstAddress(void) const;
+		/**
+		* setSrcAddress
+		* \param piconetId
+		*/
+		void setSrcAddress(const HrWpanDevId & addrSrcId);
+		/**
+		* getSrcAddress
+		* \return piconetId
+		*/
+		HrWpanDevId getSrcAddress(void) const;
+		/**
+		* setStreamIndex
+		* \return piconetId
+		*/
+		void setStreamIndex(uint8_t streamIndex);
+		/**
+		* getStreamIndex
+		* \return piconetId
+		*/
+		uint8_t getStreamIndex(void) const;
+		/**
+		* getStreamIndex
+		* \return piconetId
+		*/
+		uint32_t getFragmentationControl(void) const;
+		/**
+		* getStreamIndex
+		* \return piconetId
+		*/
+		void setFragmentationControl(uint32_t fragmentationControl);
 
 		/**
 		 * \brief Get the type ID.

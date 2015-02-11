@@ -31,6 +31,7 @@
 #include <ns3/hr-wpan-phy.h>
 #include <ns3/event-id.h>
 #include <deque>
+#include "hr-wpan-dev-id.h"
 
 
 namespace ns3 {
@@ -78,19 +79,6 @@ typedef enum
 /**
  * \ingroup hr-wpan
  *
- * table 80 of 802.15.4
- */
-typedef enum
-{
-  NO_PANID_ADDR = 0,
-  ADDR_MODE_RESERVED = 1,
-  SHORT_ADDR = 2,
-  EXT_ADDR = 3
-} HrWpanAddressMode;
-
-/**
- * \ingroup hr-wpan
- *
  * table 83 of 802.15.4
  */
 typedef enum
@@ -105,53 +93,67 @@ typedef enum
 /**
  * \ingroup hr-wpan
  *
- * Table 42 of 802.15.4-2006
+ * Table 36 of 802.15.3-2005
  */
 typedef enum
 {
-  IEEE_802_15_4_SUCCESS                = 0,
-  IEEE_802_15_4_TRANSACTION_OVERFLOW   = 1,
-  IEEE_802_15_4_TRANSACTION_EXPIRED    = 2,
-  IEEE_802_15_4_CHANNEL_ACCESS_FAILURE = 3,
-  IEEE_802_15_4_INVALID_ADDRESS        = 4,
-  IEEE_802_15_4_INVALID_GTS            = 5,
-  IEEE_802_15_4_NO_ACK                 = 6,
-  IEEE_802_15_4_COUNTER_ERROR          = 7,
-  IEEE_802_15_4_FRAME_TOO_LONG         = 8,
-  IEEE_802_15_4_UNAVAILABLE_KEY        = 9,
-  IEEE_802_15_4_UNSUPPORTED_SECURITY   = 10,
-  IEEE_802_15_4_INVALID_PARAMETER      = 11
-} HrWpanMcpsDataConfirmStatus;
+  IEEE_802_15_3_SUCCESS                = 0,
+  IEEE_802_15_3_FAILURE				   = 1
+
+} HrWpanMcpsResultCode;
+
+/**
+* \ingroup hr-wpan
+*
+* Table 36 of 802.15.3-2005
+*/
 
 // 802.15.3c SAP Starts here
 struct MacAsyncDataRequestParams
 {
-	//TODO
+	MacAsyncDataRequestParams():
+		m_Priority(0),
+		m_ACKPolicy(HrWpanMacHeader::HrWpanAckPolicy::HRWPAN_POLICY_NOACK)
+	{}
+
+	HrWpanDevId m_TrgtID;
+	
+	uint8_t m_Priority;
+	HrWpanMacHeader::HrWpanAckPolicy m_ACKPolicy;
+	uint16_t m_TransmissionTimeout;
+	uint16_t m_Length;
+
 };
 
 struct MacAsyncDataIndicationParams
 {
-	//TODO
+	
 };
 
 struct MacAsyncDataConfirmationParams
 {
-	//TODO
+	MacAsyncDataConfirmationParams()
+	{}
+
+	uint8_t m_RequestID;
+	uint32_t m_TransmitDelay;
+	HrWpanMcpsResultCode m_ResultCode;
+
 };
 
 struct MacIsochDataRequestParams
 {
-	//TODO
+	
 };
 
 struct MacIsochDataIndicationParams
 {
-	//TODO
+	
 };
 
 struct MacIsochDataConfirmationParams
 {
-	//TODO
+	
 };
 //802.15.3c SAP Ends here
 
@@ -187,7 +189,7 @@ struct McpsDataRequestParams
 struct McpsDataConfirmParams
 {
   uint8_t m_msduHandle; //!< MSDU handle
-  HrWpanMcpsDataConfirmStatus m_status; //!< The status of the last MSDU transmission
+  HrWpanMcpsResultCode m_status; //!< The status of the last MSDU transmission
 };
 
 /**

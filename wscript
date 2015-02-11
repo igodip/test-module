@@ -14,6 +14,7 @@ def build(bld):
         'model/hr-wpan-spectrum-value-helper.cc',
         'model/hr-wpan-spectrum-signal-parameters.cc',
         'model/hr-wpan-lqi-tag.cc',
+		'model/hr-wpan-dev-id.cc',
         'helper/hr-wpan-helper.cc',
         ]
 
@@ -45,6 +46,7 @@ def build(bld):
         'model/hr-wpan-spectrum-value-helper.h',
         'model/hr-wpan-spectrum-signal-parameters.h',
         'model/hr-wpan-lqi-tag.h',
+		'model/hr-wpan-dev-id.h'
         'helper/hr-wpan-helper.h',
         ]
 

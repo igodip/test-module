@@ -268,6 +268,30 @@ namespace ns3 {
 		m_fctrlReserved = res;
 	}
 
+	void HrWpanMacHeader::setDstAddress(const HrWpanDevId & wpanDevId) {
+		m_addrDstId = wpanDevId;
+	}
+
+	HrWpanDevId HrWpanMacHeader::getDstAddress(void) const{
+		return m_addrDstId;
+	}
+
+	void HrWpanMacHeader::setSrcAddress(const HrWpanDevId & wpanDevId){
+		m_addrSrcId = wpanDevId;
+	}
+
+	HrWpanDevId HrWpanMacHeader::getSrcAddress(void) const {
+		return m_addrSrcId;
+	}
+
+	void HrWpanMacHeader::setStreamIndex(uint8_t streamIndex){
+		m_StreamIndex = streamIndex;
+	}
+
+	uint8_t HrWpanMacHeader::getStreamIndex(void) const {
+		return m_StreamIndex;
+	}
+
 	TypeId
 		HrWpanMacHeader::GetTypeId(void)
 	{
@@ -281,6 +305,24 @@ namespace ns3 {
 		HrWpanMacHeader::GetInstanceTypeId(void) const
 	{
 		return GetTypeId();
+	}
+
+	void HrWpanMacHeader::setFragmentationControl(uint32_t fragmentationControl) 
+	{
+
+	}
+
+	uint32_t HrWpanMacHeader::getFragmentationControl() const {
+		
+		uint32_t result = 0;
+
+		result |= m_fragControlMSDUnumber & 0x1FF;
+		result |= m_fragControlFragNumber & 0xFE00;
+		result |= m_fragControlLastFragNumber & 0x7F0000;
+		result |= m_fragControlReserved & 0x800000;
+
+		return result;
+
 	}
 
 	void
@@ -311,6 +353,8 @@ namespace ns3 {
 	}
 
 
+	//TODO: Ho qualche forte dubbio su queste funzioni
+
 	void
 		HrWpanMacHeader::Serialize(Buffer::Iterator start) const
 	{
@@ -319,67 +363,27 @@ namespace ns3 {
 		//Writing first 2 bytes
 		i.WriteHtolsbU16(GetFrameControl());
 
-		//i.WriteU8(GetPN)
-		i.WriteU8(GetSeqNum());
+		i.WriteU8(getPicoNetId());
+		
+		uint8_t dstAddr,srcAddr;
+		getDstAddress().CopyTo(dstAddr);
+		getSrcAddress().CopyTo(srcAddr);
 
-		switch (m_fctrlDstAddrMode)
-		{
-		case NOADDR:
-			break;
-		case SHORTADDR:
-			i.WriteHtolsbU16(GetDstPanId());
-			WriteTo(i, m_addrShortDstAddr);
-			break;
-		case EXTADDR:
-			i.WriteHtolsbU16(GetDstPanId());
-			WriteTo(i, m_addrExtDstAddr);
-			break;
-		}
+		i.WriteU8(dstAddr);
+		i.WriteU8(srcAddr);
 
-		switch (m_fctrlSrcAddrMode)
-		{
-		case NOADDR:
-			break;
-		case SHORTADDR:
-			if (!IsPanIdComp())
-			{
-				i.WriteHtolsbU16(GetSrcPanId());
-			}
-			WriteTo(i, m_addrShortSrcAddr);
-			break;
-		case EXTADDR:
-			if (!IsPanIdComp())
-			{
-				i.WriteHtolsbU16(GetSrcPanId());
-			}
-			WriteTo(i, m_addrExtSrcAddr);
-			break;
-		}
+		//Fragmentation control
+		i.WriteU8(0);
+		i.WriteU8(0);
+		i.WriteU8(0);
 
-		if (IsSecEnable())
-		{
-			i.WriteU8(GetSecControl());
-			i.WriteHtolsbU32(GetFrmCounter());
+		i.WriteU8(getStreamIndex());
 
-			switch (m_secctrlKeyIdMode)
-			{
-			case IMPLICIT:
-				break;
-			case NOKEYSOURCE:
-				i.WriteU8(GetKeyIdIndex());
-				break;
-			case SHORTKEYSOURCE:
-				i.WriteHtolsbU32(GetKeyIdSrc32());
-				i.WriteU8(GetKeyIdIndex());
-				break;
-			case LONGKEYSOURCE:
-				i.WriteHtolsbU64(GetKeyIdSrc64());
-				i.WriteU8(GetKeyIdIndex());
-				break;
-			}
-		}
+		
 	}
 
+
+	//TODO: Forte dubbio anche qui
 
 	uint32_t
 		HrWpanMacHeader::Deserialize(Buffer::Iterator start)
@@ -389,75 +393,33 @@ namespace ns3 {
 		uint16_t frameControl = i.ReadLsbtohU16();
 		SetFrameControl(frameControl);
 
-		SetSeqNum(i.ReadU8());
-		switch (m_fctrlDstAddrMode)
-		{
-		case NOADDR:
-			break;
-		case SHORTADDR:
-			m_addrDstPanId = i.ReadLsbtohU16();
-			ReadFrom(i, m_addrShortDstAddr);
-			break;
-		case EXTADDR:
-			m_addrDstPanId = i.ReadLsbtohU16();
-			ReadFrom(i, m_addrExtDstAddr);
-			break;
-		}
+		uint8_t picoNetId = i.ReadU8();
+		setPicoNetId(picoNetId);
 
-		switch (m_fctrlSrcAddrMode)
-		{
-		case NOADDR:
-			break;
-		case SHORTADDR:
-			if (!IsPanIdComp())
-			{
-				m_addrSrcPanId = i.ReadLsbtohU16();
-			}
-			else
-			{
-				if (m_fctrlDstAddrMode > 0)
-				{
-					m_addrSrcPanId = m_addrDstPanId;
-				}
-			}
-			ReadFrom(i, m_addrShortSrcAddr);
-			break;
-		case EXTADDR:
-			if (!IsPanIdComp())
-			{
-				m_addrSrcPanId = i.ReadLsbtohU16();
-			}
-			else
-			{
-				if (m_fctrlDstAddrMode > 0)
-				{
-					m_addrSrcPanId = m_addrDstPanId;
-				}
-			}
-			ReadFrom(i, m_addrExtSrcAddr);
-			break;
-		}
+		HrWpanDevId dstAddrId, srcAddrId;
 
-		if (IsSecEnable())
-		{
-			SetSecControl(i.ReadU8());
-			SetFrmCounter(i.ReadLsbtohU32());
 
-			switch (m_secctrlKeyIdMode)
-			{
-			case IMPLICIT:
-				break;
-			case NOKEYSOURCE:
-				SetKeyId(i.ReadU8());
-				break;
-			case SHORTKEYSOURCE:
-				SetKeyId(i.ReadLsbtohU32(), i.ReadU8());
-				break;
-			case LONGKEYSOURCE:
-				SetKeyId(i.ReadLsbtohU64(), i.ReadU8());
-				break;
-			}
-		}
+		uint8_t dstAddr = i.ReadU8();
+		
+		dstAddrId.CopyFrom(dstAddr);
+		setDstAddress(dstAddrId);
+
+		uint8_t srcAddr = i.ReadU8();
+		srcAddrId.CopyFrom(srcAddr);
+		setSrcAddress(srcAddrId);
+
+
+		//Fragmentation control
+		//TODO
+		i.ReadU8();
+		i.ReadU8();
+		i.ReadU8();
+		setFragmentationControl(0);
+
+		uint8_t streamIndex = i.ReadU8();
+		setStreamIndex(streamIndex);
+		
+		
 		return i.GetDistanceFrom(start);
 	}
 

@@ -45,7 +45,7 @@ namespace ns3 {
 		*
 		* \param buffer address in network order
 		*/
-		void CopyFrom(const uint8_t buffer);
+		void CopyFrom(const uint8_t & buffer);
 		/**
 		* Copy the internal address to the input buffer
 		*

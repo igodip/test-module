@@ -87,7 +87,7 @@ namespace ns3{
 
 	}
 
-	void HrWpanDevId::CopyFrom(const uint8_t buffer)
+	void HrWpanDevId::CopyFrom(const uint8_t & buffer)
 	{
 		NS_LOG_FUNCTION(this << buffer);
 		m_address = buffer;
