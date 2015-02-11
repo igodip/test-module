@@ -52,6 +52,43 @@ void
 HrWpanPacketTestCase::DoRun(void)
 {
 	
+	HrWpanMacHeader macHdr(HrWpanMacHeader::HRWPAN_FRAME_BEACON, 0);
+	macHdr.SetSecDisable();
+	
+	HrWpanDevId srcAddress("11");
+	macHdr.setSrcAddress(srcAddress);
+
+	HrWpanMacTrailer macTrailer;
+	
+
+	Ptr<Packet> packet = Create<Packet>(20); // dummy data
+	NS_TEST_ASSERT_MSG_EQ(packet->GetSize(),20, "Packed created with unexpected size!");
+
+	packet->AddHeader(macHdr); //+10 bytes fixed
+	std::cout << "<--Mac header added " << std::endl;
+	NS_TEST_ASSERT_MSG_EQ(packet->GetSize(), 30, "Packet wrong size after macHdr addition!");
+
+	packet->AddTrailer(macTrailer); //+4 bytes fixed
+	std::cout << "<-- Mac trailer added " << std::endl;
+	NS_TEST_ASSERT_MSG_EQ(packet->GetSize(), 34, "Packet wrong size after macTrailer addition!");
+
+	uint32_t size = packet->GetSerializedSize();
+	uint8_t buffer[size];
+	packet->Serialize(buffer, size);
+	Ptr<Packet> p2 = Create<Packet>(buffer, size, true);
+
+	NS_TEST_ASSERT_MSG_EQ(p2->GetSize(), 34, "Packet wrong size after deserialization");
+
+	HrWpanMacHeader receivedMacHeader;
+	p2->RemoveHeader(receivedMacHeader);
+
+	NS_TEST_ASSERT_MSG_EQ(p2->GetSize(), 24, "Packet wrong size after removing machdr");
+
+	HrWpanMacTrailer receivedMacTrailer;
+	p2->RemoveTrailer(receivedMacTrailer);
+
+	NS_TEST_ASSERT_MSG_EQ(p2->GetSize(), 20, "Packet wrong size after removing mactrailer");
+
 }
 
 // ==============================================================================
@@ -62,7 +99,7 @@ public:
 };
 
 LrWpanPacketTestSuite::LrWpanPacketTestSuite()
-	: TestSuite("lr-wpan-packet", UNIT)
+	: TestSuite("hr-wpan-packet", UNIT)
 {
 	AddTestCase(new HrWpanPacketTestCase, TestCase::QUICK);
 }

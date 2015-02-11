@@ -322,7 +322,7 @@ namespace ns3 {
 		uint8_t m_fctrlReserved;			  //!< Frame Control field Bit 15
 
 		/* Piconet */
-		uint8_t m_picoNetID;			  //!< Piconet ID (1 Octet)
+		uint16_t m_picoNetID;			  //!< Piconet ID (2 Octet)
 
 		/* Addressing fields */
 		HrWpanDevId m_addrDstId;              //!< Dst id (1 Octet)
