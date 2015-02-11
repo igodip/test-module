@@ -119,6 +119,19 @@ namespace ns3 {
 		return m_fctrlPtclVrs;
 	}
 
+	void
+		HrWpanMacHeader::SetProtocolVer(uint8_t protVer){
+		m_fctrlPtclVrs = protVer;
+	}
+
+	uint8_t HrWpanMacHeader::getPicoNetId(void) const {
+		return m_picoNetID;
+	}
+
+	void HrWpanMacHeader::setPicoNetId(uint8_t picoNetId){
+		m_picoNetID = picoNetId;
+	}
+
 	void HrWpanMacHeader::SetAckPolicyType(enum HrWpanAckPolicy ackPolicy){
 		m_fctrlAckPolicy = ackPolicy & (0x3); //Bit 0-1
 		m_fctrlImpAckReq = (ackPolicy >> 2) & (0x1); //Bit 2
@@ -153,6 +166,10 @@ namespace ns3 {
 
 			return HRWPAN_POLICY_DACK_REQ;
 			break;
+
+		default:
+			return HRWPAN_POLICY_NOACK;
+
 
 
 		}
@@ -398,7 +415,6 @@ namespace ns3 {
 
 		HrWpanDevId dstAddrId, srcAddrId;
 
-
 		uint8_t dstAddr = i.ReadU8();
 		
 		dstAddrId.CopyFrom(dstAddr);
@@ -407,7 +423,6 @@ namespace ns3 {
 		uint8_t srcAddr = i.ReadU8();
 		srcAddrId.CopyFrom(srcAddr);
 		setSrcAddress(srcAddrId);
-
 
 		//Fragmentation control
 		//TODO

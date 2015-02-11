@@ -144,7 +144,7 @@ HrWpanMac::HrWpanMac ()
   uniformVar->SetAttribute ("Min", DoubleValue (0.0));
   uniformVar->SetAttribute ("Max", DoubleValue (255.0));
   m_macDsn = SequenceNumber8 (uniformVar->GetValue ());
-  m_shortAddress = Mac16Address ("00:00");
+  m_devAddrId = HrWpanDevId ("00");
 }
 
 HrWpanMac::~HrWpanMac ()
@@ -182,8 +182,8 @@ HrWpanMac::DoDispose ()
     }
   m_txQueue.clear ();
   m_phy = 0;
-  m_mcpsDataIndicationCallback = MakeNullCallback< void, McpsDataIndicationParams, Ptr<Packet> > ();
-  m_mcpsDataConfirmCallback = MakeNullCallback< void, McpsDataConfirmParams > ();
+  m_mcpsDataIndicationCallback = MakeNullCallback< void, MacAsyncDataIndicationParams, Ptr<Packet> > ();
+  m_mcpsDataConfirmCallback = MakeNullCallback< void, MacAsyncDataConfirmationParams > ();
 
   Object::DoDispose ();
 }
@@ -214,10 +214,10 @@ HrWpanMac::SetRxOnWhenIdle (bool rxOnWhenIdle)
 }
 
 void
-HrWpanMac::SetShortAddress (Mac16Address address)
+HrWpanMac::SetDeviceId (HrWpanDevId address)
 {
   //NS_LOG_FUNCTION (this << address);
-  m_shortAddress = address;
+  m_devAddrId = address;
 }
 
 void
@@ -228,11 +228,11 @@ HrWpanMac::SetExtendedAddress (Mac64Address address)
 }
 
 
-Mac16Address
-HrWpanMac::GetShortAddress () const
+HrWpanDevId
+HrWpanMac::GetDeviceId () const
 {
   NS_LOG_FUNCTION (this);
-  return m_shortAddress;
+  return m_devAddrId;
 }
 
 Mac64Address
@@ -242,11 +242,11 @@ HrWpanMac::GetExtendedAddress () const
   return m_selfExt;
 }
 void
-HrWpanMac::McpsDataRequest (McpsDataRequestParams params, Ptr<Packet> p)
+HrWpanMac::MacAsyncDataRequest (MacAsyncDataRequestParams params, Ptr<Packet> p)
 {
   NS_LOG_FUNCTION (this << p);
 
-  McpsDataConfirmParams confirmParams;
+  MacAsyncDataRequestParams confirmParams;
   confirmParams.m_msduHandle = params.m_msduHandle;
 
   // TODO: We need a drop trace for the case that the packet is too large or the request parameters are maleformed.
@@ -292,7 +292,7 @@ HrWpanMac::McpsDataRequest (McpsDataRequestParams params, Ptr<Packet> p)
       break;
     case SHORT_ADDR:
       macHdr.SetSrcAddrMode (params.m_srcAddrMode);
-      macHdr.SetSrcAddrFields (GetPanId (), GetShortAddress ());
+      macHdr.SetSrcAddrFields (GetPanId (), GetDeviceId ());
       break;
     case EXT_ADDR:
       macHdr.SetSrcAddrMode (params.m_srcAddrMode);
@@ -448,13 +448,13 @@ HrWpanMac::GetPhy (void)
 }
 
 void
-HrWpanMac::SetMcpsDataIndicationCallback (McpsDataIndicationCallback c)
+HrWpanMac::SetMacAsyncIndicationCallback (MacAsyncIndicationCallback c)
 {
   m_mcpsDataIndicationCallback = c;
 }
 
 void
-HrWpanMac::SetMcpsDataConfirmCallback (McpsDataConfirmCallback c)
+HrWpanMac::SetMacAsyncConfirmationCallback (MacAsyncConfirmationCallback c)
 {
   m_mcpsDataConfirmCallback = c;
 }
@@ -502,7 +502,7 @@ HrWpanMac::PdDataIndication (uint32_t psduLength, Ptr<Packet> p, uint8_t lqi)
       HrWpanMacHeader receivedMacHdr;
       p->RemoveHeader (receivedMacHdr);
 
-      McpsDataIndicationParams params;
+      MacAsyncDataIndicationParams params;
       params.m_dsn = receivedMacHdr.GetSeqNum ();
       params.m_mpduLinkQuality = lqi;
       params.m_srcPanId = receivedMacHdr.GetSrcPanId ();
@@ -713,7 +713,7 @@ HrWpanMac::RemoveFirstTxQElement ()
   Ptr<Packet> pkt = p->Copy ();
   HrWpanMacHeader hdr;
   pkt->RemoveHeader (hdr);
-  if (hdr.GetShortDstAddr () != Mac16Address ("ff:ff"))
+  if (hdr.getDstAddress () != HrWpanDevId ("ff"))
     {
       m_sentPktTrace (p, m_retransmission + 1, m_numCsmacaRetry);
     }

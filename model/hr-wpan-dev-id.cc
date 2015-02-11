@@ -1,6 +1,6 @@
 /* -*-  Mode: C++; c-file-style: "gnu"; indent-tabs-mode:nil; -*- */
 /*
-* Copyright (c) 2015
+* Copyright (c) 2015 KTH
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License version 2 as
@@ -31,7 +31,7 @@ namespace ns3{
 
 	NS_LOG_COMPONENT_DEFINE("HrWpanDevId");
 
-	ATTRIBUTE_HELPER_CPP(HrWpanDevId);
+	//ATTRIBUTE_HELPER_CPP(HrWpanDevId);
 
 #define ASCII_a (0x41)
 #define ASCII_z (0x5a)
@@ -179,6 +179,8 @@ namespace ns3{
 			address.m_address = strtoul(tmp.c_str(), 0, 16);
 			col = next + 1;
 		}
+
+		return is;
 
 	}
 }

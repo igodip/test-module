@@ -247,7 +247,7 @@ HrWpanHelper::AssociateToPan (NetDeviceContainer c, uint16_t panId)
           address.CopyFrom (idBuf);
 
           device->GetMac ()->SetPanId (panId);
-          device->GetMac ()->SetShortAddress (address);
+          device->GetMac ()->SetDeviceId (address);
           id++;
         }
     }

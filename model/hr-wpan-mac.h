@@ -31,7 +31,7 @@
 #include <ns3/hr-wpan-phy.h>
 #include <ns3/event-id.h>
 #include <deque>
-#include "hr-wpan-dev-id.h"
+#include <ns3/hr-wpan-dev-id.h>
 
 
 namespace ns3 {
@@ -109,6 +109,11 @@ typedef enum
 */
 
 // 802.15.3c SAP Starts here
+/**
+* \ingroup Hr-wpan
+*
+* MCPS-DATA.request params. See 7.1.1.1
+*/
 struct MacAsyncDataRequestParams
 {
 	MacAsyncDataRequestParams():
@@ -124,12 +129,23 @@ struct MacAsyncDataRequestParams
 	uint16_t m_Length;
 
 };
-
+/**
+* \ingroup Hr-wpan
+*
+* MCPS-DATA.request params. See 7.1.1.1
+*/
 struct MacAsyncDataIndicationParams
 {
-	
+	HrWpanDevId m_TrgtID;
+	HrWpanDevId m_OrigID;
+	bool m_SNAPHeaderPresent;
+	uint16_t m_Length;
 };
-
+/**
+* \ingroup Hr-wpan
+*
+* MCPS-DATA.request params. See 7.1.1.1
+*/
 struct MacAsyncDataConfirmationParams
 {
 	MacAsyncDataConfirmationParams()
@@ -140,20 +156,32 @@ struct MacAsyncDataConfirmationParams
 	HrWpanMcpsResultCode m_ResultCode;
 
 };
-
+/**
+* \ingroup Hr-wpan
+*
+* MCPS-DATA.request params. See 7.1.1.1
+*/
 struct MacIsochDataRequestParams
 {
-	
+	//TODO
 };
-
+/**
+* \ingroup Hr-wpan
+*
+* MCPS-DATA.request params. See 7.1.1.1
+*/
 struct MacIsochDataIndicationParams
 {
-	
+	//TODO
 };
-
+/**
+* \ingroup Hr-wpan
+*
+* MCPS-DATA.request params. See 7.1.1.1
+*/
 struct MacIsochDataConfirmationParams
 {
-	
+	//TODO
 };
 //802.15.3c SAP Ends here
 
@@ -162,61 +190,15 @@ struct MacIsochDataConfirmationParams
  *
  * MCPS-DATA.request params. See 7.1.1.1
  */
-struct McpsDataRequestParams
-{
-  McpsDataRequestParams ()
-    : m_srcAddrMode (SHORT_ADDR),
-      m_dstAddrMode (SHORT_ADDR),
-      m_dstPanId (0),
-      m_dstAddr (),
-      m_msduHandle (0),
-      m_txOptions (0)
-  {
-  }
-  HrWpanAddressMode m_srcAddrMode; //!< Source address mode
-  HrWpanAddressMode m_dstAddrMode; //!< Destination address mode
-  uint16_t m_dstPanId;             //!< Destination PAN identifier
-  Mac16Address m_dstAddr;          //!< Destination address
-  uint8_t m_msduHandle;            //!< MSDU handle
-  uint8_t m_txOptions;             //!< Tx Options (bitfield)
-};
-
-/**
- * \ingroup Hr-wpan
- *
- * MCPS-DATA.confirm params. See 7.1.1.2
- */
-struct McpsDataConfirmParams
-{
-  uint8_t m_msduHandle; //!< MSDU handle
-  HrWpanMcpsResultCode m_status; //!< The status of the last MSDU transmission
-};
 
 /**
  * \ingroup hr-wpan
  *
- * MCPS-DATA.indication params. See 7.1.1.3
- */
-struct McpsDataIndicationParams
-{
-  uint8_t m_srcAddrMode;  //!< Source address mode
-  uint16_t m_srcPanId;    //!< Source PAN identifier
-  Mac16Address m_srcAddr; //!< Source address
-  uint8_t m_dstAddrMode;  //!< Destination address mode
-  uint16_t m_dstPanId;    //!< Destination PAN identifier
-  Mac16Address m_dstAddr; //!< Destination address
-  uint8_t m_mpduLinkQuality;  //!< LQI value measured during reception of the MPDU
-  uint8_t m_dsn;          //!< The DSN of the received data frame
-};
-
-/**
- * \ingroup hr-wpan
- *
- * This callback is called after a McpsDataRequest has been called from
+ * This callback is called after a MacAsyncDataRequest has been called from
  * the higher layer.  It returns a status of the outcome of the
  * transmission request
  */
-typedef Callback<void, McpsDataConfirmParams> McpsDataConfirmCallback;
+typedef Callback<void, MacAsyncDataConfirmationParams> MacAsyncConfirmationCallback;
 
 /**
  * \ingroup hr-wpan
@@ -227,7 +209,7 @@ typedef Callback<void, McpsDataConfirmParams> McpsDataConfirmCallback;
  *  \todo for now, we do not deliver all of the parameters in section
  *  7.1.1.3.1 but just send up the packet.
  */
-typedef Callback<void, McpsDataIndicationParams, Ptr<Packet> > McpsDataIndicationCallback;
+typedef Callback<void, MacAsyncDataIndicationParams, Ptr<Packet> > MacAsyncIndicationCallback;
 
 
 /**
@@ -277,14 +259,14 @@ public:
    *
    * \param address the new address
    */
-  void SetShortAddress (Mac16Address address);
+  void SetDeviceId (HrWpanDevId address);
 
   /**
    * Get the short address of this MAC.
    *
    * \return the short address
    */
-  Mac16Address GetShortAddress (void) const;
+  HrWpanDevId GetDeviceId (void) const;
 
   /**
    * Set the extended address of this MAC.
@@ -322,7 +304,7 @@ public:
    *  \param params the request parameters
    *  \param p the packet to be transmitted
    */
-  void McpsDataRequest (McpsDataRequestParams params, Ptr<Packet> p);
+  void MacAsyncDataRequest (MacAsyncDataRequestParams params, Ptr<Packet> p);
 
   /**
    * Set the CSMA/CA implementation to be used by the MAC.
@@ -352,7 +334,7 @@ public:
    *
    * \param c the callback
    */
-  void SetMcpsDataIndicationCallback (McpsDataIndicationCallback c);
+  void SetMacAsyncIndicationCallback (MacAsyncIndicationCallback c);
 
   /**
    * Set the callback for the confirmation of a data transmission request.
@@ -361,7 +343,7 @@ public:
    *
    * \param c the callback
    */
-  void SetMcpsDataConfirmCallback (McpsDataConfirmCallback c);
+  void SetMacAsyncConfirmationCallback (MacAsyncConfirmationCallback c);
 
   // interfaces between MAC and PHY
   /**
@@ -769,14 +751,14 @@ private:
    * This callback is used to notify incoming packets to the upper layers.
    * See IEEE 802.15.4-2006, section 7.1.1.3.
    */
-  McpsDataIndicationCallback m_mcpsDataIndicationCallback;
+  MacAsyncIndicationCallback m_mcpsDataIndicationCallback;
 
   /**
    * This callback is used to report data transmission request status to the
    * upper layers.
    * See IEEE 802.15.4-2006, section 7.1.1.2.
    */
-  McpsDataConfirmCallback m_mcpsDataConfirmCallback;
+  MacAsyncConfirmationCallback m_mcpsDataConfirmCallback;
 
   /**
    * The current state of the MAC layer.
@@ -798,7 +780,7 @@ private:
    * extended address support in the MAC, nor do we have the association
    * primitives, so this address has to be configured manually.
    */
-  Mac16Address m_shortAddress;
+  HrWpanDevId m_devAddrId;
 
   /**
    * The extended address used by this MAC. Extended addresses are currently not

@@ -124,7 +124,7 @@ HrWpanNetDevice::CompleteConfig (void)
     }
   m_mac->SetPhy (m_phy);
   m_mac->SetCsmaCa (m_csmaca);
-  m_mac->SetMcpsDataIndicationCallback (MakeCallback (&HrWpanNetDevice::McpsDataIndication, this));
+  m_mac->SetMacAsyncIndicationCallback (MakeCallback (&HrWpanNetDevice::McpsDataIndication, this));
   m_csmaca->SetMac (m_mac);
 
   m_phy->SetMobility (m_node->GetObject<MobilityModel> ());
@@ -245,14 +245,14 @@ void
 HrWpanNetDevice::SetAddress (Address address)
 {
   NS_LOG_FUNCTION (this);
-  m_mac->SetShortAddress (Mac16Address::ConvertFrom (address));
+  m_mac->SetDeviceId (Mac16Address::ConvertFrom (address));
 }
 
 Address
 HrWpanNetDevice::GetAddress (void) const
 {
   NS_LOG_FUNCTION (this);
-  return m_mac->GetShortAddress ();
+  return m_mac->GetDeviceId ();
 }
 
 bool
@@ -367,9 +367,9 @@ HrWpanNetDevice::Send (Ptr<Packet> packet, const Address& dest, uint16_t protoco
 {
   // This method basically assumes an 802.3-compliant device, but a raw
   // 802.15.4 device does not have an ethertype, and requires specific
-  // McpsDataRequest parameters.
+  // MacAsyncDataRequest parameters.
   // For further study:  how to support these methods somehow, such as
-  // inventing a fake ethertype and packet tag for McpsDataRequest
+  // inventing a fake ethertype and packet tag for MacAsyncDataRequest
   NS_LOG_FUNCTION (this << packet << dest << protocolNumber);
 
   if (packet->GetSize () > GetMtu ())
@@ -390,7 +390,7 @@ HrWpanNetDevice::Send (Ptr<Packet> packet, const Address& dest, uint16_t protoco
       m_mcpsDataRequestParams.m_txOptions = TX_OPTION_ACK;
     }
   m_mcpsDataRequestParams.m_msduHandle = 0;
-  m_mac->McpsDataRequest (m_mcpsDataRequestParams, packet);
+  m_mac->MacAsyncDataRequest (m_mcpsDataRequestParams, packet);
   return true;
 }
 
@@ -398,7 +398,7 @@ bool
 HrWpanNetDevice::SendFrom (Ptr<Packet> packet, const Address& source, const Address& dest, uint16_t protocolNumber)
 {
   NS_ABORT_MSG ("Unsupported");
-  // TODO: To support SendFrom, the MACs McpsDataRequest has to use the provided source address, instead of to local one.
+  // TODO: To support SendFrom, the MACs MacAsyncDataRequest has to use the provided source address, instead of to local one.
   return false;
 }
 
@@ -438,7 +438,7 @@ HrWpanNetDevice::SetPromiscReceiveCallback (PromiscReceiveCallback cb)
   // 802.15.4 device does not have an ethertype, and requires specific
   // McpsDataIndication parameters.
   // For further study:  how to support these methods somehow, such as
-  // inventing a fake ethertype and packet tag for McpsDataRequest
+  // inventing a fake ethertype and packet tag for MacAsyncDataRequest
   NS_LOG_WARN ("Unsupported; use HrWpan MAC APIs instead");
 }
 
