@@ -19,33 +19,14 @@
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef HR_WPAN_MAC_SUBHEADER_H
-#define HR_WPAN_MAC_SUBHEADER_H
+#ifndef HR_WPAN_MAC_SUBHEADER_SH_H
+#define HR_WPAN_MAC_SUBHEADER_SH_H
 
+#include <ns3/header.h>
 
-#include <ns3\header.h>
+using namespace ns3 {
 
-namespace ns3 {
-
-
-
-	class HrWpanMacHeader : public Header
-	{
-
-	public:
-		
-		//Inherited from Header
-		void Print(std::ostream &os) const;
-		uint32_t GetSerializedSize(void) const;
-		void Serialize(Buffer::Iterator start) const;
-		uint32_t Deserialize(Buffer::Iterator start);
-
-	private:
-
-
-
-
-
+	class HrWpanMacSubheaderSh : Header {
 
 	};
 

@@ -18,3 +18,8 @@
 * Authors:
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
+
+#ifndef HR_WPAN_MAC_SUBFRAME_H
+#define HR_WPAN_MAC_SUBFRAME_H
+
+#endif

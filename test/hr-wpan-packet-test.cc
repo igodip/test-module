@@ -90,6 +90,7 @@ HrWpanPacketTestCase::DoRun(void)
 	NS_TEST_ASSERT_MSG_EQ(p2->GetSize(), 20, "Packet wrong size after removing mactrailer");
 
 	//Checking address
+	NS_TEST_ASSERT_MSG_EQ(HrWpanDevId())
 
 }
 
