@@ -28,10 +28,11 @@
 #include <ns3/traced-callback.h>
 #include <ns3/mac64-address.h>
 #include <ns3/sequence-number.h>
+#include <ns3/hr-wpan-dev-id.h>
 #include <ns3/hr-wpan-phy.h>
 #include <ns3/event-id.h>
 #include <deque>
-#include <ns3/hr-wpan-dev-id.h>
+
 
 
 namespace ns3 {
@@ -118,13 +119,13 @@ struct MacAsyncDataRequestParams
 {
 	MacAsyncDataRequestParams():
 		m_Priority(0),
-		m_ACKPolicy(HrWpanMacHeader::HrWpanAckPolicy::HRWPAN_POLICY_NOACK)
+		m_ACKPolicy(HrWpanAckPolicy::HRWPAN_POLICY_NOACK)
 	{}
 
 	HrWpanDevId m_TrgtID;
 	
 	uint8_t m_Priority;
-	HrWpanMacHeader::HrWpanAckPolicy m_ACKPolicy;
+	HrWpanAckPolicy m_ACKPolicy;
 	uint16_t m_TransmissionTimeout;
 	uint16_t m_Length;
 

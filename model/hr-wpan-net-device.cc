@@ -245,7 +245,7 @@ void
 HrWpanNetDevice::SetAddress (Address address)
 {
   NS_LOG_FUNCTION (this);
-  m_mac->SetDeviceId (Mac16Address::ConvertFrom (address));
+  m_mac->SetDeviceId (HrWpanDevId::convertFrom(address);
 }
 
 Address
@@ -298,7 +298,7 @@ Address
 HrWpanNetDevice::GetBroadcast (void) const
 {
   NS_LOG_FUNCTION (this);
-  return Mac16Address ("ff:ff");
+  return HrWpanDevId ("ff");
 }
 
 bool
@@ -345,7 +345,7 @@ HrWpanNetDevice::GetMulticast (Ipv6Address addr) const
   //  newaddr.CopyFrom(buf2);
   //  return newaddr;
 
-  return Mac16Address ("ff:ff");
+  return HrWpanDevId("ff");
 }
 
 bool
@@ -379,7 +379,7 @@ HrWpanNetDevice::Send (Ptr<Packet> packet, const Address& dest, uint16_t protoco
     }
 
   McpsDataRequestParams m_mcpsDataRequestParams;
-  m_mcpsDataRequestParams.m_dstAddr = Mac16Address::ConvertFrom (dest);
+  m_mcpsDataRequestParams.m_dstAddr = HrWpanDevId::ConvertFrom (dest);
   m_mcpsDataRequestParams.m_dstAddrMode = SHORT_ADDR;
   m_mcpsDataRequestParams.m_dstPanId = m_mac->GetPanId ();
   m_mcpsDataRequestParams.m_srcAddrMode = SHORT_ADDR;

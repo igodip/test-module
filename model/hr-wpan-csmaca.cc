@@ -217,9 +217,7 @@ HrWpanCsmaCa::Start ()
 void
 HrWpanCsmaCa::Cancel ()
 {
-  m_randomBackoffEvent.Cancel ();
-  m_requestCcaEvent.Cancel ();
-  m_canProceedEvent.Cancel ();
+
 }
 
 /*
@@ -231,27 +229,7 @@ HrWpanCsmaCa::RandomBackoffDelay ()
 {
   NS_LOG_FUNCTION (this);
 
-  uint64_t upperBound = (uint64_t) pow (2, m_BE) - 1;
-  uint64_t backoffPeriod;
-  Time randomBackoff;
-  uint64_t symbolRate;
-  bool isData = false;
 
-
-  symbolRate = (uint64_t) m_mac->GetPhy ()->GetDataOrSymbolRate (isData); //symbols per second
-  backoffPeriod = (uint64_t)m_random->GetValue (0, upperBound); //num backoff periods
-  randomBackoff = MicroSeconds (backoffPeriod * GetUnitBackoffPeriod () * 1000 * 1000 / symbolRate);
-
-  if (IsUnSlottedCsmaCa ())
-    {
-      NS_LOG_LOGIC ("Unslotted:  requesting CCA after backoff of " << randomBackoff.GetMicroSeconds () << " us");
-      m_requestCcaEvent = Simulator::Schedule (randomBackoff, &HrWpanCsmaCa::RequestCCA, this);
-    }
-  else
-    {
-      NS_LOG_LOGIC ("Slotted:  proceeding after backoff of " << randomBackoff.GetMicroSeconds () << " us");
-      m_canProceedEvent = Simulator::Schedule (randomBackoff, &HrWpanCsmaCa::CanProceed, this);
-    }
 }
 
 // TODO : Determine if transmission can be completed before end of CAP for the slotted csmaca
@@ -261,34 +239,13 @@ HrWpanCsmaCa::CanProceed ()
 {
   NS_LOG_FUNCTION (this);
 
-  bool canProceed = true;
-
-  if (m_BLE)
-    {
-    }
-  else
-    {
-    }
-
-  if (canProceed)
-    {
-      // TODO: For slotted, Perform CCA on backoff period boundary i.e. delay to next slot boundary
-      Time backoffBoundary = GetTimeToNextSlot ();
-      m_requestCcaEvent = Simulator::Schedule (backoffBoundary, &HrWpanCsmaCa::RequestCCA, this);
-    }
-  else
-    {
-      Time nextCap = Seconds (0);
-      m_randomBackoffEvent = Simulator::Schedule (nextCap, &HrWpanCsmaCa::RandomBackoffDelay, this);
-    }
 }
 
 void
 HrWpanCsmaCa::RequestCCA ()
 {
   NS_LOG_FUNCTION (this);
-  m_ccaRequestRunning = true;
-  m_mac->GetPhy ()->PlmeCcaRequest ();
+
 }
 
 /*
@@ -299,82 +256,21 @@ HrWpanCsmaCa::PlmeCcaConfirm (HrWpanPhyEnumeration status)
 {
   NS_LOG_FUNCTION (this << status);
 
-  // Only react on this event, if we are actually waiting for a CCA.
-  // If the CSMA algorithm was canceled, we could still receive this event from
-  // the PHY. In this case we ignore the event.
-  if (m_ccaRequestRunning)
-    {
-      m_ccaRequestRunning = false;
-      if (status == IEEE_802_15_4_PHY_IDLE)
-        {
-          if (IsSlottedCsmaCa ())
-            {
-              m_CW--;
-              if (m_CW == 0)
-                {
-                  // inform MAC channel is idle
-                  if (!m_hrWpanMacStateCallback.IsNull ())
-                    {
-                      NS_LOG_LOGIC ("Notifying MAC of idle channel");
-                      m_hrWpanMacStateCallback (CHANNEL_IDLE);
-                    }
-                }
-              else
-                {
-                  NS_LOG_LOGIC ("Perform CCA again, m_CW = " << m_CW);
-                  m_requestCcaEvent = Simulator::ScheduleNow (&HrWpanCsmaCa::RequestCCA, this); // Perform CCA again
-                }
-            }
-          else
-            {
-              // inform MAC, channel is idle
-              if (!m_hrWpanMacStateCallback.IsNull ())
-                {
-                  NS_LOG_LOGIC ("Notifying MAC of idle channel");
-                  m_hrWpanMacStateCallback (CHANNEL_IDLE);
-                }
-            }
-        }
-      else
-        {
-          if (IsSlottedCsmaCa ())
-            {
-              m_CW = 2;
-            }
-          m_BE = std::min (static_cast<uint16_t> (m_BE + 1), static_cast<uint16_t> (m_macMaxBE));
-          m_NB++;
-          if (m_NB > m_macMaxCSMABackoffs)
-            {
-              // no channel found so cannot send pkt
-              NS_LOG_DEBUG ("Channel access failure");
-              if (!m_hrWpanMacStateCallback.IsNull ())
-                {
-                  NS_LOG_LOGIC ("Notifying MAC of Channel access failure");
-                  m_hrWpanMacStateCallback (CHANNEL_ACCESS_FAILURE);
-                }
-              return;
-            }
-          else
-            {
-              NS_LOG_DEBUG ("Perform another backoff; m_NB = " << static_cast<uint16_t> (m_NB));
-              m_randomBackoffEvent = Simulator::ScheduleNow (&HrWpanCsmaCa::RandomBackoffDelay, this); //Perform another backoff (step 2)
-            }
-        }
-    }
+  
 }
 
 void
 HrWpanCsmaCa::SetHrWpanMacStateCallback (HrWpanMacStateCallback c)
 {
   NS_LOG_FUNCTION (this);
-  m_hrWpanMacStateCallback = c;
+  
 }
 
 int64_t
 HrWpanCsmaCa::AssignStreams (int64_t stream)
 {
   NS_LOG_FUNCTION (this);
-  m_random->SetStream (stream);
+  
   return 1;
 }
 

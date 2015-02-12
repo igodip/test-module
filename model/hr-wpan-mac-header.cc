@@ -124,11 +124,11 @@ namespace ns3 {
 		m_fctrlPtclVrs = protVer;
 	}
 
-	uint8_t HrWpanMacHeader::getPicoNetId(void) const {
+	uint16_t HrWpanMacHeader::getPicoNetId(void) const {
 		return m_picoNetID;
 	}
 
-	void HrWpanMacHeader::setPicoNetId(uint8_t picoNetId){
+	void HrWpanMacHeader::setPicoNetId(uint16_t picoNetId){
 		m_picoNetID = picoNetId;
 	}
 
@@ -138,7 +138,7 @@ namespace ns3 {
 		m_fctrlBlk_ACK = (ackPolicy >> 3) & 0x1; // Bit 3
 	}
 
-	enum HrWpanMacHeader::HrWpanAckPolicy HrWpanMacHeader::GetAckPolicyType(void) const {
+	enum HrWpanAckPolicy HrWpanMacHeader::GetAckPolicyType(void) const {
 
 		switch (m_fctrlAckPolicy)
 		{
@@ -380,7 +380,7 @@ namespace ns3 {
 		//Writing first 2 bytes
 		i.WriteHtolsbU16(GetFrameControl());
 
-		i.WriteU8(getPicoNetId());
+		i.WriteHtolsbU16(getPicoNetId());
 		
 		uint8_t dstAddr,srcAddr;
 		getDstAddress().CopyTo(dstAddr);
@@ -395,7 +395,6 @@ namespace ns3 {
 		i.WriteU8(0);
 
 		i.WriteU8(getStreamIndex());
-
 		
 	}
 
@@ -410,7 +409,7 @@ namespace ns3 {
 		uint16_t frameControl = i.ReadLsbtohU16();
 		SetFrameControl(frameControl);
 
-		uint8_t picoNetId = i.ReadU8();
+		uint8_t picoNetId = i.ReadLsbtohU16();
 		setPicoNetId(picoNetId);
 
 		HrWpanDevId dstAddrId, srcAddrId;

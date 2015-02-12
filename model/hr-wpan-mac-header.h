@@ -47,6 +47,18 @@
 
 namespace ns3 {
 
+	/**
+	* The possibile ack policies, see IEEE 802.15.3c, 7.2.1.4 Table 40
+	*/
+	enum HrWpanAckPolicy
+	{
+		HRWPAN_POLICY_NOACK = 0x0,
+		HRWPAN_POLICY_IMMACK = 0x1,
+		HRWPAN_POLICY_DACK = 0x2,
+		HRWPAN_POLICY_DACK_REQ = 0x3,
+		HRWPAN_POLICY_IMPACK = 0x5,
+		HRWPAN_POLICY_BLKACK = 0x9
+	};
 
 	/**
 	 * \ingroup hr-wpan
@@ -79,19 +91,6 @@ namespace ns3 {
 		{
 			HRWPAN_FRAME_NO_PROT = 0,
 			HRWPAN_FRAME_PROT = 1
-		};
-
-		/**
-		 * The possibile ack policies, see IEEE 802.15.3c, 7.2.1.4 Table 40
-		 */
-		enum HrWpanAckPolicy
-		{
-			HRWPAN_POLICY_NOACK = 0x0,  
-			HRWPAN_POLICY_IMMACK = 0x1,
-			HRWPAN_POLICY_DACK = 0x2,
-			HRWPAN_POLICY_DACK_REQ = 0x3,
-			HRWPAN_POLICY_IMPACK = 0x5,
-			HRWPAN_POLICY_BLKACK = 0x9
 		};
 
 		enum HrWpanRetry {
@@ -242,12 +241,12 @@ namespace ns3 {
 		* getPiconetId
 		* \return piconetId
 		*/
-		uint8_t getPicoNetId(void) const;
+		uint16_t getPicoNetId(void) const;
 		/**
 		* setPiconetId
 		* \param piconetId
 		*/
-		void setPicoNetId(uint8_t piconetId);
+		void setPicoNetId(uint16_t piconetId);
 
 		
 		//Address
