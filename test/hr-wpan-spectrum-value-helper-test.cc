@@ -1,6 +1,6 @@
 /* -*-  Mode: C++; c-file-style: "gnu"; indent-tabs-mode:nil; -*- */
 /*
-* Copyright (c) 2011 The Boeing Company
+* Copyright (c) 2015
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License version 2 as
@@ -20,8 +20,47 @@
 
 #include <ns3/log.h>
 #include <ns3/test.h>
-#include <ns3/lr-wpan-spectrum-value-helper.h>
+#include <ns3/hr-wpan-spectrum-value-helper.h>
 #include <ns3/spectrum-value.h>
 
 #include <cmath>
 
+using namespace ns3;
+
+class HrWpanSpectrumValueHelperTestCase : public TestCase
+{
+public:
+	HrWpanSpectrumValueHelperTestCase();
+	virtual ~HrWpanSpectrumValueHelperTestCase();
+
+private:
+	virtual void DoRun(void);
+};
+
+HrWpanSpectrumValueHelperTestCase::HrWpanSpectrumValueHelperTestCase()
+	: TestCase("Test the 802.15.3c SpectrumValue helper class")
+{
+
+}
+
+void HrWpanSpectrumValueHelperTestCase::DoRun()
+{
+	HrWpanSpectrumValueHelper helper;
+}
+
+// ======================================================================
+// 
+
+class HrWpanSpectrumValueHelperTestSuite : public TestSuite
+{
+public:
+	HrWpanSpectrumValueHelperTestSuite();
+};
+
+HrWpanSpectrumValueHelperTestSuite::HrWpanSpectrumValueHelperTestSuite()
+	: TestSuite("hr-wpan-spectrum-value-helper", UNIT)
+{
+	AddTestCase(new HrWpanSpectrumValueHelperTestCase, TestCase::QUICK);
+}
+
+static HrWpanSpectrumValueHelperTestSuite lrWpanSpectrumValueHelperTestSuite;
