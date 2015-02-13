@@ -24,10 +24,21 @@
 
 #include <ns3/header.h>
 
-using namespace ns3 {
+namespace ns3 {
 
 	class HrWpanMacSubheaderSh : Header {
-
+	public:
+		uint8_t m_MSC_information;			//5bit
+		uint8_t m_FCS_present;				//1bit
+		uint8_t m_retry;					//1bit
+		uint8_t m_resolution_indication;	//1bit
+		uint8_t m_subframe_length;			//11bit
+		uint8_t m_subframe_information;		//2bit
+		uint8_t m_skrewed_constellation;	//1bit
+		uint8_t m_MSDU_number;				//9bit
+		uint8_t m_fragment_number;			//7bit
+		uint8_t m_last_fragment;			//1bit
+		uint8_t m_reserved;					//1bit
 	};
 
 }

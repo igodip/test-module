@@ -19,17 +19,25 @@
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef HR_WPAN_MAC_SUBFRAME_H
-#define HR_WPAN_MAC_SUBFRAME_H
+#ifndef HR_WPAN_BLK_ACK_BITMAP_H
+#define HR_WPAN_BLK_ACK_BITMAP_H
+
+namespace ns3 {
+
+	namespace HrWpan {
+
+		class BlkAckBitmap {
+
+		public:
 
 
-#include<ns3/address.h>
+		};
 
-namespace ns3::HrWpan {
-
+	
+	}
 
 
 
 }
 
-#endif
+#endif HR_WPAN_BLK_ACK_BITMAP_H

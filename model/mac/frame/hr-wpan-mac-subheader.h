@@ -24,31 +24,34 @@
 
 
 #include <ns3\header.h>
+#include "hr-wpan-blk-ack-bitmap.h"
 
 namespace ns3 {
 
+	namespace HrWpan {
+
+		class HrWpanMacSubheader : public Header
+		{
+
+		public:
+
+			//Inherited from Header
+			void Print(std::ostream &os) const;
+			uint32_t GetSerializedSize(void) const;
+			void Serialize(Buffer::Iterator start) const;
+			uint32_t Deserialize(Buffer::Iterator start);
+
+		private:
+
+			
 
 
-	class HrWpanMacHeader : public Header
-	{
-
-	public:
-		
-		//Inherited from Header
-		void Print(std::ostream &os) const;
-		uint32_t GetSerializedSize(void) const;
-		void Serialize(Buffer::Iterator start) const;
-		uint32_t Deserialize(Buffer::Iterator start);
-
-	private:
 
 
 
+		};
 
-
-
-	};
-
+	}
 }
 
 #endif

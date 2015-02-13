@@ -234,11 +234,7 @@ class HrWpanPhy : public SpectrumPhy
 {
 
 public:
-  /**
-   * Get the type ID.
-   *
-   * \return the object TypeId
-   */
+
   static TypeId GetTypeId (void);
 
   /**
