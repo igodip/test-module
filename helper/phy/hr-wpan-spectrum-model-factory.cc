@@ -65,4 +65,9 @@ namespace ns3 {
 		m_ptrSpectrumModel = Create<SpectrumModel>(bands);
 	}
 
+	Ptr<SpectrumModel> HrWpanSpectrumModelFactory::getSpectrumModel(void)
+	{
+		return m_ptrSpectrumModel;
+	}
+
 }

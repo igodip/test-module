@@ -43,6 +43,9 @@ HrWpanSpectrumValueHelperTestCase::HrWpanSpectrumValueHelperTestCase()
 
 }
 
+HrWpanSpectrumValueHelperTestCase::~HrWpanSpectrumValueHelperTestCase()
+{}
+
 void HrWpanSpectrumValueHelperTestCase::DoRun()
 {
 	HrWpanSpectrumValueHelper helper;

@@ -3,18 +3,17 @@
 def build(bld):
     obj = bld.create_ns3_module('hr-wpan', ['core', 'network', 'mobility', 'spectrum', 'propagation'])
     obj.source = [
-    #    'model/hr-wpan-error-model.cc',
     #    'model/hr-wpan-interference-helper.cc',
     #    'model/hr-wpan-phy.cc',
     #    'model/hr-wpan-mac.cc',
-        'model/hr-wpan-mac-header.cc',
-        'model/hr-wpan-mac-trailer.cc',
+        'model/mac/hr-wpan-mac-header.cc',
+        'model/mac/hr-wpan-mac-trailer.cc',
     #    'model/hr-wpan-csmaca.cc',
     #    'model/hr-wpan-net-device.cc',
     #    'model/hr-wpan-spectrum-value-helper.cc',
     #    'model/hr-wpan-spectrum-signal-parameters.cc',
     #    'model/hr-wpan-lqi-tag.cc',
-		'model/hr-wpan-dev-id.cc',
+		'model/mac/hr-wpan-dev-id.cc',
 		'model/channel/hr-wpan-spectrum-signal-parameters.cc',
 		'model/channel/hr-wpan-error-model.cc',
     #    'helper/hr-wpan-helper.cc',
@@ -30,7 +29,7 @@ def build(bld):
     #    'test/lr-wpan-cca-test.cc',
     #    'test/lr-wpan-collision-test.cc',
     #   'test/lr-wpan-ed-test.cc',
-    #   'test/lr-wpan-error-model-test.cc',
+       'test/hr-wpan-error-model-test.cc',
         'test/hr-wpan-packet-test.cc',
 		'test/hr-wpan-spectrum-value-helper-test.cc',
     #    'test/lr-wpan-pd-plme-sap-test.cc',
@@ -40,12 +39,11 @@ def build(bld):
     headers = bld(features='ns3header')
     headers.module = 'hr-wpan'
     headers.source = [
-    #    'model/hr-wpan-error-model.h',
     #    'model/hr-wpan-interference-helper.h',
     #    'model/hr-wpan-phy.h',
 	#   'model/hr-wpan-mac.h',
-        'model/hr-wpan-mac-header.h',
-        'model/hr-wpan-mac-trailer.h',
+        'model/mac/hr-wpan-mac-header.h',
+        'model/mac/hr-wpan-mac-trailer.h',
 		'model/channel/hr-wpan-spectrum-signal-parameters.h',
 		'model/channel/hr-wpan-error-model.h',
     #    'model/hr-wpan-csmaca.h',
@@ -53,7 +51,7 @@ def build(bld):
     #    'model/hr-wpan-spectrum-value-helper.h',
     #    'model/hr-wpan-spectrum-signal-parameters.h',
     #    'model/hr-wpan-lqi-tag.h',
-		'model/hr-wpan-dev-id.h',
+		'model/mac/hr-wpan-dev-id.h',
     #    'helper/hr-wpan-helper.h',
 		'helper/phy/hr-wpan-spectrum-model-factory.h',
 		'helper/phy/hr-wpan-spectrum-value-helper.h'
