@@ -22,7 +22,7 @@
 #include "hr-wpan-phy.h"
 #include "hr-wpan-lqi-tag.h"
 #include "hr-wpan-spectrum-signal-parameters.h"
-#include "hr-wpan-spectrum-value-helper.h"
+#include <ns3/hr-wpan-spectrum-value-helper.h>
 #include "hr-wpan-error-model.h"
 #include "hr-wpan-net-device.h"
 #include <ns3/log.h>

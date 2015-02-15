@@ -49,6 +49,19 @@ HrWpanSpectrumValueHelperTestCase::~HrWpanSpectrumValueHelperTestCase()
 void HrWpanSpectrumValueHelperTestCase::DoRun()
 {
 	HrWpanSpectrumValueHelper helper;
+	Ptr<SpectrumValue> value;
+	double pwrWatts;
+	for (uint32_t chan = 1; chan <= 4; chan++)
+	{
+		// 50dBm = 100 W, -50dBm = 0.01 mW
+		for (double pwrdBm = -50; pwrdBm < 50; pwrdBm += 10)
+		{
+			value = helper.CreateTxPowerSpectralDensity(pwrdBm, chan);
+			pwrWatts = pow(10.0, pwrdBm / 10.0) / 1000;
+			// Test that average power calculation is within +/- 25% of expected
+			NS_TEST_ASSERT_MSG_EQ_TOL(helper.TotalAvgPower(value, chan), pwrWatts, pwrWatts / 4.0, "Not equal for channel " << chan << " pwrdBm " << pwrdBm);
+		}
+	}
 }
 
 // ======================================================================

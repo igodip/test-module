@@ -50,8 +50,8 @@ namespace ns3 {
 		//txPower is expressed in dBm. We must convert it into natural unit (W).
 		txPower = pow(10, (txPower - 30) / 10);
 
-		//The effective occupied bandwidth of the signal si modelled to be 2 Mhz.
-		//double txPowerDensity = txPower / 2.0e6;
+		//The effective occupied bandwidth of the signal is modelled to be 2.16 Ghz.
+		double txPowerDensity = txPower / 2.160e9;
 
 		// 4 channels
 		// 1 58.320 centered 2.16 GHz large
@@ -61,6 +61,10 @@ namespace ns3 {
 		
 		NS_ASSERT_MSG((channel >= 1 && channel <= 4), "Invalid channel numbers");
 
+		for (int i = 0; i < 720; ++i)
+		{
+			(*txPsd)[720 * (channel-1) + i] = txPowerDensity;
+		}
 		
 
 
@@ -89,11 +93,17 @@ namespace ns3 {
 	{
 
 		NS_LOG_FUNCTION(psd);
+		
 		double totalAvgPower = 0.0;
 
 		NS_ASSERT(psd->GetSpectrumModel() == HrWpanSpectrumModelFactory::getInstance().getSpectrumModel());
 
-		//numerically integrate to get 
+		//Numerically integrate
+		
+		for (int i = 0; i < 720; ++i)
+		{
+			totalAvgPower += (*psd)[720 * (channel-1) + i];
+		}
 		
 		totalAvgPower *= 3.0e6;
 

@@ -31,7 +31,7 @@ class SpectrumValue;
 class SpectrumModel;
 
 /**
- * \ingroup lr-wpan
+ * \ingroup hr-wpan
  *
  * \brief This class provides helper functions for LrWpan interference handling.
  */

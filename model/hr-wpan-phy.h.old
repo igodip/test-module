@@ -22,8 +22,7 @@
 #ifndef HR_WPAN_PHY_H
 #define HR_WPAN_PHY_H
 
-#include "hr-wpan-interference-helper.h"
-
+#include <ns3/hr-wpan-interference-helper.h>
 #include <ns3/spectrum-phy.h>
 #include <ns3/traced-callback.h>
 #include <ns3/event-id.h>

@@ -22,10 +22,10 @@
 #include <ns3/callback.h>
 #include <ns3/packet.h>
 #include <ns3/simulator.h>
-#include <ns3/lr-wpan-error-model.h>
+#include <ns3/hr-wpan-error-model.h>
 #include <ns3/propagation-loss-model.h>
-#include <ns3/lr-wpan-net-device.h>
-#include <ns3/lr-wpan-mac.h>
+#include <ns3/hr-wpan-net-device.h>
+#include <ns3/hr-wpan-mac.h>
 #include <ns3/node.h>
 #include <ns3/net-device.h>
 #include <ns3/single-model-spectrum-channel.h>
@@ -35,7 +35,7 @@
 
 using namespace ns3;
 
-NS_LOG_COMPONENT_DEFINE ("lr-wpan-error-model-test");
+NS_LOG_COMPONENT_DEFINE ("hr-wpan-error-model-test");
 
 class LrWpanErrorDistanceTestCase : public TestCase
 {
