@@ -26,8 +26,18 @@
 #include <ns3/simulator.h>
 #include <ns3/single-model-spectrum-channel.h>
 #include <ns3/constant-position-mobility-model.h>
+#include <ns3/propagation-loss-model.h>
+#include <ns3/cosine-antenna-model.h>
 
 using namespace ns3;
+
+void SendOnePacket(Ptr<HrWpanPhy> sender, Ptr<HrWpanPhy> receiver)
+{
+	uint32_t n = 10;
+	Ptr<Packet> p = Create<Packet>(n);
+	sender->PdDataRequest(p->GetSize(), p);
+}
+
 
 int main(int argc, char ** argv)
 {
@@ -41,6 +51,12 @@ int main(int argc, char ** argv)
 	Ptr<SingleModelSpectrumChannel> channel = CreateObject<SingleModelSpectrumChannel>();
 	sender->SetChannel(channel);
 	receiver->SetChannel(channel);
+
+	Ptr<AntennaModel> senderAntenna = CreateObject<CosineAn
+
+	Ptr<LogDistancePropagationLossModel> lossModel = CreateObject<LogDistancePropagationLossModel>();
+
+	channel->AddPropagationLossModel(lossModel);
 	channel->AddRx(sender);
 	channel->AddRx(receiver);
 
@@ -50,7 +66,14 @@ int main(int argc, char ** argv)
 	Ptr<ConstantPositionMobilityModel> receiverMobility = CreateObject<ConstantPositionMobilityModel>();
 	receiver->SetMobility(receiverMobility);
 
+	Vector posReceiver = Vector(2, 2, 2);
+	receiverMobility->SetPosition(posReceiver);
+
+	
+
 	Simulator::Stop(Seconds(10.0));
+
+	Simulator::Schedule(Seconds(1.0), &SendOnePacket, sender, receiver);
 
 	Simulator::Run();
 

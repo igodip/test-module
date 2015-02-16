@@ -33,6 +33,7 @@
 #include <ns3/net-device.h>
 #include <ns3/random-variable-stream.h>
 #include <ns3/hr-wpan-spectrum-signal-parameters.h>
+#include <ns3/hr-wpan-spectrum-value-helper.h>
 
 namespace ns3 {
 
@@ -43,6 +44,9 @@ namespace ns3 {
 	HrWpanPhy::HrWpanPhy()
 	{
 		NS_LOG_FUNCTION(this);
+
+		HrWpanSpectrumValueHelper psdHelper;
+		m_txPsd = psdHelper.CreateTxPowerSpectralDensity(0, 1);
 	}
 
 	HrWpanPhy::~HrWpanPhy(void)
@@ -132,6 +136,27 @@ namespace ns3 {
 		NS_LOG_FUNCTION(this << spectrumRxParams);
 		HrWpanSpectrumSignalParameters psdHelper;
 
+		Ptr<HrWpanSpectrumSignalParameters> lrWpanRxParams = DynamicCast<HrWpanSpectrumSignalParameters>(spectrumRxParams);
+
+		if (lrWpanRxParams == 0)
+		{
+
+		}
+
+		//NS_LOG_DEBUG(this << " receiving packet with power: " << 10 * log10(HrWpanSpectrumValueHelper::TotalAvgPower(lrWpanRxParams->psd, m_phyPIBAttributes.phyCurrentChannel)) + 30 << "dBm");
+		
+		
+
+	}
+
+	void HrWpanPhy::EndRx(Ptr <SpectrumSignalParameters> spectrumRxParams)
+	{
+		NS_LOG_FUNCTION(this << spectrumRxParams);
+
+		if (m_dataIndicationCallback.IsNull())
+		{
+			m_dataIndicationCallback(10, NULL);
+		}
 	}
 
 	void HrWpanPhy::SetMobility(Ptr<MobilityModel> mobilityModel)
@@ -144,5 +169,28 @@ namespace ns3 {
 	{
 		NS_LOG_FUNCTION(this);
 		return m_mobilityModel;
+	}
+
+	void HrWpanPhy::SetPdDataConfirmationCallback(PdDataConfirmationCallback pd)
+	{
+		m_dataConfirmationCallback = pd;
+	}
+
+	void HrWpanPhy::SetPdDataIndicationCallback(PdDataIndicationCallback pd)
+	{
+		m_dataIndicationCallback = pd;
+	}
+
+	void HrWpanPhy::PdDataRequest(const uint32_t psduLength, Ptr<Packet> packet)
+	{
+		Ptr<HrWpanSpectrumSignalParameters> txParams = Create<HrWpanSpectrumSignalParameters>();
+		txParams->duration = MicroSeconds(10);
+		txParams->txPhy = GetObject<SpectrumPhy>();
+		txParams->psd = m_txPsd;
+		txParams->txAntenna = m_antenna;
+		Ptr<PacketBurst> pb = CreateObject<PacketBurst>();
+		pb->AddPacket(packet);
+		txParams->packetBurst = pb;
+		m_channel->StartTx(txParams);
 	}
 }

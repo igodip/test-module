@@ -26,6 +26,8 @@
 #include <ns3/traced-callback.h>
 #include <ns3/event-id.h>
 
+#include "hr-wpan-phy-attributes.h"
+
 namespace ns3 {
 
 	class Packet;
@@ -45,8 +47,17 @@ namespace ns3 {
 	 * \brief	Defines an alias representing the pd data indication callback.
 	 */
 
-	typedef Callback<void, uint32_t, Ptr<Packet>, uint8_t> PdDataIndicationCallback;
+	typedef Callback<void, uint32_t, Ptr<Packet> > PdDataIndicationCallback;
 
+	/**
+	 * \typedef	Callback<void, uint32_t, HrWpanPhyEnumeration> PdDataConfirmationCallback
+	 *
+	 * \brief	Defines an alias representing the pd data confirmation callback.
+	 */
+
+	typedef Callback<void, uint32_t, HrWpanPhyEnumeration> PdDataConfirmationCallback;
+
+	
 
 	class HrWpanPhy : public SpectrumPhy {
 	public:
@@ -75,8 +86,15 @@ namespace ns3 {
 
 		void StartRx(Ptr<SpectrumSignalParameters> spectrumRxParams);
 
+		void EndRx(Ptr<SpectrumSignalParameters> params);
 
 		virtual void DoDispose();
+
+		void SetPdDataIndicationCallback(PdDataIndicationCallback c);
+		
+		void SetPdDataConfirmationCallback(PdDataConfirmationCallback c);
+
+		void PdDataRequest(const uint32_t psduLength,Ptr<Packet> p);
 
 	private:
 
@@ -97,6 +115,15 @@ namespace ns3 {
 		TracedCallback<Ptr<const Packet>, double > m_phyRxEndTrace;
 
 		Ptr<const SpectrumValue> m_noise;
+
+		double m_rxSensitivity;
+
+		PdDataConfirmationCallback m_dataConfirmationCallback;
+
+		PdDataIndicationCallback m_dataIndicationCallback;
+		
+		Ptr<SpectrumValue> m_txPsd;
+
 	};
 
 }

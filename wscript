@@ -35,6 +35,7 @@ def build(bld):
 		'model/channel/hr-wpan-spectrum-signal-parameters.h',
 		'model/channel/hr-wpan-error-model.h',
 		'model/phy/hr-wpan-phy.h',
+		'model/phy/hr-wpan-phy-attributes.h',
 		'model/devices/hr-wpan-net-device.cc',
 		'helper/phy/hr-wpan-spectrum-model-factory.h',
 		'helper/phy/hr-wpan-spectrum-value-helper.h',
