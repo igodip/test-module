@@ -64,7 +64,23 @@ namespace ns3 {
 		void SetNoisePowerSpectralDensity(Ptr<const SpectrumValue> noisePsd);
 		Ptr<const SpectrumValue> GetNoisePowerSpectralDensity(void);
 
+		virtual void DoDispose();
 
+	private:
+
+		/** \brief	The mobility model. */
+		Ptr<MobilityModel> m_mobilityModel;
+
+		/** \brief	The antenna. */
+		Ptr<AntennaModel> m_antenna;
+
+		Ptr<NetDevice> m_netdevice;
+
+		TracedCallback<Ptr<const Packet> > m_phyRxBeginTrace;
+
+		TracedCallback<Ptr<const Packet>, double > m_phyRxEndTrace;
+
+		Ptr<const SpectrumValue> m_noise;
 	};
 
 }

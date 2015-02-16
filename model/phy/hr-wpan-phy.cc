@@ -19,3 +19,58 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
+#include "hr-wpan-phy.h"
+#include <ns3/log.h>
+
+namespace ns3 {
+
+	NS_LOG_COMPONENT_DEFINE("HrWpanPhy");
+
+	NS_OBJECT_ENSURE_REGISTERED(HrWpanPhy);
+	
+	HrWpanPhy::HrWpanPhy()
+	{
+
+	}
+
+	TypeId HrWpanPhy::GetTypeId(void) 
+	{
+		static TypeId tid = TypeId("ns3::HrWpanPhy")
+			.SetParent<Object>()
+			.AddConstructor<HrWpanPhy>()
+			;
+
+		return tid;
+	}
+
+	void HrWpanPhy::DoDispose(void) 
+	{
+
+		NS_LOG_FUNCTION(this);
+
+		SpectrumPhy::DoDispose();
+	
+	}
+
+	Ptr<NetDevice> HrWpanPhy::GetDevice()  
+	{
+		
+		NS_LOG_FUNCTION(this);
+
+		return m_netdevice;
+	}
+
+	void HrWpanPhy::SetDevice(Ptr<NetDevice> netDevice) 
+	{
+
+		NS_LOG_FUNCTION(this << netDevice);
+
+		m_netdevice = netDevice;
+	}
+
+	void HrWpanPhy::SetChannel(Ptr<SpectrumChannel> c)
+	{
+		NS_LOG_FUNCTION(c);
+	}
+
+}
