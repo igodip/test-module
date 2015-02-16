@@ -21,6 +21,18 @@
 
 #include "hr-wpan-phy.h"
 #include <ns3/log.h>
+#include <ns3/log.h>
+#include <ns3/abort.h>
+#include <ns3/simulator.h>
+#include <ns3/spectrum-value.h>
+#include <ns3/antenna-model.h>
+#include <ns3/mobility-model.h>
+#include <ns3/spectrum-channel.h>
+#include <ns3/packet.h>
+#include <ns3/packet-burst.h>
+#include <ns3/net-device.h>
+#include <ns3/random-variable-stream.h>
+#include <ns3/hr-wpan-spectrum-signal-parameters.h>
 
 namespace ns3 {
 
@@ -30,11 +42,17 @@ namespace ns3 {
 	
 	HrWpanPhy::HrWpanPhy()
 	{
+		NS_LOG_FUNCTION(this);
+	}
 
+	HrWpanPhy::~HrWpanPhy(void)
+	{
+		NS_LOG_FUNCTION(this);
 	}
 
 	TypeId HrWpanPhy::GetTypeId(void) 
 	{
+
 		static TypeId tid = TypeId("ns3::HrWpanPhy")
 			.SetParent<Object>()
 			.AddConstructor<HrWpanPhy>()
@@ -52,7 +70,7 @@ namespace ns3 {
 	
 	}
 
-	Ptr<NetDevice> HrWpanPhy::GetDevice()  
+	Ptr<NetDevice> HrWpanPhy::GetDevice(void)  
 	{
 		
 		NS_LOG_FUNCTION(this);
@@ -71,6 +89,60 @@ namespace ns3 {
 	void HrWpanPhy::SetChannel(Ptr<SpectrumChannel> c)
 	{
 		NS_LOG_FUNCTION(c);
+		m_channel = c;
 	}
 
+	Ptr<SpectrumChannel> HrWpanPhy::GetChannel(void)
+	{
+		NS_LOG_FUNCTION(this);
+		return m_channel;
+	}
+
+	Ptr<const SpectrumModel> HrWpanPhy::GetRxSpectrumModel(void) const
+	{
+		NS_LOG_FUNCTION(this);
+		return NULL;
+	}
+
+	Ptr<AntennaModel> HrWpanPhy::GetRxAntenna(void)
+	{
+		NS_LOG_FUNCTION(this);
+
+		return m_antenna;
+	}
+
+	void HrWpanPhy::SetAntenna(Ptr<AntennaModel> a)
+	{
+		NS_LOG_FUNCTION(this);
+
+		m_antenna = a;
+	}
+
+	void HrWpanPhy::SetNoisePowerSpectralDensity(Ptr<const SpectrumValue> noisePsd)
+	{
+		NS_LOG_FUNCTION(this << noisePsd);
+		//NS_LOG_INFO("\t computed noise_psd: " << *noisePsd);
+		NS_ASSERT(noisePsd);
+		m_noise = noisePsd;
+	}
+
+	void HrWpanPhy::StartRx(Ptr < SpectrumSignalParameters> spectrumRxParams)
+	{
+
+		NS_LOG_FUNCTION(this << spectrumRxParams);
+		HrWpanSpectrumSignalParameters psdHelper;
+
+	}
+
+	void HrWpanPhy::SetMobility(Ptr<MobilityModel> mobilityModel)
+	{
+		NS_LOG_FUNCTION(this << mobilityModel);
+		m_mobilityModel = mobilityModel;
+	}
+
+	Ptr<MobilityModel> HrWpanPhy::GetMobility(void)
+	{
+		NS_LOG_FUNCTION(this);
+		return m_mobilityModel;
+	}
 }

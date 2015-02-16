@@ -29,6 +29,15 @@
 namespace ns3 {
 
 	class Packet;
+	class SpectrumValue;
+	class HrWpanErrorModel;
+	//struct HrWpanSpectrumSignalParameters;
+	class MobilityModel;
+	class SpectrumChannel;
+	class SpectrumModel;
+	class AntennaModel;
+	class NetDevice;
+	class UniformRandomVariable;
 
 	/**
 	 * \typedef	Callback<void, uint32_t, Ptr<Packet>, uint8_t> PdDataIndicationCallback
@@ -64,6 +73,9 @@ namespace ns3 {
 		void SetNoisePowerSpectralDensity(Ptr<const SpectrumValue> noisePsd);
 		Ptr<const SpectrumValue> GetNoisePowerSpectralDensity(void);
 
+		void StartRx(Ptr<SpectrumSignalParameters> spectrumRxParams);
+
+
 		virtual void DoDispose();
 
 	private:
@@ -74,7 +86,11 @@ namespace ns3 {
 		/** \brief	The antenna. */
 		Ptr<AntennaModel> m_antenna;
 
+		/** \brief	The net device. */
 		Ptr<NetDevice> m_netdevice;
+		
+		/** \brief	The channel. */
+		Ptr<SpectrumChannel> m_channel;
 
 		TracedCallback<Ptr<const Packet> > m_phyRxBeginTrace;
 
