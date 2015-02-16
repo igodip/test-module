@@ -19,3 +19,4 @@
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
+#include "hr-wpan-phy-state-factory.h"
