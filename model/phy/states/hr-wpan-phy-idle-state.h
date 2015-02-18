@@ -19,16 +19,20 @@
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef HR_WPAN_PHY_STATE_FACTORY_H
-#define HR_WPAN_PHY_STATE_FACTORY_H
+#ifndef HR_WPAN_PHY_IDLE_STATE_H
+#define HR_WPAN_PHY_IDLE_STATE_H
 
-#include <ns3/ptr.h>
-#include <ns3/object.h>
+#include "hr-wpan-phy-abs-state.h"
 
 namespace ns3
 {
-	class HrWpanPhyStateFactory : public Object{
+	class HrWpanPhyIdleState : HrWpanPhyAbsState
+	{
+		HrWpanPhyIdleState(Ptr<HrWpanPhy> hrWpanPhy) :
+			HrWpanPhyAbsState(hrWpanPhy)
+		{
 
+		}
 	};
 }
 

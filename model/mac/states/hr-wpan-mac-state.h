@@ -22,6 +22,13 @@
 #ifndef HR_WPAN_MAC_STATE_H
 #define HR_WPAN_MAC_STATE_H
 
+namespace ns3 
+{
+	class HrWpanMacState
+	{
+	public:
 
+	};
+}
 
 #endif

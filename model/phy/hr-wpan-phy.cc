@@ -33,7 +33,6 @@
 #include <ns3/net-device.h>
 #include <ns3/random-variable-stream.h>
 #include <ns3/hr-wpan-spectrum-signal-parameters.h>
-#include <ns3/hr-wpan-spectrum-value-helper.h>
 
 namespace ns3 {
 
@@ -41,12 +40,12 @@ namespace ns3 {
 
 	NS_OBJECT_ENSURE_REGISTERED(HrWpanPhy);
 	
-	HrWpanPhy::HrWpanPhy()
+	HrWpanPhy::HrWpanPhy() :
+		m_psdHelper()
 	{
 		NS_LOG_FUNCTION(this);
 
-		HrWpanSpectrumValueHelper psdHelper;
-		m_txPsd = psdHelper.CreateTxPowerSpectralDensity(0, 1);
+		m_txPsd = m_psdHelper.CreateTxPowerSpectralDensity(0, 1);
 	}
 
 	HrWpanPhy::~HrWpanPhy(void)

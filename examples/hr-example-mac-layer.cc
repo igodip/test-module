@@ -1,4 +1,4 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
+/* -*-  Mode: C++; c-file-style: "gnu"; indent-tabs-mode:nil; -*- */
 /*
 * Copyright (c) 2015 KTH
 *
@@ -16,20 +16,10 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *
 * Author:
-*  Igor Di Paolo <igor.di.paolo@gmail.com>
+*	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef HR_WPAN_PHY_STATE_FACTORY_H
-#define HR_WPAN_PHY_STATE_FACTORY_H
-
-#include <ns3/ptr.h>
-#include <ns3/object.h>
-
-namespace ns3
+int main(int argc, char ** argv)
 {
-	class HrWpanPhyStateFactory : public Object{
-
-	};
+	return 0;
 }
-
-#endif

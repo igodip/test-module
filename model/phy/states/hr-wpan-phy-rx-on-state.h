@@ -19,15 +19,25 @@
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef HR_WPAN_PHY_STATE_FACTORY_H
-#define HR_WPAN_PHY_STATE_FACTORY_H
+#ifndef HR_WPAN_PHY_RX_ON_STATE_H
+#define HR_WPAN_PHY_RX_ON_STATE_H
 
-#include <ns3/ptr.h>
-#include <ns3/object.h>
+#include "hr-wpan-phy-abs-state.h"
 
 namespace ns3
 {
-	class HrWpanPhyStateFactory : public Object{
+	class HrWpanPhyRxOnState : public HrWpanPhyAbsState {
+
+		HrWpanPhyRxOnState(Ptr<HrWpanPhy> hrWPanPhy)
+			: HrWpanPhyAbsState(hrWPanPhy)
+		{}
+
+		virtual void EndRx(Ptr<SpectrumSignalParameters> params);
+
+		virtual void EndTx(Ptr<HrWpanSpectrumSignalParameters> params);
+		virtual void StartRx(Ptr<SpectrumSignalParameters> params);
+		virtual void StartTx(Ptr<HrWpanSpectrumSignalParameters> params);
+
 
 	};
 }

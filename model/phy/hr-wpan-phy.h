@@ -25,6 +25,7 @@
 #include <ns3/spectrum-phy.h>
 #include <ns3/traced-callback.h>
 #include <ns3/event-id.h>
+#include <ns3/hr-wpan-spectrum-value-helper.h>
 
 #include "hr-wpan-phy-attributes.h"
 
@@ -40,6 +41,7 @@ namespace ns3 {
 	class AntennaModel;
 	class NetDevice;
 	class UniformRandomVariable;
+	
 
 	/**
 	 * \typedef	Callback<void, uint32_t, Ptr<Packet>, uint8_t> PdDataIndicationCallback
@@ -110,10 +112,28 @@ namespace ns3 {
 		/** \brief	The channel. */
 		Ptr<SpectrumChannel> m_channel;
 
+		/**
+		 * \property	TracedCallback<Ptr<const Packet> > m_phyRxBeginTrace
+		 *
+		 * \brief	Gets the phy receive begin trace.
+		 *
+		 * \return	The m phy receive begin trace.
+		 */
+
 		TracedCallback<Ptr<const Packet> > m_phyRxBeginTrace;
+
+		/**
+		 * \property	TracedCallback<Ptr<const Packet>, double > m_phyRxEndTrace
+		 *
+		 * \brief	Gets the phy receive end trace.
+		 *
+		 * \return	The m phy receive end trace.
+		 */
 
 		TracedCallback<Ptr<const Packet>, double > m_phyRxEndTrace;
 
+
+		/** \brief	The noise. */
 		Ptr<const SpectrumValue> m_noise;
 
 		double m_rxSensitivity;
@@ -123,6 +143,8 @@ namespace ns3 {
 		PdDataIndicationCallback m_dataIndicationCallback;
 		
 		Ptr<SpectrumValue> m_txPsd;
+
+		HrWpanSpectrumValueHelper m_psdHelper;
 
 	};
 

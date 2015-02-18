@@ -19,17 +19,12 @@
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef HR_WPAN_PHY_STATE_FACTORY_H
-#define HR_WPAN_PHY_STATE_FACTORY_H
-
-#include <ns3/ptr.h>
-#include <ns3/object.h>
+#ifndef HR_WPAN_PHY_RX_BUSY_STATE_H
+#define HR_WPAN_PHY_RX_BUSY_STATE_H
 
 namespace ns3
 {
-	class HrWpanPhyStateFactory : public Object{
 
-	};
 }
 
 #endif

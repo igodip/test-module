@@ -19,17 +19,33 @@
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef HR_WPAN_PHY_STATE_FACTORY_H
-#define HR_WPAN_PHY_STATE_FACTORY_H
+#include "hr-wpan-phy-abs-state.h"
+#include <ns3/log.h>
 
-#include <ns3/ptr.h>
-#include <ns3/object.h>
+namespace ns3 {
 
-namespace ns3
-{
-	class HrWpanPhyStateFactory : public Object{
+	NS_LOG_COMPONENT_DEFINE("HrWpanPhyAbsState");
 
-	};
+	NS_OBJECT_ENSURE_REGISTERED(HrWpanPhyAbsState);
+
+	void HrWpanPhyAbsState::EndRx(Ptr<SpectrumSignalParameters> params) 
+	{
+		NS_LOG_FUNCTION(this);
+	}
+
+	void HrWpanPhyAbsState::EndTx(Ptr<HrWpanSpectrumSignalParameters> params)
+	{
+		NS_LOG_FUNCTION(this);
+	}
+
+	void HrWpanPhyAbsState::StartTx(Ptr<HrWpanSpectrumSignalParameters> params)
+	{
+		NS_LOG_FUNCTION(this);
+	}
+
+	void HrWpanPhyAbsState::StartRx(Ptr<SpectrumSignalParameters> params)
+	{
+		NS_LOG_FUNCTION(this);
+	}
+
 }
-
-#endif

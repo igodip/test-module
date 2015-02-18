@@ -29,6 +29,7 @@
 #include <ns3/propagation-loss-model.h>
 #include <ns3/cosine-antenna-model.h>
 
+
 using namespace ns3;
 
 void SendOnePacket(Ptr<HrWpanPhy> sender, Ptr<HrWpanPhy> receiver)
@@ -52,7 +53,7 @@ int main(int argc, char ** argv)
 	sender->SetChannel(channel);
 	receiver->SetChannel(channel);
 
-	Ptr<AntennaModel> senderAntenna = CreateObject<CosineAn
+	//Ptr<AntennaModel> senderAntenna = CreateObject<CosineAn
 
 	Ptr<LogDistancePropagationLossModel> lossModel = CreateObject<LogDistancePropagationLossModel>();
 
@@ -68,8 +69,6 @@ int main(int argc, char ** argv)
 
 	Vector posReceiver = Vector(2, 2, 2);
 	receiverMobility->SetPosition(posReceiver);
-
-	
 
 	Simulator::Stop(Seconds(10.0));
 

@@ -19,15 +19,15 @@
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef HR_WPAN_PHY_STATE_FACTORY_H
-#define HR_WPAN_PHY_STATE_FACTORY_H
+#ifndef UNIFORM_LINEAR_ARRAY_ANTENNA_PATTERN_H
+#define UNIFORM_LINEAR_ARRAY_ANTENNA_PATTERN_H
 
-#include <ns3/ptr.h>
-#include <ns3/object.h>
+#include <ns3/antenna-model.h>
 
 namespace ns3
 {
-	class HrWpanPhyStateFactory : public Object{
+	class UniformLinearArrayAntennaPattern : public AntennaModel
+	{
 
 	};
 }

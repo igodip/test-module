@@ -26,6 +26,8 @@ namespace ns3 {
 
 	class HrWpanNetDevice {
 
+		HrWpanNetDevice(void);
+
 	};
 
 }
