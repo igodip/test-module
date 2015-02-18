@@ -150,7 +150,7 @@ namespace ns3 {
 		return (a.m_address < b.m_address);
 	}
 
-	std::ostream& operator<<(std::ostream & os, const HrWpanDevId);
+	std::ostream& operator<<(std::ostream & os, const HrWpanDevId & address);
 	std::istream& operator>>(std::istream & is, HrWpanDevId & address);
 
 } // namespace ns3

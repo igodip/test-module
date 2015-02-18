@@ -22,9 +22,14 @@
 #ifndef HR_WPAN_MAC_PROVIDER_H
 #define HR_WPAN_MAC_PROVIDER_H
 
+#include <ns3/object.h>
+
 namespace ns3
 {
+	class HrWpanMacProvider
+	{
 
+	};
 }
 
 #endif

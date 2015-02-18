@@ -23,11 +23,11 @@
 #ifndef HR_WPAN_MAC_H
 #define HR_WPAN_MAC_H
 
-#include <ns3\object.h>
+#include <ns3/object.h>
 
 namespace ns3 {
 
-	class HrWpanMac : public Object {
+	class HrWpanMac {
 
 	};
 

@@ -1,4 +1,4 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
+/* -*-  Mode: C++; c-file-style: "gnu"; indent-tabs-mode:nil; -*- */
 /*
 * Copyright (c) 2015 KTH
 *
@@ -16,15 +16,12 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *
 * Author:
-*  Igor Di Paolo <igor.di.paolo@gmail.com>
+*	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#include "hr-wpan-net-device.h"
+#include "hr-wpan-net-device-factory.h"
 
 namespace ns3
 {
-	HrWpanNetDevice::HrWpanNetDevice(void)
-	{
 
-	}
 }

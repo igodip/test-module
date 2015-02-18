@@ -29,6 +29,10 @@ namespace ns3
 {
 	class HrWpanPhyStateFactory : public Object{
 
+	public:
+		
+		//get
+
 	};
 }
 

@@ -15,20 +15,30 @@
 * along with this program; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *
-* Author:
-*	Igor Di Paolo <igor.di.paolo@gmail.com>
+* Author:  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef HR_WPAN_MAC_USER_H
-#define HR_WPAN_MAC_USER_H
+#include <ns3/test.h>
+#include <ns3/log.h>
+#include <ns3/callback.h>
+#include <ns3/packet.h>
+#include <ns3/simulator.h>
+#include <ns3/hr-wpan-error-model.h>
+#include <ns3/propagation-loss-model.h>
+#include <ns3/hr-wpan-net-device.h>
+#include <ns3/hr-wpan-mac.h>
+#include <ns3/node.h>
+#include <ns3/net-device.h>
+#include <ns3/single-model-spectrum-channel.h>
+#include <ns3/mac16-address.h>
+#include <ns3/constant-position-mobility-model.h>
+#include "ns3/rng-seed-manager.h"
 
-
-namespace ns3
+class HrWpanPhyTestSuite : public TestSuite
 {
-	class HrWpanMacUser 
-	{
-
-	};
+public:
+	HrWpanPhyTestSuite();
+	AddTestCase(new HrWpanPhyTestSuite(), TestCase::QUICK);
 }
 
-#endif
+static LrWpanPacketTestSuite lrWpanPacketTestSuite;

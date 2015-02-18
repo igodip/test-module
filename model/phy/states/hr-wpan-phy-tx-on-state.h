@@ -18,3 +18,19 @@
 * Author:
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
+
+#ifndef HR_WPAN_PHY_TX_ON_STATE_H
+#define HR_WPAN_PHY_TX_ON_STATE_H
+
+#include "hr-wpan-phy-abs-state.h"
+
+namespace ns3
+{
+
+	class HrWpanPhyTxOnState : public HrWpanPhyAbsState
+	{
+
+	};
+
+}
+#endif

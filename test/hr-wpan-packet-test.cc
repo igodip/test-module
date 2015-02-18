@@ -1,6 +1,6 @@
 /* -*-  Mode: C++; c-file-style: "gnu"; indent-tabs-mode:nil; -*- */
 /*
-* Copyright (c) 2015
+* Copyright (c) 2015 KTH
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License version 2 as
@@ -90,22 +90,28 @@ HrWpanPacketTestCase::DoRun(void)
 
 	NS_TEST_ASSERT_MSG_EQ(p2->GetSize(), 20, "Packet wrong size after removing mactrailer");
 
+	//Checking header
+	
 	//Checking address
+	HrWpanDevId srcReceivedAddress = receivedMacHeader.getSrcAddress();
+	NS_TEST_ASSERT_MSG_EQ(srcReceivedAddress, srcAddress, "The srcAddress is different!");
+
+	//Checking Trailer
 	NS_TEST_ASSERT_MSG_EQ(macTrailer, receivedMacTrailer, "The Mac Trailer is different!");
 
 }
 
 // ==============================================================================
-class LrWpanPacketTestSuite : public TestSuite
+class HrWpanPacketTestSuite : public TestSuite
 {
 public:
-	LrWpanPacketTestSuite();
+	HrWpanPacketTestSuite();
 };
 
-LrWpanPacketTestSuite::LrWpanPacketTestSuite()
+HrWpanPacketTestSuite::HrWpanPacketTestSuite()
 	: TestSuite("hr-wpan-packet", UNIT)
 {
 	AddTestCase(new HrWpanPacketTestCase, TestCase::QUICK);
 }
 
-static LrWpanPacketTestSuite lrWpanPacketTestSuite;
+static HrWpanPacketTestSuite hrWpanPacketTestSuite;
