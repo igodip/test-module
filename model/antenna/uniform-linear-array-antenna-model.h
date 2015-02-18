@@ -19,16 +19,24 @@
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef UNIFORM_LINEAR_ARRAY_ANTENNA_PATTERN_H
-#define UNIFORM_LINEAR_ARRAY_ANTENNA_PATTERN_H
+#ifndef UNIFORM_LINEAR_ARRAY_ANTENNA_MODEL_H
+#define UNIFORM_LINEAR_ARRAY_ANTENNA_MODEL_H
 
 #include <ns3/antenna-model.h>
 
 namespace ns3
 {
-	class UniformLinearArrayAntennaPattern : public AntennaModel
+	class UniformLinearArrayAntennaModel : public AntennaModel
 	{
+	public:
 
+		UniformLinearArrayAntennaModel(void)
+		{
+
+		}
+
+	private:
+		int m_antenna_number;
 	};
 }
 

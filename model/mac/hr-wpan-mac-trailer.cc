@@ -164,4 +164,9 @@ namespace ns3 {
 		return ~crc;
 	}
 
+	bool HrWpanMacTrailer::operator== (const HrWpanMacTrailer & macTrailer) const
+	{
+		return (m_fcs == macTrailer.m_fcs) && (m_calcFcs == macTrailer.m_fcs);
+	}
+
 } //namespace ns3

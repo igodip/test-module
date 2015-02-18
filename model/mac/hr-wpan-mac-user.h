@@ -1,6 +1,6 @@
 /* -*-  Mode: C++; c-file-style: "gnu"; indent-tabs-mode:nil; -*- */
 /*
-* Copyright (c) 2015
+* Copyright (c) 2015 KTH
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License version 2 as
@@ -19,17 +19,11 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
+#ifndef HR_WPAN_MAC_USER_H
+#define HR_WPAN_MAC_USER_H
 
-#ifndef HR_WPAN_MAC_H
-#define HR_WPAN_MAC_H
-
-#include <ns3\object.h>
-
-namespace ns3 {
-
-	class HrWpanMac : public Object {
-
-	};
+namespace ns3
+{
 
 }
 

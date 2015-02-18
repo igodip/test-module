@@ -101,6 +101,18 @@ public:
    */
   bool IsFcsEnabled (void);
 
+  /**
+   * \fn	bool HrWpanMacTrailer::operator== (const HrWpanMacTrailer & hrWpanMacTrailer);
+   *
+   * \brief	Equality operator.
+   *
+   * \param	hrWpanMacTrailer	The hr wpan MAC trailer.
+   *
+   * \return	true if the parameters are considered equivalent.
+   */
+
+  bool operator == (const HrWpanMacTrailer & hrWpanMacTrailer) const;
+
 private:
   /**
    * Calculate the 16-bit FCS value.

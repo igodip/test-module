@@ -26,7 +26,6 @@
 #include <ns3/mac64-address.h>
 #include <ns3/log.h>
 
-
 using namespace ns3;
 
 NS_LOG_COMPONENT_DEFINE("hr-wpan-packet-test");
@@ -52,15 +51,16 @@ void
 HrWpanPacketTestCase::DoRun(void)
 {
 	
+	const char * addr = "11";
+
 	HrWpanMacHeader macHdr(HrWpanMacHeader::HRWPAN_FRAME_BEACON, 0);
 	macHdr.SetSecDisable();
 	
-	HrWpanDevId srcAddress("11");
+	HrWpanDevId srcAddress(addr);
 	macHdr.setSrcAddress(srcAddress);
 
 	HrWpanMacTrailer macTrailer;
 	
-
 	Ptr<Packet> packet = Create<Packet>(20); // dummy data
 	NS_TEST_ASSERT_MSG_EQ(packet->GetSize(),20, "Packed created with unexpected size!");
 
@@ -68,6 +68,7 @@ HrWpanPacketTestCase::DoRun(void)
 	std::cout << "<--Mac header added " << std::endl;
 	NS_TEST_ASSERT_MSG_EQ(packet->GetSize(), 30, "Packet wrong size after macHdr addition!");
 
+	//macTrailer.
 	packet->AddTrailer(macTrailer); //+4 bytes fixed
 	std::cout << "<-- Mac trailer added " << std::endl;
 	NS_TEST_ASSERT_MSG_EQ(packet->GetSize(), 34, "Packet wrong size after macTrailer addition!");
@@ -90,7 +91,7 @@ HrWpanPacketTestCase::DoRun(void)
 	NS_TEST_ASSERT_MSG_EQ(p2->GetSize(), 20, "Packet wrong size after removing mactrailer");
 
 	//Checking address
-	//NS_TEST_ASSERT_MSG_EQ(HrWpanDevId())
+	NS_TEST_ASSERT_MSG_EQ(macTrailer, receivedMacTrailer, "The Mac Trailer is different!");
 
 }
 
