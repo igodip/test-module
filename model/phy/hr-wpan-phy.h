@@ -98,6 +98,8 @@ namespace ns3 {
 
 		void PdDataRequest(const uint32_t psduLength,Ptr<Packet> p);
 
+		bool isRxOn();
+
 	private:
 
 		/** \brief	The mobility model. */

@@ -19,3 +19,12 @@
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
+#ifndef HR_WPAN_PHY_STATE_H
+#define HR_WPAN_PHY_STATE_H
+
+namespace ns3
+{
+
+}
+
+#endif

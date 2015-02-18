@@ -20,3 +20,8 @@
 */
 
 #include "hr-wpan-mac-state-factory.h"
+
+namespace ns3
+{
+
+}

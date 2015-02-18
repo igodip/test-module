@@ -99,6 +99,9 @@ namespace ns3
 		virtual void EndTx(Ptr<HrWpanSpectrumSignalParameters> params) ;
 
 	protected:
+
+		virtual void DoDispose(void);
+
 		Ptr<HrWpanPhy> m_hrWpanPhy;
 	};
 }

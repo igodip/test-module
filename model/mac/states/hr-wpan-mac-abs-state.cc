@@ -18,3 +18,10 @@
 * Author:
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
+
+#include "hr-wpan-mac-abs-state.h"
+
+namespace ns3
+{
+
+}

@@ -19,27 +19,9 @@
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef HR_WPAN_PHY_STATE_FACTORY_H
-#define HR_WPAN_PHY_STATE_FACTORY_H
-
-#include <ns3/ptr.h>
-#include <ns3/object.h>
+#include "hr-wpan-phy-rx-busy-state.h"
 
 namespace ns3
 {
-	class HrWpanPhyStateFactory : public Object{
-private:
-		Ptr<HrWpanPhy> m_wpanPhy;
 
-
-	public:
-		
-		//get
-
-	
-private:
-		HrWpanStateFactory(Ptr<HrWpanPhy> hrWpanPhy);
-};
 }
-
-#endif

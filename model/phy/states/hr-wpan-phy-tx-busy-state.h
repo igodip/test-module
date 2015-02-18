@@ -18,3 +18,24 @@
 * Author:
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
+
+#ifndef HR_WPAN_PHY_TX_BUSY_STATE_H
+#define HR_WPAN_PHY_TX_BUSY_STATE_H
+
+#include "hr-wpan-phy-abs-state.h"
+
+namespace ns3
+{
+	class HrWpanPhyTxBusyState : public HrWpanPhyAbsState
+	{
+
+public:
+		HrWpanPhyTxBusyState(Ptr<HrWpanPhy> wpanPhy);
+		virtual void StartTx(Ptr<HrWpanSpectrumSignalParameters> params);
+		virtual void StartRx(Ptr<SpectrumSignalParameters> params);
+		virtual void EndRx(Ptr<SpectrumSignalParameters> params);
+		virtual void EndTx(Ptr<HrWpanSpectrumSignalParameters> params);
+};
+}
+
+#endif

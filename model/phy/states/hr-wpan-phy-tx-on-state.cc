@@ -18,3 +18,34 @@
 * Author:
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
+
+#include "hr-wpan-phy-tx-on-state.h"
+
+namespace ns3
+{
+	HrWpanPhyTxOnState::HrWpanPhyTxOnState(Ptr<HrWpanPhy> hrWpanPhy){
+
+	}
+
+
+	void HrWpanPhyTxOnState::StartRx(Ptr<SpectrumSignalParameters> params){
+
+	}
+
+
+	void HrWpanPhyTxOnState::EndRx(Ptr<SpectrumSignalParameters> params){
+
+	}
+
+
+	void HrWpanPhyTxOnState::StartTx(Ptr<HrWpanSpectrumSignalParameters> params){
+
+	}
+
+
+	void HrWpanPhyTxOnState::EndTx(Ptr<HrWpanSignalSpectrumSignalParameters> params){
+
+	}
+}
+
+

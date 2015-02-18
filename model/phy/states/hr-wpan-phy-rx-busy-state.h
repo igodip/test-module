@@ -22,9 +22,22 @@
 #ifndef HR_WPAN_PHY_RX_BUSY_STATE_H
 #define HR_WPAN_PHY_RX_BUSY_STATE_H
 
+#include "hr-wpan-phy-abs-state.h"
+
 namespace ns3
 {
+	class HrWpanRxBusyState : public HrWpanPhyAbsState
+	{
 
+	
+public:
+		HrWpanRxBusyState(Ptr<HrWpanPhy> wpanPhy);
+		virtual void StartRx(Ptr<SpectrumSignalParameters> params);
+		virtual void EndRx(Ptr<SpectrumSignalParameters> params);
+		virtual void StartTx(Ptr<HrWpanSpectrumSignalParameters> params);
+		virtual void EndTx(Ptr<HrWpanSpectrumSignalParameters> params);
+};
 }
 
 #endif
+

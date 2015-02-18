@@ -20,3 +20,13 @@
 */
 
 #include "hr-wpan-phy-state-factory.h"
+
+namespace ns3
+{
+
+}
+
+
+HrWpanPhyStateFactory::HrWpanStateFactory(Ptr<HrWpanPhy> hrWpanPhy){
+
+}

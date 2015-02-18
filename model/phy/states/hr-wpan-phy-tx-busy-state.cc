@@ -18,3 +18,36 @@
 * Author:
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
+
+#include "hr-wpan-phy-tx-busy-state.h"
+
+namespace ns3
+{
+	HrWpanPhyTxBusyState::HrWpanPhyTxBusyState(Ptr<HrWpanPhy> wpanPhy) :
+		HrWpanPhyAbsState(wpanPhy)
+	{
+
+	}
+
+
+	void HrWpanPhyTxBusyState::StartTx(Ptr<HrWpanSpectrumSignalParameters> params){
+
+	}
+
+
+	void HrWpanPhyTxBusyState::StartRx(Ptr<SpectrumSignalParameters> params){
+
+	}
+
+
+	void HrWpanPhyTxBusyState::EndRx(Ptr<SpectrumSignalParameters> params){
+
+	}
+
+
+	void HrWpanPhyTxBusyState::EndTx(Ptr<HrWpanSpectrumSignalParameters> params){
+
+	}
+}
+
+

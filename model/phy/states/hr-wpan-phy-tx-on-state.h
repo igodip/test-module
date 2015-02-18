@@ -30,7 +30,14 @@ namespace ns3
 	class HrWpanPhyTxOnState : public HrWpanPhyAbsState
 	{
 
-	};
+	
+public:
+		HrWpanPhyTxOnState(Ptr<HrWpanPhy> hrWpanPhy);
+		virtual void StartRx(Ptr<SpectrumSignalParameters> params);
+		virtual void EndRx(Ptr<SpectrumSignalParameters> params);
+		virtual void StartTx(Ptr<HrWpanSpectrumSignalParameters> params);
+		virtual void EndTx(Ptr<HrWpanSignalSpectrumSignalParameters> params);
+};
 
 }
 #endif
