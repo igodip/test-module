@@ -20,10 +20,13 @@
 */
 
 #include "hr-wpan-phy-tx-on-state.h"
+#include <ns3/hr-wpan-phy.h>
 
 namespace ns3
 {
-	HrWpanPhyTxOnState::HrWpanPhyTxOnState(Ptr<HrWpanPhy> hrWpanPhy){
+	HrWpanPhyTxOnState::HrWpanPhyTxOnState(Ptr<HrWpanPhy> hrWpanPhy) :
+		HrWpanPhyAbsState(hrWpanPhy)
+	{
 
 	}
 
@@ -43,7 +46,8 @@ namespace ns3
 	}
 
 
-	void HrWpanPhyTxOnState::EndTx(Ptr<HrWpanSignalSpectrumSignalParameters> params){
+	void HrWpanPhyTxOnState::EndTx(Ptr<HrWpanSpectrumSignalParameters> params){
+
 
 	}
 }

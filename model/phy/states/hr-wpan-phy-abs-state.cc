@@ -20,6 +20,7 @@
 */
 
 #include "hr-wpan-phy-abs-state.h"
+#include <ns3/hr-wpan-phy.h>
 #include <ns3/log.h>
 
 namespace ns3 {
@@ -28,24 +29,30 @@ namespace ns3 {
 
 	NS_OBJECT_ENSURE_REGISTERED(HrWpanPhyAbsState);
 
-	void HrWpanPhyAbsState::EndRx(Ptr<SpectrumSignalParameters> params) 
+	HrWpanPhyAbsState::HrWpanPhyAbsState(Ptr<HrWpanPhy> hrWpanPhy) :
+		m_hrWpanPhy(hrWpanPhy)
 	{
 		NS_LOG_FUNCTION(this);
+	}
+
+	void HrWpanPhyAbsState::EndRx(Ptr<SpectrumSignalParameters> params) 
+	{
+		NS_LOG_FUNCTION(this << params);
 	}
 
 	void HrWpanPhyAbsState::EndTx(Ptr<HrWpanSpectrumSignalParameters> params)
 	{
-		NS_LOG_FUNCTION(this);
+		NS_LOG_FUNCTION(this << params);
 	}
 
 	void HrWpanPhyAbsState::StartTx(Ptr<HrWpanSpectrumSignalParameters> params)
 	{
-		NS_LOG_FUNCTION(this);
+		NS_LOG_FUNCTION(this << params);
 	}
 
 	void HrWpanPhyAbsState::StartRx(Ptr<SpectrumSignalParameters> params)
 	{
-		NS_LOG_FUNCTION(this);
+		NS_LOG_FUNCTION(this << params);
 	}
 
 }

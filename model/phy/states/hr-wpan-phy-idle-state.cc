@@ -20,10 +20,17 @@
 */
 
 #include "hr-wpan-phy-idle-state.h"
+#include <ns3/hr-wpan-phy.h>
 
 namespace ns3
 {
 
+
+	HrWpanPhyIdleState::HrWpanPhyIdleState(Ptr<HrWpanPhy> hrWpanPhy) :
+		HrWpanPhyAbsState(hrWpanPhy)
+	{
+
+	}
 
 	void HrWpanPhyIdleState::StartTx(Ptr<HrWpanSpectrumSignalParameters> params){
 

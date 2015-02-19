@@ -22,10 +22,11 @@
 #ifndef HR_WPAN_PHY_RX_ON_STATE_H
 #define HR_WPAN_PHY_RX_ON_STATE_H
 
-#include "hr-wpan-phy-abs-state.h"
+#include <ns3/hr-wpan-phy-abs-state.h>
 
 namespace ns3
 {
+
 	class HrWpanPhyRxOnState : public HrWpanPhyAbsState {
 
 
@@ -35,10 +36,7 @@ namespace ns3
 
 		virtual void EndTx(Ptr<HrWpanSpectrumSignalParameters> params);
 
-		HrWpanPhyRxOnState(Ptr<HrWpanPhy> hrWPanPhy)
-			: HrWpanPhyAbsState(hrWPanPhy)
-		{
-		}
+		HrWpanPhyRxOnState(Ptr<HrWpanPhy> hrWPanPhy);
 
 		virtual void StartRx(Ptr<SpectrumSignalParameters> params);
 

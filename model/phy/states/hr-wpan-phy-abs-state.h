@@ -28,6 +28,7 @@
 
 namespace ns3
 {
+
 	class HrWpanPhy;
 
 	/**
@@ -52,9 +53,7 @@ namespace ns3
 		 * \param	hrWpanPhy	The hr wpan phy.
 		 */
 
-		HrWpanPhyAbsState(Ptr < HrWpanPhy >  hrWpanPhy):
-			m_hrWpanPhy(hrWpanPhy)
-		{}
+		HrWpanPhyAbsState(Ptr < HrWpanPhy >  hrWpanPhy);
 
 		/**
 		 * \fn	virtual void HrWpanAbsState::StartRx(Ptr<SpectrumSignalParameters> params);

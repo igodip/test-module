@@ -46,6 +46,8 @@ namespace ns3 {
 		NS_LOG_FUNCTION(this);
 
 		m_txPsd = m_psdHelper.CreateTxPowerSpectralDensity(0, 1);
+		m_stateFactory = CreateObject<HrWpanPhyStateFactory>(GetObject<HrWpanPhy>());
+		m_currentState = m_stateFactory->getIdleState();
 	}
 
 	HrWpanPhy::~HrWpanPhy(void)
@@ -133,6 +135,9 @@ namespace ns3 {
 	{
 
 		NS_LOG_FUNCTION(this << spectrumRxParams);
+
+		m_currentState->StartRx(spectrumRxParams);
+
 		HrWpanSpectrumSignalParameters psdHelper;
 
 		Ptr<HrWpanSpectrumSignalParameters> lrWpanRxParams = DynamicCast<HrWpanSpectrumSignalParameters>(spectrumRxParams);
@@ -191,5 +196,10 @@ namespace ns3 {
 		pb->AddPacket(packet);
 		txParams->packetBurst = pb;
 		m_channel->StartTx(txParams);
+	}
+
+	bool HrWpanPhy::IsRxOn() const {
+		
+		return true;
 	}
 }

@@ -20,13 +20,17 @@
 */
 
 #include "hr-wpan-phy-state-factory.h"
+#include <ns3/hr-wpan-phy.h>
 
 namespace ns3
 {
+	HrWpanPhyStateFactory::HrWpanPhyStateFactory(Ptr<HrWpanPhy>  hrWpanPhy)
+		: m_wpanPhy(hrWpanPhy)
+	{
+		m_idleState = CreateObject<HrWpanPhyIdleState>(m_wpanPhy);
+	}
 
+	
 }
 
 
-HrWpanPhyStateFactory::HrWpanStateFactory(Ptr<HrWpanPhy> hrWpanPhy){
-
-}

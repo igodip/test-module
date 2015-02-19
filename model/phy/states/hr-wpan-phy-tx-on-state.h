@@ -24,6 +24,7 @@
 
 #include "hr-wpan-phy-abs-state.h"
 
+
 namespace ns3
 {
 
@@ -36,7 +37,7 @@ public:
 		virtual void StartRx(Ptr<SpectrumSignalParameters> params);
 		virtual void EndRx(Ptr<SpectrumSignalParameters> params);
 		virtual void StartTx(Ptr<HrWpanSpectrumSignalParameters> params);
-		virtual void EndTx(Ptr<HrWpanSignalSpectrumSignalParameters> params);
+		virtual void EndTx(Ptr<HrWpanSpectrumSignalParameters> params);
 };
 
 }

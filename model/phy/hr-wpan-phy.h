@@ -29,6 +29,8 @@
 
 #include "hr-wpan-phy-attributes.h"
 
+#include <ns3/hr-wpan-phy-state-factory.h>
+
 namespace ns3 {
 
 	class Packet;
@@ -98,7 +100,13 @@ namespace ns3 {
 
 		void PdDataRequest(const uint32_t psduLength,Ptr<Packet> p);
 
-		bool isRxOn();
+		//Rx methods
+		bool IsRxOn() const;
+		void RxOn();
+
+		//Tx methods
+		bool IsTxOn() const;
+		void TxOn();
 
 	private:
 
@@ -148,6 +156,8 @@ namespace ns3 {
 
 		HrWpanSpectrumValueHelper m_psdHelper;
 
+		Ptr<HrWpanPhyAbsState> m_currentState;
+		Ptr<HrWpanPhyStateFactory> m_stateFactory;
 	};
 
 }

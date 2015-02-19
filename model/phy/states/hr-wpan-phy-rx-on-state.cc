@@ -20,8 +20,13 @@
 */
 
 #include "hr-wpan-phy-rx-on-state.h"
+#include <ns3/hr-wpan-phy.h>
 
 namespace ns3
 {
+	HrWpanPhyRxOnState::HrWpanPhyRxOnState(Ptr<HrWpanPhy> wpanPhy) :
+		HrWpanPhyAbsState(wpanPhy)
+	{
 
+	}
 }

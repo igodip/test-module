@@ -25,21 +25,33 @@
 #include <ns3/ptr.h>
 #include <ns3/object.h>
 
+#include "hr-wpan-phy-idle-state.h"
+#include "hr-wpan-phy-rx-on-state.h"
+#include "hr-wpan-phy-rx-busy-state.h"
+#include "hr-wpan-phy-tx-on-state.h"
+#include "hr-wpan-phy-tx-busy-state.h"
+
 namespace ns3
 {
+	class HrWpanPhy;
+
 	class HrWpanPhyStateFactory : public Object{
-private:
+	private:
+
 		Ptr<HrWpanPhy> m_wpanPhy;
+		Ptr<HrWpanPhyIdleState> m_idleState;
 
 
 	public:
-		
-		//get
+		HrWpanPhyStateFactory(Ptr<HrWpanPhy> hrWpanPhy);
 
-	
-private:
-		HrWpanStateFactory(Ptr<HrWpanPhy> hrWpanPhy);
-};
+		Ptr<HrWpanPhyIdleState> getIdleState() const;
+		Ptr<HrWpanPhyRxOnState> getRxOnState() const;
+		Ptr<HrWpanPhyRxBusyState> getRxBusyState() const;
+		Ptr<HrWpanPhyTxOnState> getTxOnState() const;
+		Ptr<HrWpanPhyTxBusyState> getTxBusyState() const;
+
+	};
 }
 
 #endif

@@ -11,10 +11,18 @@ def build(bld):
 		'model/channel/hr-wpan-error-model.cc',
 		'model/phy/hr-wpan-phy.cc',
 		'model/devices/hr-wpan-net-device.cc',
+		'model/phy/states/hr-wpan-phy-abs-state.cc',
+		'model/phy/states/hr-wpan-phy-idle-state.cc',
+		'model/phy/states/hr-wpan-phy-rx-on-state.cc',
+		'model/phy/states/hr-wpan-phy-rx-busy-state.cc',
+		'model/phy/states/hr-wpan-phy-tx-on-state.cc',
+		'model/phy/states/hr-wpan-phy-tx-busy-state.cc',
+		'model/phy/states/hr-wpan-phy-state-factory.cc',
 		'helper/phy/hr-wpan-spectrum-model-factory.cc',
 		'helper/phy/hr-wpan-spectrum-value-helper.cc',
 		'helper/phy/hr-wpan-interference-helper.cc',
-		'helper/hr-wpan-helper.cc'
+		'helper/hr-wpan-helper.cc',
+		
         ]
 
     module_test = bld.create_ns3_module_test_library('hr-wpan')
@@ -36,11 +44,18 @@ def build(bld):
 		'model/channel/hr-wpan-error-model.h',
 		'model/phy/hr-wpan-phy.h',
 		'model/phy/hr-wpan-phy-attributes.h',
+		'model/phy/states/hr-wpan-phy-abs-state.h',
+		'model/phy/states/hr-wpan-phy-idle-state.h',
+		'model/phy/states/hr-wpan-phy-rx-on-state.h',
+		'model/phy/states/hr-wpan-phy-rx-busy-state.h',
+		'model/phy/states/hr-wpan-phy-tx-on-state.h',
+		'model/phy/states/hr-wpan-phy-tx-busy-state.h',
+		'model/phy/states/hr-wpan-phy-state-factory.h',
 		'model/devices/hr-wpan-net-device.cc',
 		'helper/phy/hr-wpan-spectrum-model-factory.h',
 		'helper/phy/hr-wpan-spectrum-value-helper.h',
 		'helper/phy/hr-wpan-interference-helper.h',
-		'helper/hr-wpan-helper.h'
+		'helper/hr-wpan-helper.h',
         ]
 
     if (bld.env['ENABLE_EXAMPLES']):

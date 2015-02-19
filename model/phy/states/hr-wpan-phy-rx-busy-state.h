@@ -26,17 +26,17 @@
 
 namespace ns3
 {
-	class HrWpanRxBusyState : public HrWpanPhyAbsState
+	class HrWpanPhyRxBusyState : public HrWpanPhyAbsState
 	{
 
-	
-public:
-		HrWpanRxBusyState(Ptr<HrWpanPhy> wpanPhy);
+
+	public:
+		HrWpanPhyRxBusyState(Ptr<HrWpanPhy> wpanPhy);
 		virtual void StartRx(Ptr<SpectrumSignalParameters> params);
 		virtual void EndRx(Ptr<SpectrumSignalParameters> params);
 		virtual void StartTx(Ptr<HrWpanSpectrumSignalParameters> params);
 		virtual void EndTx(Ptr<HrWpanSpectrumSignalParameters> params);
-};
+	};
 }
 
 #endif

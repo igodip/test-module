@@ -20,6 +20,7 @@
 */
 
 #include "hr-wpan-phy-tx-busy-state.h"
+#include <ns3/hr-wpan-phy.h>
 
 namespace ns3
 {
