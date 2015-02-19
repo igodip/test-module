@@ -22,8 +22,15 @@
 #ifndef HR_WPAN_MAC_STATE_FACTORY_H
 #define HR_WPAN_MAC_STATE_FACTORY_H
 
+#include <ns3/object.h>
+
 namespace ns3
 {
+
+	class HrWpanMacStateFactory : public Object
+	{
+
+	};
 
 }
 

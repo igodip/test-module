@@ -21,12 +21,21 @@
 
 #include "hr-wpan-phy-state-factory.h"
 #include <ns3/hr-wpan-phy.h>
+#include <ns3/log.h>
 
 namespace ns3
 {
+
+	NS_LOG_COMPONENT_DEFINE("HrWpanPhyStateFactory");
+
+	NS_OBJECT_ENSURE_REGISTERED(HrWpanPhyStateFactory);
+
 	HrWpanPhyStateFactory::HrWpanPhyStateFactory(Ptr<HrWpanPhy>  hrWpanPhy)
 		: m_wpanPhy(hrWpanPhy)
 	{
+
+		NS_LOG_FUNCTION(this << hrWpanPhy);
+
 		m_idleState = CreateObject<HrWpanPhyIdleState>(m_wpanPhy);
 		m_txOnState = CreateObject<HrWpanPhyTxOnState>(m_wpanPhy);
 		m_txBusyState = CreateObject<HrWpanPhyTxBusyState>(m_wpanPhy);
@@ -36,29 +45,45 @@ namespace ns3
 
 	Ptr<HrWpanPhyIdleState> HrWpanPhyStateFactory::GetIdleState() const
 	{
+		NS_LOG_FUNCTION(this);
+
 		return m_idleState;
 	}
 
 	Ptr<HrWpanPhyRxOnState> HrWpanPhyStateFactory::GetRxOnState() const
 	{
+		NS_LOG_FUNCTION(this);
+
 		return m_rxOnState;
 	}
 
 	Ptr<HrWpanPhyRxBusyState> HrWpanPhyStateFactory::GetRxBusyState() const
 	{
+		NS_LOG_FUNCTION(this);
+
 		return m_rxBusyState;
 	}
 
 	Ptr<HrWpanPhyTxOnState> HrWpanPhyStateFactory::GetTxOnState() const
 	{
+		NS_LOG_FUNCTION(this);
+
 		return m_txOnState;
 	}
 
 	Ptr<HrWpanPhyTxBusyState> HrWpanPhyStateFactory::GetTxBusyState() const
 	{
+		NS_LOG_FUNCTION(this);
+
 		return m_txBusyState;
 	}
 	
+	void HrWpanPhyStateFactory::DoDispose(void)
+	{
+		NS_LOG_FUNCTION(this);
+
+	}
+
 }
 
 

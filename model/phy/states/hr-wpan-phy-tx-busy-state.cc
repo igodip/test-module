@@ -21,33 +21,43 @@
 
 #include "hr-wpan-phy-tx-busy-state.h"
 #include <ns3/hr-wpan-phy.h>
+#include <ns3/log.h>
 
 namespace ns3
 {
+
+	NS_LOG_COMPONENT_DEFINE("HrWpanPhyTxBusyState");
+
+	NS_OBJECT_ENSURE_REGISTERED(HrWpanPhyTxBusyState);
+
 	HrWpanPhyTxBusyState::HrWpanPhyTxBusyState(Ptr<HrWpanPhy> wpanPhy) :
 		HrWpanPhyAbsState(wpanPhy)
 	{
-
+		NS_LOG_FUNCTION(this << wpanPhy);
 	}
 
 
-	void HrWpanPhyTxBusyState::StartTx(Ptr<HrWpanSpectrumSignalParameters> params){
-
+	void HrWpanPhyTxBusyState::StartTx(Ptr<HrWpanSpectrumSignalParameters> params)
+	{
+		NS_LOG_FUNCTION(this << params);
 	}
 
 
-	void HrWpanPhyTxBusyState::StartRx(Ptr<SpectrumSignalParameters> params){
-
+	void HrWpanPhyTxBusyState::StartRx(Ptr<SpectrumSignalParameters> params)
+	{
+		NS_LOG_FUNCTION(this << params);
 	}
 
 
-	void HrWpanPhyTxBusyState::EndRx(Ptr<SpectrumSignalParameters> params){
-
+	void HrWpanPhyTxBusyState::EndRx(Ptr<SpectrumSignalParameters> params)
+	{
+		NS_LOG_FUNCTION(this << params);
 	}
 
 
-	void HrWpanPhyTxBusyState::EndTx(Ptr<HrWpanSpectrumSignalParameters> params){
-
+	void HrWpanPhyTxBusyState::EndTx(Ptr<HrWpanSpectrumSignalParameters> params)
+	{
+		NS_LOG_FUNCTION(this << params);
 	}
 }
 

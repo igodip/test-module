@@ -21,24 +21,38 @@
 
 #include "hr-wpan-phy-idle-state.h"
 #include <ns3/hr-wpan-phy.h>
+#include <ns3/log.h>
 
 namespace ns3
 {
-
+	NS_LOG_COMPONENT_DEFINE("HrWpanPhyIdleState");
 
 	HrWpanPhyIdleState::HrWpanPhyIdleState(Ptr<HrWpanPhy> hrWpanPhy) :
 		HrWpanPhyAbsState(hrWpanPhy)
 	{
+		NS_LOG_FUNCTION(this << hrWpanPhy);
 
 	}
 
-	void HrWpanPhyIdleState::StartTx(Ptr<HrWpanSpectrumSignalParameters> params){
-
+	void HrWpanPhyIdleState::StartTx(Ptr<HrWpanSpectrumSignalParameters> params)
+	{
+		NS_LOG_FUNCTION(this << params);
 	}
 
 
-	void HrWpanPhyIdleState::EndTx(Ptr<HrWpanSpectrumSignalParameters> params){
+	void HrWpanPhyIdleState::EndTx(Ptr<HrWpanSpectrumSignalParameters> params)
+	{
+		NS_LOG_FUNCTION(this << params);
+	}
 
+	void HrWpanPhyIdleState::EndRx(Ptr<SpectrumSignalParameters> params)
+	{
+		NS_LOG_FUNCTION(this << params);
+	}
+
+	void HrWpanPhyIdleState::StartRx(Ptr<SpectrumSignalParameters> params)
+	{
+		NS_LOG_FUNCTION(this << params);
 	}
 
 }

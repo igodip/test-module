@@ -21,12 +21,36 @@
 
 #include "hr-wpan-phy-rx-on-state.h"
 #include <ns3/hr-wpan-phy.h>
+#include <ns3/log.h>
 
 namespace ns3
 {
+
+	NS_LOG_COMPONENT_DEFINE("HrWpanPhyRxOnState");
+
 	HrWpanPhyRxOnState::HrWpanPhyRxOnState(Ptr<HrWpanPhy> wpanPhy) :
 		HrWpanPhyAbsState(wpanPhy)
 	{
+		NS_LOG_FUNCTION(this << wpanPhy);
+	}
 
+	void HrWpanPhyRxOnState::StartRx(Ptr<SpectrumSignalParameters> params)
+	{
+		NS_LOG_FUNCTION(this << params);
+	}
+
+	void HrWpanPhyRxOnState::EndRx(Ptr<SpectrumSignalParameters> params)
+	{
+		NS_LOG_FUNCTION(this << params);
+	}
+
+	void HrWpanPhyRxOnState::StartTx(Ptr<HrWpanSpectrumSignalParameters> params)
+	{
+		NS_LOG_FUNCTION(this << params);
+	}
+
+	void HrWpanPhyRxOnState::EndTx(Ptr<HrWpanSpectrumSignalParameters> params)
+	{
+		NS_LOG_FUNCTION(this << params);
 	}
 }

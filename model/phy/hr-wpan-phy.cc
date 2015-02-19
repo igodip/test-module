@@ -144,7 +144,7 @@ namespace ns3 {
 
 		if (lrWpanRxParams == 0)
 		{
-
+			Simulator::Schedule(spectrumRxParams->duration, &HrWpanPhy::EndRx, this, spectrumRxParams);
 		}
 
 		//NS_LOG_DEBUG(this << " receiving packet with power: " << 10 * log10(HrWpanSpectrumValueHelper::TotalAvgPower(lrWpanRxParams->psd, m_phyPIBAttributes.phyCurrentChannel)) + 30 << "dBm");
@@ -177,16 +177,20 @@ namespace ns3 {
 
 	void HrWpanPhy::SetPdDataConfirmationCallback(PdDataConfirmationCallback pd)
 	{
+		NS_LOG_FUNCTION(this);
 		m_dataConfirmationCallback = pd;
 	}
 
 	void HrWpanPhy::SetPdDataIndicationCallback(PdDataIndicationCallback pd)
 	{
+		NS_LOG_FUNCTION(this);
 		m_dataIndicationCallback = pd;
 	}
 
 	void HrWpanPhy::PdDataRequest(const uint32_t psduLength, Ptr<Packet> packet)
 	{
+		NS_LOG_FUNCTION(this);
+
 		Ptr<HrWpanSpectrumSignalParameters> txParams = Create<HrWpanSpectrumSignalParameters>();
 		txParams->duration = MicroSeconds(10);
 		txParams->txPhy = GetObject<SpectrumPhy>();

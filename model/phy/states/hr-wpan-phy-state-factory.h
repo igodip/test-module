@@ -55,6 +55,8 @@ namespace ns3
 		Ptr<HrWpanPhyTxOnState> GetTxOnState() const;
 		Ptr<HrWpanPhyTxBusyState> GetTxBusyState() const;
 
+		virtual void DoDispose(void);
+
 	};
 }
 

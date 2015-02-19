@@ -55,4 +55,9 @@ namespace ns3 {
 		NS_LOG_FUNCTION(this << params);
 	}
 
+	void HrWpanPhyAbsState::DoDispose(void)
+	{
+
+	}
+
 }
