@@ -36,20 +36,24 @@ namespace ns3
 	class HrWpanPhy;
 
 	class HrWpanPhyStateFactory : public Object{
-	private:
+	protected:
 
 		Ptr<HrWpanPhy> m_wpanPhy;
 		Ptr<HrWpanPhyIdleState> m_idleState;
+		Ptr<HrWpanPhyTxOnState> m_txOnState;
+		Ptr<HrWpanPhyTxBusyState> m_txBusyState;
+		Ptr<HrWpanPhyRxOnState> m_rxOnState;
+		Ptr<HrWpanPhyRxBusyState> m_rxBusyState;
 
 
 	public:
 		HrWpanPhyStateFactory(Ptr<HrWpanPhy> hrWpanPhy);
 
-		Ptr<HrWpanPhyIdleState> getIdleState() const;
-		Ptr<HrWpanPhyRxOnState> getRxOnState() const;
-		Ptr<HrWpanPhyRxBusyState> getRxBusyState() const;
-		Ptr<HrWpanPhyTxOnState> getTxOnState() const;
-		Ptr<HrWpanPhyTxBusyState> getTxBusyState() const;
+		Ptr<HrWpanPhyIdleState> GetIdleState() const;
+		Ptr<HrWpanPhyRxOnState> GetRxOnState() const;
+		Ptr<HrWpanPhyRxBusyState> GetRxBusyState() const;
+		Ptr<HrWpanPhyTxOnState> GetTxOnState() const;
+		Ptr<HrWpanPhyTxBusyState> GetTxBusyState() const;
 
 	};
 }

@@ -47,7 +47,7 @@ namespace ns3 {
 
 		m_txPsd = m_psdHelper.CreateTxPowerSpectralDensity(0, 1);
 		m_stateFactory = CreateObject<HrWpanPhyStateFactory>(GetObject<HrWpanPhy>());
-		m_currentState = m_stateFactory->getIdleState();
+		m_currentState = m_stateFactory->GetIdleState();
 	}
 
 	HrWpanPhy::~HrWpanPhy(void)

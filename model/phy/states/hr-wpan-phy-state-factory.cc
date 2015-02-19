@@ -28,8 +28,36 @@ namespace ns3
 		: m_wpanPhy(hrWpanPhy)
 	{
 		m_idleState = CreateObject<HrWpanPhyIdleState>(m_wpanPhy);
+		m_txOnState = CreateObject<HrWpanPhyTxOnState>(m_wpanPhy);
+		m_txBusyState = CreateObject<HrWpanPhyTxBusyState>(m_wpanPhy);
+		m_rxBusyState = CreateObject<HrWpanPhyRxBusyState>(m_wpanPhy);
+		m_rxOnState = CreateObject<HrWpanPhyRxOnState>(m_wpanPhy);
 	}
 
+	Ptr<HrWpanPhyIdleState> HrWpanPhyStateFactory::GetIdleState() const
+	{
+		return m_idleState;
+	}
+
+	Ptr<HrWpanPhyRxOnState> HrWpanPhyStateFactory::GetRxOnState() const
+	{
+		return m_rxOnState;
+	}
+
+	Ptr<HrWpanPhyRxBusyState> HrWpanPhyStateFactory::GetRxBusyState() const
+	{
+		return m_rxBusyState;
+	}
+
+	Ptr<HrWpanPhyTxOnState> HrWpanPhyStateFactory::GetTxOnState() const
+	{
+		return m_txOnState;
+	}
+
+	Ptr<HrWpanPhyTxBusyState> HrWpanPhyStateFactory::GetTxBusyState() const
+	{
+		return m_txBusyState;
+	}
 	
 }
 
