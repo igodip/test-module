@@ -19,12 +19,12 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef HR_WPAN_MAC_STATE_H
-#define HR_WPAN_MAC_STATE_H
+#ifndef HR_WPAN_MAC_ABS_STATE_H
+#define HR_WPAN_MAC_ABS_STATE_H
 
 namespace ns3 
 {
-	class HrWpanMacState
+	class HrWpanMacAbsState
 	{
 	public:
 

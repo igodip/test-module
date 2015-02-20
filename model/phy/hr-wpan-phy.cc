@@ -161,7 +161,7 @@ namespace ns3 {
 	{
 		NS_LOG_FUNCTION(this << spectrumRxParams);
 
-		Ptr<HrWpanSpectrumSignalParameters> spectrum = DynamicCast<Ptr<HrWpanSpectrumSignalParameters>>(spectrumRxParams);
+		Ptr<HrWpanSpectrumSignalParameters> spectrum = DynamicCast<Ptr<HrWpanSpectrumSignalParameters> >(spectrumRxParams);
 
 		if (spectrum == 0)
 		{

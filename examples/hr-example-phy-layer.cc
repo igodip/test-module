@@ -36,7 +36,7 @@ void SendOnePacket(Ptr<HrWpanPhy> sender, Ptr<HrWpanPhy> receiver)
 {
 	uint32_t n = 10;
 	Ptr<Packet> p = Create<Packet>(n);
-	sender->PdDataRequest(p->GetSize(), p);
+	//sender->PdDataRequest(p->GetSize(), p);
 }
 
 

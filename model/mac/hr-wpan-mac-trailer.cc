@@ -1,6 +1,6 @@
 /* -*-  Mode: C++; c-file-style: "gnu"; indent-tabs-mode:nil; -*- */
 /*
- * Copyright (c) 2015
+ * Copyright (c) 2015 KTH
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -16,14 +16,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * Author:
- *  kwong yin <kwong-sang.yin@boeing.com>
- *  Sascha Alexander Jopen <jopen@cs.uni-bonn.de>
- *  Erwan Livolant <erwan.livolant@inria.fr>
+ * Igor Di Paolo <igor.di.paolo@gmail.com>
  */
 #include "hr-wpan-mac-trailer.h"
 #include <ns3/packet.h>
+#include <ns3/log.h>
 
 namespace ns3 {
+
+	NS_LOG_COMPONENT_DEFINE("HrWpanMacTrailer");
 
 	NS_OBJECT_ENSURE_REGISTERED(HrWpanMacTrailer);
 
@@ -33,10 +34,10 @@ namespace ns3 {
 		: m_fcs(0),
 		m_calcFcs(false)
 	{
+		NS_LOG_FUNCTION(this);
 	}
 
-	TypeId
-		HrWpanMacTrailer::GetTypeId(void)
+	TypeId HrWpanMacTrailer::GetTypeId(void)
 	{
 		static TypeId tid = TypeId("ns3::HrWpanMacTrailer")
 			.SetParent<Trailer>()
@@ -45,49 +46,54 @@ namespace ns3 {
 		return tid;
 	}
 
-	TypeId
-		HrWpanMacTrailer::GetInstanceTypeId(void) const
+	TypeId HrWpanMacTrailer::GetInstanceTypeId(void) const
 	{
 		return GetTypeId();
 	}
 
-	void
-		HrWpanMacTrailer::Print(std::ostream &os) const
+	void HrWpanMacTrailer::Print(std::ostream &os) const
 	{
 		os << " FCS = " << m_fcs;
 	}
 
-	uint32_t
-		HrWpanMacTrailer::GetSerializedSize(void) const
+	uint32_t HrWpanMacTrailer::GetSerializedSize(void) const
 	{
+
+		NS_LOG_FUNCTION(this);
+
 		return HR_WPAN_MAC_FCS_LENGTH;
 	}
 
-	void
-		HrWpanMacTrailer::Serialize(Buffer::Iterator start) const
+	void HrWpanMacTrailer::Serialize(Buffer::Iterator start) const
 	{
+		NS_LOG_FUNCTION(this);
 		start.Prev(HR_WPAN_MAC_FCS_LENGTH);
 		start.WriteU32(m_fcs);
 	}
 
-	uint32_t
-		HrWpanMacTrailer::Deserialize(Buffer::Iterator start)
+	uint32_t HrWpanMacTrailer::Deserialize(Buffer::Iterator start)
 	{
+		NS_LOG_FUNCTION(this);
+
 		start.Prev(HR_WPAN_MAC_FCS_LENGTH);
 		m_fcs = start.ReadU32();
 
 		return HR_WPAN_MAC_FCS_LENGTH;
 	}
 
-	uint32_t
-		HrWpanMacTrailer::GetFcs(void) const
+	uint32_t HrWpanMacTrailer::GetFcs(void) const
 	{
+
+		NS_LOG_FUNCTION(this);
+
 		return m_fcs;
 	}
 
-	void
-		HrWpanMacTrailer::SetFcs(Ptr<const Packet> p)
+	void HrWpanMacTrailer::SetFcs(Ptr<const Packet> p)
 	{
+
+		NS_LOG_FUNCTION(this << p);
+
 		if (m_calcFcs)
 		{
 			uint16_t size = p->GetSize();
@@ -105,6 +111,9 @@ namespace ns3 {
 	bool
 		HrWpanMacTrailer::CheckFcs(Ptr<const Packet> p)
 	{
+
+		NS_LOG_FUNCTION(this << p);
+
 		if (!m_calcFcs)
 		{
 			return true;
@@ -123,9 +132,11 @@ namespace ns3 {
 		}
 	}
 
-	void
-		HrWpanMacTrailer::EnableFcs(bool enable)
+	void HrWpanMacTrailer::EnableFcs(bool enable)
 	{
+
+		NS_LOG_FUNCTION(this << enable);
+
 		m_calcFcs = enable;
 		if (!enable)
 		{
@@ -133,17 +144,20 @@ namespace ns3 {
 		}
 	}
 
-	bool
-		HrWpanMacTrailer::IsFcsEnabled(void)
+	bool HrWpanMacTrailer::IsFcsEnabled(void)
 	{
+		NS_LOG_FUNCTION(this);
+
 		return m_calcFcs;
 	}
+
 	/**
 	* This CRC32 algorithm has no table lookup
-	* TODO: Write a test!
 	*/
 	uint32_t HrWpanMacTrailer::GenerateCrc32(uint8_t *data, int length)
 	{
+
+		NS_LOG_FUNCTION(this << *data << length);
 
 		int i, j;
 		uint32_t byte, crc, mask;
@@ -166,6 +180,8 @@ namespace ns3 {
 
 	bool HrWpanMacTrailer::operator== (const HrWpanMacTrailer & macTrailer) const
 	{
+		NS_LOG_FUNCTION(this << macTrailer);
+
 		return (m_fcs == macTrailer.m_fcs) && (m_calcFcs == macTrailer.m_fcs);
 	}
 

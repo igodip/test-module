@@ -22,9 +22,14 @@
 #ifndef HR_WPAN_MAC_IDLE_STATE_H
 #define HR_WPAN_MAC_IDLE_STATE_H
 
+#include "hr-wpan-mac-abs-state.h"
+
 namespace ns3
 {
+	class HrWpanMacIdleState : public HrWpanMacAbsState
+	{
 
+	};
 }
 
 #endif

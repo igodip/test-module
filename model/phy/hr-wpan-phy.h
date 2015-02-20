@@ -138,7 +138,7 @@ namespace ns3 {
 		Ptr<HrWpanPhyAbsState> m_currentState;
 		Ptr<HrWpanPhyStateFactory> m_stateFactory;
 
-		Ptr<HrWpanPhyUser> m_phyUser;
+		HrWpanPhyUser* m_phyUser;
 	};
 
 }

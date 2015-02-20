@@ -33,4 +33,28 @@ namespace ns3 {
 		NS_LOG_FUNCTION(this);
 	}
 
+	void HrWpanMac::DoDispose()
+	{
+		NS_LOG_FUNCTION(this);
+
+		Object::Dispose();
+	}
+
+	void HrWpanMac::AssociatePhyProvider(HrWpanPhyProvider* hrWpanPhyProvider)
+	{
+		NS_LOG_FUNCTION(this << hrWpanPhyProvider);
+
+		m_phyProvider = hrWpanPhyProvider;
+
+	}
+
+	void HrWpanMac::ReceivePhyPdu(Ptr<Packet> p)
+	{
+		NS_LOG_FUNCTION(this << p);
+	}
+
+	void HrWpanMac::ReceiveLteControlMessage(Ptr<HrWpanPhyControlMessage> msg)
+	{
+		NS_LOG_FUNCTION(this << msg);
+	}
 }

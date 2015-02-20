@@ -24,14 +24,46 @@
 #define HR_WPAN_MAC_H
 
 #include <ns3/object.h>
+#include <ns3/traced-callback.h>
+#include <ns3/hr-wpan-dev-id.h>
 #include <ns3/hr-wpan-phy-user.h>
+#include <ns3/hr-wpan-phy-provider.h>
 
 namespace ns3 {
 
 	class HrWpanMac : public HrWpanPhyUser , public Object{
 	public:
 		HrWpanMac();
+		
+		static TypeId GetTypeId();
+
+		void AssociatePhyProvider(HrWpanPhyProvider* hrWpanPhyProvider);
+
+		//
+		virtual void ReceivePhyPdu(Ptr<Packet> p) = 0;
+
+		virtual void ReceiveLteControlMessage(Ptr<HrWpanPhyControlMessage> msg) = 0;
+
+	protected:
+
+		virtual void DoInitialize(void);
 		virtual void DoDispose();
+
+	private:
+
+		HrWpanPhyProvider* m_phyProvider;
+
+		HrWpanDevId m_devId;
+
+		// 
+		// Traced callbacks
+		
+		TracedCallback<Ptr<const Packet>, uint8_t, uint8_t > m_sentPktTrace;
+
+		TracedCallback<Ptr<const Packet> > m_macTxOkTrace;
+
+		TracedCallback<Ptr<const Packet> > m_macTxDropTrace;
+
 	};
 
 }
