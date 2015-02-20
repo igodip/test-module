@@ -102,6 +102,18 @@ namespace ns3 {
 		IEEE_802_15_3_REG_ARIB = 0x3
 	}HrWpanPhyCurrentRegDomainEnumeration;
 
+	/**
+	 * \typedef	enum
+	 *
+	 * \brief	Defines an alias representing the enum.
+	 */
+
+	typedef enum
+	{
+		IEEE_802_15_3_CCA_BUSY = 0x0,
+		IEEE_802_15_3_CCA_IDLE = 0x1
+	}HrWpanPhyCcaStatus;
+
 	struct HrWpanPhyPIBAttributes {
 		HrWpanPhyCurrentChannelEnumeration channelEnum;
 

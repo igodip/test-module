@@ -1,6 +1,6 @@
 /* -*-  Mode: C++; c-file-style: "gnu"; indent-tabs-mode:nil; -*- */
 /*
-* Copyright (c) 2015
+* Copyright (c) 2015 KTH
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License version 2 as
@@ -30,6 +30,8 @@
 #include "hr-wpan-phy-attributes.h"
 
 #include <ns3/hr-wpan-phy-state-factory.h>
+#include <ns3/hr-wpan-phy-provider.h>
+#include <ns3/hr-wpan-phy-user.h>
 
 namespace ns3 {
 
@@ -43,27 +45,10 @@ namespace ns3 {
 	class AntennaModel;
 	class NetDevice;
 	class UniformRandomVariable;
-	
-
-	/**
-	 * \typedef	Callback<void, uint32_t, Ptr<Packet>, uint8_t> PdDataIndicationCallback
-	 *
-	 * \brief	Defines an alias representing the pd data indication callback.
-	 */
-
-	typedef Callback<void, uint32_t, Ptr<Packet> > PdDataIndicationCallback;
-
-	/**
-	 * \typedef	Callback<void, uint32_t, HrWpanPhyEnumeration> PdDataConfirmationCallback
-	 *
-	 * \brief	Defines an alias representing the pd data confirmation callback.
-	 */
-
-	typedef Callback<void, uint32_t, HrWpanPhyEnumeration> PdDataConfirmationCallback;
 
 	
 
-	class HrWpanPhy : public SpectrumPhy {
+	class HrWpanPhy : public SpectrumPhy, public HrWpanPhyProvider {
 	public:
 		static TypeId GetTypeId(void);
 
@@ -94,12 +79,6 @@ namespace ns3 {
 
 		virtual void DoDispose();
 
-		void SetPdDataIndicationCallback(PdDataIndicationCallback c);
-		
-		void SetPdDataConfirmationCallback(PdDataConfirmationCallback c);
-
-		void PdDataRequest(const uint32_t psduLength,Ptr<Packet> p);
-
 		//Rx methods
 		bool IsRxOn() const;
 		void RxOn();
@@ -107,6 +86,10 @@ namespace ns3 {
 		//Tx methods
 		bool IsTxOn() const;
 		void TxOn();
+
+		//HrWpanPhyProvider
+		virtual void SendMacPdu(Ptr<Packet> p);
+		virtual void SendHrWpanControlMessage(Ptr<HrWpanPhyControlMessage> msg);
 
 	private:
 
@@ -147,10 +130,6 @@ namespace ns3 {
 		Ptr<const SpectrumValue> m_noise;
 
 		double m_rxSensitivity;
-
-		PdDataConfirmationCallback m_dataConfirmationCallback;
-
-		PdDataIndicationCallback m_dataIndicationCallback;
 		
 		Ptr<SpectrumValue> m_txPsd;
 
@@ -158,6 +137,8 @@ namespace ns3 {
 
 		Ptr<HrWpanPhyAbsState> m_currentState;
 		Ptr<HrWpanPhyStateFactory> m_stateFactory;
+
+		Ptr<HrWpanPhyUser> m_phyUser;
 	};
 
 }

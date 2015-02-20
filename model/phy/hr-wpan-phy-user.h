@@ -22,10 +22,19 @@
 #ifndef HR_WPAN_PHY_USER_H
 #define HR_WPAN_PHY_USER_H
 
+#include <ns3/packet.h>
+#include <ns3/hr-wpan-phy-control-message.h>
+
 namespace ns3
 {
 	class HrWpanPhyUser {
 
+	public:
+
+		virtual void ReceivePhyPdu(Ptr<Packet> p) = 0;
+
+		virtual void ReceiveLteControlMessage(Ptr<HrWpanPhyControlMessage> msg) = 0;
+		//Preamble
 	};
 }
 

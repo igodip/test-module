@@ -24,11 +24,14 @@
 #define HR_WPAN_MAC_H
 
 #include <ns3/object.h>
+#include <ns3/hr-wpan-phy-user.h>
 
 namespace ns3 {
 
-	class HrWpanMac {
-
+	class HrWpanMac : public HrWpanPhyUser , public Object{
+	public:
+		HrWpanMac();
+		virtual void DoDispose();
 	};
 
 }

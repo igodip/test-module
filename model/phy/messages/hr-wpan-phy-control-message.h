@@ -15,29 +15,18 @@
 * along with this program; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *
-* Authors:
-*  Igor Di Paolo <igor.di.paolo@gmail.com>
+* Author:
+*	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef HR_WPAN_PHY_PROVIDER_H
-#define HR_WPAN_PHY_PROVIDER_H
-
-#include <ns3/packet.h>
-#include <ns3/hr-wpan-phy-control-message.h>
+#ifndef HR_WPAN_PHY_CONTROL_MESSAGE_H
+#define HR_WPAN_PHY_CONTROL_MESSAGE_H
 
 namespace ns3
 {
-	class HrWpanPhyProvider {
+	class HrWpanPhyControlMessage
+	{
 
-	public:
-		//virtual 
-		virtual void SendMacPdu(Ptr<Packet> p) = 0;
-
-		/**
-		* \brief Send SendLteControlMessage (PDCCH map, CQI feedbacks) using the ideal control channel
-		* \param msg the Ideal Control Message to send
-		*/
-		virtual void SendHrWpanControlMessage(Ptr<HrWpanPhyControlMessage> msg) = 0;
 	};
 }
 

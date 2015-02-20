@@ -145,11 +145,15 @@ namespace ns3 {
 		if (lrWpanRxParams == 0)
 		{
 			Simulator::Schedule(spectrumRxParams->duration, &HrWpanPhy::EndRx, this, spectrumRxParams);
+			return;
 		}
 
-		//NS_LOG_DEBUG(this << " receiving packet with power: " << 10 * log10(HrWpanSpectrumValueHelper::TotalAvgPower(lrWpanRxParams->psd, m_phyPIBAttributes.phyCurrentChannel)) + 30 << "dBm");
+		//If the strength of the received signal is enough
+
+		Ptr<Packet> p = (lrWpanRxParams->packetBurst->GetPackets()).front();
 		
-		
+		NS_ASSERT(p != 0);
+		m_currentState->StartRx(spectrumRxParams);
 
 	}
 
@@ -157,9 +161,16 @@ namespace ns3 {
 	{
 		NS_LOG_FUNCTION(this << spectrumRxParams);
 
-		if (m_dataIndicationCallback.IsNull())
+		Ptr<HrWpanSpectrumSignalParameters> spectrum = DynamicCast<Ptr<HrWpanSpectrumSignalParameters>>(spectrumRxParams);
+
+		if (spectrum == 0)
 		{
-			m_dataIndicationCallback(10, NULL);
+			return;
+		}
+
+		if (m_phyUser)
+		{
+			m_phyUser->ReceivePhyPdu(spectrum->packetBurst->GetPackets().front());
 		}
 	}
 
@@ -175,19 +186,14 @@ namespace ns3 {
 		return m_mobilityModel;
 	}
 
-	void HrWpanPhy::SetPdDataConfirmationCallback(PdDataConfirmationCallback pd)
-	{
+	bool HrWpanPhy::IsRxOn() const {
+		
 		NS_LOG_FUNCTION(this);
-		m_dataConfirmationCallback = pd;
+
+		return true;
 	}
 
-	void HrWpanPhy::SetPdDataIndicationCallback(PdDataIndicationCallback pd)
-	{
-		NS_LOG_FUNCTION(this);
-		m_dataIndicationCallback = pd;
-	}
-
-	void HrWpanPhy::PdDataRequest(const uint32_t psduLength, Ptr<Packet> packet)
+	void HrWpanPhy::SendMacPdu(Ptr<Packet> p)
 	{
 		NS_LOG_FUNCTION(this);
 
@@ -197,13 +203,13 @@ namespace ns3 {
 		txParams->psd = m_txPsd;
 		txParams->txAntenna = m_antenna;
 		Ptr<PacketBurst> pb = CreateObject<PacketBurst>();
-		pb->AddPacket(packet);
+		pb->AddPacket(p);
 		txParams->packetBurst = pb;
 		m_channel->StartTx(txParams);
 	}
 
-	bool HrWpanPhy::IsRxOn() const {
-		
-		return true;
+	void HrWpanPhy::SendHrWpanControlMessage(Ptr<HrWpanPhyControlMessage> msg)
+	{
+
 	}
 }
