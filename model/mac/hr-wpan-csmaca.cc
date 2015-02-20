@@ -15,19 +15,13 @@
 * along with this program; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *
-* Author:
-*	Igor Di Paolo <igor.di.paolo@gmail.com>
+* Authors:
+*  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef HR_WPAN_NET_DEVICE_FACTORY_H
-#define HR_WPAN_NET_DEVICE_FACTORY_H
+#include "hr-wpan-csmaca.h"
 
 namespace ns3
 {
-	class HrWpanNetDeviceFactory
-	{
 
-	};
 }
-
-#endif

@@ -23,12 +23,29 @@
 #define HR_WPAN_MAC_PROVIDER_H
 
 #include <ns3/object.h>
+#include <ns3/packet.h>
+#include <ns3/hr-wpan-dev-id.h>
 
 namespace ns3
 {
 	class HrWpanMacProvider
 	{
+	public:
+		
+		struct TrasnmitPduAsyncParameters
+		{
+			Ptr<Packet> pdu;
+			
+		};
 
+		virtual void TransmitPduAsync(const TrasnmitPduAsyncParameters & params) = 0;
+
+		struct TransmitPduIsochParameters
+		{
+			Ptr<Packet> pdu;
+		};
+
+		virtual void TransmitPduIsoch(const TransmitPduIsochParameters & params) = 0;
 	};
 }
 

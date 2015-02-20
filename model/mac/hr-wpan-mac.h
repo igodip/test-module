@@ -28,6 +28,7 @@
 #include <ns3/hr-wpan-dev-id.h>
 #include <ns3/hr-wpan-phy-user.h>
 #include <ns3/hr-wpan-phy-provider.h>
+#include <ns3/hr-wpan-mac
 
 namespace ns3 {
 
