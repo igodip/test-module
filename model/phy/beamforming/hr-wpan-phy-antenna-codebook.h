@@ -19,14 +19,12 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef HR_WPAN_PHY_CONTROL_MESSAGE_H
-#define HR_WPAN_PHY_CONTROL_MESSAGE_H
-
-#include <ns3/simple-ref-count.h>
+#ifndef HR_WPAN_PHY_ANTENNA_CODEBOOK_H
+#define HR_WPAN_PHY_ANTENNA_CODEBOOK_H
 
 namespace ns3
 {
-	class HrWpanPhyControlMessage : public SimpleRefCount<HrWpanPhyControlMessage>
+	class HrWpanPhyAntennaCodebook
 	{
 
 	};

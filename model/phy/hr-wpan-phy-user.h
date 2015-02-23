@@ -33,7 +33,7 @@ namespace ns3
 
 		virtual void ReceivePhyPdu(Ptr<Packet> p) = 0;
 
-		virtual void ReceiveLteControlMessage(Ptr<HrWpanPhyControlMessage> msg) = 0;
+		virtual void ReceivePhyControlMessage(Ptr<HrWpanPhyControlMessage> msg) = 0;
 		//Preamble
 	};
 }

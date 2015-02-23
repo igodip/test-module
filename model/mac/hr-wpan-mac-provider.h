@@ -25,6 +25,7 @@
 #include <ns3/object.h>
 #include <ns3/packet.h>
 #include <ns3/hr-wpan-dev-id.h>
+#include <ns3/hr-wpan-mac-header.h>
 
 namespace ns3
 {
@@ -42,7 +43,23 @@ namespace ns3
 
 		struct TransmitPduIsochParameters
 		{
-			Ptr<Packet> pdu;
+			//RequestID
+			// StreamIndex
+			// TransmitTimeout
+			// MaxRetries
+			// SNAPHeaderPresent
+			// ACKRequested
+			// ConfirmRequested
+			// Length
+			// Data
+			// DataType
+			// UEPAllowed
+			// InterlacedFieldIndication
+			// VideoFrameNumber
+			// HPosition
+			// VPosition
+			HrWpanDevId trgtId;
+			HrWpanDevId origId;
 		};
 
 		virtual void TransmitPduIsoch(const TransmitPduIsochParameters & params) = 0;

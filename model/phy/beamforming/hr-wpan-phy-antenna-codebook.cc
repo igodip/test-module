@@ -19,17 +19,8 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef HR_WPAN_PHY_CONTROL_MESSAGE_H
-#define HR_WPAN_PHY_CONTROL_MESSAGE_H
+#include "hr-wpan-phy-antenna-codebook.h"
 
-#include <ns3/simple-ref-count.h>
+namespace ns3 {
 
-namespace ns3
-{
-	class HrWpanPhyControlMessage : public SimpleRefCount<HrWpanPhyControlMessage>
-	{
-
-	};
 }
-
-#endif

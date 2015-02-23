@@ -19,17 +19,34 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef HR_WPAN_PHY_CONTROL_MESSAGE_H
-#define HR_WPAN_PHY_CONTROL_MESSAGE_H
+#ifndef HR_WPAN_PHY_ULA_ANTENNA_H
+#define HR_WPAN_PHY_ULA_ANTENNA_H
 
-#include <ns3/simple-ref-count.h>
+#include <ns3/antenna-model.h>
+#include <ns3/parabolic-antenna-model.h>
 
 namespace ns3
 {
-	class HrWpanPhyControlMessage : public SimpleRefCount<HrWpanPhyControlMessage>
+
+	class HrWpanPhyUlaAntenna : public AntennaModel
 	{
+	public:
+
+		HrWpanPhyUlaAntenna(void);
+		virtual ~HrWpanPhyUlaAntenna();
+
+		static TypeId GetTypeId();
+
+		virtual double GetGainDb(Angles a) ;
+
+		void 
+
+	private:
+
+		ParabolicAntennaModel
 
 	};
+
 }
 
 #endif

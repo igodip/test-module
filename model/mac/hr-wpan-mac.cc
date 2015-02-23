@@ -33,6 +33,16 @@ namespace ns3 {
 		NS_LOG_FUNCTION(this);
 	}
 
+	TypeId HrWpanMac::GetTypeId()
+	{
+		static TypeId tid = TypeId("ns3::HrWpanPhy")
+			.SetParent<Object>()
+			.AddConstructor<HrWpanMac>()
+			;
+
+		return tid;
+	}
+
 	void HrWpanMac::DoDispose()
 	{
 		NS_LOG_FUNCTION(this);
@@ -53,8 +63,17 @@ namespace ns3 {
 		NS_LOG_FUNCTION(this << p);
 	}
 
-	void HrWpanMac::ReceiveLteControlMessage(Ptr<HrWpanPhyControlMessage> msg)
+	void HrWpanMac::ReceivePhyControlMessage(Ptr<HrWpanPhyControlMessage> cMsg)
 	{
-		NS_LOG_FUNCTION(this << msg);
+		NS_LOG_FUNCTION(this << cMsg);
+		
 	}
+
+	void HrWpanMac::DoInitialize(void)
+	{
+		NS_LOG_FUNCTION(this);
+
+		Object::Initialize();
+	}
+
 }
