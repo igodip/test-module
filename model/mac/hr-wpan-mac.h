@@ -29,6 +29,7 @@
 #include <ns3/hr-wpan-phy-user.h>
 #include <ns3/hr-wpan-phy-provider.h>
 #include <ns3/hr-wpan-mac.h>
+#include <ns3/mac64-address.h>
 
 namespace ns3 {
 
@@ -54,6 +55,7 @@ namespace ns3 {
 		HrWpanPhyProvider* m_phyProvider;
 
 		HrWpanDevId m_devId;
+		Mac64Address macAddress;
 
 		// Traced Callbacks
 		// 

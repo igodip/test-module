@@ -11,6 +11,9 @@ def build(bld):
 		'model/channel/hr-wpan-error-model.cc',
 		'model/phy/messages/hr-wpan-phy-control-message.cc',
 		'model/phy/messages/hr-wpan-phy-control-message-factory.cc',
+		'model/phy/beamforming/hr-wpan-phy-ula-antenna.cc',
+		'model/phy/beamforming/hr-wpan-phy-ula-beamforming.cc',
+		'model/phy/beamforming/hr-wpan-phy-ula-params.cc',
 		'model/phy/hr-wpan-phy.cc',
 		'model/devices/hr-wpan-net-device.cc',
 		'model/phy/states/hr-wpan-phy-abs-state.cc',
@@ -30,9 +33,9 @@ def build(bld):
     module_test = bld.create_ns3_module_test_library('hr-wpan')
 
     module_test.source = [
-#		'test/hr-wpan-error-model-test.cc',
         'test/hr-wpan-packet-test.cc',
 		'test/hr-wpan-spectrum-value-helper-test.cc',
+		'test/hr-wpan-ula-beamforming-test.cc',
         ]
      
     headers = bld(features='ns3header')
@@ -46,6 +49,9 @@ def build(bld):
 		'model/channel/hr-wpan-error-model.h',
 		'model/phy/messages/hr-wpan-phy-control-message.h',
 		'model/phy/messages/hr-wpan-phy-control-message-factory.h',
+		'model/phy/beamforming/hr-wpan-phy-ula-antenna.h',
+		'model/phy/beamforming/hr-wpan-phy-ula-beamforming.h',
+		'model/phy/beamforming/hr-wpan-phy-ula-params.h',
 		'model/phy/hr-wpan-phy-user.h',
 		'model/phy/hr-wpan-phy-provider.h',
 		'model/phy/hr-wpan-phy.h',
@@ -57,7 +63,7 @@ def build(bld):
 		'model/phy/states/hr-wpan-phy-tx-on-state.h',
 		'model/phy/states/hr-wpan-phy-tx-busy-state.h',
 		'model/phy/states/hr-wpan-phy-state-factory.h',
-		'model/devices/hr-wpan-net-device.cc',
+		'model/devices/hr-wpan-net-device.h',
 		'helper/phy/hr-wpan-spectrum-model-factory.h',
 		'helper/phy/hr-wpan-spectrum-value-helper.h',
 		'helper/phy/hr-wpan-interference-helper.h',

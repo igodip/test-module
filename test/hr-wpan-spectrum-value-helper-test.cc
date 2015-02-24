@@ -79,4 +79,4 @@ HrWpanSpectrumValueHelperTestSuite::HrWpanSpectrumValueHelperTestSuite()
 	AddTestCase(new HrWpanSpectrumValueHelperTestCase, TestCase::QUICK);
 }
 
-static HrWpanSpectrumValueHelperTestSuite lrWpanSpectrumValueHelperTestSuite;
+static HrWpanSpectrumValueHelperTestSuite hrWpanSpectrumValueHelperTestSuite;

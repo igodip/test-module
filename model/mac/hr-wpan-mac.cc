@@ -35,7 +35,7 @@ namespace ns3 {
 
 	TypeId HrWpanMac::GetTypeId()
 	{
-		static TypeId tid = TypeId("ns3::HrWpanPhy")
+		static TypeId tid = TypeId("ns3::HrWpanMac")
 			.SetParent<Object>()
 			.AddConstructor<HrWpanMac>()
 			;
@@ -46,6 +46,8 @@ namespace ns3 {
 	void HrWpanMac::DoDispose()
 	{
 		NS_LOG_FUNCTION(this);
+
+		//TODO check this
 
 		Object::Dispose();
 	}
@@ -61,6 +63,11 @@ namespace ns3 {
 	void HrWpanMac::ReceivePhyPdu(Ptr<Packet> p)
 	{
 		NS_LOG_FUNCTION(this << p);
+
+		//Trailer trailer;
+
+		//p->RemoveTrailer(trailer);
+
 	}
 
 	void HrWpanMac::ReceivePhyControlMessage(Ptr<HrWpanPhyControlMessage> cMsg)

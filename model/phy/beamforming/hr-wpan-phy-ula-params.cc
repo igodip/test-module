@@ -19,9 +19,33 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#include "hr-wpan-phy-ula-antenna.h"
+#include "hr-wpan-phy-ula-params.h"
+#include <ns3/log.h>
+#include <ns3/angles.h>
+#include <cmath>
 
-namespace ns3
-{
+namespace ns3 {
+
+	HrWpanPhyUlaParams::HrWpanPhyUlaParams()
+	{
+		m_orientation =0;
+		m_beamwidth = M_PI/2;
+	}
+
+	HrWpanPhyUlaParams::HrWpanPhyUlaParams(double orientation, double beamwidth) 		
+	{
+		m_orientation = DegreesToRadians(orientation);
+		m_beamwidth = DegreesToRadians(beamwidth);
+	}
+
+	bool HrWpanPhyUlaParams::operator==(const HrWpanPhyUlaParams & s) const
+	{
+		if (s.m_beamwidth == m_beamwidth && s.m_orientation == m_orientation)
+		{
+			return true;
+		}
+
+		return false;
+	}
 
 }

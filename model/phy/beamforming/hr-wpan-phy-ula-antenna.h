@@ -25,13 +25,16 @@
 #include <ns3/antenna-model.h>
 #include <ns3/parabolic-antenna-model.h>
 
+#include "hr-wpan-phy-ula-params.h"
+
 namespace ns3
 {
 
 	class HrWpanPhyUlaAntenna : public AntennaModel
 	{
+		
 	public:
-
+		
 		HrWpanPhyUlaAntenna(void);
 		virtual ~HrWpanPhyUlaAntenna();
 
@@ -39,11 +42,19 @@ namespace ns3
 
 		virtual double GetGainDb(Angles a) ;
 
-		void 
+		void SetUlaParams(const HrWpanPhyUlaParams & ulaParams);
+		HrWpanPhyUlaParams GetUlaParams() const;
 
-	private:
+		void SetOrientation(double orientation);
+		double GetOrientation() const;
 
-		ParabolicAntennaModel
+	protected:
+
+		double m_startOrientation;
+
+		HrWpanPhyUlaParams m_currentParams;
+
+		ParabolicAntennaModel m_parabolicAntennaModel;
 
 	};
 

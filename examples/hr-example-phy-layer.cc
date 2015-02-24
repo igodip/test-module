@@ -53,7 +53,7 @@ int main(int argc, char ** argv)
 	sender->SetChannel(channel);
 	receiver->SetChannel(channel);
 
-	//Ptr<AntennaModel> senderAntenna = CreateObject<CosineAn
+	//Ptr<AntennaModel> senderAntenna = CreateObject<
 
 	Ptr<LogDistancePropagationLossModel> lossModel = CreateObject<LogDistancePropagationLossModel>();
 

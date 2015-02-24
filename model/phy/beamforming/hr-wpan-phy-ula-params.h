@@ -19,13 +19,27 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef HR_WPAN_PHY_ANTENNA_CODEBOOK_H
-#define HR_WPAN_PHY_ANTENNA_CODEBOOK_H
+#ifndef HR_WPAN_PHY_ULA_PARAMS
+#define HR_WPAN_PHY_ULA_PARAMS
 
 namespace ns3
 {
-	class HrWpanPhyAntennaCodebook
+
+	class HrWpanPhyUlaParams
 	{
+	public:
+		
+		friend class HrWpanPhyUlaAntenna;
+
+		HrWpanPhyUlaParams(void);
+		HrWpanPhyUlaParams(double orientation,double beamwidth);
+
+		bool operator ==(const HrWpanPhyUlaParams & s)const ;
+
+	protected:
+
+		double m_orientation;
+		double m_beamwidth;
 
 	};
 }
