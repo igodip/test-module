@@ -26,14 +26,19 @@
 
 namespace ns3 {
 
-	class HrWpanNetDevice : NetDevice {
-	
-	public:
+	namespace HrWpan
+	{
+		
+		class HrWpanNetDevice : NetDevice {
 
-		HrWpanNetDevice(void);
+		public:
 
-	};
+			HrWpanNetDevice(void);
 
-}
+		};
 
-#endif
+	} //namespace HrWpan
+
+} // namespace ns3
+
+#endif // HR_WPAN_NET_DEVICE

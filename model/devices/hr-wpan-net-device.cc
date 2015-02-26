@@ -23,8 +23,14 @@
 
 namespace ns3
 {
-	HrWpanNetDevice::HrWpanNetDevice(void)
+	namespace HrWpan
 	{
 
+		HrWpanNetDevice::HrWpanNetDevice(void)
+		{
+
+		}
+
 	}
+
 }

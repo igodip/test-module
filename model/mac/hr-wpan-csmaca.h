@@ -26,13 +26,19 @@
 
 namespace ns3
 {
-	class HrWpanCsmaCa : public Object
+	namespace HrWPan
 	{
-	public:
 
-	protected:
+		class CsmaCa : public Object
+		{
+		public:
 
-	};
-}
+		protected:
 
-#endif
+		};
+
+	} // namespace HrWpan
+
+} // namespace ns3
+
+#endif // HR_WPAN_CSMACA_H

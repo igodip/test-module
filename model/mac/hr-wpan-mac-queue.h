@@ -62,6 +62,7 @@ namespace ns3
 		uint32_t m_maxSize;
 
 	};
-}
+
+} //namespace ns3
 
 #endif //HR_WPAN_MAC_QUEUE_H
