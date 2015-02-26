@@ -4,3 +4,6 @@ def build(bld):
     obj = bld.create_ns3_program('hr-example-phy-layer', ['hr-wpan'])
     obj.source = 'hr-example-phy-layer.cc'
 
+    obj = bld.create_ns3_program('hr-example-mac-layer', ['hr-wpan'])
+    obj.source = 'hr-example-mac-layer.cc'
+

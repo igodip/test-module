@@ -49,10 +49,12 @@ namespace ns3
 		//Change the antenna orientation also
 		
 		double newOrientation = fmod(m_startOrientation + ulaParams.m_orientation, 2*M_PI);
-
 		
-		m_parabolicAntennaModel.SetOrientation(newOrientation);
-		m_parabolicAntennaModel.SetBeamwidth(ulaParams.m_beamwidth);
+		NS_LOG_DEBUG("New orientation = " << RadiansToDegrees(newOrientation));
+		NS_LOG_DEBUG("New beamwidth = " << RadiansToDegrees(ulaParams.m_beamwidth));
+
+		m_parabolicAntennaModel.SetOrientation(RadiansToDegrees(newOrientation));
+		m_parabolicAntennaModel.SetBeamwidth(RadiansToDegrees(ulaParams.m_beamwidth));
 
 	}
 

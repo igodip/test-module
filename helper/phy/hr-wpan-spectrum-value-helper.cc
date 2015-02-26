@@ -44,7 +44,7 @@ namespace ns3 {
 
 	Ptr<SpectrumValue> HrWpanSpectrumValueHelper::CreateTxPowerSpectralDensity(double txPower, uint32_t channel) {
 
-		NS_LOG_FUNCTION(this);
+		NS_LOG_FUNCTION(this << txPower << channel);
 		Ptr<SpectrumValue> txPsd = Create<SpectrumValue>(HrWpanSpectrumModelFactory::getInstance().getSpectrumModel());
 
 		//txPower is expressed in dBm. We must convert it into natural unit (W).
@@ -59,16 +59,13 @@ namespace ns3 {
 		// 3 62.640 centered 2.16 GHz large
 		// 4 64.800 centered 2.16 GHz large
 		
-		NS_ASSERT_MSG((channel >= 1 && channel <= 4), "Invalid channel numbers");
+		NS_ASSERT_MSG((channel >= 1 && channel <= 4), "Invalid channel number");
 
 		for (int i = 0; i < 720; ++i)
 		{
 			(*txPsd)[720 * (channel-1) + i] = txPowerDensity;
 		}
 		
-
-
-
 		return txPsd;
 	}
 
@@ -83,7 +80,7 @@ namespace ns3 {
 		// noise Floor (W) which accounts for thermal noise and non-idealities of the receiver
 		//double noisePowerDensity = m_noiseFactor * Nt;
 
-		NS_ASSERT_MSG((channel >= 1 && channel <= 4), "Invalid channel numbers");
+		NS_ASSERT_MSG((channel >= 1 && channel <= 4), "Invalid channel number");
 
 		return noisePsd;
 
@@ -92,7 +89,8 @@ namespace ns3 {
 	double HrWpanSpectrumValueHelper::TotalAvgPower(Ptr<const SpectrumValue> psd, uint32_t channel)
 	{
 
-		NS_LOG_FUNCTION(psd);
+		
+		NS_ASSERT_MSG((channel >= 1 && channel <= 4), "Invalid channel number");
 		
 		double totalAvgPower = 0.0;
 

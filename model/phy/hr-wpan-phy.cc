@@ -154,7 +154,7 @@ namespace ns3 {
 		
 		NS_ASSERT(p != 0);
 		m_currentState->StartRx(spectrumRxParams);
-
+		Simulator::Schedule(spectrumRxParams->duration, &HrWpanPhy::EndRx, this, spectrumRxParams);
 	}
 
 	void HrWpanPhy::EndRx(Ptr <SpectrumSignalParameters> spectrumRxParams)
@@ -162,6 +162,9 @@ namespace ns3 {
 		NS_LOG_FUNCTION(this << spectrumRxParams);
 
 		Ptr<HrWpanSpectrumSignalParameters> spectrum = DynamicCast<HrWpanSpectrumSignalParameters >(spectrumRxParams);
+
+		//NS_LOG_DEBUG(this << " receiving packet with power: " << 10 * log10(HrWpanSpectrumValueHelper::TotalAvgPower(spectrum->psd, 1)) + 30 << "dBm");
+		
 
 		if (spectrum == 0)
 		{
@@ -193,9 +196,17 @@ namespace ns3 {
 		return true;
 	}
 
+	bool HrWpanPhy::IsTxOn() const {
+
+		NS_LOG_FUNCTION(this);
+
+		return true;
+
+	}
+
 	void HrWpanPhy::SendMacPdu(Ptr<Packet> p)
 	{
-		NS_LOG_FUNCTION(this);
+		NS_LOG_FUNCTION(this << p);
 
 		Ptr<HrWpanSpectrumSignalParameters> txParams = Create<HrWpanSpectrumSignalParameters>();
 		txParams->duration = MicroSeconds(10);
@@ -210,6 +221,28 @@ namespace ns3 {
 
 	void HrWpanPhy::SendHrWpanControlMessage(Ptr<HrWpanPhyControlMessage> msg)
 	{
-
+		NS_LOG_FUNCTION(this << msg);
+		//TODO
 	}
-}
+
+	HrWpanPhy* HrWpanPhy::GetPointer() const
+	{
+		NS_LOG_FUNCTION(this);
+		return (HrWpanPhy* ) this;
+	}
+
+	void HrWpanPhy::SetPhyUser(HrWpanPhyUser * user)
+	{
+		NS_LOG_FUNCTION(this << user);
+
+		m_phyUser = user;
+	}
+
+	HrWpanPhyUser *  HrWpanPhy::GetPhyUser(void) const
+	{
+		NS_LOG_FUNCTION(this);
+
+		return m_phyUser;
+	}
+
+} // namespace ns3

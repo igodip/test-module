@@ -42,10 +42,41 @@ namespace ns3
 
 		virtual double GetGainDb(Angles a) ;
 
+		/**
+		 * \fn	void HrWpanPhyUlaAntenna::SetUlaParams(const HrWpanPhyUlaParams & ulaParams);
+		 *
+		 * \brief	Sets ula parameters.
+		 *
+		 * \param	ulaParams	A variable-length parameters list containing ula parameters.
+		 */
+
 		void SetUlaParams(const HrWpanPhyUlaParams & ulaParams);
+
+		/**
+		 * \fn	HrWpanPhyUlaParams HrWpanPhyUlaAntenna::GetUlaParams() const;
+		 *
+		 * \brief	Gets ula parameters.
+		 * \return	The ula parameters.
+		 */
+
 		HrWpanPhyUlaParams GetUlaParams() const;
 
+		/**
+		 * \fn	void HrWpanPhyUlaAntenna::SetOrientation(double orientation);
+		 *
+		 * \brief	Sets an orientation.
+		 * \param	orientation	The orientation in degrees.
+		 */
+
 		void SetOrientation(double orientation);
+
+		/**
+		 * \fn	double HrWpanPhyUlaAntenna::GetOrientation() const;
+		 *
+		 * \brief	Gets the orientation.
+		 * \return	The orientation in degrees.
+		 */
+
 		double GetOrientation() const;
 
 	protected:

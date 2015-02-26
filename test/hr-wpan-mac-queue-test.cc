@@ -15,49 +15,56 @@
 * along with this program; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *
-* Author:  Igor Di Paolo <igor.di.paolo@gmail.com>
+* Author: Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
 #include <ns3/test.h>
-#include <ns3/packet.h>
 #include <ns3/log.h>
-#include <ns3/hr-wpan-phy-state-factory.h>
+
 
 using namespace ns3;
 
-NS_LOG_COMPONENT_DEFINE("hr-wpan-phy-state-test");
+NS_LOG_COMPONENT_DEFINE("HrWpanMacQueueTestCase");
 
-class HrWpanPhyStateTestCase : public TestCase {
+class HrWpanMacQueueTestCase : public TestCase
+{
 public:
-	HrWpanPhyStateTestCase();
-	virtual ~HrWpanPhyStateTestCase();
+	HrWpanMacQueueTestCase();
+	virtual ~HrWpanMacQueueTestCase();
+
 private:
 	virtual void DoRun(void);
+
+	uint32_t m_received;
 };
 
-HrWpanPhyStateTestCase::HrWpanPhyStateTestCase()
-	: TestCase("Test the state machine of the Physical layer")
-{}
-
-HrWpanPhyStateTestCase::~HrWpanPhyStateTestCase()
-{
-}
-
-void HrWpanPhyStateTestCase::DoRun()
+HrWpanMacQueueTestCase::HrWpanMacQueueTestCase()
+	: TestCase("Test the MAC Queue")
 {
 
 }
 
-class HrWpanPhyStateTestSuite : public TestSuite
+HrWpanMacQueueTestCase::~HrWpanMacQueueTestCase()
+{
+
+}
+
+void HrWpanMacQueueTestCase::DoRun(void)
+{
+
+}
+
+class HrWpanMacQueueTestSuite : public TestSuite
 {
 public:
-	HrWpanPhyStateTestSuite();
+	HrWpanMacQueueTestSuite();
 };
 
-HrWpanPhyStateTestSuite::HrWpanPhyStateTestSuite()
-	: TestSuite("hr-wpan-phy-state", UNIT)
+HrWpanMacQueueTestSuite::HrWpanMacQueueTestSuite()
+	: TestSuite("hr-wpan-mac-queue", UNIT)
 {
-	AddTestCase(new HrWpanPhyStateTestCase, TestCase::QUICK);
+	AddTestCase(new HrWpanMacQueueTestCase, TestCase::QUICK);
 }
 
-static HrWpanPhyStateTestSuite hrWpanPhyStateTestSuite;
+static HrWpanMacQueueTestSuite hrWpanMacQueueTestSuite;
+

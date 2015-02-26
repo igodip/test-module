@@ -45,18 +45,18 @@ namespace ns3
 		m_maxLeaves = 10; //TODO: Runtime max between odp, sectors and beams
 
 		//ODP
-		params.insert(std::map< int, const HrWpanPhyUlaParams *>::value_type(1, new HrWpanPhyUlaParams(45, 90)));
-		params.insert(std::map< int, const HrWpanPhyUlaParams *>::value_type(2, new HrWpanPhyUlaParams(315,90)));
+		params.insert(std::map< int, const HrWpanPhyUlaParams>::value_type(1,HrWpanPhyUlaParams(45, 90)));
+		params.insert(std::map< int, const HrWpanPhyUlaParams>::value_type(2,HrWpanPhyUlaParams(315,90)));
 
 		//
-		params.insert(std::map< int, const HrWpanPhyUlaParams *>::value_type(10, new HrWpanPhyUlaParams(285, 30)));
-		params.insert(std::map< int, const HrWpanPhyUlaParams *>::value_type(11, new HrWpanPhyUlaParams(315, 30)));
-		params.insert(std::map< int, const HrWpanPhyUlaParams *>::value_type(12, new HrWpanPhyUlaParams(345, 30)));
+		params.insert(std::map< int, const HrWpanPhyUlaParams>::value_type(10,HrWpanPhyUlaParams(285, 30)));
+		params.insert(std::map< int, const HrWpanPhyUlaParams>::value_type(11,HrWpanPhyUlaParams(315, 30)));
+		params.insert(std::map< int, const HrWpanPhyUlaParams>::value_type(12,HrWpanPhyUlaParams(345, 30)));
 
 		//
-		params.insert(std::map< int, const HrWpanPhyUlaParams *>::value_type(20, new HrWpanPhyUlaParams(15, 30)));
-		params.insert(std::map< int, const HrWpanPhyUlaParams *>::value_type(21, new HrWpanPhyUlaParams(45, 30)));
-		params.insert(std::map< int, const HrWpanPhyUlaParams *>::value_type(22, new HrWpanPhyUlaParams(75, 30)));
+		params.insert(std::map< int, const HrWpanPhyUlaParams>::value_type(20,HrWpanPhyUlaParams(15, 30)));
+		params.insert(std::map< int, const HrWpanPhyUlaParams>::value_type(21,HrWpanPhyUlaParams(45, 30)));
+		params.insert(std::map< int, const HrWpanPhyUlaParams>::value_type(22,HrWpanPhyUlaParams(75, 30)));
 
 	}
 
@@ -64,12 +64,9 @@ namespace ns3
 	{
 		NS_LOG_FUNCTION(this);
 
-		for (std::map<int, const HrWpanPhyUlaParams *>::iterator it = params.begin(); it != params.end(); ++it)
-			delete it->second;
-
 	}
 
-	const HrWpanPhyUlaParams * HrWpanPhyUlaBeamforming::GetParamsBySectorNumber(const int odp, const int sector) const
+	const HrWpanPhyUlaParams  HrWpanPhyUlaBeamforming::GetParamsBySectorNumber(const int odp, const int sector) const
 	{
 		NS_LOG_FUNCTION(this << odp << sector);
 
@@ -83,7 +80,7 @@ namespace ns3
 
 	}
 
-	const HrWpanPhyUlaParams * HrWpanPhyUlaBeamforming::GetParamsByOdpNumber(const int odp) const
+	const HrWpanPhyUlaParams  HrWpanPhyUlaBeamforming::GetParamsByOdpNumber(const int odp) const
 	{
 		NS_LOG_FUNCTION(this << odp);
 

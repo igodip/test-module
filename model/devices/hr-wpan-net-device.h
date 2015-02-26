@@ -22,9 +22,13 @@
 #ifndef HR_WPAN_NET_DEVICE_H
 #define HR_WPAN_NET_DEVICE_H
 
+#include <ns3/net-device.h>
+
 namespace ns3 {
 
-	class HrWpanNetDevice {
+	class HrWpanNetDevice : NetDevice {
+	
+	public:
 
 		HrWpanNetDevice(void);
 

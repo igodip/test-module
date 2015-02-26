@@ -36,6 +36,8 @@ def build(bld):
         'test/hr-wpan-packet-test.cc',
 		'test/hr-wpan-spectrum-value-helper-test.cc',
 		'test/hr-wpan-ula-beamforming-test.cc',
+		'test/hr-wpan-phy-state-test.cc',
+		'test/hr-wpan-mac-queue-test.cc'
         ]
      
     headers = bld(features='ns3header')

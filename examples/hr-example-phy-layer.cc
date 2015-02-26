@@ -27,16 +27,18 @@
 #include <ns3/single-model-spectrum-channel.h>
 #include <ns3/constant-position-mobility-model.h>
 #include <ns3/propagation-loss-model.h>
-#include <ns3/cosine-antenna-model.h>
+#include <ns3/hr-wpan-phy-ula-antenna.h>
+#include <ns3/hr-wpan-phy-ula-beamforming.h>
 
 
 using namespace ns3;
+
 
 void SendOnePacket(Ptr<HrWpanPhy> sender, Ptr<HrWpanPhy> receiver)
 {
 	uint32_t n = 10;
 	Ptr<Packet> p = Create<Packet>(n);
-	//sender->PdDataRequest(p->GetSize(), p);
+	sender->SendMacPdu(p);
 }
 
 
@@ -45,6 +47,7 @@ int main(int argc, char ** argv)
 	LogComponentEnableAll(LOG_PREFIX_FUNC);
 	LogComponentEnable("HrWpanPhy", LOG_LEVEL_ALL);
 	LogComponentEnable("SingleModelSpectrumChannel", LOG_LEVEL_ALL);
+	LogComponentEnable("ParabolicAntennaModel", LOG_LEVEL_ALL);
 
 	Ptr<HrWpanPhy> sender = CreateObject<HrWpanPhy>();
 	Ptr<HrWpanPhy> receiver = CreateObject<HrWpanPhy>();
@@ -53,7 +56,29 @@ int main(int argc, char ** argv)
 	sender->SetChannel(channel);
 	receiver->SetChannel(channel);
 
-	//Ptr<AntennaModel> senderAntenna = CreateObject<
+	Ptr<HrWpanPhyUlaAntenna> receiverAntenna = CreateObject<HrWpanPhyUlaAntenna>();
+	Ptr<HrWpanPhyUlaAntenna> senderAntenna = CreateObject<HrWpanPhyUlaAntenna>();
+
+	receiverAntenna->SetOrientation(180);
+	senderAntenna->SetOrientation(0);
+
+	HrWpanPhyUlaParams recParams = HrWpanPhyUlaBeamforming::GetInstance().GetParamsBySectorNumber(2,3);
+	HrWpanPhyUlaParams senParams = HrWpanPhyUlaBeamforming::GetInstance().GetParamsBySectorNumber(1, 1);
+
+	receiverAntenna->SetUlaParams(recParams);
+	senderAntenna->SetUlaParams(senParams);
+
+	Ptr<ParabolicAntennaModel> senderAntenna2 = CreateObject<ParabolicAntennaModel>();
+	
+	senderAntenna2->SetBeamwidth(3);
+	senderAntenna2->SetOrientation(90);
+
+	Ptr<ParabolicAntennaModel> receiverAntenna2 = CreateObject<ParabolicAntennaModel>();
+	receiverAntenna2->SetBeamwidth(3);
+	receiverAntenna2->SetOrientation(270);
+
+	receiver->SetAntenna(receiverAntenna2);
+	sender->SetAntenna(senderAntenna2);
 
 	Ptr<LogDistancePropagationLossModel> lossModel = CreateObject<LogDistancePropagationLossModel>();
 
@@ -67,7 +92,7 @@ int main(int argc, char ** argv)
 	Ptr<ConstantPositionMobilityModel> receiverMobility = CreateObject<ConstantPositionMobilityModel>();
 	receiver->SetMobility(receiverMobility);
 
-	Vector posReceiver = Vector(2, 2, 2);
+	Vector posReceiver = Vector(0, 2, 0);
 	receiverMobility->SetPosition(posReceiver);
 
 	Simulator::Stop(Seconds(10.0));

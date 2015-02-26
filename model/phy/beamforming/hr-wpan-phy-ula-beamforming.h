@@ -39,10 +39,8 @@ namespace ns3
 		//std::vector<const HrWpanPhyUlaBeamforming *> GetSectorsByODPNumber(const int i) const;
 		//std::vector<const HrWpanPhyUlaBeamforming *> GetBeamBySectorNumber(const int i) const;
 
-		const HrWpanPhyUlaParams * GetParamsBySectorNumber(const int odp,const int sector)const;
-		const HrWpanPhyUlaParams * GetParamsByOdpNumber(const int odp) const;
-
-
+		const HrWpanPhyUlaParams GetParamsBySectorNumber(const int odp,const int sector)const;
+		const HrWpanPhyUlaParams GetParamsByOdpNumber(const int odp) const;
 
 	protected:
 
@@ -59,7 +57,7 @@ namespace ns3
 
 		uint8_t m_maxLeaves;
 
-		std::map<int, const HrWpanPhyUlaParams *> params;
+		std::map<int, const HrWpanPhyUlaParams> params;
 
 	};
 }

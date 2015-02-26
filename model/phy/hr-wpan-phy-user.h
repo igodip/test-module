@@ -31,10 +31,26 @@ namespace ns3
 
 	public:
 
+		/**
+		 * \fn	virtual void HrWpanPhyUser::ReceivePhyPdu(Ptr<Packet> p) = 0;
+		 *
+		 * \brief	Receive phy PDU.
+		 *
+		 * \param	p	The Ptr&lt;Packet&gt; to process.
+		 */
+
 		virtual void ReceivePhyPdu(Ptr<Packet> p) = 0;
 
+		/**
+		 * \fn	virtual void HrWpanPhyUser::ReceivePhyControlMessage(Ptr<HrWpanPhyControlMessage> msg) = 0;
+		 *
+		 * \brief	Receive phy control message.
+		 *
+		 * \param	msg	The message.
+		 */
+
 		virtual void ReceivePhyControlMessage(Ptr<HrWpanPhyControlMessage> msg) = 0;
-		//Preamble
+
 	};
 }
 

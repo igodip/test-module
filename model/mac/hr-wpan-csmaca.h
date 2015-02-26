@@ -22,9 +22,17 @@
 #ifndef HR_WPAN_CSMACA_H
 #define HR_WPAN_CSMACA_H
 
+#include <ns3/object.h>
+
 namespace ns3
 {
+	class HrWpanCsmaCa : public Object
+	{
+	public:
 
+	protected:
+
+	};
 }
 
 #endif

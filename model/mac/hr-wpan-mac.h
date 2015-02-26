@@ -29,7 +29,10 @@
 #include <ns3/hr-wpan-phy-user.h>
 #include <ns3/hr-wpan-phy-provider.h>
 #include <ns3/hr-wpan-mac.h>
-#include <ns3/mac64-address.h>
+#include <ns3/hr-wpan-mac-header.h>
+#include <ns3/hr-wpan-mac-trailer.h>
+#include <ns3/mac48-address.h>
+#include <ns3/event-id.h>
 
 namespace ns3 {
 
@@ -41,9 +44,18 @@ namespace ns3 {
 
 		void AssociatePhyProvider(HrWpanPhyProvider* hrWpanPhyProvider);
 
-		//
 		virtual void ReceivePhyPdu(Ptr<Packet> p) ;
 		virtual void ReceivePhyControlMessage(Ptr<HrWpanPhyControlMessage> msg) ;
+
+		void AckWaitTimeout(void);
+		void PrepareRetransmission(void);
+
+		HrWpanMac * GetPointer(void) const;
+
+		void SetPhyProvider(HrWpanPhyProvider * provider);
+		HrWpanPhyProvider * GetPhyProvider(void) const;
+
+		void McpsDataRequest(Ptr<Packet> p);
 
 	protected:
 
@@ -55,16 +67,15 @@ namespace ns3 {
 		HrWpanPhyProvider* m_phyProvider;
 
 		HrWpanDevId m_devId;
-		Mac64Address macAddress;
-
-		// Traced Callbacks
-		// 
+		Mac48Address m_macAddress;
 		
 		TracedCallback<Ptr<const Packet>, uint8_t, uint8_t > m_sentPktTrace;
 
 		TracedCallback<Ptr<const Packet> > m_macTxOkTrace;
 
 		TracedCallback<Ptr<const Packet> > m_macTxDropTrace;
+
+		EventId m_ackWaitTimeout;
 
 	};
 

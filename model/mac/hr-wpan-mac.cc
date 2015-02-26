@@ -47,9 +47,7 @@ namespace ns3 {
 	{
 		NS_LOG_FUNCTION(this);
 
-		//TODO check this
-
-		Object::Dispose();
+		Object::DoDispose();
 	}
 
 	void HrWpanMac::AssociatePhyProvider(HrWpanPhyProvider* hrWpanPhyProvider)
@@ -64,9 +62,12 @@ namespace ns3 {
 	{
 		NS_LOG_FUNCTION(this << p);
 
-		//Trailer trailer;
-
-		//p->RemoveTrailer(trailer);
+		//Lancio il pacchetto cosi' a secco! :D
+		// 
+		//m_phyProvider->SendMacPdu(p);
+		//moveTrailer(trailer);
+		
+		//Check if it's for me
 
 	}
 
@@ -83,4 +84,33 @@ namespace ns3 {
 		Object::Initialize();
 	}
 
-}
+	HrWpanMac * HrWpanMac::GetPointer(void) const
+	{
+		NS_LOG_FUNCTION(this);
+
+		return (HrWpanMac *)this;
+	}
+
+	void HrWpanMac::SetPhyProvider(HrWpanPhyProvider * provider)
+	{
+		NS_LOG_FUNCTION(this << provider);
+
+		m_phyProvider = provider;
+
+	}
+
+	HrWpanPhyProvider * HrWpanMac::GetPhyProvider(void) const
+	{
+		NS_LOG_FUNCTION(this);
+
+		return m_phyProvider;
+	}
+
+	void HrWpanMac::McpsDataRequest(Ptr<Packet> packet)
+	{
+		NS_LOG_FUNCTION(this<<packet);
+
+		m_phyProvider->SendMacPdu(packet);
+	}
+
+} //namespace ns3

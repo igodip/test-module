@@ -90,6 +90,11 @@ namespace ns3 {
 		//HrWpanPhyProvider
 		virtual void SendMacPdu(Ptr<Packet> p);
 		virtual void SendHrWpanControlMessage(Ptr<HrWpanPhyControlMessage> msg);
+		
+		void SetPhyUser(HrWpanPhyUser* phyUser);
+		HrWpanPhyUser* GetPhyUser() const;
+
+		HrWpanPhy* GetPointer() const;
 
 	private:
 
