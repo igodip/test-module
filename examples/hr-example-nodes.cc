@@ -29,6 +29,12 @@ int main(int argc, char** argv)
 {
 	LogComponentEnableAll(LOG_PREFIX_FUNC);
 
+	NodeContainer nodeContainer;
+	nodeContainer.Create(2);
+
+	HrWpan::HrWpanHelper hrWpanHelper;
+	hrWpanHelper.install(nodeContainer);
+
 	Simulator::Stop(Seconds(10.0));
 
 	//Simulator::Schedule(Seconds(1.0), &SendOnePacket, sender, receiver);

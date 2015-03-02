@@ -27,10 +27,12 @@
 namespace ns3
 {
 	class HrWpanMac;
+	
 
 	namespace HrWpan
 	{
 
+		class HrWpanNetDevice;
 
 		class MacSapUser
 		{
@@ -46,10 +48,13 @@ namespace ns3
 
 			};
 
-			MacSapUser();
+			MacSapUser(HrWpanNetDevice * netDevice);
 
 			virtual void Confirm (MacSapConfirmParams & confirmParams) {};
 			virtual void Indication (MacSapIndicationParams & indicationParams) {};
+
+		protected:
+			HrWpanNetDevice * m_netDevice;
 
 		};
 
@@ -58,7 +63,7 @@ namespace ns3
 
 		public:
 
-			MacSapProvider();
+			MacSapProvider(HrWpanMac * mac);
 
 			class MacSapRequestParams
 			{

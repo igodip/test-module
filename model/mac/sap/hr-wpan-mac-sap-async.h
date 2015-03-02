@@ -25,7 +25,25 @@
 
 namespace ns3
 {
+	namespace HrWpan
+	{
 
+		class MacSapUserAsync : public MacSapUser
+		{
+		public:
+			MacSapUserAsync(HrWpanNetDevice * netDevice);
+
+		};
+
+		class MacSapProviderAsync : public MacSapProvider
+		{
+		public:
+			MacSapProviderAsync(HrWpanMac * mac);
+
+
+		};
+
+	} // namespace HrWpan
 
 
 } // namespace ns3

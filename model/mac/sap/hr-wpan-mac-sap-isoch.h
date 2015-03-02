@@ -19,7 +19,7 @@
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 #ifndef HR_WPAN_MAC_SAP_ISOCH
-#define HR_WPAN_MAC_SAP ISOCH
+#define HR_WPAN_MAC_SAP_ISOCH
 
 #include "hr-wpan-mac-sap.h"
 
@@ -28,10 +28,6 @@ namespace ns3
 	namespace HrWpan
 	{
 
-		class HrWpanMacSapConfirmIsochParams : public HrWpanMacSapConfirmParams
-		{
-
-		};
 
 	} // namespace HrWpan
 

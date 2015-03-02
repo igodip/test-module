@@ -21,11 +21,44 @@
 #ifndef HR_WPAN_MAC_SAP_VALUES
 #define HR_WPAN_MAC_SAP_VALUES
 
+#include <ns3/data-rate.h>
+
 namespace ns3
 {
 	namespace HrWpan
 	{
 
+		namespace Mac
+		{
+
+			typedef uint16_t RequestId;
+			typedef uint8_t StreamIndex;
+			typedef uint8_t ReliabilityExponent;
+			typedef uint16_t Timeout;
+
+			enum ResultCode 
+			{
+				SUCCESS = 0,
+				FAILURE = 1
+			};
+
+			enum ReasonCode
+			{
+				REQUEST_TIMEOUT = 0,
+				TARGET_UNAVAILABLE,
+				RESOURCES_UNAVAILABLE,
+				TERMINATED_BY_PNC,
+				TERMINATED_BY_DEST,
+				TRANSMIT_DELAY_UNSUPPORTED,
+				PNC_BUSY,
+				DEV_IN_PS_MODE,
+				NOT_ASSOCIATED,
+				UNKNOWN_STREAM,
+				OTHER
+			};
+				
+
+		} // namespace Mac
 
 
 	} //namespace HrWpan

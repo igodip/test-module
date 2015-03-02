@@ -109,6 +109,7 @@ namespace ns3
 
 		bool HrWpanNetDevice::IsLinkUp(void) const
 		{
+			NS_LOG_FUNCTION(this);
 			return m_linkUp;
 		}
 

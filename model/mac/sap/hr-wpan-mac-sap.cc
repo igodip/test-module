@@ -9,12 +9,14 @@ namespace ns3
 {
 	namespace HrWpan
 	{
-		MacSapProvider::MacSapProvider()
+		MacSapProvider::MacSapProvider(HrWpanMac* mac) :
+			m_mac(mac)
 		{
 
 		}
 
-		MacSapUser::MacSapUser()
+		MacSapUser::MacSapUser(HrWpanNetDevice * netDevice) :
+			m_netDevice(netDevice)
 		{
 
 		}
