@@ -31,75 +31,77 @@ namespace ns3 {
 
 	class SpectrumChannel;
 	class MobilityModel;
+	namespace HrWpan
+	{
+		class HrWpanHelper {
+		public:
+			/**
+			 * \fn	HrWpanHelper::HrWpanHelper(void);
+			 *
+			 * \brief	Default constructor.
+			 *
+			 */
 
-	class HrWpanHelper {
-	public:
-		/**
-		 * \fn	HrWpanHelper::HrWpanHelper(void);
-		 *
-		 * \brief	Default constructor.
-		 *
-		 */
+			HrWpanHelper(void);
 
-		HrWpanHelper(void);
+			/**
+			 * \fn	HrWpanHelper::HrWpanHelper(bool useMultiModelSpectrumChannel);
+			 *
+			 * \brief	Constructor.
+			 *
+			 * \param	useMultiModelSpectrumChannel	true to use multi model spectrum channel.
+			 */
 
-		/**
-		 * \fn	HrWpanHelper::HrWpanHelper(bool useMultiModelSpectrumChannel);
-		 *
-		 * \brief	Constructor.
-		 *
-		 * \param	useMultiModelSpectrumChannel	true to use multi model spectrum channel.
-		 */
+			HrWpanHelper(bool useMultiModelSpectrumChannel);
 
-		HrWpanHelper(bool useMultiModelSpectrumChannel);
+			/**
+			 * \fn	virtual HrWpanHelper::~HrWpanHelper(void);
+			 *
+			 * \brief	Destructor.
+			 */
 
-		/**
-		 * \fn	virtual HrWpanHelper::~HrWpanHelper(void);
-		 *
-		 * \brief	Destructor.
-		 */
+			virtual ~HrWpanHelper(void);
 
-		virtual ~HrWpanHelper(void);
+			/**
+			 * \fn	Ptr<SpectrumChannel> HrWpanHelper::GetChannel(void);
+			 *
+			 * \brief	Gets the channel.
+			 *
+			 * \return	The channel.
+			 */
 
-		/**
-		 * \fn	Ptr<SpectrumChannel> HrWpanHelper::GetChannel(void);
-		 *
-		 * \brief	Gets the channel.
-		 *
-		 * \return	The channel.
-		 */
+			Ptr<SpectrumChannel> GetChannel(void);
 
-		Ptr<SpectrumChannel> GetChannel(void);
+			/**
+			 * \fn	void HrWpanHelper::SetChannel(Ptr<SpectrumChannel> channel);
+			 *
+			 * \brief	Sets a channel.
+			 *
+			 * \param	channel	The channel.
+			 */
 
-		/**
-		 * \fn	void HrWpanHelper::SetChannel(Ptr<SpectrumChannel> channel);
-		 *
-		 * \brief	Sets a channel.
-		 *
-		 * \param	channel	The channel.
-		 */
+			void SetChannel(Ptr<SpectrumChannel> channel);
 
-		void SetChannel(Ptr<SpectrumChannel> channel);
+			/**
+			 * \fn	NetDeviceContainer HrWpanHelper::install(NodeContainer c);
+			 *
+			 * \brief	Installs the given c.
+			 *
+			 * \param	c	The NodeContainer to process.
+			 *
+			 * \return	A NetDeviceContainer.
+			 */
 
-		/**
-		 * \fn	NetDeviceContainer HrWpanHelper::install(NodeContainer c);
-		 *
-		 * \brief	Installs the given c.
-		 *
-		 * \param	c	The NodeContainer to process.
-		 *
-		 * \return	A NetDeviceContainer.
-		 */
+			NetDeviceContainer install(NodeContainer c);
 
-		NetDeviceContainer install(NodeContainer c);
+		private:
 
-	private:
+			/** \brief	channel to be used for the devices. */
+			Ptr<SpectrumChannel> m_channel;
 
-		/** \brief	channel to be used for the devices. */
-		Ptr<SpectrumChannel> m_channel;
+		};
 
-	};
-
+	}
 }
 
 #endif

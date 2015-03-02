@@ -315,6 +315,12 @@ namespace ns3
 			m_linkChanges.ConnectWithoutContext(callback);
 		}
 
+		void HrWpanNetDevice::SetChannel(Ptr<SpectrumChannel> channel)
+		{
+			NS_LOG_FUNCTION(this << channel);
+			m_phy->SetChannel(channel);
+		}
+
 	}// HrWpan namespace
 
 }// ns3 namespace

@@ -24,64 +24,79 @@
 #include <ns3/single-model-spectrum-channel.h>
 #include <ns3/multi-model-spectrum-channel.h>
 #include <ns3/propagation-loss-model.h>
+#include <ns3/hr-wpan-net-device.h>
 #include <ns3/ptr.h>
 
 namespace ns3 {
 
-	HrWpanHelper::HrWpanHelper(void) {
-		m_channel = CreateObject<SingleModelSpectrumChannel>();
+	namespace HrWpan {
 
-		Ptr<LogDistancePropagationLossModel> lossModel = CreateObject<LogDistancePropagationLossModel>();
-		m_channel->AddPropagationLossModel(lossModel);
-
-		Ptr<ConstantSpeedPropagationDelayModel> delayModel = CreateObject<ConstantSpeedPropagationDelayModel>();
-		m_channel->SetPropagationDelayModel(delayModel);
-	}
-
-	HrWpanHelper::HrWpanHelper(bool useMultiModelSpectrumChannel)
-	{
-		if (useMultiModelSpectrumChannel)
-		{
-			m_channel = CreateObject<MultiModelSpectrumChannel>();
-		}
-		else
-		{
+		HrWpanHelper::HrWpanHelper(void) {
 			m_channel = CreateObject<SingleModelSpectrumChannel>();
+
+			Ptr<LogDistancePropagationLossModel> lossModel = CreateObject<LogDistancePropagationLossModel>();
+			m_channel->AddPropagationLossModel(lossModel);
+
+			Ptr<ConstantSpeedPropagationDelayModel> delayModel = CreateObject<ConstantSpeedPropagationDelayModel>();
+			m_channel->SetPropagationDelayModel(delayModel);
 		}
-		Ptr<LogDistancePropagationLossModel> lossModel = CreateObject<LogDistancePropagationLossModel>();
-		m_channel->AddPropagationLossModel(lossModel);
 
-		Ptr<ConstantSpeedPropagationDelayModel> delayModel = CreateObject<ConstantSpeedPropagationDelayModel>();
-		m_channel->SetPropagationDelayModel(delayModel);
-	}
-
-	HrWpanHelper::~HrWpanHelper(void)
-	{
-		m_channel->Dispose();
-		m_channel = 0;
-	}
-
-	Ptr<SpectrumChannel> HrWpanHelper::GetChannel(void)
-	{
-		return m_channel;
-	}
-
-	void HrWpanHelper::SetChannel(Ptr<SpectrumChannel> spectrumChannel)
-	{
-		m_channel = spectrumChannel;
-	}
-	
-
-	NetDeviceContainer HrWpanHelper::install(NodeContainer c) {
-
-		NetDeviceContainer devices;
-		
-		for (NodeContainer::Iterator i = c.Begin(); i != c.End(); i++)
+		HrWpanHelper::HrWpanHelper(bool useMultiModelSpectrumChannel)
 		{
+			if (useMultiModelSpectrumChannel)
+			{
+				m_channel = CreateObject<MultiModelSpectrumChannel>();
+			}
+			else
+			{
+				m_channel = CreateObject<SingleModelSpectrumChannel>();
+			}
+			Ptr<LogDistancePropagationLossModel> lossModel = CreateObject<LogDistancePropagationLossModel>();
+			m_channel->AddPropagationLossModel(lossModel);
 
+			Ptr<ConstantSpeedPropagationDelayModel> delayModel = CreateObject<ConstantSpeedPropagationDelayModel>();
+			m_channel->SetPropagationDelayModel(delayModel);
 		}
 
-		return devices;
+		HrWpanHelper::~HrWpanHelper(void)
+		{
+			m_channel->Dispose();
+			m_channel = 0;
+		}
 
+		Ptr<SpectrumChannel> HrWpanHelper::GetChannel(void)
+		{
+			return m_channel;
+		}
+
+		void HrWpanHelper::SetChannel(Ptr<SpectrumChannel> spectrumChannel)
+		{
+			m_channel = spectrumChannel;
+		}
+
+
+		NetDeviceContainer HrWpanHelper::install(NodeContainer c) {
+
+			NetDeviceContainer devices;
+
+			for (NodeContainer::Iterator i = c.Begin(); i != c.End(); i++)
+			{
+
+				Ptr<Node> node = *i;
+
+				Ptr<HrWpanNetDevice> netDevice = CreateObject<HrWpanNetDevice>();
+				netDevice->SetChannel(m_channel);
+
+				node->AddDevice(netDevice);
+				netDevice->SetNode(node);
+				// \todo add the capability to change short address, extended
+				// address and panId. Right now they are hardcoded in LrWpanMac::LrWpanMac ()
+				devices.Add(netDevice);
+
+			}
+
+			return devices;
+
+		}
 	}
 }
