@@ -35,12 +35,21 @@ namespace ns3 {
 
 	TypeId HrWpanMac::GetTypeId()
 	{
-		static TypeId tid = TypeId("ns3::HrWpanMac")
-			.SetParent<Object>()
-			.AddConstructor<HrWpanMac>()
-			;
+		static TypeId tid = TypeId("ns3::HrWpanMac");
 
 		return tid;
+	}
+
+	void HrWpanMac::AckWaitTimeout(void)
+	{
+		NS_LOG_FUNCTION(this);
+
+	}
+
+	void HrWpanMac::PrepareRetransmission(void)
+	{
+		NS_LOG_FUNCTION(this);
+
 	}
 
 	void HrWpanMac::DoDispose()
@@ -81,7 +90,7 @@ namespace ns3 {
 	{
 		NS_LOG_FUNCTION(this);
 
-		Object::Initialize();
+		Object::DoInitialize();
 	}
 
 	HrWpanMac * HrWpanMac::GetPointer(void) const
@@ -111,6 +120,26 @@ namespace ns3 {
 		NS_LOG_FUNCTION(this<<packet);
 
 		m_phyProvider->SendMacPdu(packet);
+	}
+
+	void HrWpanMac::SetDevId(HrWpanDevId devId)
+	{
+		m_devId = devId;
+	}
+
+	HrWpanDevId HrWpanMac::GetDevId(void) const
+	{
+		return m_devId;
+	}
+
+	void HrWpanMac::RegisterSapUser(HrWpan::MacSapUser * macSapUser)
+	{
+
+	}
+
+	HrWpan::MacSapProvider * HrWpanMac::GetSapProvider(std::string sapProviderName) const
+	{
+		return 0;
 	}
 
 } //namespace ns3

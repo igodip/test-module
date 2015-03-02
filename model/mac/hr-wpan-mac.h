@@ -19,7 +19,6 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-
 #ifndef HR_WPAN_MAC_H
 #define HR_WPAN_MAC_H
 
@@ -33,6 +32,11 @@
 #include <ns3/hr-wpan-mac-trailer.h>
 #include <ns3/mac48-address.h>
 #include <ns3/event-id.h>
+
+#include <ns3/hr-wpan-mac-sap.h>
+
+#include <cstring>
+#include <map>
 
 namespace ns3 {
 
@@ -57,10 +61,17 @@ namespace ns3 {
 
 		void McpsDataRequest(Ptr<Packet> p);
 
+		HrWpanDevId GetDevId() const;
+		void SetDevId(HrWpanDevId devId);
+
+		void RegisterSapUser(HrWpan::MacSapUser * macSapUser);
+		HrWpan::MacSapProvider * GetSapProvider(std::string sapProviderName) const;
+
 	protected:
 
 		virtual void DoInitialize(void);
 		virtual void DoDispose();
+		
 
 	private:
 
@@ -76,6 +87,9 @@ namespace ns3 {
 		TracedCallback<Ptr<const Packet> > m_macTxDropTrace;
 
 		EventId m_ackWaitTimeout;
+
+		std::map <std::string, HrWpan::MacSapUser *> m_sapUsers;
+		std::map <std::string, HrWpan::MacSapProvider * > m_sapProviders;
 
 	};
 

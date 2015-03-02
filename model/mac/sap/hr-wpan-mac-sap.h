@@ -23,47 +23,56 @@
 
 #include <ns3/object.h>
 
+
 namespace ns3
 {
+	class HrWpanMac;
+
 	namespace HrWpan
 	{
-		class HrWpanMac;
 
-		class HrWpanMacSapConfirmParams
-		{
 
-		};
-
-		class HrWpanMacSapIndicationParams
-		{
-
-		};
-
-		class HrWpanMacSapUser
+		class MacSapUser
 		{
 		public:
-			virtual void Confirm(HrWpanMacSapConfirmParams & confirmParams) {};
-			virtual void Indication(HrWpanMacSapIndicationParams & indicationParams) {};
 
-		};
-
-		class HrWpanMacSapProvider
-		{
-
-		public:
-
-			class HrWpanMacSapRequestParams
+			class MacSapConfirmParams
 			{
 
 			};
 
-			class HrWpanMacSapResponseParams
+			class MacSapIndicationParams
 			{
 
 			};
 
-			virtual void Request(HrWpanMacSapRequestParams &) {};
-			virtual void Response() {};
+			MacSapUser();
+
+			virtual void Confirm (MacSapConfirmParams & confirmParams) {};
+			virtual void Indication (MacSapIndicationParams & indicationParams) {};
+
+		};
+
+		class MacSapProvider
+		{
+
+		public:
+
+			MacSapProvider();
+
+			class MacSapRequestParams
+			{
+
+			};
+
+			class MacSapResponseParams
+			{
+
+			};
+
+			virtual void Request (MacSapRequestParams & requestParams) {};
+			virtual void Response (MacSapResponseParams & responseParams) {};
+
 		protected:
 			HrWpanMac * m_mac;
 		};

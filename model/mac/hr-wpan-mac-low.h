@@ -4,6 +4,10 @@
 
 namespace ns3
 {
+	namespace HrWpan
+	{
+
+	}  //hrWpan  namespace
 
 } //ns3 namespace
 
