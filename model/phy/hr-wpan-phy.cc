@@ -165,15 +165,14 @@ namespace ns3 {
 
 		//NS_LOG_DEBUG(this << " receiving packet with power: " << 10 * log10(HrWpanSpectrumValueHelper::TotalAvgPower(spectrum->psd, 1)) + 30 << "dBm");
 		
-
 		if (spectrum == 0)
 		{
 			return;
 		}
 
-		if (m_phyUser)
+		if (m_phyUser != 0)
 		{
-			m_phyUser->ReceivePhyPdu(spectrum->packetBurst->GetPackets().front());
+			//m_phyUser->ReceivePhyPdu(spectrum->packetBurst->GetPackets().front());
 		}
 	}
 

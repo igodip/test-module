@@ -295,6 +295,8 @@ namespace ns3
 
 			m_mac->SetPhyProvider(m_phy->GetPointer());
 			m_phy->SetMobility(m_node->GetObject<MobilityModel>());
+			
+			//Create mac Sap
 
 			m_configComplete = true;
 		}
@@ -320,6 +322,13 @@ namespace ns3
 		{
 			NS_LOG_FUNCTION(this << channel);
 			m_phy->SetChannel(channel);
+		}
+
+		void HrWpanNetDevice::registerMacSapProvider(MacSapProvider * sapProvider)
+		{
+			NS_LOG_FUNCTION(this << sapProvider);
+			
+			mSapProviders[sapProvider->GetName()] = sapProvider;
 		}
 
 	}// HrWpan namespace

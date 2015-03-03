@@ -22,12 +22,63 @@
 #define HR_WPAN_MAC_SAP_ISOCH
 
 #include "hr-wpan-mac-sap.h"
+#include "hr-wpan-mac-sap-values.h"
+
+#include <ns3/hr-wpan-dev-id.h>
+#include <ns3/packet.h>
 
 namespace ns3
 {
+	class HrWpanMac;
+
 	namespace HrWpan
 	{
 
+		class HrWpanNetDevice;
+
+		class MacSapProviderIsoch : MacSapProvider
+		{
+		public:
+
+			MacSapProviderIsoch(HrWpanMac * mac);
+
+			class MacSapRequestParamsIsoch : public MacSapRequestParams
+			{
+
+			};
+
+			class MacSapResponseParamsIsoch : public MacSapResponseParams
+			{
+
+			};
+
+			virtual void Request(const MacSapRequestParamsIsoch & requestParams);
+			virtual void Response(const MacSapResponseParamsIsoch & responseParams);
+
+			virtual std::string GetName() const { return "MacSapProviderIsoch"; }
+		};
+
+		class MacSapUserIsoch : MacSapUser
+		{
+		public:
+
+			MacSapUserIsoch(HrWpanNetDevice * netDevice);
+
+			class MacSapConfirmParamsIsoch : public MacSapConfirmParams
+			{
+
+			};
+
+			class MacSapIndicationParamsIsoch : public MacSapIndicationParams
+			{
+
+			};
+
+			virtual void Confirm(const MacSapConfirmParamsIsoch & confirmParams);
+			virtual void Indication(const MacSapIndicationParamsIsoch & indicationParams);
+
+			virtual std::string GetName() const { return "MacSapUserIsoch"; }
+		};
 
 	} // namespace HrWpan
 

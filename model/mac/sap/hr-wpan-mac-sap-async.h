@@ -22,16 +22,46 @@
 #define HR_WPAN_MAC_SAP_ASYNC_H
 
 #include "hr-wpan-mac-sap.h"
+#include "hr-wpan-mac-sap-values.h"
+
+#include <ns3/hr-wpan-dev-id.h>
+#include <ns3/packet.h>
 
 namespace ns3
 {
 	namespace HrWpan
 	{
 
+		using namespace Mac;
+
 		class MacSapUserAsync : public MacSapUser
 		{
 		public:
 			MacSapUserAsync(HrWpanNetDevice * netDevice);
+
+			class MacSapConfirmParamsAsync : public MacSapConfirmParams
+			{
+			public:
+				RequestId m_requestId;
+				TransmitDelay m_transmitDelay;
+				ResultCode m_resultCode;
+				ReasonCode m_reasonCode;
+			};
+
+			class MacSapIndicationParamsAsync : public MacSapIndicationParams
+			{
+			public:
+				HrWpanDevId m_trgtId;
+				HrWpanDevId m_orgId;
+				SNAPHeaderPresent m_snapHeaderPresent;
+				Length length;
+				Ptr<Packet> m_data;
+			};
+
+			virtual void Confirm(const MacSapConfirmParamsAsync & confirmParams);
+			virtual void Indication(const MacSapIndicationParamsAsync & indicationParams);
+
+			virtual std::string GetName() const { return "MacSapUserAsync"; }
 
 		};
 
@@ -40,6 +70,31 @@ namespace ns3
 		public:
 			MacSapProviderAsync(HrWpanMac * mac);
 
+			class MacSapRequestParamsAsync : public MacSapRequestParams
+			{
+			public:
+				RequestId m_requestId;
+				HrWpanDevId m_trgtId;
+				TransmitTimeout m_transmitTimeout;
+				MaxRetries m_maxRetries;
+				SNAPHeaderPresent m_snapHeaderPresent;
+				UserPriority m_userPriority;
+				ACKRequested m_ackRequested;
+				ConfirmRequested m_confirmRequested;
+				Length m_length;
+				Ptr<Packet> m_data;
+
+			};
+
+			class MacSapResponseParamsAsync : public MacSapResponseParams
+			{
+
+			};
+
+			virtual void Request(const MacSapRequestParamsAsync & requestParams);
+			virtual void Response(const MacSapResponseParamsAsync & responseParams);
+
+			virtual std::string GetName() const { return "MacSapProviderAsync"; }
 
 		};
 

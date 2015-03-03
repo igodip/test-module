@@ -23,6 +23,8 @@
 
 #include <ns3/object.h>
 
+#include <cstring>
+
 
 namespace ns3
 {
@@ -50,8 +52,10 @@ namespace ns3
 
 			MacSapUser(HrWpanNetDevice * netDevice);
 
-			virtual void Confirm (MacSapConfirmParams & confirmParams) {};
-			virtual void Indication (MacSapIndicationParams & indicationParams) {};
+			virtual void Confirm (const MacSapConfirmParams & confirmParams) {}
+			virtual void Indication (const MacSapIndicationParams & indicationParams) {}
+
+			virtual std::string GetName() const { return ""; }
 
 		protected:
 			HrWpanNetDevice * m_netDevice;
@@ -75,8 +79,10 @@ namespace ns3
 
 			};
 
-			virtual void Request (MacSapRequestParams & requestParams) {};
-			virtual void Response (MacSapResponseParams & responseParams) {};
+			virtual void Request (const MacSapRequestParams & requestParams) {};
+			virtual void Response (const MacSapResponseParams & responseParams) {};
+
+			virtual std::string GetName() const { return ""; }
 
 		protected:
 			HrWpanMac * m_mac;

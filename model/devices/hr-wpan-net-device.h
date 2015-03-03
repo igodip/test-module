@@ -27,6 +27,8 @@
 #include <ns3/hr-wpan-phy.h>
 #include <ns3/node.h>
 
+#include <map>
+
 namespace ns3 {
 
 
@@ -77,6 +79,8 @@ namespace ns3 {
 			virtual void SetPromiscReceiveCallback(PromiscReceiveCallback cb);
 			virtual bool SupportsSendFrom(void) const;
 
+			void registerMacSapProvider(MacSapProvider * sapProvider);
+
 		protected:
 
 			virtual void DoDispose(void);
@@ -101,8 +105,12 @@ namespace ns3 {
 			*/
 			Ptr<Node> m_node;
 
+
+			/** \brief	The link changes. */
 			TracedCallback<> m_linkChanges;
 
+
+			/** \brief	The receive callback. */
 			ReceiveCallback m_receiveCallback;
 
 			/**
@@ -112,8 +120,16 @@ namespace ns3 {
 
 			/** \brief	Interface index of this NetDevice */
 			uint32_t m_ifIndex;
+			
 
+			/** \brief	true to configuration complete. */
 			bool m_configComplete;
+
+			/**
+			 * \property	std::map < std::string, MacSapProvider * > mSapProviders
+			 */
+
+			std::map < std::string, MacSapProvider * > mSapProviders;
 		};
 
 	} //namespace HrWpan

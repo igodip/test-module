@@ -33,11 +33,19 @@
 
 using namespace ns3;
 
+uint16_t orientationReciever = 270;
 
-void SendOnePacket(Ptr<HrWpanPhy> sender, Ptr<HrWpanPhy> receiver)
+NS_LOG_COMPONENT_DEFINE("HrExamplePhyLayer");
+
+void SendOnePacket(Ptr<HrWpanPhy> sender, Ptr<HrWpanPhy> receiver, Ptr<ParabolicAntennaModel> ulaAntenna)
 {
 	uint32_t n = 10;
 	Ptr<Packet> p = Create<Packet>(n);
+
+	orientationReciever = (orientationReciever + 90) % 360;
+
+	ulaAntenna->SetOrientation(orientationReciever);
+
 	sender->SendMacPdu(p);
 }
 
@@ -45,9 +53,9 @@ void SendOnePacket(Ptr<HrWpanPhy> sender, Ptr<HrWpanPhy> receiver)
 int main(int argc, char ** argv)
 {
 	LogComponentEnableAll(LOG_PREFIX_FUNC);
-	LogComponentEnable("HrWpanPhy", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpanPhy", LOG_LEVEL_ALL);
 	LogComponentEnable("SingleModelSpectrumChannel", LOG_LEVEL_ALL);
-	LogComponentEnable("ParabolicAntennaModel", LOG_LEVEL_ALL);
+	//LogComponentEnable("ParabolicAntennaModel", LOG_LEVEL_ALL);
 
 	Ptr<HrWpanPhy> sender = CreateObject<HrWpanPhy>();
 	Ptr<HrWpanPhy> receiver = CreateObject<HrWpanPhy>();
@@ -75,7 +83,7 @@ int main(int argc, char ** argv)
 
 	Ptr<ParabolicAntennaModel> receiverAntenna2 = CreateObject<ParabolicAntennaModel>();
 	receiverAntenna2->SetBeamwidth(3);
-	receiverAntenna2->SetOrientation(270);
+	receiverAntenna2->SetOrientation(orientationReciever);
 
 	receiver->SetAntenna(receiverAntenna2);
 	sender->SetAntenna(senderAntenna2);
@@ -97,7 +105,11 @@ int main(int argc, char ** argv)
 
 	Simulator::Stop(Seconds(10.0));
 
-	Simulator::Schedule(Seconds(1.0), &SendOnePacket, sender, receiver);
+	Simulator::Schedule(Seconds(1.0), &SendOnePacket, sender, receiver,receiverAntenna2);
+
+	Simulator::Schedule(Seconds(2.0), &SendOnePacket, sender, receiver, receiverAntenna2);
+	Simulator::Schedule(Seconds(3.0), &SendOnePacket, sender, receiver, receiverAntenna2);
+	Simulator::Schedule(Seconds(4.0), &SendOnePacket, sender, receiver, receiverAntenna2);
 
 	Simulator::Run();
 

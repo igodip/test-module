@@ -65,7 +65,7 @@ namespace ns3 {
 		void SetDevId(HrWpanDevId devId);
 
 		void RegisterSapUser(HrWpan::MacSapUser * macSapUser);
-		HrWpan::MacSapProvider * GetSapProvider(std::string sapProviderName) const;
+		
 
 	protected:
 
@@ -89,7 +89,7 @@ namespace ns3 {
 		EventId m_ackWaitTimeout;
 
 		std::map <std::string, HrWpan::MacSapUser *> m_sapUsers;
-		std::map <std::string, HrWpan::MacSapProvider * > m_sapProviders;
+		
 
 	};
 

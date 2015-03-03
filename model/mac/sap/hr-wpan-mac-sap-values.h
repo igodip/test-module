@@ -34,7 +34,23 @@ namespace ns3
 			typedef uint16_t RequestId;
 			typedef uint8_t StreamIndex;
 			typedef uint8_t ReliabilityExponent;
-			typedef uint16_t Timeout;
+			typedef uint16_t TransmitTimeout;
+			typedef uint8_t MaxRetries;
+			typedef bool SECMode;
+			typedef uint8_t UserPriority;
+			typedef bool ACKRequested;
+			
+			enum ConfirmRequested
+			{
+				NEVER = 0,
+				ALWAYS = 1,
+				ON_ERROR = 2
+			};
+
+			typedef bool SNAPHeaderPresent;
+			typedef uint8_t Length; //The length of the MSDU in octets.
+			
+			typedef uint32_t TransmitDelay;
 
 			enum ResultCode 
 			{
@@ -56,6 +72,8 @@ namespace ns3
 				UNKNOWN_STREAM,
 				OTHER
 			};
+
+			//struct 
 				
 
 		} // namespace Mac

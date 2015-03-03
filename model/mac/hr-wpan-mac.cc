@@ -35,7 +35,9 @@ namespace ns3 {
 
 	TypeId HrWpanMac::GetTypeId()
 	{
-		static TypeId tid = TypeId("ns3::HrWpanMac");
+		static TypeId tid = TypeId("ns3::HrWpanMac")
+			.SetParent<Object>()
+			.AddConstructor<HrWpanMac>();
 
 		return tid;
 	}
@@ -129,17 +131,15 @@ namespace ns3 {
 
 	HrWpanDevId HrWpanMac::GetDevId(void) const
 	{
+		NS_LOG_FUNCTION(this);
 		return m_devId;
 	}
 
 	void HrWpanMac::RegisterSapUser(HrWpan::MacSapUser * macSapUser)
 	{
+		NS_LOG_FUNCTION(this << macSapUser);
+		m_sapUsers[macSapUser->GetName()] = macSapUser;
 
-	}
-
-	HrWpan::MacSapProvider * HrWpanMac::GetSapProvider(std::string sapProviderName) const
-	{
-		return 0;
 	}
 
 } //namespace ns3

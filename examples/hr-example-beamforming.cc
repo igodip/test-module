@@ -19,36 +19,10 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#include <ns3/hr-wpan-helper.h>
-#include <ns3/simulator.h>
-#include <ns3/log.h>
 
 using namespace ns3;
 
-int main(int argc, char** argv)
+int main(int argc, char ** argv)
 {
-	LogComponentEnableAll(LOG_PREFIX_FUNC);
-	LogComponentEnable("HrWpanHelper",LOG_ALL);
-	LogComponentEnable("HrWpanMac", LOG_ALL);
-	LogComponentEnable("HrWpanPhy", LOG_ALL);
 
-	NodeContainer nodeContainer;
-	nodeContainer.Create(2);
-
-	HrWpan::HrWpanHelper hrWpanHelper;
-	NetDeviceContainer netDeviceContainer = hrWpanHelper.install(nodeContainer);
-
-	Ptr<NetDevice> netDevice1 = netDeviceContainer.Get(0);
-	Ptr<NetDevice> netDevice2 = netDeviceContainer.Get(1);
-
-	//netDevice1->Send()
-	//netDevice2->Send()
-
-	Simulator::Stop(Seconds(10.0));
-
-	//Simulator::Schedule(Seconds(1.0), &SendOnePacket, sender, receiver);
-
-	Simulator::Run();
-
-	Simulator::Destroy();
 }
