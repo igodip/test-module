@@ -39,7 +39,7 @@ namespace ns3 {
 	NS_LOG_COMPONENT_DEFINE("HrWpanPhy");
 
 	NS_OBJECT_ENSURE_REGISTERED(HrWpanPhy);
-	
+
 	HrWpanPhy::HrWpanPhy() :
 		m_psdHelper()
 	{
@@ -55,35 +55,45 @@ namespace ns3 {
 		NS_LOG_FUNCTION(this);
 	}
 
-	TypeId HrWpanPhy::GetTypeId(void) 
+	TypeId HrWpanPhy::GetTypeId(void)
 	{
 
 		static TypeId tid = TypeId("ns3::HrWpanPhy")
 			.SetParent<Object>()
-			.AddConstructor<HrWpanPhy>()
-			;
+			.AddConstructor<HrWpanPhy>().
+			AddTraceSource("PhyRxBegin",
+				"Trace source indicating a packet has begun"
+				"being received from the channel medium by the device",
+				MakeTraceSourceAccessor(&HrWpanPhy::m_phyRxBeginTrace),
+				"ns3::Packet::TracedCallback").
+			AddTraceSource("PhyRxEnd",
+				"Trace source indicating a packet has been "
+				"completely received from the channel medium"
+				"by the device",
+				MakeTraceSourceAccessor(&HrWpanPhy::m_phyRxEndTrace),
+				"ns3::HrWpanPhy::RxEndTracedCallback");
 
 		return tid;
 	}
 
-	void HrWpanPhy::DoDispose(void) 
+	void HrWpanPhy::DoDispose(void)
 	{
 
 		NS_LOG_FUNCTION(this);
 
 		SpectrumPhy::DoDispose();
-	
+
 	}
 
-	Ptr<NetDevice> HrWpanPhy::GetDevice(void)  
+	Ptr<NetDevice> HrWpanPhy::GetDevice(void)
 	{
-		
+
 		NS_LOG_FUNCTION(this);
 
 		return m_netdevice;
 	}
 
-	void HrWpanPhy::SetDevice(Ptr<NetDevice> netDevice) 
+	void HrWpanPhy::SetDevice(Ptr<NetDevice> netDevice)
 	{
 
 		NS_LOG_FUNCTION(this << netDevice);
@@ -151,7 +161,7 @@ namespace ns3 {
 		//If the strength of the received signal is enough
 
 		Ptr<Packet> p = (lrWpanRxParams->packetBurst->GetPackets()).front();
-		
+
 		NS_ASSERT(p != 0);
 		m_currentState->StartRx(spectrumRxParams);
 		Simulator::Schedule(spectrumRxParams->duration, &HrWpanPhy::EndRx, this, spectrumRxParams);
@@ -160,11 +170,11 @@ namespace ns3 {
 	void HrWpanPhy::EndRx(Ptr <SpectrumSignalParameters> spectrumRxParams)
 	{
 		NS_LOG_FUNCTION(this << spectrumRxParams);
-
+		/*
 		Ptr<HrWpanSpectrumSignalParameters> spectrum = DynamicCast<HrWpanSpectrumSignalParameters >(spectrumRxParams);
 
 		//NS_LOG_DEBUG(this << " receiving packet with power: " << 10 * log10(HrWpanSpectrumValueHelper::TotalAvgPower(spectrum->psd, 1)) + 30 << "dBm");
-		
+
 		if (spectrum == 0)
 		{
 			return;
@@ -174,6 +184,7 @@ namespace ns3 {
 		{
 			//m_phyUser->ReceivePhyPdu(spectrum->packetBurst->GetPackets().front());
 		}
+		*/
 	}
 
 	void HrWpanPhy::SetMobility(Ptr<MobilityModel> mobilityModel)
@@ -189,16 +200,14 @@ namespace ns3 {
 	}
 
 	bool HrWpanPhy::IsRxOn() const {
-		
-		NS_LOG_FUNCTION(this);
 
+		NS_LOG_FUNCTION(this);
 		return true;
 	}
 
 	bool HrWpanPhy::IsTxOn() const {
 
 		NS_LOG_FUNCTION(this);
-
 		return true;
 
 	}
@@ -227,20 +236,18 @@ namespace ns3 {
 	HrWpanPhy* HrWpanPhy::GetPointer() const
 	{
 		NS_LOG_FUNCTION(this);
-		return (HrWpanPhy* ) this;
+		return (HrWpanPhy*) this;
 	}
 
 	void HrWpanPhy::SetPhyUser(HrWpanPhyUser * user)
 	{
 		NS_LOG_FUNCTION(this << user);
-
 		m_phyUser = user;
 	}
 
 	HrWpanPhyUser *  HrWpanPhy::GetPhyUser(void) const
 	{
 		NS_LOG_FUNCTION(this);
-
 		return m_phyUser;
 	}
 

@@ -27,6 +27,8 @@ namespace ns3
 {
 	NS_LOG_COMPONENT_DEFINE("HrWpanPhyIdleState");
 
+	NS_OBJECT_ENSURE_REGISTERED(HrWpanPhyIdleState);
+
 	HrWpanPhyIdleState::HrWpanPhyIdleState(Ptr<HrWpanPhy> hrWpanPhy) :
 		HrWpanPhyAbsState(hrWpanPhy)
 	{

@@ -110,24 +110,7 @@ namespace ns3 {
 		/** \brief	The channel. */
 		Ptr<SpectrumChannel> m_channel;
 
-		/**
-		 * \property	TracedCallback<Ptr<const Packet> > m_phyRxBeginTrace
-		 *
-		 * \brief	Gets the phy receive begin trace.
-		 *
-		 * \return	The m phy receive begin trace.
-		 */
-
 		TracedCallback<Ptr<const Packet> > m_phyRxBeginTrace;
-
-		/**
-		 * \property	TracedCallback<Ptr<const Packet>, double > m_phyRxEndTrace
-		 *
-		 * \brief	Gets the phy receive end trace.
-		 *
-		 * \return	The m phy receive end trace.
-		 */
-
 		TracedCallback<Ptr<const Packet>, double > m_phyRxEndTrace;
 
 

@@ -19,41 +19,42 @@
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#include "hr-wpan-phy-rx-on-state.h"
-#include <ns3/hr-wpan-phy.h>
+#include "hr-wpan-phy-switch-state.h"
+
 #include <ns3/log.h>
+#include <ns3/hr-wpan-phy.h>
 
 namespace ns3
 {
 
-	NS_LOG_COMPONENT_DEFINE("HrWpanPhyRxOnState");
+	NS_LOG_COMPONENT_DEFINE("HrWpanPhySwitchState");
 
-	NS_OBJECT_ENSURE_REGISTERED(HrWpanPhyRxOnState);
-
-	HrWpanPhyRxOnState::HrWpanPhyRxOnState(Ptr<HrWpanPhy> wpanPhy) :
-		HrWpanPhyAbsState(wpanPhy)
+	HrWpanPhySwitchState::HrWpanPhySwitchState(Ptr<HrWpanPhy> hrWpanPhy) :
+		HrWpanPhyAbsState(hrWpanPhy)
 	{
-		NS_LOG_FUNCTION(this << wpanPhy);
+		NS_LOG_FUNCTION(this << hrWpanPhy);
+
 	}
 
-	void HrWpanPhyRxOnState::StartRx(Ptr<SpectrumSignalParameters> params)
-	{
-		NS_LOG_FUNCTION(this << params);
-	}
-
-	void HrWpanPhyRxOnState::EndRx(Ptr<SpectrumSignalParameters> params)
+	void HrWpanPhySwitchState::StartTx(Ptr<HrWpanSpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
 	}
 
-	void HrWpanPhyRxOnState::StartTx(Ptr<HrWpanSpectrumSignalParameters> params)
+
+	void HrWpanPhySwitchState::EndTx(Ptr<HrWpanSpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
 	}
 
-	void HrWpanPhyRxOnState::EndTx(Ptr<HrWpanSpectrumSignalParameters> params)
+	void HrWpanPhySwitchState::EndRx(Ptr<SpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
 	}
 
-}//Namespace ns3
+	void HrWpanPhySwitchState::StartRx(Ptr<SpectrumSignalParameters> params)
+	{
+		NS_LOG_FUNCTION(this << params);
+	}
+
+}
