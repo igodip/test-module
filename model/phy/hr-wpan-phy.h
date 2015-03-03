@@ -50,6 +50,11 @@ namespace ns3 {
 
 	class HrWpanPhy : public SpectrumPhy, public HrWpanPhyProvider {
 	public:
+
+		//Friends
+		friend class HrWpanRxOnState;
+		friend class HrWpanRxBusyState;
+
 		static TypeId GetTypeId(void);
 
 		HrWpanPhy(void);

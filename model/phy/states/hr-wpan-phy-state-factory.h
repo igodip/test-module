@@ -30,6 +30,7 @@
 #include "hr-wpan-phy-rx-busy-state.h"
 #include "hr-wpan-phy-tx-on-state.h"
 #include "hr-wpan-phy-tx-busy-state.h"
+#include "hr-wpan-phy-switch-state.h"
 
 namespace ns3
 {
@@ -44,6 +45,7 @@ namespace ns3
 		Ptr<HrWpanPhyTxBusyState> m_txBusyState;
 		Ptr<HrWpanPhyRxOnState> m_rxOnState;
 		Ptr<HrWpanPhyRxBusyState> m_rxBusyState;
+		Ptr<HrWpanPhySwitchState> m_switchState;
 
 
 	public:
@@ -54,6 +56,7 @@ namespace ns3
 		Ptr<HrWpanPhyRxBusyState> GetRxBusyState() const;
 		Ptr<HrWpanPhyTxOnState> GetTxOnState() const;
 		Ptr<HrWpanPhyTxBusyState> GetTxBusyState() const;
+		Ptr<HrWpanPhySwitchState> GetSwitchState() const;
 
 		virtual void DoDispose(void);
 

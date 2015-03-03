@@ -41,6 +41,7 @@ namespace ns3
 		m_txBusyState = CreateObject<HrWpanPhyTxBusyState>(m_wpanPhy);
 		m_rxBusyState = CreateObject<HrWpanPhyRxBusyState>(m_wpanPhy);
 		m_rxOnState = CreateObject<HrWpanPhyRxOnState>(m_wpanPhy);
+		m_switchState = CreateObject<HrWpanPhySwitchState>(m_wpanPhy);
 	}
 
 	Ptr<HrWpanPhyIdleState> HrWpanPhyStateFactory::GetIdleState() const
@@ -81,6 +82,13 @@ namespace ns3
 	void HrWpanPhyStateFactory::DoDispose(void)
 	{
 		NS_LOG_FUNCTION(this);
+
+		m_idleState->Dispose();
+		m_rxBusyState->Dispose();
+		m_rxOnState->Dispose();
+		m_txBusyState->Dispose();
+		m_txOnState->Dispose();
+		m_switchState->Dispose();
 
 	}
 

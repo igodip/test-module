@@ -146,45 +146,30 @@ namespace ns3 {
 
 		NS_LOG_FUNCTION(this << spectrumRxParams);
 
-		m_currentState->StartRx(spectrumRxParams);
-
 		HrWpanSpectrumSignalParameters psdHelper;
 
-		Ptr<HrWpanSpectrumSignalParameters> lrWpanRxParams = DynamicCast<HrWpanSpectrumSignalParameters>(spectrumRxParams);
+		Ptr<HrWpanSpectrumSignalParameters> hrWpanRxParams = DynamicCast<HrWpanSpectrumSignalParameters>(spectrumRxParams);
 
-		if (lrWpanRxParams == 0)
+		// It isn't an our packet
+		if (hrWpanRxParams == 0)
 		{
 			Simulator::Schedule(spectrumRxParams->duration, &HrWpanPhy::EndRx, this, spectrumRxParams);
 			return;
 		}
 
-		//If the strength of the received signal is enough
 
-		Ptr<Packet> p = (lrWpanRxParams->packetBurst->GetPackets()).front();
+		Ptr<Packet> p = (hrWpanRxParams->packetBurst->GetPackets()).front();
 
 		NS_ASSERT(p != 0);
+
 		m_currentState->StartRx(spectrumRxParams);
+
 		Simulator::Schedule(spectrumRxParams->duration, &HrWpanPhy::EndRx, this, spectrumRxParams);
 	}
 
 	void HrWpanPhy::EndRx(Ptr <SpectrumSignalParameters> spectrumRxParams)
 	{
 		NS_LOG_FUNCTION(this << spectrumRxParams);
-		/*
-		Ptr<HrWpanSpectrumSignalParameters> spectrum = DynamicCast<HrWpanSpectrumSignalParameters >(spectrumRxParams);
-
-		//NS_LOG_DEBUG(this << " receiving packet with power: " << 10 * log10(HrWpanSpectrumValueHelper::TotalAvgPower(spectrum->psd, 1)) + 30 << "dBm");
-
-		if (spectrum == 0)
-		{
-			return;
-		}
-
-		if (m_phyUser != 0)
-		{
-			//m_phyUser->ReceivePhyPdu(spectrum->packetBurst->GetPackets().front());
-		}
-		*/
 	}
 
 	void HrWpanPhy::SetMobility(Ptr<MobilityModel> mobilityModel)
