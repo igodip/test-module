@@ -23,7 +23,7 @@
 #include <ns3/log.h>
 
 namespace ns3 {
-	
+
 	NS_LOG_COMPONENT_DEFINE("HrWpanMac");
 
 	NS_OBJECT_ENSURE_REGISTERED(HrWpanMac);
@@ -37,7 +37,34 @@ namespace ns3 {
 	{
 		static TypeId tid = TypeId("ns3::HrWpanMac")
 			.SetParent<Object>()
-			.AddConstructor<HrWpanMac>();
+			.AddConstructor<HrWpanMac>()
+			.AddTraceSource("MacTx",
+			"Trace source indicating a packet has"
+			"arrived for transmission by this device",
+			MakeTraceSourceAccessor(&HrWpanMac::m_macTxOkTrace),
+			"ns3::Packet::TracedCallback")
+			.AddTraceSource("MacTxOk",
+			"Trace source indicating a packet has"
+			"been successfully sent",
+			MakeTraceSourceAccessor(&HrWpanMac::m_macTxOkTrace),
+			"ns3::Packet::TracedCallback")
+			.AddTraceSource("MacTxDrop",
+			"Trace source indicating a packet has"
+			"been dropped during transmission",
+			MakeTraceSourceAccessor(&HrWpanMac::m_macTxDropTrace),
+			"ns3::Packet::TracedCallback")
+			.AddTraceSource("MacRx",
+			"A packet has been received by this device, "
+			"has been passed up from the physical layer "
+			"and is being forwarded up the local protocol stack.  "
+			"This is a non-promiscuous trace,",
+			MakeTraceSourceAccessor(&HrWpanMac::m_macRxTrace),
+			"ns3::Packet::TracedCallback")
+			.AddTraceSource("MacRxDrop",
+			"Trace source indicating a packet was received, "
+			"but dropped before being forwarded up the stack",
+			MakeTraceSourceAccessor(&HrWpanMac::m_macRxDropTrace),
+			"ns3::Packet::TracedCallback");
 
 		return tid;
 	}
@@ -72,20 +99,15 @@ namespace ns3 {
 	void HrWpanMac::ReceivePhyPdu(Ptr<Packet> p)
 	{
 		NS_LOG_FUNCTION(this << p);
-
-		//Lancio il pacchetto cosi' a secco! :D
-		// 
-		//m_phyProvider->SendMacPdu(p);
-		//moveTrailer(trailer);
 		
-		//Check if it's for me
+
 
 	}
 
 	void HrWpanMac::ReceivePhyControlMessage(Ptr<HrWpanPhyControlMessage> cMsg)
 	{
 		NS_LOG_FUNCTION(this << cMsg);
-		
+
 	}
 
 	void HrWpanMac::DoInitialize(void)
@@ -119,7 +141,9 @@ namespace ns3 {
 
 	void HrWpanMac::McpsDataRequest(Ptr<Packet> packet)
 	{
-		NS_LOG_FUNCTION(this<<packet);
+		NS_LOG_FUNCTION(this << packet);
+
+		//Ptr<Packet> mpdu = CreateObject<Packet>();
 
 		m_phyProvider->SendMacPdu(packet);
 	}

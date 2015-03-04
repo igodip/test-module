@@ -20,6 +20,7 @@
 
 #include <ns3/test.h>
 #include <ns3/log.h>
+#include <ns3/hr-wpan-mac-queue.h>
 
 
 using namespace ns3;
@@ -51,6 +52,9 @@ HrWpanMacQueueTestCase::~HrWpanMacQueueTestCase()
 
 void HrWpanMacQueueTestCase::DoRun(void)
 {
+
+	HrWpanMacQueue macQueue;
+	macQueue.
 
 }
 

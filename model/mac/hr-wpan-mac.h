@@ -86,6 +86,14 @@ namespace ns3 {
 
 		TracedCallback<Ptr<const Packet> > m_macTxDropTrace;
 
+		TracedCallback<Ptr<const Packet> > m_macTxTrace;
+
+		TracedCallback<Ptr<const Packet> > m_macRxTrace;
+		
+		TracedCallback<Ptr<const Packet> > m_macRxOkTrace;
+		
+		TracedCallback<Ptr<const Packet> > m_macRxDropTrace;
+
 		EventId m_ackWaitTimeout;
 
 		std::map <std::string, HrWpan::MacSapUser *> m_sapUsers;
