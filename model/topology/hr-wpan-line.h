@@ -19,31 +19,24 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef HR_WPAN_OBSTACLE_H
-#define HR_WPAN_OBSTACLE_H
+#ifndef  HR_WPAN_LINE_H
+#define HR_WPAN_LINE_H
 
+#include <ns3/vector.h>
 #include <ns3/object.h>
 
 namespace ns3
 {
 	namespace HrWpan
 	{
-
-		class Obstacle : public Object
+		class Line
 		{
 		public:
-			Obstacle(double xMin,double xMax,double );
-
-			// inherited from Object
-			static TypeId GetTypeId(void);
-			virtual void DoDispose();
-
-			virtual ~Obstacle();
-
+			Line();
+		protected:
+			Vector2D vector2D;
 		};
-
-	} //namespace hrWpan
-
-} //namespace ns3
+	}
+}
 
 #endif

@@ -20,10 +20,30 @@
 */
 
 #include "hr-wpan-obstacle-propagation-model.h"
+#include <ns3/string.h>
+#include <ns3/pointer.h>
+#include <ns3/log.h>
 
-namespace ns3 
+namespace ns3
 {
-	
+
+	NS_LOG_COMPONENT_DEFINE("HrWpanObstaclePropagationModel");
+
+	namespace HrWpan
+	{
+
+		TypeId	ObstaclePropagationLossModel::GetTypeId(void)
+		{
+			static TypeId tid = TypeId("ns3::ObstaclePropagationLossModel")
+				.SetParent<PropagationLossModel>()
+				.AddConstructor<ObstaclePropagationLossModel>()
+				;
+			return tid;
+		}
+
+	}
+
+
 
 
 }

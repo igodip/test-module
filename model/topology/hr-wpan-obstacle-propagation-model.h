@@ -30,9 +30,38 @@ namespace ns3
 	namespace HrWpan
 	{
 
-		class ObstaclePropagationModel : public PropagationLossModel
+		class ObstaclePropagationLossModel : public PropagationLossModel
 		{
+		public:
+			/**
+			* \brief Get the type ID.
+			* \return the object TypeId
+			*/
+			static TypeId GetTypeId(void);
 
+			ObstaclePropagationLossModel();
+			virtual ~ObstaclePropagationLossModel();
+
+		private:
+			/**
+			* \brief Copy constructor
+			*
+			* Defined and unimplemented to avoid misuse
+			*/
+			ObstaclePropagationLossModel(const ObstaclePropagationLossModel &);
+			/**
+			* \brief Copy constructor
+			*
+			* Defined and unimplemented to avoid misuse
+			* \returns
+			*/
+			ObstaclePropagationLossModel & operator = (const ObstaclePropagationLossModel &);
+			virtual double DoCalcRxPower(double txPowerDbm,
+				Ptr<MobilityModel> a,
+				Ptr<MobilityModel> b) const;
+			virtual int64_t DoAssignStreams(int64_t stream);
+
+			//Ptr<RandomVariableStream> m_variable; //!< random generator
 		};
 
 	} // namespace HrWpan

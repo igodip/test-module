@@ -20,3 +20,11 @@
 */
 
 #include "hr-wpan-obstacle.h"
+
+namespace ns3
+{
+	namespace HrWPan
+	{
+
+	}
+}

@@ -19,31 +19,15 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef HR_WPAN_OBSTACLE_H
-#define HR_WPAN_OBSTACLE_H
-
-#include <ns3/object.h>
+#ifndef HR_WPAN_LINK_H
+#define HR_WPAN_LINK_H
 
 namespace ns3
 {
 	namespace HrWpan
 	{
 
-		class Obstacle : public Object
-		{
-		public:
-			Obstacle(double xMin,double xMax,double );
-
-			// inherited from Object
-			static TypeId GetTypeId(void);
-			virtual void DoDispose();
-
-			virtual ~Obstacle();
-
-		};
-
-	} //namespace hrWpan
-
-} //namespace ns3
+	}
+}
 
 #endif
