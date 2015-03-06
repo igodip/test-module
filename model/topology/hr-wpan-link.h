@@ -22,12 +22,32 @@
 #ifndef HR_WPAN_LINK_H
 #define HR_WPAN_LINK_H
 
+#include "hr-wpan-line.h"
+#include <ns3/node.h>
+#include <ns3/ptr.h>
+
 namespace ns3
 {
 	namespace HrWpan
 	{
+		class Link : public Line
+		{
+		public:
 
-	}
-}
+			Link(Ptr<Node> sender, Ptr<Node> receiver);
 
-#endif
+			// inherited from Object
+			static TypeId GetTypeId(void);
+			virtual void DoDispose();
+
+		protected:
+			Ptr<Node> m_node_x;
+			Ptr<Node> m_node_y;
+
+		};
+
+	} // namespace HrWpan
+
+} // namespace ns3
+
+#endif // HR_WPAN_LINK_H

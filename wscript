@@ -12,6 +12,11 @@ def build(bld):
 		'model/mac/sap/hr-wpan-mac-sap-start.cc',
 		'model/mac/hr-wpan-mac.cc',
 		'model/mac/hr-wpan-mac-queue.cc',
+		'model/topology/hr-wpan-line.cc',
+		'model/topology/hr-wpan-link.cc',
+		'model/topology/hr-wpan-obstacle.cc',
+		'model/topology/hr-wpan-obstacle-propagation-model.cc',
+		'model/topology/hr-wpan-topology-aggregator.cc',
 		'model/channel/hr-wpan-spectrum-signal-parameters.cc',
 		'model/channel/hr-wpan-error-model.cc',
 		'model/phy/messages/hr-wpan-phy-control-message.cc',
@@ -43,7 +48,8 @@ def build(bld):
 		'test/hr-wpan-spectrum-value-helper-test.cc',
 		'test/hr-wpan-ula-beamforming-test.cc',
 		'test/hr-wpan-phy-state-test.cc',
-		'test/hr-wpan-mac-queue-test.cc'
+		'test/hr-wpan-mac-queue-test.cc',
+		'test/hr-wpan-topology-test.cc',
         ]
      
     headers = bld(features='ns3header')
@@ -54,6 +60,11 @@ def build(bld):
 		'model/mac/hr-wpan-dev-id.h',
 		'model/mac/hr-wpan-mac.h',
 		'model/mac/hr-wpan-mac-queue.h',
+		'model/topology/hr-wpan-line.h',
+		'model/topology/hr-wpan-link.h',
+		'model/topology/hr-wpan-obstacle.h',
+		'model/topology/hr-wpan-obstacle-propagation-model.h',
+		'model/topology/hr-wpan-topology-aggregator.h',
 		'model/channel/hr-wpan-spectrum-signal-parameters.h',
 		'model/channel/hr-wpan-error-model.h',
 		'model/phy/messages/hr-wpan-phy-control-message.h',

@@ -56,9 +56,11 @@ namespace ns3
 			* \returns
 			*/
 			ObstaclePropagationLossModel & operator = (const ObstaclePropagationLossModel &);
+
 			virtual double DoCalcRxPower(double txPowerDbm,
 				Ptr<MobilityModel> a,
 				Ptr<MobilityModel> b) const;
+
 			virtual int64_t DoAssignStreams(int64_t stream);
 
 			//Ptr<RandomVariableStream> m_variable; //!< random generator

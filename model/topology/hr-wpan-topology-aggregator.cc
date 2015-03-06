@@ -19,36 +19,21 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#include "hr-wpan-line.h"
+#include "hr-wpan-topology-aggregator.h"
 
 namespace ns3
 {
-	
 	namespace HrWpan
 	{
 
-		Line::Line() :
-			m_start(0, 0), m_end(0,0)
+		TopologyAggregator::TopologyAggregator()
 		{
-
+			
 		}
 
-		Line::Line(double start_x, double start_y, double end_x, double end_y) :
-			m_start(start_x, start_y), m_end(end_x,end_y)
+		void TopologyAggregator::addLine(Ptr<Line> line)
 		{
-
-		}
-
-		TypeId Line::GetTypeId()
-		{
-			static TypeId tid = TypeId("ns3::HrWpan::Line").
-				AddConstructor<Line>();
-			return tid;
-		}
-
-		void Line::DoDispose()
-		{
-
+			m_lines.push_back(line);
 		}
 
 	} // namespace HrWpan

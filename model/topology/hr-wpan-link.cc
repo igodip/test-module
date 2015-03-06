@@ -19,12 +19,32 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#include "hr-wpan-line.h"
+#include "hr-wpan-link.h"
 
 namespace ns3
 {
 	namespace HrWpan
 	{
+
+		Link::Link(Ptr<Node> sender, Ptr<Node> receiver) :
+			m_node_x(sender), m_node_y(receiver)
+		{
+
+		}
+
+		TypeId Link::GetTypeId(void)
+		{
+			TypeId tid = TypeId("ns3::HrWpan::Link").
+				SetParent<Line>();
+				
+			return tid;
+		}
+
+
+		void Link::DoDispose()
+		{
+			Line::DoDispose();
+		}
 
 	} // namespace HrWpan
 

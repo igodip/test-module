@@ -32,6 +32,16 @@ namespace ns3
 	namespace HrWpan
 	{
 
+		ObstaclePropagationLossModel::ObstaclePropagationLossModel()
+		{
+
+		}
+
+		ObstaclePropagationLossModel::~ObstaclePropagationLossModel()
+		{
+
+		}
+
 		TypeId	ObstaclePropagationLossModel::GetTypeId(void)
 		{
 			static TypeId tid = TypeId("ns3::ObstaclePropagationLossModel")
@@ -39,6 +49,16 @@ namespace ns3
 				.AddConstructor<ObstaclePropagationLossModel>()
 				;
 			return tid;
+		}
+
+		double ObstaclePropagationLossModel::DoCalcRxPower(double txPowerDbm, Ptr<MobilityModel> a, Ptr<MobilityModel> b) const
+		{
+			return 0;
+		}
+
+		int64_t ObstaclePropagationLossModel::DoAssignStreams(int64_t stream)
+		{
+			return 0;
 		}
 
 	}

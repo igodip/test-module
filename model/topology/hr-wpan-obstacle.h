@@ -22,17 +22,18 @@
 #ifndef HR_WPAN_OBSTACLE_H
 #define HR_WPAN_OBSTACLE_H
 
-#include <ns3/object.h>
+#include "hr-wpan-line.h"
 
 namespace ns3
 {
 	namespace HrWpan
 	{
 
-		class Obstacle : public Object
+		class Obstacle : public Line
 		{
 		public:
-			Obstacle(double xMin,double xMax,double );
+			Obstacle(double start_x, double start_y, double end_x,
+				double end_y);
 
 			// inherited from Object
 			static TypeId GetTypeId(void);

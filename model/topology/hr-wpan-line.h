@@ -29,12 +29,23 @@ namespace ns3
 {
 	namespace HrWpan
 	{
-		class Line
+		class Line : public Object
 		{
 		public:
 			Line();
+			Line(double start_x, double start_y,
+				double end_x, double end_y);
+			
+			// inherited from Object
+			static TypeId GetTypeId(void);
+			virtual void DoDispose();
+
+			void setStart(const Vector2D & start);
+			void setEnd(const Vector2D & end);
+
 		protected:
-			Vector2D vector2D;
+			Vector2D m_start;
+			Vector2D m_end;
 		};
 	}
 }
