@@ -21,6 +21,7 @@
 
 #include "hr-wpan-topology-helper.h"
 #include <ns3/log.h>
+#include <ns3/double.h>
 
 namespace ns3
 {
@@ -32,13 +33,27 @@ namespace ns3
 			m_randomRectanglePositionAllocator = CreateObject<RandomRectanglePositionAllocator>();
 			m_uRandomVar_x = CreateObject<UniformRandomVariable>();
 			m_uRandomVar_y = CreateObject<UniformRandomVariable>();
+			m_topologyAggregator = CreateObject<TopologyAggregator>();
 
+			m_uRandomVar_x->SetAttribute("Max", DoubleValue(max_x));
+			m_uRandomVar_x->SetAttribute("Min", DoubleValue(0));
+
+			m_uRandomVar_x->SetAttribute("Max", DoubleValue(max_x));
+			m_uRandomVar_x->SetAttribute("Min", DoubleValue(0));
 			
 		}
 
 		TopologyHelper::~TopologyHelper()
 		{
+			m_randomRectanglePositionAllocator->Dispose();
+			m_uRandomVar_x->Dispose();
+			m_uRandomVar_y->Dispose();
+			m_topologyAggregator->Dispose();
 
+			m_randomRectanglePositionAllocator = 0;
+			m_uRandomVar_x = 0;
+			m_uRandomVar_y = 0;
+			m_topologyAggregator = 0;
 		}
 
 	} // namespace HrWpan

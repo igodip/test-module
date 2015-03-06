@@ -36,6 +36,12 @@ namespace ns3
 			m_lines.push_back(line);
 		}
 
+		TypeId TopologyAggregator::GetTypeId()
+		{
+			static TypeId tid = TypeId();
+			return tid;
+		}
+
 	} // namespace HrWpan
 
 } // namespace ns3

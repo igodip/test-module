@@ -23,6 +23,7 @@
 #define HR_WPAN_TOPOLOGY_AGGREGATOR_H
 
 #include <list>
+#include <ns3/object.h>
 #include "hr-wpan-line.h"
 
 namespace ns3
@@ -30,9 +31,11 @@ namespace ns3
 	namespace HrWpan
 	{
 
-		class TopologyAggregator
+		class TopologyAggregator : public Object
 		{
 		public:
+			static TypeId GetTypeId();
+
 			TopologyAggregator();
 			void addLine(Ptr<Line> line);
 		protected:

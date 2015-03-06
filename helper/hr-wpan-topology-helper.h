@@ -24,6 +24,8 @@
 
 #include <ns3/pointer.h>
 #include <ns3/position-allocator.h>
+#include <ns3/node.h>
+#include <ns3/hr-wpan-topology-aggregator.h>
 
 namespace ns3
 {
@@ -37,13 +39,19 @@ namespace ns3
 			TopologyHelper(double max_x, double max_y);
 			~TopologyHelper();
 
+			void PlaceNodesPair(Ptr<Node> sender, Ptr<Node> receiver);
+			void PlaceObstacle();
+
 		protected:
 
 			Ptr<RandomRectanglePositionAllocator> m_randomRectanglePositionAllocator;
 			Ptr<UniformRandomVariable> m_uRandomVar_x;
 			Ptr<UniformRandomVariable> m_uRandomVar_y;
 
+			Ptr<TopologyAggregator> m_topologyAggregator;
+
 		private:
+
 			Vector2D convertTo2D(Vector3D);
 
 		};

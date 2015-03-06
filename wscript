@@ -37,6 +37,7 @@ def build(bld):
 		'helper/phy/hr-wpan-spectrum-model-factory.cc',
 		'helper/phy/hr-wpan-spectrum-value-helper.cc',
 		'helper/phy/hr-wpan-interference-helper.cc',
+		'helper/hr-wpan-topology-helper.cc',
 		'helper/hr-wpan-helper.cc',
 		
         ]
@@ -93,6 +94,7 @@ def build(bld):
 		'helper/phy/hr-wpan-spectrum-model-factory.h',
 		'helper/phy/hr-wpan-spectrum-value-helper.h',
 		'helper/phy/hr-wpan-interference-helper.h',
+		'helper/hr-wpan-topology-helper.h',
 		'helper/hr-wpan-helper.h',
         ]
 
