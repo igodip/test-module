@@ -26,6 +26,7 @@
 
 #include <ns3/hr-wpan-link.h>
 #include <ns3/hr-wpan-obstacle.h>
+#include <ns3/mobility-model.h>
 
 namespace ns3
 {
@@ -76,6 +77,8 @@ namespace ns3
 
 			do {
 
+				intersect_flag = false;
+
 				Vector sender_point = m_randomRectanglePositionAllocator->GetNext();
 				Vector receiver_point = m_randomRectanglePositionAllocator->GetNext();
 
@@ -90,13 +93,31 @@ namespace ns3
 				while (start_it != end_it && !intersect_flag)
 				{
 
-					++start_it;
+					
 
+					Ptr<Obstacle> obstacle = DynamicCast<Obstacle>(*start_it);
+
+					if (obstacle == 0)
+					{
+						++start_it;
+						continue;
+					}
+
+					if (intersect(obstacle, &line))
+					{
+						intersect_flag = true;
+					}
+
+					++start_it;
 				}
 
 			} while (intersect_flag);
 
+			//Assign position to nodes
+			
+			
 
+			//Store the line
 
 		}
 
@@ -125,31 +146,42 @@ namespace ns3
 				while (start_it != end_it && !intersect_flag)
 				{
 
-					//if (intersect()
-
 					++start_it;
-					
+
+					Ptr<Link> link = DynamicCast<Link>(*start_it);
+
+					if (link == 0)
+					{
+						continue;
+					}
 
 				}
-
 				
 				lines.begin();
 
 				intersect_flag = false;
-				
-
-				
-
+						
 
 			} while (intersect_flag);
 
 
-			//Create the line
-			
-			//Check intersections
 			
 			//No intersections place the line, otherwise repeat!
 		
+		}
+
+		void TopologyHelper::addPosition(Ptr<Node> node, Vector3D vec)
+		{
+			Ptr<Object> object = node;
+			Ptr<MobilityModel> model = object->GetObject<MobilityModel>();
+			if (model == 0)
+			{
+				object->AggregateObject(hierarchical);
+				NS_LOG_DEBUG("node=" << object << ", mob=" << hierarchical);
+				
+			}
+			Vector position = m_position->GetNext();
+			model->SetPosition(position);
 		}
 
 		bool TopologyHelper::intersect(Ptr<Line> a, Ptr<Line> b)
