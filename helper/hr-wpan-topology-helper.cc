@@ -20,16 +20,25 @@
 */
 
 #include "hr-wpan-topology-helper.h"
+
 #include <ns3/log.h>
 #include <ns3/double.h>
 
+#include <ns3/hr-wpan-link.h>
+#include <ns3/hr-wpan-obstacle.h>
+
 namespace ns3
 {
+
+	NS_LOG_COMPONENT_DEFINE("HrWpan::TopologyHelper");
+
 	namespace HrWpan
 	{
 
 		TopologyHelper::TopologyHelper(double max_x, double max_y)
 		{
+			NS_LOG_FUNCTION(this << max_x << max_y);
+
 			m_randomRectanglePositionAllocator = CreateObject<RandomRectanglePositionAllocator>();
 			m_uRandomVar_x = CreateObject<UniformRandomVariable>();
 			m_uRandomVar_y = CreateObject<UniformRandomVariable>();
@@ -40,6 +49,9 @@ namespace ns3
 
 			m_uRandomVar_x->SetAttribute("Max", DoubleValue(max_x));
 			m_uRandomVar_x->SetAttribute("Min", DoubleValue(0));
+
+			m_randomRectanglePositionAllocator->SetX(m_uRandomVar_x);
+			m_randomRectanglePositionAllocator->SetY(m_uRandomVar_y);
 			
 		}
 
@@ -54,6 +66,125 @@ namespace ns3
 			m_uRandomVar_x = 0;
 			m_uRandomVar_y = 0;
 			m_topologyAggregator = 0;
+		}
+
+		void TopologyHelper::PlaceNodesPair(Ptr<Node> sender, Ptr<Node> receiver)
+		{
+			
+			bool intersect_flag = false;
+			const std::list< Ptr<Line> > &  lines = m_topologyAggregator->getContainer();
+
+			do {
+
+				Vector sender_point = m_randomRectanglePositionAllocator->GetNext();
+				Vector receiver_point = m_randomRectanglePositionAllocator->GetNext();
+
+				Line line = Line();
+
+				line.setStart(sender_point);
+				line.setEnd(receiver_point);
+
+				std::list<Ptr<Line > >::const_iterator start_it = lines.begin();
+				std::list<Ptr<Line > >::const_iterator end_it = lines.end();
+
+				while (start_it != end_it && !intersect_flag)
+				{
+
+					++start_it;
+
+				}
+
+			} while (intersect_flag);
+
+
+
+		}
+
+		void TopologyHelper::PlaceObstacle()
+		{
+
+			bool intersect_flag = false;
+			const std::list< Ptr<Line> > &  lines = m_topologyAggregator->getContainer();
+
+			do
+			{
+
+				//Generate two random points
+
+				Vector start_point = m_randomRectanglePositionAllocator->GetNext();
+				Vector end_point = m_randomRectanglePositionAllocator->GetNext();
+
+				std::list<Ptr<Line > >::const_iterator start_it = lines.begin();
+				std::list<Ptr< Line > >::const_iterator end_it = lines.end();
+
+				Line line = Line();
+
+				line.setStart(start_point);
+				line.setEnd(end_point);
+
+				while (start_it != end_it && !intersect_flag)
+				{
+
+					//if (intersect()
+
+					++start_it;
+					
+
+				}
+
+				
+				lines.begin();
+
+				intersect_flag = false;
+				
+
+				
+
+
+			} while (intersect_flag);
+
+
+			//Create the line
+			
+			//Check intersections
+			
+			//No intersections place the line, otherwise repeat!
+		
+		}
+
+		bool TopologyHelper::intersect(Ptr<Line> a, Ptr<Line> b)
+		{
+			return get_line_intersection(a->getStart().x,a->getStart().y,
+				a->getEnd().x,a->getEnd().y,
+				b->getStart().x,b->getStart().y,
+				b->getEnd().x, b->getEnd().y
+				) == 1;
+		}
+
+		char TopologyHelper::get_line_intersection(double p0_x, double p0_y, double p1_x, double p1_y,
+			double p2_x, double p2_y, double p3_x, double p3_y)
+		{
+			double s1_x, s1_y, s2_x, s2_y;
+			s1_x = p1_x - p0_x;     s1_y = p1_y - p0_y;
+			s2_x = p3_x - p2_x;     s2_y = p3_y - p2_y;
+
+			double s, t;
+			s = (-s1_y * (p0_x - p2_x) + s1_x * (p0_y - p2_y)) / (-s2_x * s1_y + s1_x * s2_y);
+			t = (s2_x * (p0_y - p2_y) - s2_y * (p0_x - p2_x)) / (-s2_x * s1_y + s1_x * s2_y);
+
+			if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
+			{
+				/*
+				// Collision detected
+				if (i_x != NULL)
+					*i_x = p0_x + (t * s1_x);
+				if (i_y != NULL)
+					*i_y = p0_y + (t * s1_y);
+				*/
+				return 1;
+			}
+
+			return 0; // No collision
 		}
 
 	} // namespace HrWpan

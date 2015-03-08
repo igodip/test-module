@@ -23,18 +23,18 @@
 
 namespace ns3
 {
-	
+
 	namespace HrWpan
 	{
 
 		Line::Line() :
-			m_start(0, 0), m_end(0,0)
+			m_start(0, 0, 0), m_end(0, 0, 0)
 		{
 
 		}
 
 		Line::Line(double start_x, double start_y, double end_x, double end_y) :
-			m_start(start_x, start_y), m_end(end_x,end_y)
+			m_start(start_x, start_y, 0), m_end(end_x, end_y, 0)
 		{
 
 		}
@@ -49,6 +49,26 @@ namespace ns3
 		void Line::DoDispose()
 		{
 
+		}
+
+		void Line::setStart(const Vector3D & start)
+		{
+			m_start = start;
+		}
+
+		void Line::setEnd(const Vector3D & end)
+		{
+			m_end = end;
+		}
+
+		Vector3D Line::getStart() const 
+		{
+			return m_start;
+		}
+
+		Vector3D Line::getEnd() const
+		{
+			return m_end;
 		}
 
 	} // namespace HrWpan

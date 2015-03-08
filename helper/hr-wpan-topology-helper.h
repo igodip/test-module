@@ -35,7 +35,7 @@ namespace ns3
 		class TopologyHelper
 		{
 		public:
-			
+
 			TopologyHelper(double max_x, double max_y);
 			~TopologyHelper();
 
@@ -51,9 +51,11 @@ namespace ns3
 			Ptr<TopologyAggregator> m_topologyAggregator;
 
 		private:
+			
+			static bool intersect(Ptr<Line> a, Ptr<Line> b);
 
-			Vector2D convertTo2D(Vector3D);
-
+			static char get_line_intersection(double p0_x, double p0_y, double p1_x, double p1_y,
+				double p2_x, double p2_y, double p3_x, double p3_y);
 		};
 
 	} // namespace HrWpan

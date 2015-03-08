@@ -38,11 +38,17 @@ namespace ns3
 
 			TopologyAggregator();
 			void addLine(Ptr<Line> line);
+			
+			const std::list<Ptr<Line> > & getContainer() const;
+
 		protected:
+
 			std::list<Ptr<Line> > m_lines;
+
 		};
 
 	} // namespace HrWpan
+
 } // namespace ns3
 
 #endif

@@ -20,26 +20,42 @@
 */
 
 #include "hr-wpan-topology-aggregator.h"
+#include <ns3/log.h>
 
 namespace ns3
 {
+	NS_LOG_COMPONENT_DEFINE("HrWpan::TopologyAggregator");
+
+	//NS_OBJECT_ENSURE_REGISTERED(HrWpan::TopologyAggregator);
+
 	namespace HrWpan
 	{
+		
 
 		TopologyAggregator::TopologyAggregator()
 		{
-			
+			NS_LOG_FUNCTION(this);
 		}
 
 		void TopologyAggregator::addLine(Ptr<Line> line)
 		{
+			NS_LOG_FUNCTION(this);
+
 			m_lines.push_back(line);
 		}
 
 		TypeId TopologyAggregator::GetTypeId()
 		{
+		
 			static TypeId tid = TypeId();
 			return tid;
+		}
+
+		const std::list<Ptr<Line> > & TopologyAggregator::getContainer() const
+		{
+			NS_LOG_FUNCTION(this);
+
+			return m_lines;
 		}
 
 	} // namespace HrWpan

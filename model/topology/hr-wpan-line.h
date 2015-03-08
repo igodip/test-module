@@ -40,12 +40,15 @@ namespace ns3
 			static TypeId GetTypeId(void);
 			virtual void DoDispose();
 
-			void setStart(const Vector2D & start);
-			void setEnd(const Vector2D & end);
+			void setStart(const Vector3D & start);
+			void setEnd(const Vector3D & end);
+
+			Vector3D getStart() const;
+			Vector3D getEnd() const;
 
 		protected:
-			Vector2D m_start;
-			Vector2D m_end;
+			Vector3D m_start;
+			Vector3D m_end;
 		};
 	}
 }

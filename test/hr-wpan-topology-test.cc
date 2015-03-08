@@ -29,6 +29,10 @@ using namespace ns3;
 
 NS_LOG_COMPONENT_DEFINE("HrWpanTopologyTestCase");
 
+/** 
+
+**/
+
 class HrWpanTopologyTestCase : public TestCase
 {
 public:
@@ -37,8 +41,6 @@ public:
 
 private:
 	virtual void DoRun(void);
-
-	uint32_t m_received;
 };
 
 HrWpanTopologyTestCase::HrWpanTopologyTestCase()
@@ -75,7 +77,32 @@ void HrWpanTopologyTestCase::DoRun(void)
 	std::cout << randomRectanglePositionAllocator.GetNext() << std::endl;
 	std::cout << randomRectanglePositionAllocator.GetNext() << std::endl;
 
+}
 
+class HrWpanPlacingObstaclesTestCase : public TestCase
+{
+public:
+	HrWpanPlacingObstaclesTestCase();
+	virtual ~HrWpanPlacingObstaclesTestCase();
+
+private:
+	virtual void DoRun(void);
+};
+
+HrWpanPlacingObstaclesTestCase::HrWpanPlacingObstaclesTestCase() 
+	: TestCase("Placing obstacle test")
+{
+
+}
+
+HrWpanPlacingObstaclesTestCase::~HrWpanPlacingObstaclesTestCase()
+{
+
+}
+
+
+void HrWpanPlacingObstaclesTestCase::DoRun()
+{
 
 }
 
@@ -85,10 +112,13 @@ public:
 	HrWpanTopologyTestSuite();
 };
 
+
+
 HrWpanTopologyTestSuite::HrWpanTopologyTestSuite()
 	: TestSuite("hr-wpan-topology-test", UNIT)
 {
 	AddTestCase(new HrWpanTopologyTestCase, TestCase::QUICK);
+	AddTestCase(new HrWpanPlacingObstaclesTestCase, TestCase::QUICK);
 }
 
 static HrWpanTopologyTestSuite hrWpanTopologyTestSuite;
