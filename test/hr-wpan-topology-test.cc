@@ -94,7 +94,7 @@ HrWpanPlacingObstaclesTestCase::HrWpanPlacingObstaclesTestCase()
 {
 	LogComponentEnableAll(LOG_PREFIX_FUNC);
 	LogComponentEnable("HrWpan::TopologyHelper", LOG_ALL);
-	//LogComponentEnable("HrWpan::TopologyAggregator", LOG_ALL);
+	LogComponentEnable("HrWpan::TopologyAggregator", LOG_ALL);
 }
 
 HrWpanPlacingObstaclesTestCase::~HrWpanPlacingObstaclesTestCase()
@@ -111,6 +111,10 @@ void HrWpanPlacingObstaclesTestCase::DoRun()
 	HrWpan::TopologyHelper topologyHelper(10, 10);
 	topologyHelper.PlaceObstacle();
 	topologyHelper.PlaceNodesPair(node_a, node_b);
+	//topologyHelper.PlaceObstacle();
+	topologyHelper.PlaceObstacle();
+	//topologyHelper.PlaceNodesPair(node_a, node_b);
+	//topologyHelper.PlaceNodesPair(node_a, node_b);
 }
 
 /********************* TEST SUITE *********************/

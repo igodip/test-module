@@ -34,12 +34,12 @@ namespace ns3
 
 		ObstaclePropagationLossModel::ObstaclePropagationLossModel()
 		{
-
+			NS_LOG_FUNCTION(this);
 		}
 
 		ObstaclePropagationLossModel::~ObstaclePropagationLossModel()
 		{
-
+			NS_LOG_FUNCTION(this);
 		}
 
 		TypeId	ObstaclePropagationLossModel::GetTypeId(void)
@@ -53,11 +53,13 @@ namespace ns3
 
 		double ObstaclePropagationLossModel::DoCalcRxPower(double txPowerDbm, Ptr<MobilityModel> a, Ptr<MobilityModel> b) const
 		{
+			NS_LOG_FUNCTION(this);
 			return 0;
 		}
 
 		int64_t ObstaclePropagationLossModel::DoAssignStreams(int64_t stream)
 		{
+			NS_LOG_FUNCTION(this);
 			return 0;
 		}
 

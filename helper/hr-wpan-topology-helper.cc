@@ -75,20 +75,26 @@ namespace ns3
 		void TopologyHelper::PlaceNodesPair(Ptr<Node> sender, Ptr<Node> receiver)
 		{
 			
+			NS_LOG_FUNCTION(this << sender << receiver);
+
 			bool intersect_flag = false;
 			const std::list< Ptr<Line> > &  lines = m_topologyAggregator->getContainer();
 
+			Ptr<Line> line = CreateObject<Line>();
+			Vector sender_point;
+			Vector receiver_point;
+
 			do {
+
+				NS_LOG_INFO("Trying to place a link");
 
 				intersect_flag = false;
 
-				Vector sender_point = m_randomRectanglePositionAllocator->GetNext();
-				Vector receiver_point = m_randomRectanglePositionAllocator->GetNext();
+				sender_point = m_randomRectanglePositionAllocator->GetNext();
+				receiver_point = m_randomRectanglePositionAllocator->GetNext();
 
-				Line line = Line();
-
-				line.setStart(sender_point);
-				line.setEnd(receiver_point);
+				line->setStart(sender_point);
+				line->setEnd(receiver_point);
 
 				std::list<Ptr<Line > >::const_iterator start_it = lines.begin();
 				std::list<Ptr<Line > >::const_iterator end_it = lines.end();
@@ -104,7 +110,7 @@ namespace ns3
 						continue;
 					}
 
-					if (intersect(obstacle, &line))
+					if (intersect(obstacle, line))
 					{
 						intersect_flag = true;
 					}
@@ -116,59 +122,80 @@ namespace ns3
 
 			//Assign position to nodes
 			
-			
+			addPosition(sender, sender_point);
+			addPosition(receiver, receiver_point);
+
+			Ptr<Link> link = CreateObject<Link>();
+
+			link->SetSender(sender);
+			link->SetReceiver(receiver);
 
 			//Store the line
+			
+			m_topologyAggregator->addLine(link);
 
 		}
 
 		void TopologyHelper::PlaceObstacle()
 		{
 
+			NS_LOG_FUNCTION(this);
+
 			bool intersect_flag = false;
 			const std::list< Ptr<Line> > &  lines = m_topologyAggregator->getContainer();
+
+			Ptr<Line> line = CreateObject<Line>();
+			Vector start_point;
+			Vector end_point;
+
+			std::list<Ptr<Line> >::const_iterator start_it = lines.begin();
+			std::list<Ptr<Line> >::const_iterator end_it = lines.end();
 
 			do
 			{
 
+				NS_LOG_INFO("Trying to place an obstacle");
+
 				//Generate two random points
 
-				Vector start_point = m_randomRectanglePositionAllocator->GetNext();
-				Vector end_point = m_randomRectanglePositionAllocator->GetNext();
+				start_point = m_randomRectanglePositionAllocator->GetNext();
+				end_point = m_randomRectanglePositionAllocator->GetNext();
 
-				std::list<Ptr<Line > >::const_iterator start_it = lines.begin();
-				std::list<Ptr< Line > >::const_iterator end_it = lines.end();
+				line->setStart(start_point);
+				line->setEnd(end_point);
 
-				Line line = Line();
-
-				line.setStart(start_point);
-				line.setEnd(end_point);
+				Ptr<Link> link = DynamicCast<Link>(*start_it);
 
 				while (start_it != end_it && !intersect_flag)
 				{
 
-					++start_it;
+					Ptr<Obstacle> obstacle = DynamicCast<Obstacle>(*start_it);
 
-					Ptr<Link> link = DynamicCast<Link>(*start_it);
-
-					if (link == 0)
+					if (obstacle == 0)
 					{
+						++start_it;
 						continue;
 					}
 
-				}
-				
-				lines.begin();
+					if (intersect(obstacle, line))
+					{
+						intersect_flag = true;
+					}
 
-				intersect_flag = false;
-						
+					++start_it;
+				}
 
 			} while (intersect_flag);
 
+			Ptr<Obstacle> obstacle = CreateObject<Obstacle>();
 
+			obstacle->setStart(start_point);
+			obstacle->setEnd(end_point);
+
+			line->Dispose();
+
+			m_topologyAggregator->addLine(obstacle);
 			
-			//No intersections place the line, otherwise repeat!
-		
 		}
 
 		void TopologyHelper::addPosition(Ptr<Node> node, Vector3D vec)
@@ -187,7 +214,6 @@ namespace ns3
 				node->AggregateObject(positionMobilityModel);
 
 			}
-
 
 			model->SetPosition(vec);
 		}

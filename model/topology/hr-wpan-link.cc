@@ -44,7 +44,8 @@ namespace ns3
 		TypeId Link::GetTypeId(void)
 		{
 			TypeId tid = TypeId("HrWpan::Link").
-				SetParent<Line>();
+				SetParent<Line>().
+				AddConstructor<Link>();
 				
 			return tid;
 		}

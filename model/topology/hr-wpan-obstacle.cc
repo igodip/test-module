@@ -24,25 +24,29 @@
 
 namespace ns3
 {
+
+	NS_LOG_COMPONENT_DEFINE("HrWpan::Obstacle");
+
 	namespace HrWpan
 	{
 		Obstacle::Obstacle() :
 			Line()
 		{
-
+			NS_LOG_FUNCTION(this);
 		}
 
 		Obstacle::Obstacle(double start_x, double start_y, double end_x,
 			double end_y) :
 			Line(start_x,start_y,end_x,end_y)
 		{
-
+			NS_LOG_FUNCTION(this);
 		}
 
 		TypeId Obstacle::GetTypeId(void)
 		{
 			static TypeId tid = TypeId("HrWpan::Obstacle").
-				AddConstructor<Line>();
+				SetParent<Line>().
+				AddConstructor<Obstacle>();
 
 			return tid;
 		}
@@ -54,7 +58,7 @@ namespace ns3
 
 		Obstacle::~Obstacle()
 		{
-
+			NS_LOG_FUNCTION(this);
 		}
 
 	} //HrWpan

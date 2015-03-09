@@ -46,7 +46,7 @@ namespace ns3
 		TypeId TopologyAggregator::GetTypeId()
 		{
 		
-			static TypeId tid = TypeId("HrWpan::TopologyAggregator")
+			static TypeId tid = TypeId("TopologyAggregator")
 				.SetParent<Object>()
 				.AddConstructor<TopologyAggregator>();
 			return tid;
