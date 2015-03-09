@@ -27,6 +27,7 @@
 #include <ns3/hr-wpan-link.h>
 #include <ns3/hr-wpan-obstacle.h>
 #include <ns3/mobility-model.h>
+#include <ns3/constant-position-mobility-model.h>
 
 namespace ns3
 {
@@ -58,6 +59,8 @@ namespace ns3
 
 		TopologyHelper::~TopologyHelper()
 		{
+			NS_LOG_FUNCTION(this);
+
 			m_randomRectanglePositionAllocator->Dispose();
 			m_uRandomVar_x->Dispose();
 			m_uRandomVar_y->Dispose();
@@ -92,8 +95,6 @@ namespace ns3
 
 				while (start_it != end_it && !intersect_flag)
 				{
-
-					
 
 					Ptr<Obstacle> obstacle = DynamicCast<Obstacle>(*start_it);
 
@@ -174,14 +175,21 @@ namespace ns3
 		{
 			Ptr<Object> object = node;
 			Ptr<MobilityModel> model = object->GetObject<MobilityModel>();
+
 			if (model == 0)
 			{
-				object->AggregateObject(hierarchical);
-				NS_LOG_DEBUG("node=" << object << ", mob=" << hierarchical);
-				
+				Ptr<ConstantPositionMobilityModel> positionMobilityModel =
+					CreateObject<ConstantPositionMobilityModel>();
+				NS_LOG_DEBUG("node=" << object);
+
+				model = positionMobilityModel;
+
+				node->AggregateObject(positionMobilityModel);
+
 			}
-			Vector position = m_position->GetNext();
-			model->SetPosition(position);
+
+
+			model->SetPosition(vec);
 		}
 
 		bool TopologyHelper::intersect(Ptr<Line> a, Ptr<Line> b)

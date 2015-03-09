@@ -32,6 +32,7 @@ namespace ns3
 		class Obstacle : public Line
 		{
 		public:
+			Obstacle();
 			Obstacle(double start_x, double start_y, double end_x,
 				double end_y);
 

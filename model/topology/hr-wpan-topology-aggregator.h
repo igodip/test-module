@@ -39,6 +39,7 @@ namespace ns3
 			TopologyAggregator();
 			void addLine(Ptr<Line> line);
 			
+
 			const std::list<Ptr<Line> > & getContainer() const;
 
 		protected:

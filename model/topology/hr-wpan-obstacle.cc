@@ -23,8 +23,37 @@
 
 namespace ns3
 {
-	namespace HrWPan
+	namespace HrWpan
 	{
+		Obstacle::Obstacle()
+		{
 
-	}
-}
+		}
+
+		Obstacle::Obstacle(double start_x, double start_y, double end_x,
+			double end_y)
+		{
+
+		}
+
+		TypeId Obstacle::GetTypeId(void)
+		{
+			static TypeId tid = TypeId("ns3::HrWpan::Obstacle").
+				AddConstructor<Line>();
+
+			return tid;
+		}
+
+		void Obstacle::DoDispose()
+		{
+
+		}
+
+		Obstacle::~Obstacle()
+		{
+
+		}
+
+	} //HrWpan
+
+} // ns3

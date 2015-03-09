@@ -53,7 +53,7 @@ namespace ns3
 		private:
 			
 			static bool intersect(Ptr<Line> a, Ptr<Line> b);
-
+			static void addPosition(Ptr<Node> node, Vector3D vec);
 			static char get_line_intersection(double p0_x, double p0_y, double p1_x, double p1_y,
 				double p2_x, double p2_y, double p3_x, double p3_y);
 		};
