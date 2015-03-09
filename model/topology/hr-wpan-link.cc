@@ -25,20 +25,23 @@
 
 namespace ns3
 {
+
+	NS_LOG_COMPONENT_DEFINE("HrWpan::Link");
+
 	namespace HrWpan
 	{
 
 		Link::Link() :
 			m_sender(0), m_receiver(0)
 		{
-
+			NS_LOG_FUNCTION(this);
 		}
 
 
 		Link::Link(Ptr<Node> sender, Ptr<Node> receiver) :
 			m_sender(sender), m_receiver(receiver)
 		{
-
+			NS_LOG_FUNCTION(this);
 		}
 
 		TypeId Link::GetTypeId(void)
@@ -58,32 +61,38 @@ namespace ns3
 
 		void Link::SetSender(Ptr<Node> sender)
 		{
+			NS_LOG_FUNCTION(this);
 			m_sender = sender;
 		}
 
 		void Link::SetReceiver(Ptr<Node> receiver)
 		{
+			NS_LOG_FUNCTION(this);
 			m_receiver = receiver;
 		}
 
 		Ptr<Node> Link::GetSender() const
 		{
+			NS_LOG_FUNCTION(this);
 			return m_sender;
 		}
 
 		Ptr<Node> Link::GetReceiver() const
 		{
+			NS_LOG_FUNCTION(this);
 			return m_receiver;
 		}
 
 		Vector3D Link::getStart()
 		{
+			NS_LOG_FUNCTION(this);
 			Ptr<MobilityModel> model = m_sender->GetObject<MobilityModel>();
 			return model->GetPosition();
 		}
 
 		Vector3D Link::getEnd()
 		{
+			NS_LOG_FUNCTION(this);
 			Ptr<MobilityModel> model = m_sender->GetObject<MobilityModel>();
 			return model->GetPosition();
 		}
