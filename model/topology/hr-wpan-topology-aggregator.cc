@@ -31,7 +31,6 @@ namespace ns3
 	namespace HrWpan
 	{
 		
-
 		TopologyAggregator::TopologyAggregator()
 		{
 			NS_LOG_FUNCTION(this);
@@ -47,7 +46,9 @@ namespace ns3
 		TypeId TopologyAggregator::GetTypeId()
 		{
 		
-			static TypeId tid = TypeId();
+			static TypeId tid = TypeId("HrWpan::TopologyAggregator")
+				.SetParent<Object>()
+				.AddConstructor<TopologyAggregator>();
 			return tid;
 		}
 

@@ -43,8 +43,8 @@ namespace ns3
 			void setStart(const Vector3D & start);
 			void setEnd(const Vector3D & end);
 
-			Vector3D getStart() const;
-			Vector3D getEnd() const;
+			virtual Vector3D getStart();
+			virtual Vector3D getEnd() ;
 
 		protected:
 			Vector3D m_start;

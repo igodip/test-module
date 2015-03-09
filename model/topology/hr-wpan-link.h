@@ -34,15 +34,25 @@ namespace ns3
 		{
 		public:
 
+			Link();
 			Link(Ptr<Node> sender, Ptr<Node> receiver);
 
 			// inherited from Object
 			static TypeId GetTypeId(void);
 			virtual void DoDispose();
 
+			void SetSender(Ptr<Node> sender);
+			void SetReceiver(Ptr<Node> receiver);
+
+			Ptr<Node> GetSender() const;
+			Ptr<Node> GetReceiver() const;
+
+			virtual Vector3D getStart();
+			virtual Vector3D getEnd();
+
 		protected:
-			Ptr<Node> m_node_x;
-			Ptr<Node> m_node_y;
+			Ptr<Node> m_sender;
+			Ptr<Node> m_receiver;
 
 		};
 

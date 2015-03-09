@@ -20,21 +20,30 @@
 */
 
 #include "hr-wpan-link.h"
+#include <ns3/log.h>
+#include <ns3/mobility-model.h>
 
 namespace ns3
 {
 	namespace HrWpan
 	{
 
+		Link::Link() :
+			m_sender(0), m_receiver(0)
+		{
+
+		}
+
+
 		Link::Link(Ptr<Node> sender, Ptr<Node> receiver) :
-			m_node_x(sender), m_node_y(receiver)
+			m_sender(sender), m_receiver(receiver)
 		{
 
 		}
 
 		TypeId Link::GetTypeId(void)
 		{
-			TypeId tid = TypeId("ns3::HrWpan::Link").
+			TypeId tid = TypeId("HrWpan::Link").
 				SetParent<Line>();
 				
 			return tid;
@@ -44,6 +53,38 @@ namespace ns3
 		void Link::DoDispose()
 		{
 			Line::DoDispose();
+		}
+
+		void Link::SetSender(Ptr<Node> sender)
+		{
+			m_sender = sender;
+		}
+
+		void Link::SetReceiver(Ptr<Node> receiver)
+		{
+			m_receiver = receiver;
+		}
+
+		Ptr<Node> Link::GetSender() const
+		{
+			return m_sender;
+		}
+
+		Ptr<Node> Link::GetReceiver() const
+		{
+			return m_receiver;
+		}
+
+		Vector3D Link::getStart()
+		{
+			Ptr<MobilityModel> model = m_sender->GetObject<MobilityModel>();
+			return model->GetPosition();
+		}
+
+		Vector3D Link::getEnd()
+		{
+			Ptr<MobilityModel> model = m_sender->GetObject<MobilityModel>();
+			return model->GetPosition();
 		}
 
 	} // namespace HrWpan

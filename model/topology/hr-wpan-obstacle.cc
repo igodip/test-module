@@ -20,25 +20,28 @@
 */
 
 #include "hr-wpan-obstacle.h"
+#include <ns3/log.h>
 
 namespace ns3
 {
 	namespace HrWpan
 	{
-		Obstacle::Obstacle()
+		Obstacle::Obstacle() :
+			Line()
 		{
 
 		}
 
 		Obstacle::Obstacle(double start_x, double start_y, double end_x,
-			double end_y)
+			double end_y) :
+			Line(start_x,start_y,end_x,end_y)
 		{
 
 		}
 
 		TypeId Obstacle::GetTypeId(void)
 		{
-			static TypeId tid = TypeId("ns3::HrWpan::Obstacle").
+			static TypeId tid = TypeId("HrWpan::Obstacle").
 				AddConstructor<Line>();
 
 			return tid;
@@ -46,7 +49,7 @@ namespace ns3
 
 		void Obstacle::DoDispose()
 		{
-
+			Line::DoDispose();
 		}
 
 		Obstacle::~Obstacle()

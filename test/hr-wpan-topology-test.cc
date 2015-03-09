@@ -20,7 +20,7 @@
 
 #include <ns3/test.h>
 #include <ns3/log.h>
-#include <ns3/position-allocator.h>
+#include <ns3/hr-wpan-topology-helper.h>
 #include <ns3/double.h>
 
 #include <iostream>
@@ -29,9 +29,7 @@ using namespace ns3;
 
 NS_LOG_COMPONENT_DEFINE("HrWpanTopologyTestCase");
 
-/** 
-
-**/
+/********************* TEST CASE *********************/
 
 class HrWpanTopologyTestCase : public TestCase
 {
@@ -79,6 +77,8 @@ void HrWpanTopologyTestCase::DoRun(void)
 
 }
 
+/********************* TEST CASE *********************/
+
 class HrWpanPlacingObstaclesTestCase : public TestCase
 {
 public:
@@ -92,7 +92,9 @@ private:
 HrWpanPlacingObstaclesTestCase::HrWpanPlacingObstaclesTestCase() 
 	: TestCase("Placing obstacle test")
 {
-
+	LogComponentEnableAll(LOG_PREFIX_FUNC);
+	LogComponentEnable("HrWpan::TopologyHelper", LOG_ALL);
+	//LogComponentEnable("HrWpan::TopologyAggregator", LOG_ALL);
 }
 
 HrWpanPlacingObstaclesTestCase::~HrWpanPlacingObstaclesTestCase()
@@ -103,15 +105,21 @@ HrWpanPlacingObstaclesTestCase::~HrWpanPlacingObstaclesTestCase()
 
 void HrWpanPlacingObstaclesTestCase::DoRun()
 {
+	Ptr<Node> node_a = CreateObject<Node>();
+	Ptr<Node> node_b = CreateObject<Node>();
 
+	HrWpan::TopologyHelper topologyHelper(10, 10);
+	topologyHelper.PlaceObstacle();
+	topologyHelper.PlaceNodesPair(node_a, node_b);
 }
+
+/********************* TEST SUITE *********************/
 
 class HrWpanTopologyTestSuite : public TestSuite
 {
 public:
 	HrWpanTopologyTestSuite();
 };
-
 
 
 HrWpanTopologyTestSuite::HrWpanTopologyTestSuite()

@@ -41,8 +41,10 @@ namespace ns3
 
 		TypeId Line::GetTypeId()
 		{
-			static TypeId tid = TypeId("ns3::HrWpan::Line").
+			static TypeId tid = TypeId("HrWpan::Line").
+				SetParent<Object>().
 				AddConstructor<Line>();
+
 			return tid;
 		}
 
@@ -61,12 +63,12 @@ namespace ns3
 			m_end = end;
 		}
 
-		Vector3D Line::getStart() const 
+		Vector3D Line::getStart() 
 		{
 			return m_start;
 		}
 
-		Vector3D Line::getEnd() const
+		Vector3D Line::getEnd() 
 		{
 			return m_end;
 		}
