@@ -38,7 +38,7 @@ namespace ns3
 		{
 		public:
 
-			TopologyHelper(double max_x, double max_y);
+			TopologyHelper(double max_x, double max_y,Ptr<TopologyAggregator> topologyAggregator);
 			~TopologyHelper();
 
 			void PlaceNodesPair(Ptr<Node> sender, Ptr<Node> receiver);

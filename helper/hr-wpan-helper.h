@@ -25,6 +25,7 @@
 #include <ns3/ptr.h>
 #include <ns3/node-container.h>
 #include <ns3/net-device-container.h>
+#include <ns3/hr-wpan-topology-helper.h>
 #include <ns3/hr-wpan-phy.h>
 
 namespace ns3 {
@@ -42,7 +43,7 @@ namespace ns3 {
 			 *
 			 */
 
-			HrWpanHelper(void);
+			HrWpanHelper(Ptr<TopologyAggregator> topologyAggregator);
 
 			/**
 			 * \fn	HrWpanHelper::HrWpanHelper(bool useMultiModelSpectrumChannel);
@@ -52,7 +53,7 @@ namespace ns3 {
 			 * \param	useMultiModelSpectrumChannel	true to use multi model spectrum channel.
 			 */
 
-			HrWpanHelper(bool useMultiModelSpectrumChannel);
+			HrWpanHelper(Ptr<TopologyAggregator> topologyAggregator,bool useMultiModelSpectrumChannel);
 
 			/**
 			 * \fn	virtual HrWpanHelper::~HrWpanHelper(void);
@@ -92,7 +93,7 @@ namespace ns3 {
 			 * \return	A NetDeviceContainer.
 			 */
 
-			NetDeviceContainer install(NodeContainer c);
+			NetDeviceContainer Install(NodeContainer c);
 
 		private:
 

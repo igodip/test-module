@@ -23,10 +23,12 @@
 
 #include <ns3/single-model-spectrum-channel.h>
 #include <ns3/multi-model-spectrum-channel.h>
+#include <ns3/hr-wpan-obstacle-propagation-model.h>
 #include <ns3/propagation-loss-model.h>
 #include <ns3/hr-wpan-net-device.h>
 #include <ns3/ptr.h>
 #include <ns3/log.h>
+
 
 namespace ns3 {
 
@@ -34,9 +36,8 @@ namespace ns3 {
 
 	namespace HrWpan {
 		
-		//NS_OBJECT_ENSURE_REGISTERED(HrWpanHelper);
+		HrWpanHelper::HrWpanHelper(Ptr<TopologyAggregator> topologyAggregator) {
 
-		HrWpanHelper::HrWpanHelper(void) {
 			NS_LOG_FUNCTION(this);
 
 			m_channel = CreateObject<SingleModelSpectrumChannel>();
@@ -44,11 +45,14 @@ namespace ns3 {
 			Ptr<LogDistancePropagationLossModel> lossModel = CreateObject<LogDistancePropagationLossModel>();
 			m_channel->AddPropagationLossModel(lossModel);
 
+			Ptr<ObstaclePropagationLossModel> obstacleModel = CreateObject<ObstaclePropagationLossModel>();
+			m_channel->AddPropagationLossModel(obstacleModel);
+
 			Ptr<ConstantSpeedPropagationDelayModel> delayModel = CreateObject<ConstantSpeedPropagationDelayModel>();
 			m_channel->SetPropagationDelayModel(delayModel);
 		}
 
-		HrWpanHelper::HrWpanHelper(bool useMultiModelSpectrumChannel)
+		HrWpanHelper::HrWpanHelper(Ptr<TopologyAggregator> topologyAggregator,bool useMultiModelSpectrumChannel)
 		{
 			NS_LOG_FUNCTION(this);
 
@@ -87,7 +91,7 @@ namespace ns3 {
 		}
 
 
-		NetDeviceContainer HrWpanHelper::install(NodeContainer c) 
+		NetDeviceContainer HrWpanHelper::Install(NodeContainer c) 
 		{
 
 			NS_LOG_FUNCTION(this);

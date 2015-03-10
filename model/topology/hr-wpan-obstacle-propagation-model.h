@@ -23,6 +23,7 @@
 #define HR_WPAN_OBSTACLE_PROPAGATION_MODEL_H
 
 #include <ns3/propagation-module.h>
+#include <ns3/hr-wpan-topology-aggregator.h>
 
 namespace ns3
 {
@@ -62,6 +63,8 @@ namespace ns3
 				Ptr<MobilityModel> b) const;
 
 			virtual int64_t DoAssignStreams(int64_t stream);
+
+			Ptr<TopologyAggregator> m_topologyAggregator;
 
 			//Ptr<RandomVariableStream> m_variable; //!< random generator
 		};

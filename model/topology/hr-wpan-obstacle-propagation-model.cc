@@ -44,7 +44,7 @@ namespace ns3
 
 		TypeId	ObstaclePropagationLossModel::GetTypeId(void)
 		{
-			static TypeId tid = TypeId("ns3::ObstaclePropagationLossModel")
+			static TypeId tid = TypeId("HrWpan::ObstaclePropagationLossModel")
 				.SetParent<PropagationLossModel>()
 				.AddConstructor<ObstaclePropagationLossModel>()
 				;
@@ -54,7 +54,13 @@ namespace ns3
 		double ObstaclePropagationLossModel::DoCalcRxPower(double txPowerDbm, Ptr<MobilityModel> a, Ptr<MobilityModel> b) const
 		{
 			NS_LOG_FUNCTION(this);
-			return 0;
+			//Obstacle -200db
+			
+			// No Inteference 0db
+			
+			//a->Get
+			return txPowerDbm;
+
 		}
 
 		int64_t ObstaclePropagationLossModel::DoAssignStreams(int64_t stream)

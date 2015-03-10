@@ -21,6 +21,7 @@
 
 #include <ns3/hr-wpan-helper.h>
 #include <ns3/simulator.h>
+#include <ns3/hr-wpan-topology-aggregator.h>
 #include <ns3/log.h>
 
 using namespace ns3;
@@ -35,8 +36,10 @@ int main(int argc, char** argv)
 	NodeContainer nodeContainer;
 	nodeContainer.Create(2);
 
-	HrWpan::HrWpanHelper hrWpanHelper;
-	NetDeviceContainer netDeviceContainer = hrWpanHelper.install(nodeContainer);
+	Ptr<HrWpan::TopologyAggregator> topologyAggregator = CreateObject<HrWpan::TopologyAggregator>();
+
+	HrWpan::HrWpanHelper hrWpanHelper(topologyAggregator);
+	NetDeviceContainer netDeviceContainer = hrWpanHelper.Install(nodeContainer);
 
 	Ptr<NetDevice> netDevice1 = netDeviceContainer.Get(0);
 	Ptr<NetDevice> netDevice2 = netDeviceContainer.Get(1);

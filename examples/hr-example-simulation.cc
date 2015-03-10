@@ -26,8 +26,8 @@
 #include <ns3/simulator.h>
 #include <ns3/hr-wpan-topology-helper.h>
 #include <ns3/hr-wpan-helper.h>
+#include <ns3/hr-wpan-topology-aggregator.h>
 
-#include <iostream>
 
 using namespace ns3;
 
@@ -35,8 +35,6 @@ NS_LOG_COMPONENT_DEFINE("HrExampleSimulation");
 
 int main(int argc, char ** argv)
 {
-
-
 
 	bool verbose = true;
 	uint32_t nPairs = 10;
@@ -54,13 +52,13 @@ int main(int argc, char ** argv)
 	NodeContainer nodeContainer;
 	nodeContainer.Create(nNodes);
 
-	HrWpan::TopologyHelper topologyHelper(areaLength, areaLength);
+	Ptr<HrWpan::TopologyAggregator> toplogyAggregator = CreateObject<HrWpan::TopologyAggregator>();
+
+	HrWpan::TopologyHelper topologyHelper(areaLength, areaLength,toplogyAggregator);
 	topologyHelper.Install(nodeContainer);
 
-	HrWpan::HrWpanHelper hrWpanHelper;
-	hrWpanHelper.install(nodeContainer);
-
-	//Simulation
+	HrWpan::HrWpanHelper hrWpanHelper(toplogyAggregator);
+	hrWpanHelper.Install(nodeContainer);
 
 	Simulator::Stop(Seconds(10.0));
 

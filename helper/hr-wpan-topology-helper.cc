@@ -39,14 +39,14 @@ namespace ns3
 	namespace HrWpan
 	{
 
-		TopologyHelper::TopologyHelper(double max_x, double max_y)
+		TopologyHelper::TopologyHelper(double max_x, double max_y,Ptr<TopologyAggregator> topologyAggregator)
 		{
 			NS_LOG_FUNCTION(this << max_x << max_y);
 
 			m_randomRectanglePositionAllocator = CreateObject<RandomRectanglePositionAllocator>();
 			m_uRandomVar_x = CreateObject<UniformRandomVariable>();
 			m_uRandomVar_y = CreateObject<UniformRandomVariable>();
-			m_topologyAggregator = CreateObject<TopologyAggregator>();
+			m_topologyAggregator = topologyAggregator;
 
 			m_uRandomVar_x->SetAttribute("Max", DoubleValue(max_x));
 			m_uRandomVar_x->SetAttribute("Min", DoubleValue(0));
@@ -66,7 +66,6 @@ namespace ns3
 			m_randomRectanglePositionAllocator->Dispose();
 			m_uRandomVar_x->Dispose();
 			m_uRandomVar_y->Dispose();
-			m_topologyAggregator->Dispose();
 
 			m_randomRectanglePositionAllocator = 0;
 			m_uRandomVar_x = 0;
@@ -183,8 +182,6 @@ namespace ns3
 						intersect_flag = true;
 					}
 
-					
-
 					++start_it;
 				}
 
@@ -207,8 +204,10 @@ namespace ns3
 
 			for (NodeContainer::Iterator i = c.Begin(); i != c.End();)
 			{
-				Ptr<Node> sender = *(++i);
-				Ptr<Node> receiver = *(++i);
+				Ptr<Node> sender = *(i);
+				i++;
+				Ptr<Node> receiver = *(i);
+				i++;
 				PlaceNodesPair(sender, receiver);
 			}
 		}
@@ -230,6 +229,8 @@ namespace ns3
 			Ptr<Object> object = node;
 			Ptr<MobilityModel> model = object->GetObject<MobilityModel>();
 
+			NS_LOG_FUNCTION(node << vec);
+
 			if (model == 0)
 			{
 				Ptr<ConstantPositionMobilityModel> positionMobilityModel =
@@ -243,6 +244,7 @@ namespace ns3
 			}
 
 			model->SetPosition(vec);
+			NS_LOG_DEBUG("node=" << object);
 		}
 
 		bool TopologyHelper::intersect(Ptr<Line> a, Ptr<Line> b)

@@ -58,10 +58,12 @@ HrWpanTopologyTestCase::~HrWpanTopologyTestCase()
 void HrWpanTopologyTestCase::DoRun(void)
 {
 
+	Ptr<HrWpan::TopologyAggregator> topologyAggregator = CreateObject<HrWpan::TopologyAggregator>();
+
 	NodeContainer nodes;
 	nodes.Create(20);
 
-	HrWpan::TopologyHelper topologyHelper(10, 10);
+	HrWpan::TopologyHelper topologyHelper(10, 10,topologyAggregator);
 	topologyHelper.Install(nodes);
 	topologyHelper.PlaceObstacle(20);
 
@@ -99,7 +101,9 @@ HrWpanPlacingObstaclesTestCase::~HrWpanPlacingObstaclesTestCase()
 void HrWpanPlacingObstaclesTestCase::DoRun()
 {
 
-	HrWpan::TopologyHelper topologyHelper(10, 10);
+	Ptr<HrWpan::TopologyAggregator> topologyAggregator = CreateObject<HrWpan::TopologyAggregator>();
+
+	HrWpan::TopologyHelper topologyHelper(10, 10,topologyAggregator);
 	topologyHelper.PlaceObstacle(20);
 
 }
@@ -131,10 +135,12 @@ HrWpanPlacingNodesTestCase::~HrWpanPlacingNodesTestCase()
 void HrWpanPlacingNodesTestCase::DoRun()
 {
 	
+	Ptr<HrWpan::TopologyAggregator> topologyAggregator = CreateObject<HrWpan::TopologyAggregator>();
+
 	NodeContainer nodes;
 	nodes.Create(20);
 
-	HrWpan::TopologyHelper topologyHelper(10, 10);
+	HrWpan::TopologyHelper topologyHelper(10, 10, topologyAggregator);
 	topologyHelper.Install(nodes);
 	
 }

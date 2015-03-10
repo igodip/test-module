@@ -24,21 +24,32 @@
 #include <ns3/node-container.h>
 #include <ns3/animation-interface.h>
 #include <ns3/node-container.h>
+#include <ns3/hr-wpan-topology-aggregator.h>
 #include <ns3/hr-wpan-topology-helper.h>
+#include <ns3/hr-wpan-helper.h>
 
 using namespace ns3;
 
 int main(int argc, char ** argv)
 {
-	AnimationInterface animInterface("sim.xml");
 
 	NodeContainer nodeContainer;
 	nodeContainer.Create(30);
 
-	HrWpan::TopologyHelper topologyHelper(20,20);
+	Ptr<HrWpan::TopologyAggregator> topologyAggregator = CreateObject<HrWpan::TopologyAggregator>();
+
+	HrWpan::TopologyHelper topologyHelper(20,20,topologyAggregator);
+	
+	HrWpan::HrWpanHelper wpanHelper(topologyAggregator);
+	
+
 	topologyHelper.Install(nodeContainer);
+	topologyHelper.PlaceObstacle(30);
+
+
 
 	//senderPhy
+	AnimationInterface animInterface("sim.xml");
 	Simulator::Stop(Seconds(10.0));
 
 	Simulator::Run();
