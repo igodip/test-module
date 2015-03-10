@@ -1,7 +1,7 @@
 ## -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
 
 def build(bld):
-    obj = bld.create_ns3_module('hr-wpan', ['core', 'network', 'mobility', 'spectrum', 'propagation'])
+    obj = bld.create_ns3_module('hr-wpan', ['core', 'network', 'mobility', 'spectrum', 'propagation','netanim'])
     obj.source = [
         'model/mac/hr-wpan-mac-header.cc',
         'model/mac/hr-wpan-mac-trailer.cc',

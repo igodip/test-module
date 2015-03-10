@@ -30,12 +30,16 @@ using namespace ns3;
 
 int main(int argc, char ** argv)
 {
-	AnimationInterface animInterface("animation.xml");
+	AnimationInterface animInterface("sim.xml");
+
+	NodeContainer nodeContainer;
+	nodeContainer.Create(30);
+
+	HrWpan::TopologyHelper topologyHelper(20,20);
+	topologyHelper.Install(nodeContainer);
 
 	//senderPhy
 	Simulator::Stop(Seconds(10.0));
-
-	//Simulator::Schedule(Seconds(1.0), &SendOnePacket, senderMac, receiverMac);
 
 	Simulator::Run();
 

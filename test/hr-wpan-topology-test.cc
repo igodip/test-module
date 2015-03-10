@@ -43,6 +43,10 @@ private:
 HrWpanTopologyTestCase::HrWpanTopologyTestCase()
 	: TestCase("Test the topology creation")
 {
+	LogComponentEnableAll(LOG_PREFIX_FUNC);
+	LogComponentEnable("HrWpan::TopologyHelper", LOG_ALL);
+	LogComponentEnable("HrWpan::Link", LOG_ALL);
+	LogComponentEnable("HrWpanTopologyTestCase", LOG_ALL);
 
 }
 
@@ -54,7 +58,12 @@ HrWpanTopologyTestCase::~HrWpanTopologyTestCase()
 void HrWpanTopologyTestCase::DoRun(void)
 {
 
+	NodeContainer nodes;
+	nodes.Create(20);
 
+	HrWpan::TopologyHelper topologyHelper(10, 10);
+	topologyHelper.Install(nodes);
+	topologyHelper.PlaceObstacle(20);
 
 }
 

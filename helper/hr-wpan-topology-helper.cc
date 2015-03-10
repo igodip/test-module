@@ -124,13 +124,10 @@ namespace ns3
 
 			//Assign position to nodes
 			
-			//addPosition(sender, sender_point);
-			//addPosition(receiver, receiver_point);
-
-			NS_LOG_INFO("Ciao");
+			addPosition(sender, sender_point);
+			addPosition(receiver, receiver_point);
 
 			Ptr<Link> link = CreateObject<Link>();
-			NS_LOG_INFO("Ciao");
 			
 			link->SetSender(sender);
 			link->SetReceiver(receiver);
@@ -180,10 +177,13 @@ namespace ns3
 						continue;
 					}
 
+
 					if (intersect(link, line))
 					{
 						intersect_flag = true;
 					}
+
+					
 
 					++start_it;
 				}

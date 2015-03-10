@@ -100,6 +100,7 @@ namespace ns3
 			NS_LOG_FUNCTION(this);
 
 			Ptr<MobilityModel> model = m_sender->GetObject<MobilityModel>();
+			
 			return model->GetPosition();
 		}
 

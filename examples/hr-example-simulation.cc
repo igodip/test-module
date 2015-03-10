@@ -22,7 +22,10 @@
 #include <ns3/log.h>
 #include <ns3/test.h>
 #include <ns3/command-line.h>
+#include <ns3/node-container.h>
 #include <ns3/simulator.h>
+#include <ns3/hr-wpan-topology-helper.h>
+#include <ns3/hr-wpan-helper.h>
 
 #include <iostream>
 
@@ -33,14 +36,31 @@ NS_LOG_COMPONENT_DEFINE("HrExampleSimulation");
 int main(int argc, char ** argv)
 {
 
+
+
 	bool verbose = true;
 	uint32_t nPairs = 10;
+	double areaLength = 20;
 
 	CommandLine cmd;
 	cmd.AddValue("pairs", "Number of pairs", nPairs);
 	cmd.AddValue("verbose", "Tell echo applications to log if true", verbose);
-
+	cmd.AddValue("areaLength", "Size of areaLength", areaLength);
+	
 	cmd.Parse(argc, argv);
+
+	uint32_t nNodes = 2 * nPairs;
+	
+	NodeContainer nodeContainer;
+	nodeContainer.Create(nNodes);
+
+	HrWpan::TopologyHelper topologyHelper(areaLength, areaLength);
+	topologyHelper.Install(nodeContainer);
+
+	HrWpan::HrWpanHelper hrWpanHelper;
+	hrWpanHelper.install(nodeContainer);
+
+	//Simulation
 
 	Simulator::Stop(Seconds(10.0));
 
