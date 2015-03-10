@@ -46,7 +46,7 @@ namespace ns3
 
 		TypeId Link::GetTypeId(void)
 		{
-			TypeId tid = TypeId("HrWpan::Link").
+			static TypeId tid = TypeId("HrWpan::Link").
 				SetParent<Line>().
 				AddConstructor<Link>();
 				
@@ -62,30 +62,35 @@ namespace ns3
 		void Link::SetSender(Ptr<Node> sender)
 		{
 			NS_LOG_FUNCTION(this);
+
 			m_sender = sender;
 		}
 
 		void Link::SetReceiver(Ptr<Node> receiver)
 		{
 			NS_LOG_FUNCTION(this);
+
 			m_receiver = receiver;
 		}
 
 		Ptr<Node> Link::GetSender() const
 		{
 			NS_LOG_FUNCTION(this);
+
 			return m_sender;
 		}
 
 		Ptr<Node> Link::GetReceiver() const
 		{
 			NS_LOG_FUNCTION(this);
+
 			return m_receiver;
 		}
 
 		Vector3D Link::getStart()
 		{
 			NS_LOG_FUNCTION(this);
+
 			Ptr<MobilityModel> model = m_sender->GetObject<MobilityModel>();
 			return model->GetPosition();
 		}
@@ -93,6 +98,7 @@ namespace ns3
 		Vector3D Link::getEnd()
 		{
 			NS_LOG_FUNCTION(this);
+
 			Ptr<MobilityModel> model = m_sender->GetObject<MobilityModel>();
 			return model->GetPosition();
 		}

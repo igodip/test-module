@@ -7,4 +7,7 @@ def build(bld):
     obj.source = 'hr-example-mac-layer.cc'
     obj = bld.create_ns3_program('hr-example-nodes',['hr-wpan'])
     obj.source = 'hr-example-nodes.cc'
-
+    obj = bld.create_ns3_program('hr-example-simulation',['hr-wpan'])
+    obj.source = 'hr-example-simulation.cc'
+    obj = bld.create_ns3_program('hr-example-anim-sim',['hr-wpan'])
+    obj.source = 'hr-example-anim-sim.cc'

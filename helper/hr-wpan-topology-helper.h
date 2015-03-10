@@ -29,6 +29,8 @@
 
 namespace ns3
 {
+	class NodeContainer;
+
 	namespace HrWpan
 	{
 
@@ -42,6 +44,11 @@ namespace ns3
 			void PlaceNodesPair(Ptr<Node> sender, Ptr<Node> receiver);
 			void PlaceObstacle();
 
+			void Install(NodeContainer c);
+			void PlaceObstacle(uint32_t num);
+
+			static bool intersect(Ptr<Line> a, Ptr<Line> b);
+
 		protected:
 
 			Ptr<RandomRectanglePositionAllocator> m_randomRectanglePositionAllocator;
@@ -52,7 +59,7 @@ namespace ns3
 
 		private:
 			
-			static bool intersect(Ptr<Line> a, Ptr<Line> b);
+			
 			static void addPosition(Ptr<Node> node, Vector3D vec);
 			static char get_line_intersection(double p0_x, double p0_y, double p1_x, double p1_y,
 				double p2_x, double p2_y, double p3_x, double p3_y);

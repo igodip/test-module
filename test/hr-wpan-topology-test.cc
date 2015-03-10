@@ -22,8 +22,7 @@
 #include <ns3/log.h>
 #include <ns3/hr-wpan-topology-helper.h>
 #include <ns3/double.h>
-
-#include <iostream>
+#include <ns3/node-container.h>
 
 using namespace ns3;
 
@@ -55,25 +54,7 @@ HrWpanTopologyTestCase::~HrWpanTopologyTestCase()
 void HrWpanTopologyTestCase::DoRun(void)
 {
 
-	Ptr<UniformRandomVariable> uniform_x = CreateObject<UniformRandomVariable>();
-	Ptr<UniformRandomVariable> uniform_y = CreateObject<UniformRandomVariable>();
 
-	uniform_x->SetAttribute("Min", DoubleValue(0));
-	uniform_x->SetAttribute("Max", DoubleValue(10));
-	uniform_y->SetAttribute("Min", DoubleValue(0));
-	uniform_y->SetAttribute("Max", DoubleValue(10));
-
-	uniform_x->SetStream(10);
-	uniform_y->SetStream(15);
-
-	RandomRectanglePositionAllocator randomRectanglePositionAllocator;
-
-	randomRectanglePositionAllocator.SetX(uniform_x);
-	randomRectanglePositionAllocator.SetY(uniform_y);
-
-	std::cout << randomRectanglePositionAllocator.GetNext() << std::endl;
-	std::cout << randomRectanglePositionAllocator.GetNext() << std::endl;
-	std::cout << randomRectanglePositionAllocator.GetNext() << std::endl;
 
 }
 
@@ -94,27 +75,59 @@ HrWpanPlacingObstaclesTestCase::HrWpanPlacingObstaclesTestCase()
 {
 	LogComponentEnableAll(LOG_PREFIX_FUNC);
 	LogComponentEnable("HrWpan::TopologyHelper", LOG_ALL);
-	LogComponentEnable("HrWpan::TopologyAggregator", LOG_ALL);
+	//LogComponentEnable("HrWpan::TopologyAggregator", LOG_ALL);
+	LogComponentEnable("HrWpanTopologyTestCase", LOG_ALL);
+	//LogComponentEnable("ObjectBase", LOG_ALL);
+	//LogComponentEnable("Object", LOG_ALL);
 }
 
 HrWpanPlacingObstaclesTestCase::~HrWpanPlacingObstaclesTestCase()
 {
-
+	
 }
 
 
 void HrWpanPlacingObstaclesTestCase::DoRun()
 {
-	Ptr<Node> node_a = CreateObject<Node>();
-	Ptr<Node> node_b = CreateObject<Node>();
 
 	HrWpan::TopologyHelper topologyHelper(10, 10);
-	topologyHelper.PlaceObstacle();
-	topologyHelper.PlaceNodesPair(node_a, node_b);
-	//topologyHelper.PlaceObstacle();
-	topologyHelper.PlaceObstacle();
-	//topologyHelper.PlaceNodesPair(node_a, node_b);
-	//topologyHelper.PlaceNodesPair(node_a, node_b);
+	topologyHelper.PlaceObstacle(20);
+
+}
+
+/********************* TEST CASE *********************/
+
+class HrWpanPlacingNodesTestCase : public TestCase
+{
+public:
+	HrWpanPlacingNodesTestCase();
+	virtual ~HrWpanPlacingNodesTestCase();
+
+private:
+	virtual void DoRun(void);
+};
+
+HrWpanPlacingNodesTestCase::HrWpanPlacingNodesTestCase()
+	: TestCase("Placing nodes Test")
+{
+
+}
+
+HrWpanPlacingNodesTestCase::~HrWpanPlacingNodesTestCase()
+{
+
+}
+
+
+void HrWpanPlacingNodesTestCase::DoRun()
+{
+	
+	NodeContainer nodes;
+	nodes.Create(20);
+
+	HrWpan::TopologyHelper topologyHelper(10, 10);
+	topologyHelper.Install(nodes);
+	
 }
 
 /********************* TEST SUITE *********************/
@@ -131,6 +144,7 @@ HrWpanTopologyTestSuite::HrWpanTopologyTestSuite()
 {
 	AddTestCase(new HrWpanTopologyTestCase, TestCase::QUICK);
 	AddTestCase(new HrWpanPlacingObstaclesTestCase, TestCase::QUICK);
+	AddTestCase(new HrWpanPlacingNodesTestCase, TestCase::QUICK);
 }
 
 static HrWpanTopologyTestSuite hrWpanTopologyTestSuite;

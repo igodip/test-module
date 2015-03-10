@@ -23,11 +23,13 @@
 
 #include <ns3/log.h>
 #include <ns3/double.h>
+#include <ns3/assert.h>
 
 #include <ns3/hr-wpan-link.h>
 #include <ns3/hr-wpan-obstacle.h>
 #include <ns3/mobility-model.h>
 #include <ns3/constant-position-mobility-model.h>
+#include <ns3/node-container.h>
 
 namespace ns3
 {
@@ -122,11 +124,14 @@ namespace ns3
 
 			//Assign position to nodes
 			
-			addPosition(sender, sender_point);
-			addPosition(receiver, receiver_point);
+			//addPosition(sender, sender_point);
+			//addPosition(receiver, receiver_point);
+
+			NS_LOG_INFO("Ciao");
 
 			Ptr<Link> link = CreateObject<Link>();
-
+			NS_LOG_INFO("Ciao");
+			
 			link->SetSender(sender);
 			link->SetReceiver(receiver);
 
@@ -164,20 +169,18 @@ namespace ns3
 				line->setStart(start_point);
 				line->setEnd(end_point);
 
-				Ptr<Link> link = DynamicCast<Link>(*start_it);
-
 				while (start_it != end_it && !intersect_flag)
 				{
 
-					Ptr<Obstacle> obstacle = DynamicCast<Obstacle>(*start_it);
+					Ptr<Link> link = DynamicCast<Link>(*start_it);
 
-					if (obstacle == 0)
+					if (link == 0)
 					{
 						++start_it;
 						continue;
 					}
 
-					if (intersect(obstacle, line))
+					if (intersect(link, line))
 					{
 						intersect_flag = true;
 					}
@@ -196,6 +199,30 @@ namespace ns3
 
 			m_topologyAggregator->addLine(obstacle);
 			
+		}
+
+		void TopologyHelper::Install(NodeContainer c)
+		{
+			NS_ASSERT(c.GetN() % 2 == 0);
+
+			for (NodeContainer::Iterator i = c.Begin(); i != c.End();)
+			{
+				Ptr<Node> sender = *(++i);
+				Ptr<Node> receiver = *(++i);
+				PlaceNodesPair(sender, receiver);
+			}
+		}
+
+		void TopologyHelper::PlaceObstacle(uint32_t num)
+		{
+			NS_ASSERT(num > 0);
+
+			for (uint32_t i = 0; i < num; i++)
+			{
+				
+				PlaceObstacle();
+
+			}
 		}
 
 		void TopologyHelper::addPosition(Ptr<Node> node, Vector3D vec)
