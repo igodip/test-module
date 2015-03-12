@@ -33,6 +33,7 @@
 #include <ns3/net-device.h>
 #include <ns3/random-variable-stream.h>
 #include <ns3/hr-wpan-spectrum-signal-parameters.h>
+#include <ns3/hr-wpan-mac.h>
 
 namespace ns3 {
 
@@ -105,6 +106,7 @@ namespace ns3 {
 	{
 		NS_LOG_FUNCTION(c);
 		m_channel = c;
+		m_channel->AddRx(this);
 	}
 
 	Ptr<SpectrumChannel> HrWpanPhy::GetChannel(void)
@@ -169,6 +171,16 @@ namespace ns3 {
 	void HrWpanPhy::EndRx(Ptr <SpectrumSignalParameters> spectrumRxParams)
 	{
 		NS_LOG_FUNCTION(this << spectrumRxParams);
+
+		Ptr<HrWpanSpectrumSignalParameters> params = DynamicCast<HrWpanSpectrumSignalParameters>(spectrumRxParams);
+
+		if (params != 0)
+		{
+			Ptr<Packet> packet = params->packetBurst->GetPackets().front();
+			((HrWpanMac *) GetPhyUser())->ReceivePhyPdu(packet);
+		}
+
+		
 	}
 
 	void HrWpanPhy::SetMobility(Ptr<MobilityModel> mobilityModel)

@@ -44,6 +44,7 @@ int main(int argc, char** argv)
 	LogComponentEnable("HrWpanPhy", LOG_ALL);
 	LogComponentEnable("HrWpanMacSapAsync", LOG_ALL);
 	LogComponentEnable("SingleModelSpectrumChannel", LOG_ALL);
+	LogComponentEnable("Node", LOG_ALL);
 
 	NodeContainer nodeContainer;
 	nodeContainer.Create(2);
@@ -61,13 +62,13 @@ int main(int argc, char** argv)
 	node1->AggregateObject(senderMobility);
 	node2->AggregateObject(receiverMobility);
 
-
 	NetDeviceContainer netDeviceContainer = hrWpanHelper.Install(nodeContainer);
-
-
 
 	Ptr<NetDevice> netDevice1 = netDeviceContainer.Get(0);
 	Ptr<NetDevice> netDevice2 = netDeviceContainer.Get(1);
+
+	netDevice1->SetAddress(HrWpanDevId("01"));
+	netDevice2->SetAddress(HrWpanDevId("02"));
 
 	Simulator::Stop(Seconds(10.0));
 	Simulator::Schedule(Seconds(2.0), &SendOnePacket, netDevice1);

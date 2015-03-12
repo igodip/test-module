@@ -40,7 +40,7 @@
 
 namespace ns3 {
 
-	class HrWpanMac : public HrWpanPhyUser , public Object{
+	class HrWpanMac : public Object, public HrWpanPhyUser{
 	public:
 		HrWpanMac();
 		virtual ~HrWpanMac();
@@ -82,17 +82,11 @@ namespace ns3 {
 		Mac48Address m_macAddress;
 		
 		TracedCallback<Ptr<const Packet>, uint8_t, uint8_t > m_sentPktTrace;
-
 		TracedCallback<Ptr<const Packet> > m_macTxOkTrace;
-
 		TracedCallback<Ptr<const Packet> > m_macTxDropTrace;
-
 		TracedCallback<Ptr<const Packet> > m_macTxTrace;
-
 		TracedCallback<Ptr<const Packet> > m_macRxTrace;
-		
 		TracedCallback<Ptr<const Packet> > m_macRxOkTrace;
-		
 		TracedCallback<Ptr<const Packet> > m_macRxDropTrace;
 
 		EventId m_ackWaitTimeout;

@@ -46,6 +46,7 @@ namespace ns3
 			const MacSapRequestParamsAsync & paramsAsync = dynamic_cast<const MacSapRequestParamsAsync &>(requestParams);
 
 			HrWpanPhyProvider* provider = m_mac->GetPhyProvider();
+			// Add header and trailer
 			provider->SendMacPdu(paramsAsync.m_data);
 
 		}

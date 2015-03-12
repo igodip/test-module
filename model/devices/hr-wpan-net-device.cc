@@ -49,6 +49,7 @@ namespace ns3
 			m_phy = CreateObject<HrWpanPhy>();
 
 			m_mac->SetPhyProvider(m_phy->GetPointer()); 
+			m_phy->SetPhyUser(m_mac->GetPointer());
 
 			//Sap Providers
 
@@ -134,7 +135,7 @@ namespace ns3
 		void HrWpanNetDevice::SetAddress(Address address)
 		{
 			NS_LOG_FUNCTION(this);
-			
+			m_mac->SetDevId(HrWpanDevId::convertFrom(address));
 		}
 
 		Address	HrWpanNetDevice::GetAddress(void) const
@@ -345,6 +346,7 @@ namespace ns3
 		{
 			NS_LOG_FUNCTION(this << channel);
 			m_phy->SetChannel(channel);
+			
 		}
 
 		void HrWpanNetDevice::RegisterMacSapProvider(MacSapProvider * sapProvider)
