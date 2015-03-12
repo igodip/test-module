@@ -22,6 +22,8 @@
 #include "hr-wpan-mac.h"
 #include <ns3/log.h>
 
+#include <ns3/hr-wpan-mac-sap-async.h>
+
 namespace ns3 {
 
 	NS_LOG_COMPONENT_DEFINE("HrWpanMac");
@@ -29,6 +31,12 @@ namespace ns3 {
 	NS_OBJECT_ENSURE_REGISTERED(HrWpanMac);
 
 	HrWpanMac::HrWpanMac()
+	{
+		NS_LOG_FUNCTION(this);
+
+	}
+
+	HrWpanMac::~HrWpanMac()
 	{
 		NS_LOG_FUNCTION(this);
 	}
@@ -100,6 +108,11 @@ namespace ns3 {
 	{
 		NS_LOG_FUNCTION(this << p);
 		
+		HrWpan::MacSapIndicationParamsAsync indicationParams;
+		indicationParams.m_data = p;
+
+		//Switch but for now only forward
+		m_sapUsers["MacSapUserAsync"]->Indication(indicationParams);
 
 
 	}

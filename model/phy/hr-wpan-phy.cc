@@ -136,7 +136,7 @@ namespace ns3 {
 	void HrWpanPhy::SetNoisePowerSpectralDensity(Ptr<const SpectrumValue> noisePsd)
 	{
 		NS_LOG_FUNCTION(this << noisePsd);
-		//NS_LOG_INFO("\t computed noise_psd: " << *noisePsd);
+		
 		NS_ASSERT(noisePsd);
 		m_noise = noisePsd;
 	}
@@ -156,7 +156,6 @@ namespace ns3 {
 			Simulator::Schedule(spectrumRxParams->duration, &HrWpanPhy::EndRx, this, spectrumRxParams);
 			return;
 		}
-
 
 		Ptr<Packet> p = (hrWpanRxParams->packetBurst->GetPackets()).front();
 

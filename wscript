@@ -90,6 +90,7 @@ def build(bld):
 		'model/mac/sap/hr-wpan-mac-sap-async.h',
 		'model/mac/sap/hr-wpan-mac-sap-isoch.h',
 		'model/mac/sap/hr-wpan-mac-sap-start.h',
+		'model/mac/sap/hr-wpan-mac-sap-values.h',
 		'model/mac/hr-wpan-mac-pib.h',
 		'helper/phy/hr-wpan-spectrum-model-factory.h',
 		'helper/phy/hr-wpan-spectrum-value-helper.h',

@@ -46,8 +46,6 @@ namespace ns3 {
 	class NetDevice;
 	class UniformRandomVariable;
 
-	
-
 	class HrWpanPhy : public SpectrumPhy, public HrWpanPhyProvider {
 	public:
 
@@ -117,7 +115,9 @@ namespace ns3 {
 
 		TracedCallback<Ptr<const Packet> > m_phyRxBeginTrace;
 		TracedCallback<Ptr<const Packet>, double > m_phyRxEndTrace;
-
+		TracedCallback<Ptr<const Packet> > m_phyTxDropTrace;
+		TracedCallback<Ptr<const Packet> > m_phyTxEndTrace;
+		TracedCallback<Ptr<const Packet> > m_phyTxBeginTrace;
 
 		/** \brief	The noise. */
 		Ptr<const SpectrumValue> m_noise;

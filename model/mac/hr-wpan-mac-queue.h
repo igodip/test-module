@@ -12,6 +12,7 @@
 #include <ns3/packet.h>
 #include <ns3/hr-wpan-mac-header.h>
 #include <ns3/nstime.h>
+#include <ns3/queue.h>
 
 namespace ns3
 {

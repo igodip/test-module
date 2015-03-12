@@ -45,8 +45,8 @@ namespace ns3 {
 			Ptr<LogDistancePropagationLossModel> lossModel = CreateObject<LogDistancePropagationLossModel>();
 			m_channel->AddPropagationLossModel(lossModel);
 
-			Ptr<ObstaclePropagationLossModel> obstacleModel = CreateObject<ObstaclePropagationLossModel>();
-			m_channel->AddPropagationLossModel(obstacleModel);
+			//Ptr<ObstaclePropagationLossModel> obstacleModel = CreateObject<ObstaclePropagationLossModel>();
+			//m_channel->AddPropagationLossModel(obstacleModel);
 
 			Ptr<ConstantSpeedPropagationDelayModel> delayModel = CreateObject<ConstantSpeedPropagationDelayModel>();
 			m_channel->SetPropagationDelayModel(delayModel);
@@ -108,8 +108,6 @@ namespace ns3 {
 
 				node->AddDevice(netDevice);
 				netDevice->SetNode(node);
-				// \todo add the capability to change short address, extended
-				// address and panId. Right now they are hardcoded in LrWpanMac::LrWpanMac ()
 				devices.Add(netDevice);
 
 			}

@@ -19,6 +19,7 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
+#include <ns3/log.h>
 
 using namespace ns3;
 

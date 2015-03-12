@@ -34,35 +34,62 @@ namespace ns3
 
 		using namespace Mac;
 
+		class MacSapIndicationParamsAsync : public MacSapIndicationParams
+		{
+		public:
+			HrWpanDevId m_trgtId;
+			HrWpanDevId m_orgId;
+			SNAPHeaderPresent m_snapHeaderPresent;
+			Length length;
+			Ptr<Packet> m_data;
+
+			virtual ~MacSapIndicationParamsAsync() {}
+		};
+
+		class MacSapConfirmParamsAsync : public MacSapConfirmParams
+		{
+		public:
+			RequestId m_requestId;
+			TransmitDelay m_transmitDelay;
+			ResultCode m_resultCode;
+			ReasonCode m_reasonCode;
+
+			virtual ~MacSapConfirmParamsAsync() {}
+		};
+
 		class MacSapUserAsync : public MacSapUser
 		{
 		public:
 			MacSapUserAsync(HrWpanNetDevice * netDevice);
 
-			class MacSapConfirmParamsAsync : public MacSapConfirmParams
-			{
-			public:
-				RequestId m_requestId;
-				TransmitDelay m_transmitDelay;
-				ResultCode m_resultCode;
-				ReasonCode m_reasonCode;
-			};
-
-			class MacSapIndicationParamsAsync : public MacSapIndicationParams
-			{
-			public:
-				HrWpanDevId m_trgtId;
-				HrWpanDevId m_orgId;
-				SNAPHeaderPresent m_snapHeaderPresent;
-				Length length;
-				Ptr<Packet> m_data;
-			};
-
-			virtual void Confirm(const MacSapConfirmParamsAsync & confirmParams);
-			virtual void Indication(const MacSapIndicationParamsAsync & indicationParams);
+			virtual void Confirm(const MacSapConfirmParams & confirmParams);
+			virtual void Indication(const MacSapIndicationParams & indicationParams);
 
 			virtual std::string GetName() const { return "MacSapUserAsync"; }
 
+		};
+
+		class MacSapRequestParamsAsync : public MacSapRequestParams
+		{
+		public:
+			RequestId m_requestId;
+			HrWpanDevId m_trgtId;
+			TransmitTimeout m_transmitTimeout;
+			MaxRetries m_maxRetries;
+			SNAPHeaderPresent m_snapHeaderPresent;
+			UserPriority m_userPriority;
+			ACKRequested m_ackRequested;
+			ConfirmRequested m_confirmRequested;
+			Length m_length;
+			Ptr<Packet> m_data;
+			
+			virtual ~MacSapRequestParamsAsync() {}
+
+		};
+
+		class MacSapResponseParamsAsync : public MacSapResponseParams
+		{
+			virtual ~MacSapResponseParamsAsync() {}
 		};
 
 		class MacSapProviderAsync : public MacSapProvider
@@ -70,29 +97,8 @@ namespace ns3
 		public:
 			MacSapProviderAsync(HrWpanMac * mac);
 
-			class MacSapRequestParamsAsync : public MacSapRequestParams
-			{
-			public:
-				RequestId m_requestId;
-				HrWpanDevId m_trgtId;
-				TransmitTimeout m_transmitTimeout;
-				MaxRetries m_maxRetries;
-				SNAPHeaderPresent m_snapHeaderPresent;
-				UserPriority m_userPriority;
-				ACKRequested m_ackRequested;
-				ConfirmRequested m_confirmRequested;
-				Length m_length;
-				Ptr<Packet> m_data;
-
-			};
-
-			class MacSapResponseParamsAsync : public MacSapResponseParams
-			{
-
-			};
-
-			virtual void Request(const MacSapRequestParamsAsync & requestParams);
-			virtual void Response(const MacSapResponseParamsAsync & responseParams);
+			virtual void Request(const MacSapRequestParams & requestParams);
+			virtual void Response(const MacSapResponseParams & responseParams);
 
 			virtual std::string GetName() const { return "MacSapProviderAsync"; }
 

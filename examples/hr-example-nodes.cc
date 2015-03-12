@@ -22,16 +22,28 @@
 #include <ns3/hr-wpan-helper.h>
 #include <ns3/simulator.h>
 #include <ns3/hr-wpan-topology-aggregator.h>
+#include <ns3/hr-wpan-dev-id.h>
+#include <ns3/constant-position-mobility-model.h>
 #include <ns3/log.h>
 
 using namespace ns3;
+
+void SendOnePacket(Ptr<NetDevice> sender )
+{
+	Ptr<Packet> p = Create<Packet>(20);
+
+	sender->Send(p, HrWpanDevId("ff"), 0);
+}
 
 int main(int argc, char** argv)
 {
 	LogComponentEnableAll(LOG_PREFIX_FUNC);
 	LogComponentEnable("HrWpanHelper",LOG_ALL);
+	LogComponentEnable("HrWpanNetDevice", LOG_ALL);
 	LogComponentEnable("HrWpanMac", LOG_ALL);
 	LogComponentEnable("HrWpanPhy", LOG_ALL);
+	LogComponentEnable("HrWpanMacSapAsync", LOG_ALL);
+	LogComponentEnable("SingleModelSpectrumChannel", LOG_ALL);
 
 	NodeContainer nodeContainer;
 	nodeContainer.Create(2);
@@ -39,18 +51,26 @@ int main(int argc, char** argv)
 	Ptr<HrWpan::TopologyAggregator> topologyAggregator = CreateObject<HrWpan::TopologyAggregator>();
 
 	HrWpan::HrWpanHelper hrWpanHelper(topologyAggregator);
+
+	Ptr<Node> node1 = nodeContainer.Get(0);
+	Ptr<Node> node2 = nodeContainer.Get(1);
+
+	Ptr<MobilityModel> senderMobility = CreateObject<ConstantPositionMobilityModel>();
+	Ptr<MobilityModel> receiverMobility = CreateObject<ConstantPositionMobilityModel>();
+
+	node1->AggregateObject(senderMobility);
+	node2->AggregateObject(receiverMobility);
+
+
 	NetDeviceContainer netDeviceContainer = hrWpanHelper.Install(nodeContainer);
+
+
 
 	Ptr<NetDevice> netDevice1 = netDeviceContainer.Get(0);
 	Ptr<NetDevice> netDevice2 = netDeviceContainer.Get(1);
 
-	//netDevice1->Send()
-	//netDevice2->Send()
-
 	Simulator::Stop(Seconds(10.0));
-
-	//Simulator::Schedule(Seconds(1.0), &SendOnePacket, sender, receiver);
-
+	Simulator::Schedule(Seconds(2.0), &SendOnePacket, netDevice1);
 	Simulator::Run();
 
 	Simulator::Destroy();

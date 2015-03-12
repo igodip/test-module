@@ -28,6 +28,10 @@
 #include <ns3/mobility-model.h>
 #include <ns3/spectrum-channel.h>
 
+//Mac sap
+#include <ns3/hr-wpan-mac-sap-async.h>
+
+
 namespace ns3
 {
 	namespace HrWpan
@@ -44,6 +48,18 @@ namespace ns3
 			m_mac = CreateObject<HrWpanMac>();
 			m_phy = CreateObject<HrWpanPhy>();
 
+			m_mac->SetPhyProvider(m_phy->GetPointer()); 
+
+			//Sap Providers
+
+			HrWpan::MacSapProviderAsync * providerAsync = new HrWpan::MacSapProviderAsync(m_mac->GetPointer());
+			RegisterMacSapProvider(providerAsync);
+
+			//Sap users
+			
+			HrWpan::MacSapUserAsync * userAsync = new HrWpan::MacSapUserAsync(this);
+			m_mac->RegisterSapUser(userAsync);
+
 			CompleteConfig();
 
 		}
@@ -51,6 +67,8 @@ namespace ns3
 		HrWpanNetDevice:: ~HrWpanNetDevice(void)
 		{
 			NS_LOG_FUNCTION(this);
+
+			//TODO: Delete all the pointers inside
 
 		}
 
@@ -116,7 +134,7 @@ namespace ns3
 		void HrWpanNetDevice::SetAddress(Address address)
 		{
 			NS_LOG_FUNCTION(this);
-			//m_mac->SetShortAddress(Mac16Address::ConvertFrom(address));
+			
 		}
 
 		Address	HrWpanNetDevice::GetAddress(void) const
@@ -152,7 +170,13 @@ namespace ns3
 			// inventing a fake ethertype and packet tag for McpsDataRequest
 			NS_LOG_FUNCTION(this << packet << dest << protocolNumber);
 
-			return false;
+			HrWpan::MacSapRequestParamsAsync requestParams;
+			
+			requestParams.m_data = packet;
+
+			m_sapProviders["MacSapProviderAsync"]->Request(requestParams);
+			
+			return true;
 		}
 
 		Ptr<Node> HrWpanNetDevice::GetNode(void) const
@@ -176,6 +200,7 @@ namespace ns3
 			NS_LOG_FUNCTION(this);
 			m_mac->Dispose();
 			m_phy->Dispose();
+
 			m_phy = 0;
 			m_mac = 0;
 			m_node = 0;
@@ -293,11 +318,9 @@ namespace ns3
 				return;
 			}
 
-			m_mac->SetPhyProvider(m_phy->GetPointer());
 			m_phy->SetMobility(m_node->GetObject<MobilityModel>());
 			
 			//Create mac Sap
-
 			m_configComplete = true;
 		}
 
@@ -324,12 +347,20 @@ namespace ns3
 			m_phy->SetChannel(channel);
 		}
 
-		void HrWpanNetDevice::registerMacSapProvider(MacSapProvider * sapProvider)
+		void HrWpanNetDevice::RegisterMacSapProvider(MacSapProvider * sapProvider)
 		{
 			NS_LOG_FUNCTION(this << sapProvider);
 			
-			mSapProviders[sapProvider->GetName()] = sapProvider;
+			m_sapProviders[sapProvider->GetName()] = sapProvider;
 		}
+
+		void HrWpanNetDevice::Receive(Ptr<Packet> p)
+		{
+			NS_LOG_FUNCTION(this << p);
+
+			m_receiveCallback(this,p,0,HrWpanDevId("ff"));
+		}
+
 
 	}// HrWpan namespace
 

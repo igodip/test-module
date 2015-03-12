@@ -52,6 +52,8 @@ namespace ns3 {
 
 			void SetChannel(Ptr<SpectrumChannel> channel);
 
+			void Receive(Ptr<Packet> p);
+
 			//From NetDevice
 			virtual void SetIfIndex(const uint32_t index);
 			virtual uint32_t GetIfIndex(void) const;
@@ -79,7 +81,7 @@ namespace ns3 {
 			virtual void SetPromiscReceiveCallback(PromiscReceiveCallback cb);
 			virtual bool SupportsSendFrom(void) const;
 
-			void registerMacSapProvider(MacSapProvider * sapProvider);
+			void RegisterMacSapProvider(MacSapProvider * sapProvider);
 
 		protected:
 
@@ -129,7 +131,7 @@ namespace ns3 {
 			 * \property	std::map < std::string, MacSapProvider * > mSapProviders
 			 */
 
-			std::map < std::string, MacSapProvider * > mSapProviders;
+			std::map < std::string, MacSapProvider * > m_sapProviders;
 		};
 
 	} //namespace HrWpan

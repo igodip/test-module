@@ -43,6 +43,7 @@ namespace ns3 {
 	class HrWpanMac : public HrWpanPhyUser , public Object{
 	public:
 		HrWpanMac();
+		virtual ~HrWpanMac();
 		
 		static TypeId GetTypeId();
 

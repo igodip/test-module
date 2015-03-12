@@ -24,6 +24,7 @@
 #include <ns3/object.h>
 
 #include <cstring>
+#include <iostream>
 
 
 namespace ns3
@@ -31,24 +32,27 @@ namespace ns3
 	class HrWpanMac;
 	
 
+
 	namespace HrWpan
 	{
+
+		class MacSapConfirmParams
+		{
+		public:
+			virtual ~MacSapConfirmParams() {}
+		};
+
+		class MacSapIndicationParams
+		{
+		public:
+			virtual ~MacSapIndicationParams() {}
+		};
 
 		class HrWpanNetDevice;
 
 		class MacSapUser
 		{
 		public:
-
-			class MacSapConfirmParams
-			{
-
-			};
-
-			class MacSapIndicationParams
-			{
-
-			};
 
 			MacSapUser(HrWpanNetDevice * netDevice);
 
@@ -62,6 +66,18 @@ namespace ns3
 
 		};
 
+		class MacSapRequestParams
+		{
+		public:
+			virtual ~MacSapRequestParams() {}
+		};
+
+		class MacSapResponseParams
+		{
+		public:
+			virtual ~MacSapResponseParams() {}
+		};
+
 		class MacSapProvider
 		{
 
@@ -69,17 +85,7 @@ namespace ns3
 
 			MacSapProvider(HrWpanMac * mac);
 
-			class MacSapRequestParams
-			{
-
-			};
-
-			class MacSapResponseParams
-			{
-
-			};
-
-			virtual void Request (const MacSapRequestParams & requestParams) {};
+			virtual void Request(const MacSapRequestParams & requestParams) {};
 			virtual void Response (const MacSapResponseParams & responseParams) {};
 
 			virtual std::string GetName() const { return ""; }

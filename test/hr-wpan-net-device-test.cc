@@ -19,50 +19,53 @@
 */
 
 #include <ns3/test.h>
-#include <ns3/packet.h>
-#include <ns3/hr-wpan-mac-header.h>
-#include <ns3/hr-wpan-mac-trailer.h>
-#include <ns3/hr-wpan-dev-id.h>
-#include <ns3/mac64-address.h>
 #include <ns3/log.h>
-
+#include <ns3/hr-wpan-helper.h>
 using namespace ns3;
 
-NS_LOG_COMPONENT_DEFINE("HrWpanInterferenceTest");
+NS_LOG_COMPONENT_DEFINE("HrWpanNetDeviceTest");
 
 // This is an example TestCase.
-class HrWpanPacketTestCase : public TestCase {
+class HrWpanNetDeviceTestCase : public TestCase {
 public:
-	HrWpanPacketTestCase();
-	virtual ~HrWpanPacketTestCase();
+	HrWpanNetDeviceTestCase();
+	virtual ~HrWpanNetDeviceTestCase();
 private:
 	virtual void DoRun(void);
 };
 
-HrWpanPacketTestCase::HrWpanPacketTestCase()
-	: TestCase("Test the 802.15.3c MAC header and trailer classes")
-{}
-
-HrWpanPacketTestCase::~HrWpanPacketTestCase()
+HrWpanNetDeviceTestCase::HrWpanNetDeviceTestCase()
+	: TestCase("Sending one packet from one device to another one")
 {
+	
 }
 
-void
-HrWpanPacketTestCase::DoRun(void)
+HrWpanNetDeviceTestCase::~HrWpanNetDeviceTestCase()
 {
+
+}
+
+void HrWpanNetDeviceTestCase::DoRun(void)
+{
+	Ptr<HrWpan::TopologyAggregator > aggregator = CreateObject<HrWpan::TopologyAggregator>();
+	HrWpan::HrWpanHelper helper(aggregator);
+
+	NodeContainer nodeContainer;
+	nodeContainer.Create(2);
+	
 }
 
 // ==============================================================================
-class HrWpanPacketTestSuite : public TestSuite
+class HrWpanNetDeviceTestSuite : public TestSuite
 {
 public:
-	HrWpanPacketTestSuite();
+	HrWpanNetDeviceTestSuite();
 };
 
-HrWpanPacketTestSuite::HrWpanPacketTestSuite()
-	: TestSuite("hr-wpan-packet", UNIT)
+HrWpanNetDeviceTestSuite::HrWpanNetDeviceTestSuite()
+	: TestSuite("hr-wpan-net-device-test-suite", UNIT)
 {
-	AddTestCase(new HrWpanPacketTestCase, TestCase::QUICK);
+	AddTestCase(new HrWpanNetDeviceTestSuite, TestCase::QUICK);
 }
 
-static HrWpanPacketTestSuite hrWpanPacketTestSuite;
+static HrWpanNetDeviceTestSuite hrWpanNetDeviceTestSuite;
