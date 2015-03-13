@@ -40,7 +40,9 @@ namespace ns3
 			*/
 			static TypeId GetTypeId(void);
 
-			ObstaclePropagationLossModel();
+			ObstaclePropagationLossModel(Ptr<TopologyAggregator> topologyAggregator);
+			ObstaclePropagationLossModel(Ptr<TopologyAggregator> topologyAggregator,double obsLoss);
+
 			virtual ~ObstaclePropagationLossModel();
 
 		private:
@@ -65,8 +67,7 @@ namespace ns3
 			virtual int64_t DoAssignStreams(int64_t stream);
 
 			Ptr<TopologyAggregator> m_topologyAggregator;
-
-			//Ptr<RandomVariableStream> m_variable; //!< random generator
+			
 		};
 
 	} // namespace HrWpan

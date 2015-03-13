@@ -33,10 +33,10 @@ namespace ns3
 		public:
 
 			DevIdHelper();
-
 			void Install(NetDeviceContainer ndc);
 
 		protected:
+
 			void incrementAddress();
 			char * getAddress() const;
 

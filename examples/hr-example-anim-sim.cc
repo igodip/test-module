@@ -42,11 +42,8 @@ int main(int argc, char ** argv)
 	
 	HrWpan::HrWpanHelper wpanHelper(topologyAggregator);
 	
-
 	topologyHelper.Install(nodeContainer);
 	topologyHelper.PlaceObstacle(30);
-
-
 
 	//senderPhy
 	AnimationInterface animInterface("sim.xml");

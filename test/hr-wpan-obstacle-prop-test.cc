@@ -23,16 +23,20 @@
 #include <ns3/packet.h>
 #include <ns3/hr-wpan-phy.h>
 #include <ns3/mobility-model.h>
+#include <ns3/hr-wpan-topology-aggregator.h>
 #include <ns3/constant-position-mobility-model.h>
-#include <ns3/single-model-spectrum-channel.h>
-#include <ns3/hr-wpan-phy-ula-antenna.h>
+#include <ns3/hr-wpan-dev-id.h>
+#include <ns3/node-container.h>
+#include <ns3/hr-wpan-helper.h>
+#include <ns3/hr-wpan-link.h>
+#include <ns3/hr-wpan-obstacle.h>
+#include <ns3/ptr.h>
 #include <ns3/log.h>
 
 using namespace ns3;
 
-NS_LOG_COMPONENT_DEFINE("hr-wpan-packet-test");
+NS_LOG_COMPONENT_DEFINE("HrWpanObstaclePropTest");
 
-// This is an example TestCase.
 class HrWpanObstaclePropTestCase : public TestCase {
 public:
 	HrWpanObstaclePropTestCase();
@@ -43,17 +47,61 @@ private:
 
 HrWpanObstaclePropTestCase::HrWpanObstaclePropTestCase()
 	: TestCase("Testing the signal propagation through obstacles")
-{}
+{
+	LogComponentEnableAll(LOG_PREFIX_FUNC);
+	
+	LogComponentEnable("HrWpanObstaclePropTest", LOG_LEVEL_ALL);
+	LogComponentEnable("SingleModelSpectrumChannel", LOG_LEVEL_ALL);
+	LogComponentEnable("HrWpanObstaclePropagationModel", LOG_LEVEL_ALL);
+	
+}
 
 HrWpanObstaclePropTestCase::~HrWpanObstaclePropTestCase()
 {
 
 }
 
-void
-HrWpanObstaclePropTestCase::DoRun(void)
+void HrWpanObstaclePropTestCase::DoRun(void)
 {
+	NodeContainer nodeContainer;
+	nodeContainer.Create(2);
 
+	Ptr<HrWpan::TopologyAggregator> topologyAggregator = CreateObject<HrWpan::TopologyAggregator>();
+
+	HrWpan::HrWpanHelper hrWpanHelper(topologyAggregator);
+
+	Ptr<Node> node1 = nodeContainer.Get(0);
+	Ptr<Node> node2 = nodeContainer.Get(1);
+
+	Ptr<MobilityModel> senderMobility = CreateObject<ConstantPositionMobilityModel>();
+	Ptr<MobilityModel> receiverMobility = CreateObject<ConstantPositionMobilityModel>();
+
+	senderMobility->SetPosition(Vector(0, 0, 0));
+	receiverMobility->SetPosition(Vector(2, 0, 0));
+
+	node1->AggregateObject(senderMobility);
+	node2->AggregateObject(receiverMobility);
+
+	Ptr<HrWpan::Link> link = CreateObject<HrWpan::Link>();
+	Ptr<HrWpan::Obstacle> obstacle = CreateObject<HrWpan::Obstacle>(1,1,1,-1);
+
+	topologyAggregator->addLine(link);
+	topologyAggregator->addLine(obstacle);
+
+	link->SetReceiver(node2);
+	link->SetSender(node1);
+
+	NetDeviceContainer netDeviceContainer = hrWpanHelper.Install(nodeContainer);
+
+	Ptr<NetDevice> netDevice1 = netDeviceContainer.Get(0);
+	Ptr<NetDevice> netDevice2 = netDeviceContainer.Get(1);
+
+	netDevice1->SetAddress(HrWpanDevId("01"));
+	netDevice2->SetAddress(HrWpanDevId("02"));
+
+	Ptr<Packet> p = Create<Packet>(20);
+
+	netDevice1->Send(p, HrWpanDevId("02"),1);
 }
 
 /**
@@ -75,6 +123,65 @@ private:
 
 };
 
+HrWpanNoObstaclePropTestCase::HrWpanNoObstaclePropTestCase()
+	: TestCase("Testing the signal propagation through obstacles")
+{
+	LogComponentEnableAll(LOG_PREFIX_FUNC);
+
+	LogComponentEnable("HrWpanObstaclePropTest", LOG_LEVEL_ALL);
+	LogComponentEnable("SingleModelSpectrumChannel", LOG_LEVEL_ALL);
+	LogComponentEnable("HrWpanObstaclePropagationModel", LOG_LEVEL_ALL);
+	LogComponentEnable("HrWpanPhy", LOG_LEVEL_ALL);
+
+}
+
+HrWpanNoObstaclePropTestCase::~HrWpanNoObstaclePropTestCase()
+{
+
+}
+
+void HrWpanNoObstaclePropTestCase::DoRun(void)
+{
+	NodeContainer nodeContainer;
+	nodeContainer.Create(2);
+
+	Ptr<HrWpan::TopologyAggregator> topologyAggregator = CreateObject<HrWpan::TopologyAggregator>();
+
+	HrWpan::HrWpanHelper hrWpanHelper(topologyAggregator);
+
+	Ptr<Node> node1 = nodeContainer.Get(0);
+	Ptr<Node> node2 = nodeContainer.Get(1);
+
+	Ptr<MobilityModel> senderMobility = CreateObject<ConstantPositionMobilityModel>();
+	Ptr<MobilityModel> receiverMobility = CreateObject<ConstantPositionMobilityModel>();
+
+	senderMobility->SetPosition(Vector(0, 0, 0));
+	receiverMobility->SetPosition(Vector(2, 0, 0));
+
+	node1->AggregateObject(senderMobility);
+	node2->AggregateObject(receiverMobility);
+
+	Ptr<HrWpan::Link> link = CreateObject<HrWpan::Link>();
+	Ptr<HrWpan::Obstacle> obstacle = CreateObject<HrWpan::Obstacle>(1, 1, 1, 3);
+
+	topologyAggregator->addLine(link);
+	topologyAggregator->addLine(obstacle);
+
+	link->SetReceiver(node2);
+	link->SetSender(node1);
+
+	NetDeviceContainer netDeviceContainer = hrWpanHelper.Install(nodeContainer);
+
+	Ptr<NetDevice> netDevice1 = netDeviceContainer.Get(0);
+	Ptr<NetDevice> netDevice2 = netDeviceContainer.Get(1);
+
+	netDevice1->SetAddress(HrWpanDevId("01"));
+	netDevice2->SetAddress(HrWpanDevId("02"));
+
+	Ptr<Packet> p = Create<Packet>(20);
+
+	netDevice1->Send(p, HrWpanDevId("02"), 1);
+}
 
 
 // ==============================================================================
@@ -85,9 +192,10 @@ public:
 };
 
 HrWpanObstaclePropTestSuite::HrWpanObstaclePropTestSuite()
-	: TestSuite("hr-wpan-obstacle-prop", UNIT)
+	: TestSuite("hr-wpan-obstacle-prop-test", UNIT)
 {
 	AddTestCase(new HrWpanObstaclePropTestCase, TestCase::QUICK);
+	AddTestCase(new HrWpanNoObstaclePropTestCase, TestCase::QUICK);
 }
 
 static HrWpanObstaclePropTestSuite hrWpanObstaclePropTestSuite;

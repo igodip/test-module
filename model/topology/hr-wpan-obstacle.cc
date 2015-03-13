@@ -53,6 +53,7 @@ namespace ns3
 
 		void Obstacle::DoDispose()
 		{
+			NS_LOG_FUNCTION(this);
 			Line::DoDispose();
 		}
 

@@ -20,6 +20,7 @@
 */
 
 #include "hr-wpan-topology-aggregator.h"
+#include <ns3/hr-wpan-link.h>
 #include <ns3/log.h>
 
 namespace ns3
@@ -40,6 +41,14 @@ namespace ns3
 		{
 			NS_LOG_FUNCTION(this);
 
+			/*Ptr<Link> link = DynamicCast<Ptr<Link>>(line);
+
+			if (link != 0)
+			{
+				m_nodes_map[link->GetSender()] = link;
+				m_nodes_map[link->GetReceiver()] = link;
+			}*/
+
 			m_lines.push_back(line);
 		}
 
@@ -57,6 +66,11 @@ namespace ns3
 			NS_LOG_FUNCTION(this);
 
 			return m_lines;
+		}
+
+		Ptr<Line> TopologyAggregator::getLineByNode(Ptr<Node> node) const
+		{
+			return 0;
 		}
 
 	} // namespace HrWpan
