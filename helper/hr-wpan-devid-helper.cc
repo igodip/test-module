@@ -18,3 +18,47 @@
 * Authors:
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
+#include "hr-wpan-devid-helper.h"
+
+#include <ns3/hr-wpan-dev-id.h>
+
+namespace ns3
+{
+	namespace HrWpan
+	{
+
+		DevIdHelper::DevIdHelper()
+		{
+			chars[0] = 0x30;
+			chars[1] = 0x30;
+		}
+
+		void DevIdHelper::Install(NetDeviceContainer ndc)
+		{
+			for (NetDeviceContainer::Iterator i = ndc.Begin(); i != ndc.End(); ++i)
+			{
+				incrementAddress();
+				(*i)->SetAddress(HrWpanDevId(getAddress()));
+				
+			}
+		}
+
+		void DevIdHelper::incrementAddress()
+		{
+			chars[1]++;
+
+			if (chars[1] == 0x3A)
+			{
+				chars[0]++;
+				chars[1] = 0x30;
+			}
+		}
+
+		char * DevIdHelper::getAddress() const
+		{
+			return (char*) chars;
+		}
+
+	} //namespace HrWpan
+
+} // namespace ns3

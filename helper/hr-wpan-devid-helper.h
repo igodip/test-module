@@ -18,3 +18,36 @@
 * Authors:
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
+
+#ifndef HR_WPAN_DEVID_HELPER_H
+#define HR_WPAN_DEVID_HELPER_H
+
+#include <ns3/net-device-container.h>
+
+namespace ns3
+{
+	namespace HrWpan
+	{
+		class DevIdHelper
+		{
+		public:
+
+			DevIdHelper();
+
+			void Install(NetDeviceContainer ndc);
+
+		protected:
+			void incrementAddress();
+			char * getAddress() const;
+
+		private:
+
+			uint8_t chars[2];
+
+		}; // DevIdHelper
+
+	} // namespace HrWpan
+
+} // namespace ns3
+
+#endif // HR_WPAN_DEVID_HELPER_H_
