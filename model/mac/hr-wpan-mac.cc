@@ -108,8 +108,15 @@ namespace ns3 {
 	{
 		NS_LOG_FUNCTION(this << p);
 		
+		HrWpanMacHeader header;
+
+		p->RemoveHeader(header);
+
 		HrWpan::MacSapIndicationParamsAsync indicationParams;
 		indicationParams.m_data = p;
+		indicationParams.m_orgId = header.getSrcAddress();
+
+		//Check if src id is the same
 
 		//Switch but for now only forward
 		m_sapUsers["MacSapUserAsync"]->Indication(indicationParams);

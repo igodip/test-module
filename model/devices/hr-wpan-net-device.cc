@@ -356,11 +356,22 @@ namespace ns3
 			m_sapProviders[sapProvider->GetName()] = sapProvider;
 		}
 
-		void HrWpanNetDevice::Receive(Ptr<Packet> p)
+		void HrWpanNetDevice::Receive(Ptr<Packet> p,const Address & address)
 		{
 			NS_LOG_FUNCTION(this << p);
 
-			m_receiveCallback(this,p,0,HrWpanDevId("ff"));
+			const HrWpanDevId & devId = HrWpanDevId::convertFrom(address);
+
+			NS_LOG_INFO(devId);
+			NS_LOG_INFO(m_mac->GetDevId());
+
+			if (devId == m_mac->GetDevId())
+			{
+				//NOT FORWARD TO UPPER LAYERS
+				return;
+			}
+
+			m_receiveCallback(this,p,1,m_mac->GetDevId());
 		}
 
 

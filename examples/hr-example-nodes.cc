@@ -71,7 +71,7 @@ int main(int argc, char** argv)
 	netDevice2->SetAddress(HrWpanDevId("02"));
 
 	Simulator::Stop(Seconds(10.0));
-	Simulator::Schedule(Seconds(2.0), &SendOnePacket, netDevice1);
+	Simulator::ScheduleWithContext(1,Seconds(2.0), &SendOnePacket, netDevice1);
 	Simulator::Run();
 
 	Simulator::Destroy();

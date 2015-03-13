@@ -52,7 +52,7 @@ namespace ns3 {
 
 			void SetChannel(Ptr<SpectrumChannel> channel);
 
-			void Receive(Ptr<Packet> p);
+			void Receive(Ptr<Packet> p,const Address & address);
 
 			//From NetDevice
 			virtual void SetIfIndex(const uint32_t index);

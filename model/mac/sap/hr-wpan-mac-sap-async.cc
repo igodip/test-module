@@ -21,8 +21,9 @@ namespace ns3
 		{
 			NS_LOG_FUNCTION(this);
 			
-			const MacSapIndicationParamsAsync & paramsAsync = dynamic_cast<const MacSapIndicationParamsAsync &>(indicationParams);
-			m_netDevice->Receive(paramsAsync.m_data);
+			const MacSapIndicationParamsAsync & paramsAsync = dynamic_cast< const MacSapIndicationParamsAsync &>(indicationParams);
+			
+			m_netDevice->Receive(paramsAsync.m_data,paramsAsync.m_orgId);
 
 		}
 
@@ -47,6 +48,14 @@ namespace ns3
 
 			HrWpanPhyProvider* provider = m_mac->GetPhyProvider();
 			// Add header and trailer
+			
+			HrWpanMacHeader header;
+			header.setSrcAddress(m_mac->GetDevId());
+			header.setDstAddress(paramsAsync.m_trgtId);
+
+			Ptr<Packet> packet = paramsAsync.m_data;
+			packet->AddHeader(header);
+
 			provider->SendMacPdu(paramsAsync.m_data);
 
 		}
@@ -54,7 +63,6 @@ namespace ns3
 		void MacSapProviderAsync::Response(const MacSapResponseParams & responseParams)
 		{
 			NS_LOG_FUNCTION(this);
-
 
 		}
 
