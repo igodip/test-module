@@ -63,16 +63,33 @@ namespace ns3 {
 			.SetParent<Object>()
 			.AddConstructor<HrWpanPhy>().
 			AddTraceSource("PhyRxBegin",
-				"Trace source indicating a packet has begun"
-				"being received from the channel medium by the device",
-				MakeTraceSourceAccessor(&HrWpanPhy::m_phyRxBeginTrace),
-				"ns3::Packet::TracedCallback").
+			"Trace source indicating a packet has begun"
+			"being received from the channel medium by the device",
+			MakeTraceSourceAccessor(&HrWpanPhy::m_phyRxBeginTrace),
+			"ns3::Packet::TracedCallback").
 			AddTraceSource("PhyRxEnd",
-				"Trace source indicating a packet has been "
-				"completely received from the channel medium"
-				"by the device",
-				MakeTraceSourceAccessor(&HrWpanPhy::m_phyRxEndTrace),
-				"ns3::HrWpanPhy::RxEndTracedCallback");
+			"Trace source indicating a packet has been "
+			"completely received from the channel medium"
+			"by the device",
+			MakeTraceSourceAccessor(&HrWpanPhy::m_phyRxEndTrace),
+			"ns3::HrWpanPhy::RxEndTracedCallback").
+			AddTraceSource("PhyTxBegin",
+			"Trace source indicating a packet has begun "
+			"being sent to the channel medium"
+			"by the device",
+			MakeTraceSourceAccessor(&HrWpanPhy::m_phyTxBeginTrace),
+			"ns3::HrWpanPhy::TxBeginTracedCallback").
+			AddTraceSource("PhyTxEnd",
+			"Trace source indicating a packet has been"
+			"completely sent to the channel medium"
+			"by the device",
+			MakeTraceSourceAccessor(&HrWpanPhy::m_phyTxEndTrace),
+			"ns3::HrWpanPhy::TxEndTrace").
+			AddTraceSource("PhyTxDropTrace",
+			"Trace source indicating a packet has been"
+			"dropped by the device during transmission",
+			MakeTraceSourceAccessor(&HrWpanPhy::m_phyTxDropTrace),
+			"ns3::HrWpanPhy::TxDropTrace");
 
 		return tid;
 	}

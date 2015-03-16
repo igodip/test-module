@@ -32,6 +32,7 @@
 #include <ns3/hr-wpan-phy-state-factory.h>
 #include <ns3/hr-wpan-phy-provider.h>
 #include <ns3/hr-wpan-phy-user.h>
+#include <ns3/hr-wpan-interference-helper.h>
 
 namespace ns3 {
 
@@ -125,6 +126,7 @@ namespace ns3 {
 		double m_rxSensitivity;
 		
 		Ptr<SpectrumValue> m_txPsd;
+		
 
 		HrWpanSpectrumValueHelper m_psdHelper;
 
