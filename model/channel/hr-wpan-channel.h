@@ -19,7 +19,16 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef HR_WPAN_PHY_H
-#define HR_WPAN_PHY_H
+#ifndef HR_WPAN_CHANNEL_H
+#define HR_WPAN_CHANNEL_H
 
-#endif
+namespace ns3
+{
+	namespace HrWpan
+	{
+
+	} // namespace HrWpan
+
+} // namespace ns3
+
+#endif //HR_WPAN_CHANNEL_H
