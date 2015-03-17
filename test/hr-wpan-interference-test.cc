@@ -48,6 +48,12 @@ void
 HrWpanInterferenceTestCase::DoRun(void)
 {
 
+	//Build the topology
+
+	//Schedule packet send
+
+	//Check that the packet has been dropped
+
 }
 
 // ==============================================================================
