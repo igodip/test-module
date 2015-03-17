@@ -21,9 +21,14 @@
 #include <ns3/test.h>
 #include <ns3/log.h>
 
+#include <ns3/hr-wpan-sector-antenna.h>
+#include <ns3/double.h>
+
 using namespace ns3;
 
 ////////////////// HrWpanSectorAntennaLosTestCase ////////////////
+
+NS_LOG_COMPONENT_DEFINE("HrWpanSectorAntennaTest");
 
 class HrWpanSectorAntennaLosTestCase : public TestCase
 {
@@ -38,7 +43,7 @@ private:
 HrWpanSectorAntennaLosTestCase::HrWpanSectorAntennaLosTestCase() :
 TestCase("Testing the los sector antenna gain")
 {
-
+	LogComponentEnable("HrWpanSectorAntennaTest", LOG_ALL);
 }
 
 HrWpanSectorAntennaLosTestCase::~HrWpanSectorAntennaLosTestCase()
@@ -48,6 +53,19 @@ HrWpanSectorAntennaLosTestCase::~HrWpanSectorAntennaLosTestCase()
 
 void HrWpanSectorAntennaLosTestCase::DoRun()
 {
+	Ptr<HrWpan::SectorAntenna> sectorAntenna = CreateObject<HrWpan::SectorAntenna>();
+	sectorAntenna->SetAttribute("Orientation", DoubleValue(DegreesToRadians(90)));
+	sectorAntenna->SetAttribute("Beamwidth", DoubleValue(DegreesToRadians(20)));
+
+	Angles firstAngle(DegreesToRadians(90), 0);
+	Angles secondAngle(DegreesToRadians(99), 0);
+	Angles thirdAngle(DegreesToRadians(81), 0);
+
+	NS_LOG_INFO(sectorAntenna->GetGainDb(firstAngle));
+
+	NS_TEST_ASSERT_MSG_GT(sectorAntenna->GetGainDb(firstAngle), 0, " Not working!");
+	NS_TEST_ASSERT_MSG_GT(sectorAntenna->GetGainDb(secondAngle), 0, " Not working!");
+	NS_TEST_ASSERT_MSG_GT(sectorAntenna->GetGainDb(thirdAngle), 0, " Not working!");
 
 }
 
@@ -66,7 +84,7 @@ private:
 HrWpanSectorAntennaNoLosTestCase::HrWpanSectorAntennaNoLosTestCase() :
 TestCase("Testing the no los sector antenna gain")
 {
-
+	LogComponentEnable("HrWpanSectorAntennaTest", LOG_ALL);
 }
 
 HrWpanSectorAntennaNoLosTestCase::~HrWpanSectorAntennaNoLosTestCase()
@@ -76,7 +94,17 @@ HrWpanSectorAntennaNoLosTestCase::~HrWpanSectorAntennaNoLosTestCase()
 
 void HrWpanSectorAntennaNoLosTestCase::DoRun()
 {
+	Ptr<HrWpan::SectorAntenna> sectorAntenna = CreateObject<HrWpan::SectorAntenna>();
+	sectorAntenna->SetAttribute("Orientation", DoubleValue(DegreesToRadians(90)));
+	sectorAntenna->SetAttribute("Beamwidth", DoubleValue(DegreesToRadians(20)));
 
+	Angles firstAngle(DegreesToRadians(0), 0);
+	Angles secondAngle(DegreesToRadians(180), 0);
+
+	NS_LOG_INFO(sectorAntenna->GetGainDb(firstAngle));
+
+	NS_TEST_ASSERT_MSG_LT(sectorAntenna->GetGainDb(firstAngle), 0, " Not working!");
+	NS_TEST_ASSERT_MSG_LT(sectorAntenna->GetGainDb(secondAngle), 0, " Not working!");
 }
 
 //////////////// Test Suite //////////////////

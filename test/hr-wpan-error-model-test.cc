@@ -37,11 +37,11 @@ using namespace ns3;
 
 NS_LOG_COMPONENT_DEFINE ("hr-wpan-error-model-test");
 
-class LrWpanErrorDistanceTestCase : public TestCase
+class HrWpanErrorDistanceTestCase : public TestCase
 {
 public:
-  LrWpanErrorDistanceTestCase ();
-  virtual ~LrWpanErrorDistanceTestCase ();
+  HrWpanErrorDistanceTestCase ();
+  virtual ~HrWpanErrorDistanceTestCase ();
   uint32_t GetReceived (void) const
   {
     return m_received;
@@ -63,24 +63,24 @@ private:
   virtual void DoRun (void);
 };
 
-LrWpanErrorDistanceTestCase::LrWpanErrorDistanceTestCase ()
+HrWpanErrorDistanceTestCase::HrWpanErrorDistanceTestCase ()
   : TestCase ("Test the 802.15.4 error model vs distance"),
     m_received (0)
 {
 }
 
-LrWpanErrorDistanceTestCase::~LrWpanErrorDistanceTestCase ()
+HrWpanErrorDistanceTestCase::~HrWpanErrorDistanceTestCase ()
 {
 }
 
 void
-LrWpanErrorDistanceTestCase::Callback (McpsDataIndicationParams params, Ptr<Packet> p)
+HrWpanErrorDistanceTestCase::Callback (McpsDataIndicationParams params, Ptr<Packet> p)
 {
   m_received++;
 }
 
 void
-LrWpanErrorDistanceTestCase::DoRun (void)
+HrWpanErrorDistanceTestCase::DoRun (void)
 {
   // Set the random seed and run number for this test
   RngSeedManager::SetSeed (1);
@@ -110,7 +110,7 @@ LrWpanErrorDistanceTestCase::DoRun (void)
   dev1->GetPhy ()->SetMobility (mob1);
 
   McpsDataIndicationCallback cb0;
-  cb0 = MakeCallback (&LrWpanErrorDistanceTestCase::Callback, this);
+  cb0 = MakeCallback (&HrWpanErrorDistanceTestCase::Callback, this);
   dev1->GetMac ()->SetMcpsDataIndicationCallback (cb0);
 
   McpsDataRequestParams params;
@@ -186,7 +186,7 @@ LrWpanErrorModelTestSuite::LrWpanErrorModelTestSuite ()
   : TestSuite ("lr-wpan-error-model", UNIT)
 {
   AddTestCase (new LrWpanErrorModelTestCase, TestCase::QUICK);
-  AddTestCase (new LrWpanErrorDistanceTestCase, TestCase::QUICK);
+  AddTestCase (new HrWpanErrorDistanceTestCase, TestCase::QUICK);
 }
 
 static LrWpanErrorModelTestSuite lrWpanErrorModelTestSuite;

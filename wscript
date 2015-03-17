@@ -54,7 +54,8 @@ def build(bld):
 		'test/hr-wpan-mac-queue-test.cc',
 		'test/hr-wpan-topology-test.cc',
 		'test/hr-wpan-obstacle-prop-test.cc',
-		'test/hr-wpan-sector-antenna-test.cc'
+		'test/hr-wpan-sector-antenna-test.cc',
+		'test/hr-wpan-interference-test.cc'
         ]
      
     headers = bld(features='ns3header')

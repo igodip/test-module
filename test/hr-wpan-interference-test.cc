@@ -19,50 +19,48 @@
 */
 
 #include <ns3/test.h>
-#include <ns3/packet.h>
-#include <ns3/hr-wpan-mac-header.h>
-#include <ns3/hr-wpan-mac-trailer.h>
-#include <ns3/hr-wpan-dev-id.h>
-#include <ns3/mac64-address.h>
 #include <ns3/log.h>
+#include <ns3/hr-wpan-interference-helper.h>
 
 using namespace ns3;
 
 NS_LOG_COMPONENT_DEFINE("HrWpanInterferenceTest");
 
 // This is an example TestCase.
-class HrWpanPacketTestCase : public TestCase {
+class HrWpanInterferenceTestCase : public TestCase {
 public:
-	HrWpanPacketTestCase();
-	virtual ~HrWpanPacketTestCase();
+	HrWpanInterferenceTestCase();
+	virtual ~HrWpanInterferenceTestCase();
 private:
 	virtual void DoRun(void);
 };
 
-HrWpanPacketTestCase::HrWpanPacketTestCase()
-	: TestCase("Test the 802.15.3c MAC header and trailer classes")
+HrWpanInterferenceTestCase::HrWpanInterferenceTestCase()
+	: TestCase("Test the interference sending two packets at the same time.")
 {}
 
-HrWpanPacketTestCase::~HrWpanPacketTestCase()
+HrWpanInterferenceTestCase::~HrWpanInterferenceTestCase()
 {
+
 }
 
 void
-HrWpanPacketTestCase::DoRun(void)
+HrWpanInterferenceTestCase::DoRun(void)
 {
+
 }
 
 // ==============================================================================
-class HrWpanPacketTestSuite : public TestSuite
+class HrWpanInterferenceTestSuite : public TestSuite
 {
 public:
-	HrWpanPacketTestSuite();
+	HrWpanInterferenceTestSuite();
 };
 
-HrWpanPacketTestSuite::HrWpanPacketTestSuite()
-	: TestSuite("hr-wpan-packet", UNIT)
+HrWpanInterferenceTestSuite::HrWpanInterferenceTestSuite()
+	: TestSuite("hr-wpan-interference", UNIT)
 {
-	AddTestCase(new HrWpanPacketTestCase, TestCase::QUICK);
+	AddTestCase(new HrWpanInterferenceTestCase, TestCase::QUICK);
 }
 
-static HrWpanPacketTestSuite hrWpanPacketTestSuite;
+static HrWpanInterferenceTestSuite hrWpanInterferenceTestSuite;

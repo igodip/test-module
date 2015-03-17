@@ -41,15 +41,12 @@ namespace ns3
 
 			virtual double GetGainDb(Angles a);
 
-			void SetOrientation(double orientation);
-
-			double GetOrientation() const;
-
 		protected:
 
-			double m_startOrientation; // degrees
+			double m_orientation; // degrees
 			double m_beamwidth; // degrees
 			double m_loss;
+			double m_gain;
 
 		};
 

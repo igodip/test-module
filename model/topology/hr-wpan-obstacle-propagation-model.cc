@@ -78,16 +78,11 @@ namespace ns3
 
 				Ptr<Obstacle> obstacle = DynamicCast<Obstacle>(*i);
 
-				NS_LOG_INFO(obstacle);
-
 				if (obstacle == 0)
 				{
 					continue;
 					
 				}
-
-				NS_LOG_INFO("Obstacle start x " << obstacle->getStart().x << "start y" << obstacle->getStart().y);
-				NS_LOG_INFO("Obstacle end x " << obstacle->getEnd().x << "end y" << obstacle->getEnd().y);
 
 				if (TopologyHelper::intersect(line, obstacle))
 				{

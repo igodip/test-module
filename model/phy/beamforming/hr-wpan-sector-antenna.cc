@@ -22,6 +22,9 @@
 #include "hr-wpan-sector-antenna.h"
 
 #include <ns3/log.h>
+#include <ns3/double.h>
+
+#include <cmath>
 
 namespace ns3
 {
@@ -29,6 +32,9 @@ namespace ns3
 
 	namespace HrWpan
 	{
+
+		NS_OBJECT_ENSURE_REGISTERED(SectorAntenna);
+
 		SectorAntenna::SectorAntenna()
 		{
 			NS_LOG_FUNCTION(this);
@@ -45,26 +51,58 @@ namespace ns3
 
 			static TypeId tid = TypeId("ns3::HrWpan::SectorAntenna").
 				SetParent<AntennaModel>().
-				AddConstructor<SectorAntenna>();
+				AddConstructor<SectorAntenna>().
+				AddAttribute("Orientation", "The orientation of the Antenna (radians)",
+					DoubleValue(0),
+					MakeDoubleAccessor(&SectorAntenna::m_orientation),
+					MakeDoubleChecker<double>()).
+				AddAttribute("Beamwidth", 
+					"The width of the beam (radians)",
+					DoubleValue(10),
+					MakeDoubleAccessor(&SectorAntenna::m_beamwidth),
+					MakeDoubleChecker<double>()).
+				AddAttribute("Gain",
+					"The gain inside the main cone in dbm",
+					DoubleValue(20),
+					MakeDoubleAccessor(&SectorAntenna::m_gain),
+					MakeDoubleChecker<double>()).
+				AddAttribute("Loss",
+					"The loss outside the main cone in dbm",
+					DoubleValue(-20),
+					MakeDoubleAccessor(&SectorAntenna::m_loss),
+					MakeDoubleChecker<double>());
 
 			return tid;
 		}
 
 		double SectorAntenna::GetGainDb(Angles a)
 		{
-			return 0;
+
+			NS_LOG_FUNCTION(this<<a);
+
+			double phi = a.phi - m_orientation;
+
+			// make sure phi is in (-pi, pi]
+			while (phi <= -M_PI)
+			{
+				phi += M_PI + M_PI;
+			}
+			while (phi > M_PI)
+			{
+				phi -= M_PI + M_PI;
+			}
+
+			NS_LOG_LOGIC("phi = " << phi);
+
+			if (phi <= m_beamwidth / double(2) && phi >= -m_beamwidth / double(2))
+			{
+				return m_gain;
+			}
+
+			return m_loss;
 			
 		}
 
-		void SectorAntenna::SetOrientation(double orientation)
-		{
-			m_startOrientation = DegreesToRadians(orientation);
-		}
-
-		double SectorAntenna::GetOrientation() const
-		{
-			return RadiansToDegrees(m_startOrientation);
-		}
 	} // HrWpan namespace
 
 } // ns3 namespace
