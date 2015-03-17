@@ -49,11 +49,11 @@ HrWpanObstaclePropTestCase::HrWpanObstaclePropTestCase()
 	: TestCase("Testing the signal propagation through obstacles")
 {
 	LogComponentEnableAll(LOG_PREFIX_FUNC);
-	
+
 	LogComponentEnable("HrWpanObstaclePropTest", LOG_LEVEL_ALL);
 	LogComponentEnable("SingleModelSpectrumChannel", LOG_LEVEL_ALL);
 	LogComponentEnable("HrWpanObstaclePropagationModel", LOG_LEVEL_ALL);
-	
+
 }
 
 HrWpanObstaclePropTestCase::~HrWpanObstaclePropTestCase()
@@ -83,7 +83,7 @@ void HrWpanObstaclePropTestCase::DoRun(void)
 	node2->AggregateObject(receiverMobility);
 
 	Ptr<HrWpan::Link> link = CreateObject<HrWpan::Link>();
-	Ptr<HrWpan::Obstacle> obstacle = CreateObject<HrWpan::Obstacle>(1,1,1,-1);
+	Ptr<HrWpan::Obstacle> obstacle = CreateObject<HrWpan::Obstacle>(1, 1, 1, -1);
 
 	topologyAggregator->addLine(link);
 	topologyAggregator->addLine(obstacle);
@@ -101,7 +101,7 @@ void HrWpanObstaclePropTestCase::DoRun(void)
 
 	Ptr<Packet> p = Create<Packet>(20);
 
-	netDevice1->Send(p, HrWpanDevId("02"),1);
+	netDevice1->Send(p, HrWpanDevId("02"), 1);
 }
 
 /**

@@ -39,22 +39,31 @@ namespace ns3
 	void HrWpanPhyIdleState::StartTx(Ptr<HrWpanSpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
+
+		//Intentionally void
 	}
 
 
 	void HrWpanPhyIdleState::EndTx(Ptr<HrWpanSpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
+
+		//Intentionally void
 	}
 
 	void HrWpanPhyIdleState::EndRx(Ptr<SpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
+
+		//Intentionally void
+
 	}
 
 	void HrWpanPhyIdleState::StartRx(Ptr<SpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
+
+		//Intentionally void
 	}
 
 }

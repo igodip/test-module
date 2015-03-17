@@ -42,7 +42,7 @@ namespace ns3
 
 		private:
 
-			uint8_t chars[2];
+			unsigned char chars[3];
 
 		}; // DevIdHelper
 

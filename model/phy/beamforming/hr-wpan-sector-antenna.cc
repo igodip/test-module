@@ -19,37 +19,13 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
+#include "hr-wpan-sector-antenna.h"
 
-#include <ns3/log.h>
-#include <ns3/node-container.h>
-#include <ns3/animation-interface.h>
-#include <ns3/node-container.h>
-#include <ns3/hr-wpan-topology-aggregator.h>
-#include <ns3/hr-wpan-topology-helper.h>
-#include <ns3/hr-wpan-helper.h>
-
-using namespace ns3;
-
-int main(int argc, char ** argv)
+namespace ns3
 {
+	namespace HrWpan
+	{
 
-	NodeContainer nodeContainer;
-	nodeContainer.Create(30);
+	} // HrWpan namespace
 
-	Ptr<HrWpan::TopologyAggregator> topologyAggregator = CreateObject<HrWpan::TopologyAggregator>();
-
-	HrWpan::TopologyHelper topologyHelper(20,20,3,topologyAggregator);
-	
-	HrWpan::HrWpanHelper wpanHelper(topologyAggregator);
-	
-	topologyHelper.Install(nodeContainer);
-	topologyHelper.PlaceObstacle(30);
-
-	AnimationInterface animInterface("sim.xml");
-
-	Simulator::Stop(Seconds(10.0));
-
-	Simulator::Run();
-
-	Simulator::Destroy();
-}
+} // ns3 namespace

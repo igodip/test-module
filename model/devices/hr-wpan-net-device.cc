@@ -31,6 +31,8 @@
 //Mac sap
 #include <ns3/hr-wpan-mac-sap-async.h>
 
+#include <ns3/simulator.h>
+
 
 namespace ns3
 {
@@ -174,9 +176,10 @@ namespace ns3
 			HrWpan::MacSapRequestParamsAsync requestParams;
 			
 			requestParams.m_data = packet;
+			requestParams.m_trgtId = HrWpanDevId("ff");
 
 			m_sapProviders["MacSapProviderAsync"]->Request(requestParams);
-			
+
 			return true;
 		}
 
@@ -362,15 +365,15 @@ namespace ns3
 
 			const HrWpanDevId & devId = HrWpanDevId::convertFrom(address);
 
-			NS_LOG_INFO(devId);
-			NS_LOG_INFO(m_mac->GetDevId());
 
-			if (devId == m_mac->GetDevId())
+
+			if (devId != m_mac->GetDevId())
 			{
+				NS_LOG_INFO("Discarded packet same DevId"<< devId);
 				//NOT FORWARD TO UPPER LAYERS
 				return;
 			}
-
+			
 			m_receiveCallback(this,p,1,m_mac->GetDevId());
 		}
 

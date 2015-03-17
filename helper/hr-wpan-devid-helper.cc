@@ -21,20 +21,28 @@
 #include "hr-wpan-devid-helper.h"
 
 #include <ns3/hr-wpan-dev-id.h>
+#include <ns3/log.h>
 
 namespace ns3
 {
 	namespace HrWpan
 	{
 
+		NS_LOG_COMPONENT_DEFINE("HrWpanDevIDHelper");
+
 		DevIdHelper::DevIdHelper()
 		{
+			NS_LOG_FUNCTION(this);
+
 			chars[0] = 0x30;
 			chars[1] = 0x30;
+			chars[2] = '\0';
 		}
 
 		void DevIdHelper::Install(NetDeviceContainer ndc)
 		{
+			NS_LOG_FUNCTION(this);
+
 			for (NetDeviceContainer::Iterator i = ndc.Begin(); i != ndc.End(); ++i)
 			{
 				incrementAddress();
@@ -45,6 +53,7 @@ namespace ns3
 
 		void DevIdHelper::incrementAddress()
 		{
+			NS_LOG_INFO(this);
 			chars[1]++;
 
 			if (chars[1] == 0x3A)
@@ -56,6 +65,7 @@ namespace ns3
 
 		char * DevIdHelper::getAddress() const
 		{
+			NS_LOG_INFO(this << (const char * )chars);
 			return (char*) chars;
 		}
 

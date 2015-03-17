@@ -38,7 +38,7 @@ namespace ns3
 		{
 		public:
 
-			TopologyHelper(double max_x, double max_y,double obs_max_size,Ptr<TopologyAggregator> topologyAggregator);
+			TopologyHelper(double max_x, double max_y,Ptr<TopologyAggregator> topologyAggregator);
 			~TopologyHelper();
 
 			void PlaceNodesPair(Ptr<Node> sender, Ptr<Node> receiver);
@@ -55,8 +55,6 @@ namespace ns3
 			Ptr<UniformRandomVariable> m_uRandomVar_x;
 			Ptr<UniformRandomVariable> m_uRandomVar_y;
 
-			Ptr<UniformRandomVariable> m_uRandomOrientation;
-
 			Ptr<TopologyAggregator> m_topologyAggregator;
 
 		private:
@@ -65,8 +63,6 @@ namespace ns3
 			static void addPosition(Ptr<Node> node, Vector3D vec);
 			static char get_line_intersection(double p0_x, double p0_y, double p1_x, double p1_y,
 				double p2_x, double p2_y, double p3_x, double p3_y);
-
-			double m_obsMaxSize;
 		};
 
 	} // namespace HrWpan

@@ -19,37 +19,44 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
+#ifndef HR_WPAN_SECTOR_ANTENNA_H
+#define HR_WPAN_SECTOR_ANTENNA_H
 
-#include <ns3/log.h>
-#include <ns3/node-container.h>
-#include <ns3/animation-interface.h>
-#include <ns3/node-container.h>
-#include <ns3/hr-wpan-topology-aggregator.h>
-#include <ns3/hr-wpan-topology-helper.h>
-#include <ns3/hr-wpan-helper.h>
+#include <ns3/antenna-model.h>
 
-using namespace ns3;
-
-int main(int argc, char ** argv)
+namespace ns3
 {
 
-	NodeContainer nodeContainer;
-	nodeContainer.Create(30);
+	namespace HrWpan
+	{
 
-	Ptr<HrWpan::TopologyAggregator> topologyAggregator = CreateObject<HrWpan::TopologyAggregator>();
+		class SectorAntenna : public AntennaModel
+		{
+		public:
 
-	HrWpan::TopologyHelper topologyHelper(20,20,3,topologyAggregator);
-	
-	HrWpan::HrWpanHelper wpanHelper(topologyAggregator);
-	
-	topologyHelper.Install(nodeContainer);
-	topologyHelper.PlaceObstacle(30);
+			SectorAntenna(void);
+			virtual ~SectorAntenna();
 
-	AnimationInterface animInterface("sim.xml");
+			static TypeId GetTypeId();
 
-	Simulator::Stop(Seconds(10.0));
+			virtual double GetGainDb(Angles a);
 
-	Simulator::Run();
+			void SetOrientation(double orientation);
 
-	Simulator::Destroy();
-}
+			double GetOrientation() const;
+
+		protected:
+
+			double m_startOrientation; // degrees
+			double m_beamwidth; // degrees
+			double m_loss;
+
+		};
+
+	} // namespace HrWpan
+
+} // namespace ns3
+
+
+
+#endif //HR_WPAN_SECTOR_ANTENNA_H

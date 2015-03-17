@@ -126,7 +126,6 @@ namespace ns3 {
 		double m_rxSensitivity;
 		
 		Ptr<SpectrumValue> m_txPsd;
-		
 
 		HrWpanSpectrumValueHelper m_psdHelper;
 

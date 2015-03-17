@@ -31,8 +31,6 @@
 #include <ns3/constant-position-mobility-model.h>
 #include <ns3/node-container.h>
 
-#include <cmath>
-
 namespace ns3
 {
 
@@ -41,7 +39,7 @@ namespace ns3
 	namespace HrWpan
 	{
 
-		TopologyHelper::TopologyHelper(double max_x, double max_y, double obs_max_size,Ptr<TopologyAggregator> topologyAggregator)
+		TopologyHelper::TopologyHelper(double max_x, double max_y,Ptr<TopologyAggregator> topologyAggregator)
 		{
 			NS_LOG_FUNCTION(this << max_x << max_y);
 
@@ -55,16 +53,9 @@ namespace ns3
 
 			m_uRandomVar_x->SetAttribute("Max", DoubleValue(max_x));
 			m_uRandomVar_x->SetAttribute("Min", DoubleValue(0));
-			
-			m_uRandomOrientation->SetAttribute("Max", DoubleValue(2 * M_PI));
-			m_uRandomOrientation->SetAttribute("Max", DoubleValue(0));
 
 			m_randomRectanglePositionAllocator->SetX(m_uRandomVar_x);
 			m_randomRectanglePositionAllocator->SetY(m_uRandomVar_y);
-
-			NS_ASSERT(obs_max_size > 0);
-
-			m_obsMaxSize = obs_max_size;
 			
 		}
 

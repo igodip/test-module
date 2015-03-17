@@ -54,7 +54,7 @@ int main(int argc, char ** argv)
 
 	Ptr<HrWpan::TopologyAggregator> toplogyAggregator = CreateObject<HrWpan::TopologyAggregator>();
 
-	HrWpan::TopologyHelper topologyHelper(areaLength, areaLength,toplogyAggregator);
+	HrWpan::TopologyHelper topologyHelper(areaLength, areaLength,3,toplogyAggregator);
 	topologyHelper.Install(nodeContainer);
 
 	HrWpan::HrWpanHelper hrWpanHelper(toplogyAggregator);
