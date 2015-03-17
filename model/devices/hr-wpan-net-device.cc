@@ -323,7 +323,7 @@ namespace ns3
 			}
 
 			m_phy->SetMobility(m_node->GetObject<MobilityModel>());
-			
+			m_phy->SetDevice(GetObject<NetDevice>());
 			//Create mac Sap
 			m_configComplete = true;
 		}
@@ -349,6 +349,7 @@ namespace ns3
 		{
 			NS_LOG_FUNCTION(this << channel);
 			m_phy->SetChannel(channel);
+			channel->AddRx(m_phy);
 			
 		}
 
@@ -365,11 +366,9 @@ namespace ns3
 
 			const HrWpanDevId & devId = HrWpanDevId::convertFrom(address);
 
-
-
-			if (devId != m_mac->GetDevId())
+			if (devId == m_mac->GetDevId())
 			{
-				NS_LOG_INFO("Discarded packet same DevId"<< devId);
+				NS_LOG_INFO("Discarded packet same DevId: "<< devId);
 				//NOT FORWARD TO UPPER LAYERS
 				return;
 			}

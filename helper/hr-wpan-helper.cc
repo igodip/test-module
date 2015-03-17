@@ -107,10 +107,11 @@ namespace ns3 {
 				Ptr<Node> node = *i;
 
 				Ptr<HrWpanNetDevice> netDevice = CreateObject<HrWpanNetDevice>();
-				netDevice->SetChannel(m_channel);
 
 				node->AddDevice(netDevice);
 				netDevice->SetNode(node);
+
+				netDevice->SetChannel(m_channel);
 				devices.Add(netDevice);
 
 			}

@@ -42,8 +42,8 @@ int main(int argc, char ** argv)
 
 	
 	LogComponentEnable("HrWpanExamplePing", LOG_ALL);
-	//LogComponentEnable("HrWpanMacSapAsync", LOG_ALL);
-	LogComponentEnable("HrWpanDevIDHelper", LOG_ALL);
+	LogComponentEnable("SingleModelSpectrumChannel", LOG_ALL);
+	//LogComponentEnable("HrWpanDevIDHelper", LOG_ALL);
 	//LogComponentEnable("Node", LOG_ALL);
 
 

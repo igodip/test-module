@@ -123,9 +123,8 @@ namespace ns3 {
 
 	void HrWpanPhy::SetChannel(Ptr<SpectrumChannel> c)
 	{
-		NS_LOG_FUNCTION(c);
+		NS_LOG_FUNCTION(this << c);
 		m_channel = c;
-		m_channel->AddRx(this);
 	}
 
 	Ptr<SpectrumChannel> HrWpanPhy::GetChannel(void)
