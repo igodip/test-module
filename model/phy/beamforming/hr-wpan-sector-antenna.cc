@@ -21,11 +21,50 @@
 
 #include "hr-wpan-sector-antenna.h"
 
+#include <ns3/log.h>
+
 namespace ns3
 {
+	NS_LOG_COMPONENT_DEFINE("HrWpan::SectorAntenna");
+
 	namespace HrWpan
 	{
+		SectorAntenna::SectorAntenna()
+		{
+			NS_LOG_FUNCTION(this);
+		}
 
+		SectorAntenna::~SectorAntenna()
+		{
+			NS_LOG_FUNCTION(this);
+		}
+
+		TypeId SectorAntenna::GetTypeId()
+		{
+			NS_LOG_FUNCTION_NOARGS();
+
+			static TypeId tid = TypeId("ns3::HrWpan::SectorAntenna").
+				SetParent<AntennaModel>().
+				AddConstructor<SectorAntenna>();
+
+			return tid;
+		}
+
+		double SectorAntenna::GetGainDb(Angles a)
+		{
+			return 0;
+			
+		}
+
+		void SectorAntenna::SetOrientation(double orientation)
+		{
+			m_startOrientation = DegreesToRadians(orientation);
+		}
+
+		double SectorAntenna::GetOrientation() const
+		{
+			return RadiansToDegrees(m_startOrientation);
+		}
 	} // HrWpan namespace
 
 } // ns3 namespace

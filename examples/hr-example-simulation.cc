@@ -52,12 +52,12 @@ int main(int argc, char ** argv)
 	NodeContainer nodeContainer;
 	nodeContainer.Create(nNodes);
 
-	Ptr<HrWpan::TopologyAggregator> toplogyAggregator = CreateObject<HrWpan::TopologyAggregator>();
+	Ptr<HrWpan::TopologyAggregator> topologyAggregator = CreateObject<HrWpan::TopologyAggregator>();
 
-	HrWpan::TopologyHelper topologyHelper(areaLength, areaLength,3,toplogyAggregator);
+	HrWpan::TopologyHelper topologyHelper(areaLength, areaLength,3,topologyAggregator);
 	topologyHelper.Install(nodeContainer);
 
-	HrWpan::HrWpanHelper hrWpanHelper(toplogyAggregator);
+	HrWpan::HrWpanHelper hrWpanHelper(topologyAggregator);
 	hrWpanHelper.Install(nodeContainer);
 
 	Simulator::Stop(Seconds(10.0));

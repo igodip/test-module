@@ -48,6 +48,8 @@ namespace ns3
 			m_randomRectanglePositionAllocator = CreateObject<RandomRectanglePositionAllocator>();
 			m_uRandomVar_x = CreateObject<UniformRandomVariable>();
 			m_uRandomVar_y = CreateObject<UniformRandomVariable>();
+			m_uRandomSize = CreateObject<UniformRandomVariable>();
+			m_uRandomOrientation = CreateObject<UniformRandomVariable>();
 			m_topologyAggregator = topologyAggregator;
 
 			m_uRandomVar_x->SetAttribute("Max", DoubleValue(max_x));
@@ -57,14 +59,17 @@ namespace ns3
 			m_uRandomVar_x->SetAttribute("Min", DoubleValue(0));
 			
 			m_uRandomOrientation->SetAttribute("Max", DoubleValue(2 * M_PI));
-			m_uRandomOrientation->SetAttribute("Max", DoubleValue(0));
+			m_uRandomOrientation->SetAttribute("Min", DoubleValue(0));
+
+			NS_ASSERT(obs_max_size > 0);
+			
+			m_uRandomSize->SetAttribute("Max", DoubleValue(obs_max_size));
+			m_uRandomSize->SetAttribute("Min", DoubleValue(0));
 
 			m_randomRectanglePositionAllocator->SetX(m_uRandomVar_x);
 			m_randomRectanglePositionAllocator->SetY(m_uRandomVar_y);
 
-			NS_ASSERT(obs_max_size > 0);
-
-			m_obsMaxSize = obs_max_size;
+			
 			
 		}
 
@@ -87,49 +92,15 @@ namespace ns3
 			
 			NS_LOG_FUNCTION(this << sender << receiver);
 
-			bool intersect_flag = false;
-			const std::list< Ptr<Line> > &  lines = m_topologyAggregator->getContainer();
-
-			Ptr<Line> line = CreateObject<Line>();
 			Vector sender_point;
 			Vector receiver_point;
 
-			do {
+			NS_LOG_INFO("Placing a link");
 
-				NS_LOG_INFO("Trying to place a link");
+			sender_point = m_randomRectanglePositionAllocator->GetNext();
+			receiver_point = m_randomRectanglePositionAllocator->GetNext();
 
-				intersect_flag = false;
-
-				sender_point = m_randomRectanglePositionAllocator->GetNext();
-				receiver_point = m_randomRectanglePositionAllocator->GetNext();
-
-				line->setStart(sender_point);
-				line->setEnd(receiver_point);
-
-				std::list<Ptr<Line > >::const_iterator start_it = lines.begin();
-				std::list<Ptr<Line > >::const_iterator end_it = lines.end();
-
-				while (start_it != end_it && !intersect_flag)
-				{
-
-					Ptr<Obstacle> obstacle = DynamicCast<Obstacle>(*start_it);
-
-					if (obstacle == 0)
-					{
-						++start_it;
-						continue;
-					}
-
-					if (intersect(obstacle, line))
-					{
-						intersect_flag = true;
-					}
-
-					++start_it;
-				}
-
-			} while (intersect_flag);
-
+			//TODO Steer also antennas
 			//Assign position to nodes
 			
 			addPosition(sender, sender_point);
@@ -151,57 +122,36 @@ namespace ns3
 
 			NS_LOG_FUNCTION(this);
 
-			bool intersect_flag = false;
-			const std::list< Ptr<Line> > &  lines = m_topologyAggregator->getContainer();
-
-			Ptr<Line> line = CreateObject<Line>();
 			Vector start_point;
 			Vector end_point;
-
-			std::list<Ptr<Line> >::const_iterator start_it = lines.begin();
-			std::list<Ptr<Line> >::const_iterator end_it = lines.end();
-
-			do
-			{
-
-				NS_LOG_INFO("Trying to place an obstacle");
-
-				//Generate two random points
-
-				start_point = m_randomRectanglePositionAllocator->GetNext();
-				end_point = m_randomRectanglePositionAllocator->GetNext();
-
-				line->setStart(start_point);
-				line->setEnd(end_point);
-
-				while (start_it != end_it && !intersect_flag)
-				{
-
-					Ptr<Link> link = DynamicCast<Link>(*start_it);
-
-					if (link == 0)
-					{
-						++start_it;
-						continue;
-					}
-
-
-					if (intersect(link, line))
-					{
-						intersect_flag = true;
-					}
-
-					++start_it;
-				}
-
-			} while (intersect_flag);
+			Vector center_point;
 
 			Ptr<Obstacle> obstacle = CreateObject<Obstacle>();
 
+			NS_LOG_INFO("Placing obstacle");
+
+			double orientation = m_uRandomOrientation->GetValue();
+			double size = m_uRandomSize->GetValue();
+
+			double xdiff = cos(orientation)*(size / double(2));
+			double ydiff = cos(orientation)*(size / double(2));
+
+			center_point = m_randomRectanglePositionAllocator->GetNext();
+
+			start_point.x = center_point.x + xdiff;
+			start_point.y = center_point.y + ydiff;
+			start_point.z = 0;
+
+			NS_LOG_INFO(start_point);
+
+			end_point.x = center_point.x - xdiff;
+			end_point.y = center_point.y - ydiff;
+			end_point.z = 0;
+
+			NS_LOG_INFO(end_point);
+
 			obstacle->setStart(start_point);
 			obstacle->setEnd(end_point);
-
-			line->Dispose();
 
 			m_topologyAggregator->addLine(obstacle);
 			

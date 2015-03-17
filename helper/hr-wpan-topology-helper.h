@@ -52,10 +52,12 @@ namespace ns3
 		protected:
 
 			Ptr<RandomRectanglePositionAllocator> m_randomRectanglePositionAllocator;
+
 			Ptr<UniformRandomVariable> m_uRandomVar_x;
 			Ptr<UniformRandomVariable> m_uRandomVar_y;
 
 			Ptr<UniformRandomVariable> m_uRandomOrientation;
+			Ptr<UniformRandomVariable> m_uRandomSize;
 
 			Ptr<TopologyAggregator> m_topologyAggregator;
 
@@ -66,7 +68,6 @@ namespace ns3
 			static char get_line_intersection(double p0_x, double p0_y, double p1_x, double p1_y,
 				double p2_x, double p2_y, double p3_x, double p3_y);
 
-			double m_obsMaxSize;
 		};
 
 	} // namespace HrWpan
