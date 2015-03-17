@@ -78,7 +78,6 @@ namespace ns3 {
 		Ptr<const SpectrumValue> GetNoisePowerSpectralDensity(void);
 
 		void StartRx(Ptr<SpectrumSignalParameters> spectrumRxParams);
-
 		void EndRx(Ptr<SpectrumSignalParameters> params);
 
 		virtual void DoDispose();

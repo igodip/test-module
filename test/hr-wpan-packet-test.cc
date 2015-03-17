@@ -56,6 +56,9 @@ HrWpanPacketTestCase::DoRun(void)
 	HrWpanMacHeader macHdr(HrWpanMacHeader::HRWPAN_FRAME_BEACON, 0);
 	macHdr.SetSecDisable();
 	
+	HrWpanDevId dstAddress(addr);
+	macHdr.setDstAddress(dstAddress);
+
 	HrWpanDevId srcAddress(addr);
 	macHdr.setSrcAddress(srcAddress);
 
@@ -96,6 +99,9 @@ HrWpanPacketTestCase::DoRun(void)
 	HrWpanDevId srcReceivedAddress = receivedMacHeader.getSrcAddress();
 	NS_TEST_ASSERT_MSG_EQ(srcReceivedAddress, srcAddress, "The srcAddress is different!");
 
+	HrWpanDevId dstReceivedAddress = receivedMacHeader.getDstAddress();
+	NS_TEST_ASSERT_MSG_EQ(dstReceivedAddress, dstAddress, "The dstAddress is different!");
+
 	//Checking Trailer
 	NS_TEST_ASSERT_MSG_EQ(macTrailer, receivedMacTrailer, "The Mac Trailer is different!");
 
@@ -112,6 +118,7 @@ HrWpanPacketTestSuite::HrWpanPacketTestSuite()
 	: TestSuite("hr-wpan-packet", UNIT)
 {
 	AddTestCase(new HrWpanPacketTestCase, TestCase::QUICK);
+	//TODO: Add other test case
 }
 
 static HrWpanPacketTestSuite hrWpanPacketTestSuite;
