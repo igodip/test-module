@@ -53,6 +53,8 @@ namespace ns3 {
 		//Friends
 		friend class HrWpanRxOnState;
 		friend class HrWpanRxBusyState;
+		friend class HrWpanTxOnState;
+		friend class HrWpanTxBusyState;
 
 		static TypeId GetTypeId(void);
 
@@ -77,8 +79,11 @@ namespace ns3 {
 		void SetNoisePowerSpectralDensity(Ptr<const SpectrumValue> noisePsd);
 		Ptr<const SpectrumValue> GetNoisePowerSpectralDensity(void);
 
-		void StartRx(Ptr<SpectrumSignalParameters> spectrumRxParams);
+		void StartRx(Ptr<SpectrumSignalParameters> params);
 		void EndRx(Ptr<SpectrumSignalParameters> params);
+
+		void StartTx(Ptr<HrWpanSpectrumSignalParameters> params);
+		void EndTx(Ptr<HrWpanSpectrumSignalParameters> params);
 
 		virtual void DoDispose();
 
@@ -114,7 +119,7 @@ namespace ns3 {
 		Ptr<SpectrumChannel> m_channel;
 
 		TracedCallback<Ptr<const Packet> > m_phyRxBeginTrace;
-		TracedCallback<Ptr<const Packet>, double > m_phyRxEndTrace;
+		TracedCallback<Ptr<const Packet> > m_phyRxEndTrace;
 		TracedCallback<Ptr<const Packet> > m_phyTxDropTrace;
 		TracedCallback<Ptr<const Packet> > m_phyTxEndTrace;
 		TracedCallback<Ptr<const Packet> > m_phyTxBeginTrace;

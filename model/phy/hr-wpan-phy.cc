@@ -166,9 +166,13 @@ namespace ns3 {
 
 		NS_LOG_FUNCTION(this << spectrumRxParams);
 
+		m_currentState->StartRx(spectrumRxParams);
+		;
 		HrWpanSpectrumSignalParameters psdHelper;
 
 		Ptr<HrWpanSpectrumSignalParameters> hrWpanRxParams = DynamicCast<HrWpanSpectrumSignalParameters>(spectrumRxParams);
+
+		
 
 		// It isn't an our packet
 		if (hrWpanRxParams == 0)
@@ -181,7 +185,7 @@ namespace ns3 {
 
 		NS_ASSERT(p != 0);
 
-		m_currentState->StartRx(spectrumRxParams);
+		m_phyRxBeginTrace(p);
 
 		Simulator::Schedule(spectrumRxParams->duration, &HrWpanPhy::EndRx, this, spectrumRxParams);
 	}
@@ -196,9 +200,26 @@ namespace ns3 {
 		{
 			Ptr<Packet> packet = params->packetBurst->GetPackets().front();
 			((HrWpanMac *) GetPhyUser())->ReceivePhyPdu(packet);
+
+			m_phyRxEndTrace(packet);
 		}
 
 		
+	}
+
+	void HrWpanPhy::StartTx(Ptr<HrWpanSpectrumSignalParameters> spectrumTxParams)
+	{
+		NS_LOG_FUNCTION(this << spectrumTxParams);
+
+		m_currentState->StartTx(spectrumTxParams);
+	}
+
+	void HrWpanPhy::EndTx(Ptr<HrWpanSpectrumSignalParameters> spectrumTxParams)
+	{
+		NS_LOG_FUNCTION(this << spectrumTxParams);
+
+		m_currentState->EndTx(spectrumTxParams);
+
 	}
 
 	void HrWpanPhy::SetMobility(Ptr<MobilityModel> mobilityModel)

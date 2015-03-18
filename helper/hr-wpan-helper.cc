@@ -26,6 +26,7 @@
 #include <ns3/hr-wpan-obstacle-propagation-model.h>
 #include <ns3/propagation-loss-model.h>
 #include <ns3/hr-wpan-net-device.h>
+#include <ns3/output-stream-wrapper.h>
 #include <ns3/ptr.h>
 #include <ns3/log.h>
 
@@ -119,6 +120,7 @@ namespace ns3 {
 			return devices;
 
 		}
+
 
 	} // namespace hrWpan
 

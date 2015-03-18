@@ -42,13 +42,9 @@ int main(int argc, char ** argv)
 
 	
 	LogComponentEnable("HrWpanExamplePing", LOG_ALL);
-	LogComponentEnable("SingleModelSpectrumChannel", LOG_ALL);
-	//LogComponentEnable("HrWpanDevIDHelper", LOG_ALL);
-	//LogComponentEnable("Node", LOG_ALL);
-
 
 	NodeContainer nodeContainer;
-	nodeContainer.Create(50);
+	nodeContainer.Create(20);
 
 	Ptr<HrWpan::TopologyAggregator> topologyAggregator = CreateObject<HrWpan::TopologyAggregator>();
 	HrWpan::TopologyHelper topologyHelper(20, 20,3,topologyAggregator);
@@ -94,6 +90,8 @@ int main(int argc, char ** argv)
 	app.Stop(Seconds (10.0));
 
 	AnimationInterface animInterface("sim.xml");
+	//animInterface.
+
 	NS_LOG_INFO("Running simulation.");
 	Simulator::Run();
 	Simulator::Destroy();

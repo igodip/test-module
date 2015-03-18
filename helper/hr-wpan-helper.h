@@ -95,6 +95,8 @@ namespace ns3 {
 
 			NetDeviceContainer Install(NodeContainer c);
 
+			void EnablePcapInternal(Ptr<NetDevice> nd);
+
 		private:
 
 			/** \brief	channel to be used for the devices. */
