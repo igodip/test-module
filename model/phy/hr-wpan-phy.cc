@@ -35,6 +35,8 @@
 #include <ns3/hr-wpan-spectrum-signal-parameters.h>
 #include <ns3/hr-wpan-mac.h>
 
+#include <ns3/hr-wpan-net-device.h>
+
 namespace ns3 {
 
 	NS_LOG_COMPONENT_DEFINE("HrWpanPhy");
@@ -223,16 +225,15 @@ namespace ns3 {
 
 	}
 
-	void HrWpanPhy::SetMobility(Ptr<MobilityModel> mobilityModel)
-	{
-		NS_LOG_FUNCTION(this << mobilityModel);
-		m_mobilityModel = mobilityModel;
-	}
-
 	Ptr<MobilityModel> HrWpanPhy::GetMobility(void)
 	{
 		NS_LOG_FUNCTION(this);
-		return m_mobilityModel;
+		return (DynamicCast<HrWpan::HrWpanNetDevice>(m_netdevice))->GetNode()->GetObject<MobilityModel>();
+	}
+
+	void HrWpanPhy::SetMobility(Ptr<MobilityModel> m)
+	{
+		//Ma
 	}
 
 	bool HrWpanPhy::IsRxOn() const {
@@ -248,12 +249,22 @@ namespace ns3 {
 
 	}
 
+	Time HrWpanPhy::CalculateTxTime(Ptr<const Packet> packet)
+	{
+		NS_LOG_FUNCTION(this << packet);
+
+		Time txTime  = Seconds(packet->GetSize() * 8.0 / 5.62e09);
+
+		return txTime;
+
+	}
+
 	void HrWpanPhy::SendMacPdu(Ptr<Packet> p)
 	{
 		NS_LOG_FUNCTION(this << p);
 
 		Ptr<HrWpanSpectrumSignalParameters> txParams = Create<HrWpanSpectrumSignalParameters>();
-		txParams->duration = MicroSeconds(10);
+		txParams->duration = CalculateTxTime(p);
 		txParams->txPhy = GetObject<SpectrumPhy>();
 		txParams->psd = m_txPsd;
 		txParams->txAntenna = m_antenna;

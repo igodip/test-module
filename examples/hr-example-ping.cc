@@ -28,6 +28,7 @@
 #include <ns3/hr-wpan-topology-helper.h>
 #include <ns3/hr-wpan-helper.h>
 #include <ns3/hr-wpan-devid-helper.h>
+#include <ns3/hr-wpan-net-device.h>
 
 #include <ns3/on-off-helper.h>
 #include <ns3/internet-module.h>
@@ -41,11 +42,14 @@ int main(int argc, char ** argv)
 {
 
 	
-	//LogComponentEnable("HrWpanExamplePing", LOG_ALL);
+	LogComponentEnable("HrWpanExamplePing", LOG_ALL);
 	//LogComponentEnable("HrWpanMacSapAsync", LOG_ALL);
 	//LogComponentEnable("HrWpanPhy", LOG_ALL);
-	LogComponentEnable("SingleModelSpectrumChannel", LOG_LEVEL_ALL);
-	LogComponentEnable("HrWpan::SectorAntenna", LOG_LEVEL_ALL);
+	//LogComponentEnable("SingleModelSpectrumChannel", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpan::SectorAntenna", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpan::TopologyHelper", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpanObstaclePropagationModel", LOG_LEVEL_ALL);
+	
 
 	NodeContainer nodeContainer;
 	nodeContainer.Create(2);
@@ -62,6 +66,9 @@ int main(int argc, char ** argv)
 
 	NS_LOG_INFO("Placing obstacles");
 	topologyHelper.PlaceObstacle(2);
+
+	NS_LOG_INFO(DynamicCast<HrWpan::HrWpanNetDevice>(netDevices.Get(0))->GetPhy()->GetMobility());
+	NS_LOG_INFO(DynamicCast<HrWpan::HrWpanNetDevice>(netDevices.Get(1))->GetPhy()->GetMobility()->GetPosition());
 
 	NS_LOG_INFO("Assigning DevId to MAC");
 	HrWpan::DevIdHelper devIdHelper;

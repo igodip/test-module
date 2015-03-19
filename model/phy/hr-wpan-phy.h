@@ -97,6 +97,8 @@ namespace ns3 {
 		bool IsTxOn() const;
 		void TxOn();
 
+		Time CalculateTxTime(Ptr<const Packet> packet);
+
 		//HrWpanPhyProvider
 		virtual void SendMacPdu(Ptr<Packet> p);
 		virtual void SendHrWpanControlMessage(Ptr<HrWpanPhyControlMessage> msg);

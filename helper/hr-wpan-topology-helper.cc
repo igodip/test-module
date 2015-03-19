@@ -103,9 +103,6 @@ namespace ns3
 
 			sender_point = m_randomRectanglePositionAllocator->GetNext();
 			receiver_point = m_randomRectanglePositionAllocator->GetNext();
-
-			//TODO Steer also antennas
-			//Assign position to nodes
 			
 			addPosition(sender, sender_point);
 			addPosition(receiver, receiver_point);
@@ -115,7 +112,7 @@ namespace ns3
 			link->SetSender(sender);
 			link->SetReceiver(receiver);
 
-			//Store the line
+			steerAntennas(link);
 			
 			m_topologyAggregator->addLine(link);
 
@@ -163,6 +160,8 @@ namespace ns3
 
 		void TopologyHelper::Install(NodeContainer c)
 		{
+			NS_LOG_FUNCTION(this);
+
 			NS_ASSERT(c.GetN() % 2 == 0);
 
 			for (NodeContainer::Iterator i = c.Begin(); i != c.End();)
@@ -255,7 +254,7 @@ namespace ns3
 			Ptr<HrWpanNetDevice> senderDev = DynamicCast<HrWpanNetDevice>(sender->GetDevice(0));
 			Ptr<HrWpanNetDevice> receiverDev = DynamicCast<HrWpanNetDevice>(receiver->GetDevice(0));
 
-			NS_ASSERT(senderDev != 0 || receiverDev != 0);
+			NS_ASSERT_MSG(senderDev != 0 || receiverDev != 0,"No HrWpanNetDevice");
 
 			Ptr<SectorAntenna> senderAntenna = DynamicCast<SectorAntenna>(senderDev->GetPhy()->GetRxAntenna());
 			Ptr<SectorAntenna> receiverAntenna = DynamicCast<SectorAntenna>( receiverDev->GetPhy()->GetRxAntenna());
