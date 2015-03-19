@@ -41,10 +41,14 @@ int main(int argc, char ** argv)
 {
 
 	
-	LogComponentEnable("HrWpanExamplePing", LOG_ALL);
+	//LogComponentEnable("HrWpanExamplePing", LOG_ALL);
+	//LogComponentEnable("HrWpanMacSapAsync", LOG_ALL);
+	//LogComponentEnable("HrWpanPhy", LOG_ALL);
+	LogComponentEnable("SingleModelSpectrumChannel", LOG_LEVEL_ALL);
+	LogComponentEnable("HrWpan::SectorAntenna", LOG_LEVEL_ALL);
 
 	NodeContainer nodeContainer;
-	nodeContainer.Create(20);
+	nodeContainer.Create(2);
 
 	Ptr<HrWpan::TopologyAggregator> topologyAggregator = CreateObject<HrWpan::TopologyAggregator>();
 	HrWpan::TopologyHelper topologyHelper(20, 20,3,topologyAggregator);
@@ -88,6 +92,11 @@ int main(int argc, char ** argv)
 	app = sink.Install(nodeContainer);
 	app.Start(Seconds (1.0));
 	app.Stop(Seconds (10.0));
+
+	NS_LOG_INFO("Setting trace");
+	AsciiTraceHelper ascii;
+	wpanHelper.EnableAsciiAll(ascii.CreateFileStream("hrwpan-ping.tr"));
+	wpanHelper.EnablePcapAll("hrwpan-ping", false);
 
 	AnimationInterface animInterface("sim.xml");
 	//animInterface.

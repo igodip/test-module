@@ -106,7 +106,6 @@ int main(int argc, char ** argv)
 	Simulator::Stop(Seconds(10.0));
 
 	Simulator::Schedule(Seconds(1.0), &SendOnePacket, sender, receiver,receiverAntenna2);
-
 	Simulator::Schedule(Seconds(2.0), &SendOnePacket, sender, receiver, receiverAntenna2);
 	Simulator::Schedule(Seconds(3.0), &SendOnePacket, sender, receiver, receiverAntenna2);
 	Simulator::Schedule(Seconds(4.0), &SendOnePacket, sender, receiver, receiverAntenna2);

@@ -34,6 +34,7 @@
 #include <ns3/event-id.h>
 
 #include <ns3/hr-wpan-mac-sap.h>
+#include <ns3/hr-wpan-mac-sap-async.h>
 
 #include <cstring>
 #include <map>
@@ -41,7 +42,11 @@
 namespace ns3 {
 
 	class HrWpanMac : public Object, public HrWpanPhyUser{
+
+		friend class HrWpan::MacSapProviderAsync;
+
 	public:
+
 		HrWpanMac();
 		virtual ~HrWpanMac();
 		
@@ -73,6 +78,14 @@ namespace ns3 {
 		virtual void DoInitialize(void);
 		virtual void DoDispose();
 		
+		TracedCallback<Ptr<const Packet>, uint8_t, uint8_t > m_sentPktTrace;
+		TracedCallback<Ptr<const Packet> > m_macTxOkTrace;
+		TracedCallback<Ptr<const Packet> > m_macTxDropTrace;
+		TracedCallback<Ptr<const Packet> > m_macTxTrace;
+		TracedCallback<Ptr<const Packet> > m_macRxTrace;
+		TracedCallback<Ptr<const Packet> > m_macRxOkTrace;
+		TracedCallback<Ptr<const Packet> > m_macRxDropTrace;
+		TracedCallback<Ptr<const Packet> > m_snifferTrace;
 
 	private:
 
@@ -81,13 +94,7 @@ namespace ns3 {
 		HrWpanDevId m_devId;
 		Mac48Address m_macAddress;
 		
-		TracedCallback<Ptr<const Packet>, uint8_t, uint8_t > m_sentPktTrace;
-		TracedCallback<Ptr<const Packet> > m_macTxOkTrace;
-		TracedCallback<Ptr<const Packet> > m_macTxDropTrace;
-		TracedCallback<Ptr<const Packet> > m_macTxTrace;
-		TracedCallback<Ptr<const Packet> > m_macRxTrace;
-		TracedCallback<Ptr<const Packet> > m_macRxOkTrace;
-		TracedCallback<Ptr<const Packet> > m_macRxDropTrace;
+
 
 		EventId m_ackWaitTimeout;
 

@@ -34,6 +34,8 @@ namespace ns3
 	namespace HrWpan
 	{
 
+		class Link;
+
 		class TopologyHelper
 		{
 		public:
@@ -48,6 +50,7 @@ namespace ns3
 			void PlaceObstacle(uint32_t num);
 
 			static bool intersect(Ptr<Line> a, Ptr<Line> b);
+			static void steerAntennas(Ptr<Link> link);
 
 		protected:
 
@@ -63,6 +66,7 @@ namespace ns3
 
 		private:
 			
+
 			
 			static void addPosition(Ptr<Node> node, Vector3D vec);
 			static char get_line_intersection(double p0_x, double p0_y, double p1_x, double p1_y,

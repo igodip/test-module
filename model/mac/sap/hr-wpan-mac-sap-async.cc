@@ -45,7 +45,7 @@ namespace ns3
 			NS_LOG_FUNCTION(this);
 
 			const MacSapRequestParamsAsync & paramsAsync = dynamic_cast<const MacSapRequestParamsAsync &>(requestParams);
-
+			
 			HrWpanPhyProvider* provider = m_mac->GetPhyProvider();
 			// Add header and trailer
 			
@@ -55,6 +55,8 @@ namespace ns3
 
 			Ptr<Packet> packet = paramsAsync.m_data;
 			packet->AddHeader(header);
+
+			m_mac->m_snifferTrace(packet);
 
 			provider->SendMacPdu(paramsAsync.m_data);
 

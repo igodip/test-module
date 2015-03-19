@@ -27,6 +27,7 @@
 #include <ns3/channel.h>
 #include <ns3/mobility-model.h>
 #include <ns3/spectrum-channel.h>
+#include <ns3/hr-wpan-sector-antenna.h>
 
 //Mac sap
 #include <ns3/hr-wpan-mac-sap-async.h>
@@ -49,9 +50,13 @@ namespace ns3
 
 			m_mac = CreateObject<HrWpanMac>();
 			m_phy = CreateObject<HrWpanPhy>();
+			Ptr<SectorAntenna> sectorAntenna = CreateObject<SectorAntenna>();
 
 			m_mac->SetPhyProvider(m_phy->GetPointer()); 
 			m_phy->SetPhyUser(m_mac->GetPointer());
+			m_phy->SetAntenna(sectorAntenna);
+
+			//Antenna
 
 			//Sap Providers
 
@@ -96,6 +101,7 @@ namespace ns3
 			return tid;
 
 		}
+
 		void HrWpanNetDevice::SetIfIndex(const uint32_t index)
 		{
 			NS_LOG_FUNCTION(this << index);
@@ -176,7 +182,7 @@ namespace ns3
 			HrWpan::MacSapRequestParamsAsync requestParams;
 			
 			requestParams.m_data = packet;
-			requestParams.m_trgtId = HrWpanDevId("ff");
+			requestParams.m_trgtId = HrWpanDevId::convertFrom(dest);
 
 			m_sapProviders["MacSapProviderAsync"]->Request(requestParams);
 
@@ -324,6 +330,7 @@ namespace ns3
 
 			m_phy->SetMobility(m_node->GetObject<MobilityModel>());
 			m_phy->SetDevice(GetObject<NetDevice>());
+			
 			//Create mac Sap
 			m_configComplete = true;
 		}

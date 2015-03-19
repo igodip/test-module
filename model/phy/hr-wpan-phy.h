@@ -55,6 +55,8 @@ namespace ns3 {
 		friend class HrWpanRxBusyState;
 		friend class HrWpanTxOnState;
 		friend class HrWpanTxBusyState;
+		friend class HrWpanIdleState;
+		friend class HrWpanPhySwitchState;
 
 		static TypeId GetTypeId(void);
 
@@ -135,6 +137,8 @@ namespace ns3 {
 
 		Ptr<HrWpanPhyAbsState> m_currentState;
 		Ptr<HrWpanPhyStateFactory> m_stateFactory;
+
+		Ptr<HrWpanSpectrumSignalParameters> m_currentPacket;
 
 		HrWpanPhyUser* m_phyUser;
 	};

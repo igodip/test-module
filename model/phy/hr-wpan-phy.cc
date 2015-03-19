@@ -167,7 +167,7 @@ namespace ns3 {
 		NS_LOG_FUNCTION(this << spectrumRxParams);
 
 		m_currentState->StartRx(spectrumRxParams);
-		;
+		
 		HrWpanSpectrumSignalParameters psdHelper;
 
 		Ptr<HrWpanSpectrumSignalParameters> hrWpanRxParams = DynamicCast<HrWpanSpectrumSignalParameters>(spectrumRxParams);
@@ -182,6 +182,7 @@ namespace ns3 {
 		}
 
 		Ptr<Packet> p = (hrWpanRxParams->packetBurst->GetPackets()).front();
+		m_currentPacket = hrWpanRxParams;
 
 		NS_ASSERT(p != 0);
 

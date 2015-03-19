@@ -72,6 +72,11 @@ namespace ns3 {
 			"Trace source indicating a packet was received, "
 			"but dropped before being forwarded up the stack",
 			MakeTraceSourceAccessor(&HrWpanMac::m_macRxDropTrace),
+			"ns3::Packet::TracedCallback")
+			.AddTraceSource("Sniffer",
+			"Trace source simulating a non-promiscuous "
+			"packet sniffer attached to the device",
+			MakeTraceSourceAccessor(&HrWpanMac::m_snifferTrace),
 			"ns3::Packet::TracedCallback");
 
 		return tid;
@@ -164,7 +169,7 @@ namespace ns3 {
 		NS_LOG_FUNCTION(this << packet);
 
 		//Ptr<Packet> mpdu = CreateObject<Packet>();
-
+		
 		m_phyProvider->SendMacPdu(packet);
 	}
 

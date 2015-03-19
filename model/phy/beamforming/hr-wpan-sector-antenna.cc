@@ -58,7 +58,7 @@ namespace ns3
 					MakeDoubleChecker<double>()).
 				AddAttribute("Beamwidth", 
 					"The width of the beam (radians)",
-					DoubleValue(10),
+					DoubleValue(DegreesToRadians(10)),
 					MakeDoubleAccessor(&SectorAntenna::m_beamwidth),
 					MakeDoubleChecker<double>()).
 				AddAttribute("Gain",
@@ -81,6 +81,8 @@ namespace ns3
 			NS_LOG_FUNCTION(this<<a);
 
 			double phi = a.phi - m_orientation;
+
+			NS_LOG_INFO("Phi = " << phi);
 
 			// make sure phi is in (-pi, pi]
 			while (phi <= -M_PI)

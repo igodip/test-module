@@ -24,12 +24,16 @@
 #include <ns3/log.h>
 #include <ns3/double.h>
 #include <ns3/assert.h>
+#include <ns3/abort.h>
 
 #include <ns3/hr-wpan-link.h>
 #include <ns3/hr-wpan-obstacle.h>
 #include <ns3/mobility-model.h>
 #include <ns3/constant-position-mobility-model.h>
 #include <ns3/node-container.h>
+
+#include <ns3/hr-wpan-sector-antenna.h>
+#include <ns3/hr-wpan-net-device.h>
 
 #include <cmath>
 
@@ -239,6 +243,36 @@ namespace ns3
 			}
 
 			return 0; // No collision
+		}
+
+		void TopologyHelper::steerAntennas(Ptr<Link> link)
+		{
+			NS_LOG_FUNCTION_NOARGS();
+
+			Ptr<Node> sender = link->GetSender();
+			Ptr<Node> receiver = link->GetReceiver();
+
+			Ptr<HrWpanNetDevice> senderDev = DynamicCast<HrWpanNetDevice>(sender->GetDevice(0));
+			Ptr<HrWpanNetDevice> receiverDev = DynamicCast<HrWpanNetDevice>(receiver->GetDevice(0));
+
+			NS_ASSERT(senderDev != 0 || receiverDev != 0);
+
+			Ptr<SectorAntenna> senderAntenna = DynamicCast<SectorAntenna>(senderDev->GetPhy()->GetRxAntenna());
+			Ptr<SectorAntenna> receiverAntenna = DynamicCast<SectorAntenna>( receiverDev->GetPhy()->GetRxAntenna());
+
+			Vector senderPos = sender->GetObject<MobilityModel>()->GetPosition();
+			Vector receiverPos = receiver->GetObject<MobilityModel>()->GetPosition();
+
+			double deltax = receiverPos.x - senderPos.x;
+			double deltay = receiverPos.y - senderPos.y;
+
+			double angle = atan2(deltay, deltax);
+
+			NS_LOG_INFO("Angle = " << angle);
+
+			senderAntenna->SetAttribute("Orientation", DoubleValue(angle));
+			receiverAntenna->SetAttribute("Orientation", DoubleValue(angle+M_PI));
+
 		}
 
 	} // namespace HrWpan
