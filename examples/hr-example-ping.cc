@@ -43,6 +43,9 @@ int main(int argc, char ** argv)
 
 	
 	LogComponentEnable("HrWpanExamplePing", LOG_ALL);
+	//LogComponentEnable("HrWpanPhyTxOnState", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpanPhyTxBusyState", LOG_LEVEL_ALL);
+	LogComponentEnable("HrWpanPhyRxOnState", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpanMacSapAsync", LOG_ALL);
 	//LogComponentEnable("HrWpanPhy", LOG_ALL);
 	//LogComponentEnable("SingleModelSpectrumChannel", LOG_LEVEL_ALL);
@@ -52,7 +55,7 @@ int main(int argc, char ** argv)
 	
 
 	NodeContainer nodeContainer;
-	nodeContainer.Create(2);
+	nodeContainer.Create(200);
 
 	Ptr<HrWpan::TopologyAggregator> topologyAggregator = CreateObject<HrWpan::TopologyAggregator>();
 	HrWpan::TopologyHelper topologyHelper(20, 20,3,topologyAggregator);
@@ -65,10 +68,7 @@ int main(int argc, char ** argv)
 	topologyHelper.Install(nodeContainer);
 
 	NS_LOG_INFO("Placing obstacles");
-	topologyHelper.PlaceObstacle(2);
-
-	NS_LOG_INFO(DynamicCast<HrWpan::HrWpanNetDevice>(netDevices.Get(0))->GetPhy()->GetMobility());
-	NS_LOG_INFO(DynamicCast<HrWpan::HrWpanNetDevice>(netDevices.Get(1))->GetPhy()->GetMobility()->GetPosition());
+	topologyHelper.PlaceObstacle(20);
 
 	NS_LOG_INFO("Assigning DevId to MAC");
 	HrWpan::DevIdHelper devIdHelper;
@@ -101,11 +101,11 @@ int main(int argc, char ** argv)
 	app.Stop(Seconds (10.0));
 
 	NS_LOG_INFO("Setting trace");
-	AsciiTraceHelper ascii;
-	wpanHelper.EnableAsciiAll(ascii.CreateFileStream("hrwpan-ping.tr"));
-	wpanHelper.EnablePcapAll("hrwpan-ping", false);
+	//AsciiTraceHelper ascii;
+	//wpanHelper.EnableAsciiAll(ascii.CreateFileStream("hrwpan-ping.tr"));
+	//wpanHelper.EnablePcapAll("hrwpan-ping", false);
 
-	AnimationInterface animInterface("sim.xml");
+	//AnimationInterface animInterface("sim.xml");
 	//animInterface.
 
 	NS_LOG_INFO("Running simulation.");

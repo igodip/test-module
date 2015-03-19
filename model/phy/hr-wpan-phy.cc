@@ -170,43 +170,14 @@ namespace ns3 {
 
 		m_currentState->StartRx(spectrumRxParams);
 		
-		HrWpanSpectrumSignalParameters psdHelper;
 
-		Ptr<HrWpanSpectrumSignalParameters> hrWpanRxParams = DynamicCast<HrWpanSpectrumSignalParameters>(spectrumRxParams);
-
-		
-
-		// It isn't an our packet
-		if (hrWpanRxParams == 0)
-		{
-			Simulator::Schedule(spectrumRxParams->duration, &HrWpanPhy::EndRx, this, spectrumRxParams);
-			return;
-		}
-
-		Ptr<Packet> p = (hrWpanRxParams->packetBurst->GetPackets()).front();
-		m_currentPacket = hrWpanRxParams;
-
-		NS_ASSERT(p != 0);
-
-		m_phyRxBeginTrace(p);
-
-		Simulator::Schedule(spectrumRxParams->duration, &HrWpanPhy::EndRx, this, spectrumRxParams);
 	}
 
 	void HrWpanPhy::EndRx(Ptr <SpectrumSignalParameters> spectrumRxParams)
 	{
 		NS_LOG_FUNCTION(this << spectrumRxParams);
 
-		Ptr<HrWpanSpectrumSignalParameters> params = DynamicCast<HrWpanSpectrumSignalParameters>(spectrumRxParams);
-
-		if (params != 0)
-		{
-			Ptr<Packet> packet = params->packetBurst->GetPackets().front();
-			((HrWpanMac *) GetPhyUser())->ReceivePhyPdu(packet);
-
-			m_phyRxEndTrace(packet);
-		}
-
+		m_currentState->EndRx(spectrumRxParams);
 		
 	}
 
@@ -271,7 +242,8 @@ namespace ns3 {
 		Ptr<PacketBurst> pb = CreateObject<PacketBurst>();
 		pb->AddPacket(p);
 		txParams->packetBurst = pb;
-		m_channel->StartTx(txParams);
+
+		StartTx(txParams);
 	}
 
 	void HrWpanPhy::SendHrWpanControlMessage(Ptr<HrWpanPhyControlMessage> msg)
@@ -296,6 +268,16 @@ namespace ns3 {
 	{
 		NS_LOG_FUNCTION(this);
 		return m_phyUser;
+	}
+
+	void HrWpanPhy::RxOn(void)
+	{
+		m_currentState = m_stateFactory->GetRxOnState();
+	}
+
+	void HrWpanPhy::TxOn(void)
+	{
+		m_currentState = m_stateFactory->GetTxOnState();
 	}
 
 } // namespace ns3

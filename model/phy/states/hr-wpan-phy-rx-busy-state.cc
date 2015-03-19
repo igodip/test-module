@@ -20,6 +20,7 @@
 */
 
 #include "hr-wpan-phy-rx-busy-state.h"
+
 #include <ns3/hr-wpan-phy.h>
 #include <ns3/log.h>
 
@@ -39,21 +40,37 @@ namespace ns3
 	void HrWpanPhyRxBusyState::StartRx(Ptr<SpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
+
+		NS_LOG_WARN("Rx not started yet!");
 	}
 
 	void HrWpanPhyRxBusyState::EndRx(Ptr<SpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
+
+		Ptr<HrWpanSpectrumSignalParameters> hrWpanParams = DynamicCast<HrWpanSpectrumSignalParameters>(params);
+
+		if (hrWpanParams != 0)
+		{
+			Ptr<Packet> packet = (hrWpanParams->packetBurst->GetPackets()).front();
+			((HrWpanPhyUser *) (m_hrWpanPhy->GetPhyUser()))->ReceivePhyPdu(packet);
+
+			m_hrWpanPhy->m_phyRxEndTrace(packet);
+		}
 	}
 
 	void HrWpanPhyRxBusyState::StartTx(Ptr<HrWpanSpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
+
+		NS_LOG_WARN("Tx not allowed!");
 	}
 
 	void HrWpanPhyRxBusyState::EndTx(Ptr<HrWpanSpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
+
+		NS_LOG_WARN("Tx not allowed!");
 	}
 
 

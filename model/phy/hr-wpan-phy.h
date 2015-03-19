@@ -51,11 +51,11 @@ namespace ns3 {
 	public:
 
 		//Friends
-		friend class HrWpanRxOnState;
-		friend class HrWpanRxBusyState;
-		friend class HrWpanTxOnState;
-		friend class HrWpanTxBusyState;
-		friend class HrWpanIdleState;
+		friend class HrWpanPhyRxOnState;
+		friend class HrWpanPhyRxBusyState;
+		friend class HrWpanPhyTxOnState;
+		friend class HrWpanPhyTxBusyState;
+		friend class HrWpanPhyIdleState;
 		friend class HrWpanPhySwitchState;
 
 		static TypeId GetTypeId(void);

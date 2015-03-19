@@ -23,6 +23,7 @@
 
 #include <ns3/hr-wpan-phy.h>
 #include <ns3/log.h>
+#include <ns3/simulator.h>
 
 #include <ns3/hr-wpan-spectrum-value-helper.h>
 
@@ -43,25 +44,47 @@ namespace ns3
 	{
 		NS_LOG_FUNCTION(this << params);
 		
-		
-		
+		HrWpanSpectrumSignalParameters psdHelper;
 
+		Ptr<HrWpanSpectrumSignalParameters> hrWpanRxParams = DynamicCast<HrWpanSpectrumSignalParameters>(params);
+
+		// It isn't an our packet
+		if (hrWpanRxParams == 0)
+		{
+			Simulator::Schedule(params->duration, &HrWpanPhy::EndRx, m_hrWpanPhy->GetPointer(), params);
+			return;
+		}
+
+		Ptr<Packet> p = (hrWpanRxParams->packetBurst->GetPackets()).front();
+		m_hrWpanPhy->m_currentPacket = hrWpanRxParams;
+
+		NS_ASSERT(p != 0);
+		m_hrWpanPhy->m_phyRxBeginTrace(p);
+
+		m_hrWpanPhy->m_currentState = m_hrWpanPhy->m_stateFactory->GetTxOnState();
+		Simulator::Schedule(hrWpanRxParams->duration, &HrWpanPhy::EndRx, m_hrWpanPhy->GetPointer(), hrWpanRxParams);
 		
 	}
 
 	void HrWpanPhyRxOnState::EndRx(Ptr<SpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
+
+		NS_LOG_WARN("Rx not started yet!");
 	}
 
 	void HrWpanPhyRxOnState::StartTx(Ptr<HrWpanSpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
+
+		NS_LOG_WARN("Rx On Mode can't Tx");
 	}
 
 	void HrWpanPhyRxOnState::EndTx(Ptr<HrWpanSpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
+
+		NS_LOG_WARN("Rx On Mode can't Tx");
 	}
 
 }//Namespace ns3

@@ -113,6 +113,13 @@ namespace ns3
 			link->SetReceiver(receiver);
 
 			steerAntennas(link);
+
+			//Just add 
+			Ptr<HrWpanNetDevice> senderDev = DynamicCast<HrWpanNetDevice>(sender->GetDevice(0));
+			Ptr<HrWpanNetDevice> receiverDev = DynamicCast<HrWpanNetDevice>(receiver->GetDevice(0));
+
+			senderDev->GetPhy()->TxOn();
+			receiverDev->GetPhy()->RxOn();
 			
 			m_topologyAggregator->addLine(link);
 
@@ -143,13 +150,9 @@ namespace ns3
 			start_point.y = center_point.y + ydiff;
 			start_point.z = 0;
 
-			NS_LOG_INFO(start_point);
-
 			end_point.x = center_point.x - xdiff;
 			end_point.y = center_point.y - ydiff;
 			end_point.z = 0;
-
-			NS_LOG_INFO(end_point);
 
 			obstacle->setStart(start_point);
 			obstacle->setEnd(end_point);
