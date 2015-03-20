@@ -123,6 +123,7 @@ namespace ns3 {
 		Ptr<SpectrumChannel> m_channel;
 
 		TracedCallback<Ptr<const Packet> > m_phyRxBeginTrace;
+		TracedCallback<Ptr<const Packet> > m_phyRxDropTrace;
 		TracedCallback<Ptr<const Packet> > m_phyRxEndTrace;
 		TracedCallback<Ptr<const Packet> > m_phyTxDropTrace;
 		TracedCallback<Ptr<const Packet> > m_phyTxEndTrace;
@@ -143,6 +144,8 @@ namespace ns3 {
 		Ptr<HrWpanSpectrumSignalParameters> m_currentPacket;
 
 		HrWpanPhyUser* m_phyUser;
+
+		EventId m_receiveOn;
 	};
 
 }

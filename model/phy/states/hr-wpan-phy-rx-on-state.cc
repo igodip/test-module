@@ -61,8 +61,8 @@ namespace ns3
 		NS_ASSERT(p != 0);
 		m_hrWpanPhy->m_phyRxBeginTrace(p);
 
-		m_hrWpanPhy->m_currentState = m_hrWpanPhy->m_stateFactory->GetTxOnState();
-		Simulator::Schedule(hrWpanRxParams->duration, &HrWpanPhy::EndRx, m_hrWpanPhy->GetPointer(), hrWpanRxParams);
+		m_hrWpanPhy->m_currentState = m_hrWpanPhy->m_stateFactory->GetRxBusyState();
+		m_hrWpanPhy->m_receiveOn = Simulator::Schedule(hrWpanRxParams->duration, &HrWpanPhy::EndRx, m_hrWpanPhy->GetPointer(), hrWpanRxParams);
 		
 	}
 

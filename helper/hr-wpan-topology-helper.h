@@ -52,6 +52,8 @@ namespace ns3
 			static bool intersect(Ptr<Line> a, Ptr<Line> b);
 			static void steerAntennas(Ptr<Link> link);
 
+			void InstallApplication();
+
 		protected:
 
 			Ptr<RandomRectanglePositionAllocator> m_randomRectanglePositionAllocator;

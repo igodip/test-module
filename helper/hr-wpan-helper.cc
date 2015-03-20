@@ -30,6 +30,7 @@
 #include <ns3/ptr.h>
 #include <ns3/log.h>
 #include <ns3/config.h>
+#include <ns3/double.h>
 
 
 namespace ns3 {
@@ -43,6 +44,7 @@ namespace ns3 {
 			NS_LOG_FUNCTION(this);
 
 			m_channel = CreateObject<SingleModelSpectrumChannel>();
+			m_channel->SetAttribute("MaxLossDb", DoubleValue(100));
 
 			Ptr<LogDistancePropagationLossModel> lossModel = CreateObject<LogDistancePropagationLossModel>();
 			m_channel->AddPropagationLossModel(lossModel);

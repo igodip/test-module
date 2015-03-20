@@ -30,7 +30,7 @@
 #include <ns3/hr-wpan-devid-helper.h>
 #include <ns3/hr-wpan-net-device.h>
 
-#include <ns3/on-off-helper.h>
+#include <ns3/packet-sink-helper.h>
 #include <ns3/internet-module.h>
 #include "ns3/applications-module.h"
 
@@ -45,7 +45,10 @@ int main(int argc, char ** argv)
 	LogComponentEnable("HrWpanExamplePing", LOG_ALL);
 	//LogComponentEnable("HrWpanPhyTxOnState", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpanPhyTxBusyState", LOG_LEVEL_ALL);
-	LogComponentEnable("HrWpanPhyRxOnState", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpanPhyRxOnState", LOG_LEVEL_ALL);
+	LogComponentEnable("HrWpanPhyRxBusyState", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpanPhyTxOnState", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpanPhyTxBusyState", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpanMacSapAsync", LOG_ALL);
 	//LogComponentEnable("HrWpanPhy", LOG_ALL);
 	//LogComponentEnable("SingleModelSpectrumChannel", LOG_LEVEL_ALL);
@@ -55,7 +58,7 @@ int main(int argc, char ** argv)
 	
 
 	NodeContainer nodeContainer;
-	nodeContainer.Create(200);
+	nodeContainer.Create(4);
 
 	Ptr<HrWpan::TopologyAggregator> topologyAggregator = CreateObject<HrWpan::TopologyAggregator>();
 	HrWpan::TopologyHelper topologyHelper(20, 20,3,topologyAggregator);
@@ -68,7 +71,7 @@ int main(int argc, char ** argv)
 	topologyHelper.Install(nodeContainer);
 
 	NS_LOG_INFO("Placing obstacles");
-	topologyHelper.PlaceObstacle(20);
+	topologyHelper.PlaceObstacle(2);
 
 	NS_LOG_INFO("Assigning DevId to MAC");
 	HrWpan::DevIdHelper devIdHelper;
@@ -84,21 +87,7 @@ int main(int argc, char ** argv)
 	ipv4.Assign(netDevices);
 	
 	NS_LOG_INFO("Create Applications.");
-	OnOffHelper onoff("ns3::UdpSocketFactory",
-		Address(InetSocketAddress(Ipv4Address("255.255.255.255"), 15)));
-	onoff.SetConstantRate(DataRate("500kb/s"));
-
-	ApplicationContainer app = onoff.Install(nodeContainer.Get(0));
-	// Start the application
-	app.Start(Seconds(1.0));
-	app.Stop(Seconds(10.0));
-
-	PacketSinkHelper sink("ns3::UdpSocketFactory",
-		Address(InetSocketAddress(Ipv4Address::GetAny(), 15)));
-
-	app = sink.Install(nodeContainer);
-	app.Start(Seconds (1.0));
-	app.Stop(Seconds (10.0));
+	topologyHelper.InstallApplication();
 
 	NS_LOG_INFO("Setting trace");
 	//AsciiTraceHelper ascii;

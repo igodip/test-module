@@ -22,6 +22,9 @@
 #include "hr-wpan-phy-rx-busy-state.h"
 
 #include <ns3/hr-wpan-phy.h>
+#include <ns3/hr-wpan-spectrum-value-helper.h>
+#include <ns3/spectrum-value.h>
+#include <ns3/simulator.h>
 #include <ns3/log.h>
 
 namespace ns3
@@ -40,8 +43,18 @@ namespace ns3
 	void HrWpanPhyRxBusyState::StartRx(Ptr<SpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
+		NS_LOG_WARN("Collision");
 
-		NS_LOG_WARN("Rx not started yet!");
+		//Remove schedule
+		if (m_hrWpanPhy->m_receiveOn.IsRunning())
+		{
+			Simulator::Remove(m_hrWpanPhy->m_receiveOn);
+		}
+
+		m_hrWpanPhy->m_phyRxDropTrace(m_hrWpanPhy->m_currentPacket->packetBurst->GetPackets().front());
+
+		m_hrWpanPhy->m_currentPacket = 0;
+		m_hrWpanPhy->m_currentState = m_hrWpanPhy->m_stateFactory->GetRxOnState();
 	}
 
 	void HrWpanPhyRxBusyState::EndRx(Ptr<SpectrumSignalParameters> params)
@@ -57,6 +70,11 @@ namespace ns3
 
 			m_hrWpanPhy->m_phyRxEndTrace(packet);
 		}
+
+
+		m_hrWpanPhy->m_currentPacket = 0;
+		m_hrWpanPhy->m_currentState = m_hrWpanPhy->m_stateFactory->GetRxOnState();
+
 	}
 
 	void HrWpanPhyRxBusyState::StartTx(Ptr<HrWpanSpectrumSignalParameters> params)

@@ -27,29 +27,80 @@
 #include <ns3/hr-wpan-topology-aggregator.h>
 #include <ns3/hr-wpan-topology-helper.h>
 #include <ns3/hr-wpan-helper.h>
+#include <ns3/hr-wpan-devid-helper.h>
+#include <ns3/hr-wpan-net-device.h>
+
+#include <ns3/packet-sink-helper.h>
+#include <ns3/internet-module.h>
+#include "ns3/applications-module.h"
 
 using namespace ns3;
+
+NS_LOG_COMPONENT_DEFINE("HrWpanAnimSim");
 
 int main(int argc, char ** argv)
 {
 
+
+	LogComponentEnable("HrWpanAnimSim", LOG_ALL);
+	//LogComponentEnable("HrWpanPhyTxOnState", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpanPhyTxBusyState", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpanPhyRxOnState", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpanPhyRxBusyState", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpanPhyTxOnState", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpanPhyTxBusyState", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpanMacSapAsync", LOG_ALL);
+	//LogComponentEnable("HrWpanPhy", LOG_ALL);
+	//LogComponentEnable("SingleModelSpectrumChannel", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpan::SectorAntenna", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpan::TopologyHelper", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpanObstaclePropagationModel", LOG_LEVEL_ALL);
+
+
 	NodeContainer nodeContainer;
-	nodeContainer.Create(30);
+	nodeContainer.Create(4);
 
 	Ptr<HrWpan::TopologyAggregator> topologyAggregator = CreateObject<HrWpan::TopologyAggregator>();
-
-	HrWpan::TopologyHelper topologyHelper(20,20,3,topologyAggregator);
-	
+	HrWpan::TopologyHelper topologyHelper(20, 20, 3, topologyAggregator);
 	HrWpan::HrWpanHelper wpanHelper(topologyAggregator);
-	
+
+	NS_LOG_INFO("Installing the 802.15.3c stack");
+	NetDeviceContainer netDevices = wpanHelper.Install(nodeContainer);
+
+	NS_LOG_INFO("Placing nodes");
 	topologyHelper.Install(nodeContainer);
-	topologyHelper.PlaceObstacle(30);
+
+	NS_LOG_INFO("Placing obstacles");
+	topologyHelper.PlaceObstacle(2);
+
+	NS_LOG_INFO("Assigning DevId to MAC");
+	HrWpan::DevIdHelper devIdHelper;
+	devIdHelper.Install(netDevices);
+
+
+	NS_LOG_INFO("Assign IP Address");
+	InternetStackHelper internet;
+	internet.Install(nodeContainer);
+
+	Ipv4AddressHelper ipv4;
+	ipv4.SetBase("192.168.1.0", "255.255.255.0");
+	ipv4.Assign(netDevices);
+
+	NS_LOG_INFO("Create Applications.");
+	topologyHelper.InstallApplication();
+
+	NS_LOG_INFO("Setting trace");
+	//AsciiTraceHelper ascii;
+	//wpanHelper.EnableAsciiAll(ascii.CreateFileStream("hrwpan-ping.tr"));
+	//wpanHelper.EnablePcapAll("hrwpan-ping", false);
 
 	AnimationInterface animInterface("sim.xml");
+	//animInterface.
 
-	Simulator::Stop(Seconds(10.0));
-
+	NS_LOG_INFO("Running simulation.");
 	Simulator::Run();
-
 	Simulator::Destroy();
+	NS_LOG_INFO("Done.");
+
+	return 0;
 }

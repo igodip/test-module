@@ -34,6 +34,9 @@
 
 #include <ns3/hr-wpan-sector-antenna.h>
 #include <ns3/hr-wpan-net-device.h>
+#include <ns3/on-off-helper.h>
+#include <ns3/internet-module.h>
+#include <ns3/packet-sink-helper.h>
 
 #include <cmath>
 
@@ -73,7 +76,6 @@ namespace ns3
 			m_randomRectanglePositionAllocator->SetX(m_uRandomVar_x);
 			m_randomRectanglePositionAllocator->SetY(m_uRandomVar_y);
 
-			
 			
 		}
 
@@ -273,7 +275,50 @@ namespace ns3
 			NS_LOG_INFO("Angle = " << angle);
 
 			senderAntenna->SetAttribute("Orientation", DoubleValue(angle));
+			senderAntenna->SetAttribute("Beamwidth", DoubleValue(DegreesToRadians(3)));
 			receiverAntenna->SetAttribute("Orientation", DoubleValue(angle+M_PI));
+			senderAntenna->SetAttribute("Beamwidth", DoubleValue(DegreesToRadians(3)));
+
+		}
+
+		void TopologyHelper::InstallApplication()
+		{
+			const std::list<Ptr<Line> > lines = m_topologyAggregator->getContainer();
+
+			std::list<Ptr<Line> >::const_iterator it = lines.begin();
+
+			while (it != lines.end())
+			{
+				Ptr<Link> link = DynamicCast<Link>(*it);
+
+				if (link != 0)
+				{
+
+					Ptr<Node> sender = link->GetSender();
+					Ptr<Node> receiver = link->GetReceiver();
+
+					
+					OnOffHelper onoff("ns3::UdpSocketFactory",
+						Address(InetSocketAddress(Ipv4Address("255.255.255.255"), 15)));
+					onoff.SetConstantRate(DataRate("500kb/s"));
+
+					ApplicationContainer app = onoff.Install(sender);
+					// Start the application
+					app.Start(Seconds(1.0));
+					app.Stop(Seconds(10.0));
+
+					PacketSinkHelper sink("ns3::UdpSocketFactory",
+						Address(InetSocketAddress(Ipv4Address::GetAny(), 15)));
+
+					app = sink.Install(receiver);
+					app.Start(Seconds(1.0));
+					app.Stop(Seconds(10.0));
+
+
+				}
+
+				++it;
+			}
 
 		}
 
