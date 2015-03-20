@@ -89,11 +89,16 @@ namespace ns3 {
 			"by the device",
 			MakeTraceSourceAccessor(&HrWpanPhy::m_phyTxEndTrace),
 			"ns3::HrWpanPhy::TxEndTrace").
-			AddTraceSource("PhyTxDropTrace",
+			AddTraceSource("PhyTxDrop",
 			"Trace source indicating a packet has been"
 			"dropped by the device during transmission",
 			MakeTraceSourceAccessor(&HrWpanPhy::m_phyTxDropTrace),
-			"ns3::HrWpanPhy::TxDropTrace");
+			"ns3::HrWpanPhy::TxDropTrace").
+			AddTraceSource("PhyRxDrop",
+			"Trace source indicating a packet has been"
+			"dropped by the device during reception",
+			MakeTraceSourceAccessor(&HrWpanPhy::m_phyRxDropTrace),
+			"ns3::HrWpanPhy::RxDropTrace");;
 
 		return tid;
 	}

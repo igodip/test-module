@@ -59,6 +59,7 @@ namespace ns3
 	{
 		NS_LOG_FUNCTION(this << params);
 
+		m_hrWpanPhy->m_phyTxBeginTrace(params->packetBurst->GetPackets().front());
 		m_hrWpanPhy->m_channel->StartTx(params);
 
 		m_hrWpanPhy->m_currentState = m_hrWpanPhy->m_stateFactory->GetTxBusyState();

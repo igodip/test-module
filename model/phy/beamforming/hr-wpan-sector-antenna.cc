@@ -63,12 +63,12 @@ namespace ns3
 					MakeDoubleChecker<double>()).
 				AddAttribute("Gain",
 					"The gain inside the main cone in dbm",
-					DoubleValue(20),
+					DoubleValue(30),
 					MakeDoubleAccessor(&SectorAntenna::m_gain),
 					MakeDoubleChecker<double>()).
 				AddAttribute("Loss",
 					"The loss outside the main cone in dbm",
-					DoubleValue(-20),
+					DoubleValue(-30),
 					MakeDoubleAccessor(&SectorAntenna::m_loss),
 					MakeDoubleChecker<double>());
 

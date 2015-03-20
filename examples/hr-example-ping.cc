@@ -46,7 +46,7 @@ int main(int argc, char ** argv)
 	//LogComponentEnable("HrWpanPhyTxOnState", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpanPhyTxBusyState", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpanPhyRxOnState", LOG_LEVEL_ALL);
-	LogComponentEnable("HrWpanPhyRxBusyState", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpanPhyRxBusyState", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpanPhyTxOnState", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpanPhyTxBusyState", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpanMacSapAsync", LOG_ALL);
@@ -94,7 +94,7 @@ int main(int argc, char ** argv)
 	//wpanHelper.EnableAsciiAll(ascii.CreateFileStream("hrwpan-ping.tr"));
 	//wpanHelper.EnablePcapAll("hrwpan-ping", false);
 
-	//AnimationInterface animInterface("sim.xml");
+	AnimationInterface animInterface("sim.xml");
 	//animInterface.
 
 	NS_LOG_INFO("Running simulation.");

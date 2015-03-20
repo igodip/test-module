@@ -44,7 +44,7 @@ namespace ns3 {
 			NS_LOG_FUNCTION(this);
 
 			m_channel = CreateObject<SingleModelSpectrumChannel>();
-			m_channel->SetAttribute("MaxLossDb", DoubleValue(100));
+			m_channel->SetAttribute("MaxLossDb", DoubleValue(80));
 
 			Ptr<LogDistancePropagationLossModel> lossModel = CreateObject<LogDistancePropagationLossModel>();
 			m_channel->AddPropagationLossModel(lossModel);
