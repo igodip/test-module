@@ -27,6 +27,7 @@
 #include <ns3/node-container.h>
 #include <ns3/config.h>
 #include <ns3/command-line.h>
+#include <ns3/antenna-model.h>
 
 #include <ns3/hr-wpan-topology-aggregator.h>
 #include <ns3/hr-wpan-topology-helper.h>
@@ -52,9 +53,10 @@ int main(int argc, char ** argv)
 
 	double lengthTop = 20;
 	double obsMaxSize = 1;
-	int pairNumber = 30;
-	int obstacleNumber = 30;
-	int rounds = 20;
+	int pairNumber = 15;
+	int obstacleNumber = 15;
+	int rounds = 15;
+	double beamwidth = 3;
 	std::string reportFilename = "stats.csv";
 
 	CommandLine cmd;
@@ -63,23 +65,24 @@ int main(int argc, char ** argv)
 	cmd.AddValue("pairNumber", "Number of pair sender/receiver", pairNumber);
 	cmd.AddValue("obstacleNumber", "Obstacle number", obstacleNumber);
 	cmd.AddValue("reportFilename","Filename of the report",reportFilename);
+	cmd.AddValue("beamwidth", "Beamwidth", beamwidth);
 	cmd.Parse(argc, argv);
 
-	int nodeNumbers = pairNumber * 2;
+	Config::SetDefault("ns3::HrWpan::SectorAntenna::Beamwidth", DoubleValue(DegreesToRadians(beamwidth)));
 
-	NS_LOG_INFO("Installing the 802.15.3c stack");
+	int nodeNumbers = pairNumber * 2;
 
 	std::ofstream outfile(reportFilename.c_str(), std::ios::trunc);
 
 	if (!outfile.is_open())
 	{
-		
+		NS_ABORT_MSG("Can't create the file");
 	}
 
 	for (int i = 1; i <= rounds; i++)
 	{
 		NS_LOG_INFO("-----------------------------------");
-		NS_LOG_INFO("Rounds " << i+1 << " of " << rounds);
+		NS_LOG_INFO("Rounds " << i << " of " << rounds);
 		NodeContainer nodeContainer;
 		nodeContainer.Create(nodeNumbers);
 
@@ -106,7 +109,7 @@ int main(int argc, char ** argv)
 		internet.Install(nodeContainer);
 
 		Ipv4AddressHelper ipv4;
-		ipv4.SetBase("192.168.1.0", "255.255.255.0");
+		ipv4.SetBase("10.0.0.0", "255.0.0.0");
 		ipv4.Assign(netDevices);
 
 		NS_LOG_INFO("Create Applications.");
@@ -137,7 +140,8 @@ int main(int argc, char ** argv)
 
 		outfile << phyStatHelper.getTxBegin() << ",";
 		outfile << phyStatHelper.getTxDrop() << ",";
-		outfile << phyStatHelper.getTxEnd() << ",";
+		outfile << phyStatHelper.getTxEnd() << std::endl;
+		outfile.flush();
 	}
 	
 	outfile.close();
