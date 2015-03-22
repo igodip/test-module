@@ -15,45 +15,18 @@
 * along with this program; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *
-* Authors:
-*  Igor Di Paolo <igor.di.paolo@gmail.com>
+* Author:
+*	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#include "hr-wpan-mac-queue.h"
-#include <ns3/log.h>
+
+
 
 namespace ns3
 {
-
-	NS_LOG_COMPONENT_DEFINE("HrWpanMacQueue");
-
 	namespace HrWpan
 	{
-		NS_OBJECT_ENSURE_REGISTERED(MacQueue);
 
-		MacQueue::MacQueue()
-		{
-			NS_LOG_FUNCTION(this);
-		}
+	} // namespace HrWpan
 
-		MacQueue::~MacQueue()
-		{
-			NS_LOG_FUNCTION(this);
-		}
-
-		void MacQueue::SetMaxSize(uint32_t maxSize)
-		{
-			NS_LOG_FUNCTION(this << maxSize);
-			m_maxSize = maxSize;
-		}
-
-
-		void MacQueue::Enqueue(Ptr<const Packet> packet, const HrWpan::MacHeader & hdr)
-		{
-			NS_LOG_FUNCTION(this << packet << hdr);
-
-		}
-	}
-
-}
-
+} // namespace ns3

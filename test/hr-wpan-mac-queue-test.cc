@@ -53,7 +53,7 @@ HrWpanMacQueueTestCase::~HrWpanMacQueueTestCase()
 void HrWpanMacQueueTestCase::DoRun(void)
 {
 
-	HrWpanMacQueue macQueue;
+	HrWpan::MacQueue macQueue;
 	//macQueue.
 
 }

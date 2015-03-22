@@ -183,7 +183,9 @@ void HrWpanPacketTrailerTestCase::DoRun(void)
 {
 
 	Ptr<Packet> packet = Create<Packet>(30);
-	HrWpan::
+	HrWpan::MacTrailer trailer;
+
+	
 
 
 }

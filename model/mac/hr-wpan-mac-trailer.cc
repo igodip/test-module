@@ -43,8 +43,7 @@ namespace ns3 {
 		{
 			static TypeId tid = TypeId("ns3::HrWpanMacTrailer")
 				.SetParent<Trailer>()
-				.AddConstructor<MacTrailer>()
-				;
+				.AddConstructor<MacTrailer>();
 			return tid;
 		}
 

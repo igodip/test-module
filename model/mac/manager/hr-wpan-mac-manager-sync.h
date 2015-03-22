@@ -15,45 +15,28 @@
 * along with this program; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *
-* Authors:
-*  Igor Di Paolo <igor.di.paolo@gmail.com>
+* Author:
+*	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#include "hr-wpan-mac-queue.h"
-#include <ns3/log.h>
+
+#ifndef HR_WPAN_MAC_MANAGER_SYNC_H
+#define HR_WPAN_MAC_MANAGER_SYNC_H
+
+#include <ns3/object.h>
 
 namespace ns3
 {
-
-	NS_LOG_COMPONENT_DEFINE("HrWpanMacQueue");
-
 	namespace HrWpan
 	{
-		NS_OBJECT_ENSURE_REGISTERED(MacQueue);
 
-		MacQueue::MacQueue()
+		class MacManagerSync : public Object
 		{
-			NS_LOG_FUNCTION(this);
-		}
 
-		MacQueue::~MacQueue()
-		{
-			NS_LOG_FUNCTION(this);
-		}
+		};
 
-		void MacQueue::SetMaxSize(uint32_t maxSize)
-		{
-			NS_LOG_FUNCTION(this << maxSize);
-			m_maxSize = maxSize;
-		}
+	} // namespace HrWpan
 
+} // namespace ns3
 
-		void MacQueue::Enqueue(Ptr<const Packet> packet, const HrWpan::MacHeader & hdr)
-		{
-			NS_LOG_FUNCTION(this << packet << hdr);
-
-		}
-	}
-
-}
-
+#endif
