@@ -15,16 +15,29 @@
 * along with this program; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *
-* Author:  Igor Di Paolo <igor.di.paolo@gmail.com>
+* Authors:
+*  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#include <ns3/test.h>
-#include <ns3/packet.h>
-#include <ns3/hr-wpan-mac-header.h>
-#include <ns3/hr-wpan-mac-trailer.h>
-#include <ns3/hr-wpan-dev-id.h>
-#include <ns3/mac64-address.h>
-#include <ns3/log.h>
+#ifndef HR_WPAN_MAC_STAT_HELPER_H
+#define HR_WPAN_MAC_STAT_HELPER_H
 
-using namespace ns3;
+namespace ns3
+{
+	namespace HrWpan
+	{
+		class MacStatHelper
+		{
+		public:
+			MacStatHelper();
 
+			void reset();
+		private:
+
+		};
+
+	} //namespace HrWpan
+
+}// namespace ns3
+
+#endif //HR_WPAN_MAC_STAT_HELPER_H

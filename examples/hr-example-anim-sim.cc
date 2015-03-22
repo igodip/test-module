@@ -49,7 +49,7 @@ NS_LOG_COMPONENT_DEFINE("HrWpanAnimSim");
 int main(int argc, char ** argv)
 {
 	LogComponentEnable("HrWpanAnimSim", LOG_LEVEL_ALL);
-	//LogComponentEnable("HrWpan::PhyStatHelper", LOG_LEVEL_ALL);
+	
 
 	double lengthTop = 20;
 	double obsMaxSize = 1;

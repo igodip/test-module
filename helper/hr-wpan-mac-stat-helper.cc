@@ -19,38 +19,23 @@
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#include "hr-wpan-mac-queue.h"
-#include <ns3/log.h>
+#include "hr-wpan-mac-stat-helper.h"
 
 namespace ns3
 {
-
-	NS_LOG_COMPONENT_DEFINE("HrWpanMacQueue");
-
-	NS_OBJECT_ENSURE_REGISTERED(HrWpanMacQueue);
-
-	HrWpanMacQueue::HrWpanMacQueue()
+	namespace HrWpan
 	{
-		NS_LOG_FUNCTION(this);
-	}
 
-	HrWpanMacQueue::~HrWpanMacQueue()
-	{
-		NS_LOG_FUNCTION(this);
-	}
+		MacStatHelper::MacStatHelper()
+		{
 
-	void HrWpanMacQueue::SetMaxSize(uint32_t maxSize)
-	{
-		NS_LOG_FUNCTION(this << maxSize);
-		m_maxSize = maxSize;
-	}
+		}
 
+		void MacStatHelper::reset()
+		{
 
-	void HrWpanMacQueue::Enqueue(Ptr<const Packet> packet,const HrWpan::MacHeader & hdr)
-	{
-		NS_LOG_FUNCTION(this <<packet << hdr);
+		}
 
-	}
+	} //namespace HrWpan
 
-}
-
+} // namespace ns3

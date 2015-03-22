@@ -30,7 +30,6 @@ using namespace ns3;
 
 NS_LOG_COMPONENT_DEFINE("hr-wpan-packet-test");
 
-// This is an example TestCase.
 class HrWpanPacketTestCase : public TestCase {
 public:
 	HrWpanPacketTestCase();
@@ -45,6 +44,7 @@ HrWpanPacketTestCase::HrWpanPacketTestCase()
 
 HrWpanPacketTestCase::~HrWpanPacketTestCase()
 {
+
 }
 
 void
@@ -53,7 +53,7 @@ HrWpanPacketTestCase::DoRun(void)
 	
 	const char * addr = "11";
 
-	HrWpanMacHeader macHdr(HrWpanMacHeader::HRWPAN_FRAME_BEACON, 0);
+	HrWpan::MacHeader macHdr(HrWpan::MacHeader::HRWPAN_FRAME_BEACON, 0);
 	macHdr.SetSecDisable();
 	
 	HrWpanDevId dstAddress(addr);
@@ -62,7 +62,7 @@ HrWpanPacketTestCase::DoRun(void)
 	HrWpanDevId srcAddress(addr);
 	macHdr.setSrcAddress(srcAddress);
 
-	HrWpanMacTrailer macTrailer;
+	HrWpan::MacTrailer macTrailer;
 	
 	Ptr<Packet> packet = Create<Packet>(20); // dummy data
 	NS_TEST_ASSERT_MSG_EQ(packet->GetSize(),20, "Packed created with unexpected size!");
@@ -83,18 +83,19 @@ HrWpanPacketTestCase::DoRun(void)
 
 	NS_TEST_ASSERT_MSG_EQ(p2->GetSize(), 34, "Packet wrong size after deserialization");
 
-	HrWpanMacHeader receivedMacHeader;
+	HrWpan::MacHeader receivedMacHeader;
 	p2->RemoveHeader(receivedMacHeader);
 
 	NS_TEST_ASSERT_MSG_EQ(p2->GetSize(), 24, "Packet wrong size after removing machdr");
 
-	HrWpanMacTrailer receivedMacTrailer;
+	HrWpan::MacTrailer receivedMacTrailer;
 	p2->RemoveTrailer(receivedMacTrailer);
 
 	NS_TEST_ASSERT_MSG_EQ(p2->GetSize(), 20, "Packet wrong size after removing mactrailer");
 
 	//Checking header
 	
+
 	//Checking address
 	HrWpanDevId srcReceivedAddress = receivedMacHeader.getSrcAddress();
 	NS_TEST_ASSERT_MSG_EQ(srcReceivedAddress, srcAddress, "The srcAddress is different!");
@@ -108,6 +109,87 @@ HrWpanPacketTestCase::DoRun(void)
 }
 
 // ==============================================================================
+
+class HrWpanPacketTypeTestCase : public TestCase {
+public:
+	HrWpanPacketTypeTestCase();
+	virtual ~HrWpanPacketTypeTestCase();
+private:
+	virtual void DoRun(void);
+};
+
+HrWpanPacketTypeTestCase::HrWpanPacketTypeTestCase()
+	: TestCase("Test the 802.15.3c MAC header and trailer classes")
+{}
+
+HrWpanPacketTypeTestCase::~HrWpanPacketTypeTestCase()
+{
+
+}
+
+void HrWpanPacketTypeTestCase::DoRun(void)
+{
+
+
+
+
+
+}
+
+// ==============================================================================
+
+class HrWpanPacketHeaderTestCase : public TestCase {
+public:
+	HrWpanPacketHeaderTestCase();
+	virtual ~HrWpanPacketHeaderTestCase();
+private:
+	virtual void DoRun(void);
+};
+
+HrWpanPacketHeaderTestCase::HrWpanPacketHeaderTestCase()
+	: TestCase("Test the 802.15.3c MAC header and trailer classes")
+{}
+
+HrWpanPacketHeaderTestCase::~HrWpanPacketHeaderTestCase()
+{
+
+}
+
+void HrWpanPacketHeaderTestCase::DoRun(void)
+{
+
+}
+
+// ==============================================================================
+
+class HrWpanPacketTrailerTestCase : public TestCase {
+public:
+	HrWpanPacketTrailerTestCase();
+	virtual ~HrWpanPacketTrailerTestCase();
+private:
+	virtual void DoRun(void);
+};
+
+HrWpanPacketTrailerTestCase::HrWpanPacketTrailerTestCase()
+	: TestCase("Test the 802.15.3c MAC trailer class")
+{}
+
+HrWpanPacketTrailerTestCase::~HrWpanPacketTrailerTestCase()
+{
+
+}
+
+void HrWpanPacketTrailerTestCase::DoRun(void)
+{
+
+	Ptr<Packet> packet = Create<Packet>(30);
+	HrWpan::
+
+
+}
+
+// ==============================================================================
+
 class HrWpanPacketTestSuite : public TestSuite
 {
 public:
@@ -118,7 +200,9 @@ HrWpanPacketTestSuite::HrWpanPacketTestSuite()
 	: TestSuite("hr-wpan-packet", UNIT)
 {
 	AddTestCase(new HrWpanPacketTestCase, TestCase::QUICK);
-	//TODO: Add other test case
+	AddTestCase(new HrWpanPacketTypeTestCase, TestCase::QUICK);
+	AddTestCase(new HrWpanPacketHeaderTestCase, TestCase::QUICK);
+	AddTestCase(new HrWpanPacketTrailerTestCase, TestCase::QUICK);
 }
 
 static HrWpanPacketTestSuite hrWpanPacketTestSuite;

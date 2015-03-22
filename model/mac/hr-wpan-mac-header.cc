@@ -26,470 +26,475 @@ namespace ns3 {
 
 	NS_LOG_COMPONENT_DEFINE("HrWpanMacHeader");
 
-	NS_OBJECT_ENSURE_REGISTERED(HrWpanMacHeader);
-
-
-
-	HrWpanMacHeader::HrWpanMacHeader()
+	namespace HrWpan
 	{
 
-		NS_LOG_FUNCTION(this);
+		NS_OBJECT_ENSURE_REGISTERED(MacHeader);
 
-		SetType(HRWPAN_FRAME_DATA);   // Assume Data frame
-		SetSecDisable();              // Assume there is No Aux Sec but
-		SetNoMoreData();               // No Frame Pending
-		SetAckPolicyType(HRWPAN_POLICY_NOACK);// No Ack Frame will be expected from recepient
-		SetFrmCtrlRes(0);             // Initialize the 3 reserved bits to 0
-		SetProtocolVer(0);               //Indicates an IEEE 802.15.4 frame
-	}
-
-
-	HrWpanMacHeader::HrWpanMacHeader(enum HrWpanFrameType wpanMacType,
-		uint8_t seqNum)
-	{
-
-		NS_LOG_FUNCTION(this);
-
-		SetType(wpanMacType);
-		//SetSeqNum(seqNum);
-		SetSecDisable();              // Assume there is No Aux Sec but
-		SetNoMoreData();               // No Frame Pending
-		SetAckPolicyType(HRWPAN_POLICY_NOACK);// No Ack Frame will be expected from recepient
-		SetFrmCtrlRes(0);             // Initialize the 3 reserved bits to 0
-		SetProtocolVer(0);               //Indicates an IEEE 802.15.4 frame
-	}
-
-
-	HrWpanMacHeader::~HrWpanMacHeader()
-	{
-		NS_LOG_FUNCTION(this);
-	}
-
-
-	enum HrWpanMacHeader::HrWpanFrameType
-		HrWpanMacHeader::GetType(void) const
-	{
-
-		NS_LOG_FUNCTION(this);
-
-		switch (m_fctrlFrameType)
+		MacHeader::MacHeader()
 		{
-		case HRWPAN_FRAME_BEACON:
-			return HRWPAN_FRAME_BEACON;
-		case HRWPAN_FRAME_IMM_ACK:
-			return HRWPAN_FRAME_IMM_ACK;
-		case HRWPAN_FRAME_DEL_ACK:
-			return HRWPAN_FRAME_DEL_ACK;
-		case HRWPAN_FRAME_COMMAND:
-			return HRWPAN_FRAME_COMMAND;
-		case HRWPAN_FRAME_DATA:
-			return HRWPAN_FRAME_DATA;
-		case HRWPAN_FRAME_LLC:
-			return HRWPAN_FRAME_LLC;
-		case HRWPAN_FRAME_SYNC:
-			return HRWPAN_FRAME_SYNC;
-		default:
-			return HRWPAN_MAC_RESERVED;
-		}
-	}
 
+			NS_LOG_FUNCTION(this);
 
-
-	uint16_t HrWpanMacHeader::GetFrameControl(void) const
-	{
-
-		NS_LOG_FUNCTION(this);
-
-		uint16_t val = 0;
-
-		val = m_fctrlPtclVrs & (0x07);						// Bit 0-2
-		val |= (m_fctrlFrameType << 3) & (0x07 << 3);		// Bit 3-5
-		val |= (m_fctrlSEC << 6) & (0x01 << 6);				// Bit 6
-		val |= (m_fctrlAckPolicy << 7) & (0x03 << 7);		// Bit 7-8
-		val |= (m_fctrlRetry << 9) & (0x01 << 9);			// Bit 9
-		val |= (m_fctrlMoreData << 10) & (0x01 << 10);      // Bit 10
-		val |= (m_fctrlImpAckReq << 11) & (0x01 << 11);		// Bit 11
-		val |= (m_fctrlImpAckNack << 12) & (0x03 << 12);	// Bit 12
-		val |= (m_fctrlCTARelinquish << 13) & (0x03 << 13);	// Bit 13
-		val |= (m_fctrlBlk_ACK << 14) & (0x01 << 14);		// Bit 14
-		val |= (m_fctrlReserved << 15) & (0x01 << 15);		// Bit 15
-		return val;
-
-	}
-
-	bool HrWpanMacHeader::IsSecEnable(void) const
-	{
-		NS_LOG_FUNCTION(this);
-
-		return (m_fctrlSEC == HRWPAN_FRAME_PROT);
-	}
-
-	uint8_t HrWpanMacHeader::GetFrmCtrlRes(void) const
-	{
-		NS_LOG_FUNCTION(this);
-
-		return (m_fctrlReserved);
-	}
-
-	uint8_t HrWpanMacHeader::GetProtocolVer(void) const
-	{
-		NS_LOG_FUNCTION(this);
-
-		return m_fctrlPtclVrs;
-	}
-
-	void HrWpanMacHeader::SetProtocolVer(uint8_t protVer)
-	{
-		NS_LOG_FUNCTION(this << protVer);
-
-		m_fctrlPtclVrs = protVer;
-	}
-
-	uint16_t HrWpanMacHeader::getPicoNetId(void) const
-	{
-		NS_LOG_FUNCTION(this);
-		return m_picoNetID;
-	}
-
-	void HrWpanMacHeader::setPicoNetId(uint16_t picoNetId)
-	{
-		NS_LOG_FUNCTION(this << picoNetId);
-
-		m_picoNetID = picoNetId;
-	}
-
-	void HrWpanMacHeader::SetAckPolicyType(enum HrWpanAckPolicy ackPolicy)
-	{
-		NS_LOG_FUNCTION(this << ackPolicy);
-
-		m_fctrlAckPolicy = ackPolicy & (0x3); //Bit 0-1
-		m_fctrlImpAckReq = (ackPolicy >> 2) & (0x1); //Bit 2
-		m_fctrlBlk_ACK = (ackPolicy >> 3) & 0x1; // Bit 3
-	}
-
-	enum HrWpanAckPolicy HrWpanMacHeader::GetAckPolicyType(void) const {
-
-		NS_LOG_FUNCTION(this);
-
-		switch (m_fctrlAckPolicy)
-		{
-		case 0x0:
-			return HRWPAN_POLICY_NOACK;
-			break;
-
-		case 0x1:
-
-			if (m_fctrlImpAckReq == 1) {
-				return HRWPAN_POLICY_IMPACK;
-			}
-
-			if (m_fctrlBlk_ACK == 1){
-				return HRWPAN_POLICY_BLKACK;
-			}
-
-			return HRWPAN_POLICY_IMMACK;
-			break;
-		case 0x2:
-
-			return HRWPAN_POLICY_DACK;
-			break;
-		case 0x3:
-
-			return HRWPAN_POLICY_DACK_REQ;
-			break;
-
-		default:
-			return HRWPAN_POLICY_NOACK;
-
+			SetType(HRWPAN_FRAME_DATA);   // Assume Data frame
+			SetSecDisable();              // Assume there is No Aux Sec but
+			SetNoMoreData();               // No Frame Pending
+			SetAckPolicyType(HRWPAN_POLICY_NOACK);// No Ack Frame will be expected from recepient
+			SetFrmCtrlRes(0);             // Initialize the 3 reserved bits to 0
+			SetProtocolVer(0);               //Indicates an IEEE 802.15.4 frame
 		}
 
-	}
 
-
-	bool HrWpanMacHeader::IsBeacon(void) const
-	{
-		NS_LOG_FUNCTION(this);
-
-		return(m_fctrlFrameType == HRWPAN_FRAME_BEACON);
-	}
-
-
-
-	bool HrWpanMacHeader::IsData(void) const
-	{
-		NS_LOG_FUNCTION(this);
-
-		return(m_fctrlFrameType == HRWPAN_FRAME_DATA);
-	}
-
-	bool HrWpanMacHeader::IsImmediateAck(void) const
-	{
-		NS_LOG_FUNCTION(this);
-
-		//TODO: How to do this? :D
-		return(true);
-	}
-
-	bool HrWpanMacHeader::IsCommand(void) const
-	{
-		NS_LOG_FUNCTION(this);
-
-		return(m_fctrlFrameType == HRWPAN_FRAME_COMMAND);
-	}
-
-	void HrWpanMacHeader::SetType(enum HrWpanFrameType frameType)
-	{
-		NS_LOG_FUNCTION(this);
-
-		m_fctrlFrameType = frameType;
-	}
-
-
-	void HrWpanMacHeader::SetFrameControl(uint16_t frameControl)
-	{
-
-		NS_LOG_FUNCTION(this);
-
-		m_fctrlPtclVrs = (frameControl)& (0x07);				//Bit 0-2
-		m_fctrlFrameType = (frameControl >> 3) & (0x07);        //Bit 3-5
-		m_fctrlSEC = (frameControl >> 6) & (0x01);				//Bit 6
-		m_fctrlAckPolicy = (frameControl >> 7) & (0x03);        //Bit 7-8
-		m_fctrlRetry = (frameControl >> 9) & (0x01);			//Bit 9
-		m_fctrlMoreData = (frameControl >> 10) & (0x01);        //Bit 10
-		m_fctrlImpAckReq = (frameControl >> 11) & (0x01);		//Bit 11
-		m_fctrlImpAckNack = (frameControl >> 12) & (0x01);      //Bit 12
-		m_fctrlCTARelinquish = (frameControl >> 13) & (0x01);   //Bit 13
-		m_fctrlBlk_ACK = (frameControl >> 14) & (0x01);			//Bit 14
-		m_fctrlReserved = (frameControl >> 15) & (0x01);		//Bit 15
-	}
-
-
-	void HrWpanMacHeader::SetSecEnable(void)
-	{
-		NS_LOG_FUNCTION(this);
-
-		m_fctrlSEC = 1;
-	}
-
-
-	void HrWpanMacHeader::SetSecDisable(void)
-	{
-		NS_LOG_FUNCTION(this);
-
-		m_fctrlSEC = 0;
-	}
-
-
-	void HrWpanMacHeader::SetMoreData(void)
-	{
-		NS_LOG_FUNCTION(this);
-
-		m_fctrlMoreData = 1;
-	}
-
-
-	void HrWpanMacHeader::SetNoMoreData(void)
-	{
-		NS_LOG_FUNCTION(this);
-
-		m_fctrlMoreData = 0;
-	}
-
-	void HrWpanMacHeader::SetRetry(void)
-	{
-		NS_LOG_FUNCTION(this);
-
-		m_fctrlRetry = 1;
-	}
-
-	void HrWpanMacHeader::SetNoRetry(void)
-	{
-		NS_LOG_FUNCTION(this);
-
-		m_fctrlRetry = 0;
-	}
-
-
-	void HrWpanMacHeader::SetFrmCtrlRes(uint8_t res)
-	{
-		NS_LOG_FUNCTION(this);
-
-		m_fctrlReserved = res;
-	}
-
-	void HrWpanMacHeader::setDstAddress(const HrWpanDevId & wpanDevId) 
-	{
-		NS_LOG_FUNCTION(this);
-
-		m_addrDstId = wpanDevId;
-	}
-
-	HrWpanDevId HrWpanMacHeader::getDstAddress(void) const
-	{
-		NS_LOG_FUNCTION(this);
-
-		return m_addrDstId;
-	}
-
-	void HrWpanMacHeader::setSrcAddress(const HrWpanDevId & wpanDevId)
-	{
-		NS_LOG_FUNCTION(this);
-
-		m_addrSrcId = wpanDevId;
-	}
-
-	HrWpanDevId HrWpanMacHeader::getSrcAddress(void) const 
-	{
-
-		NS_LOG_FUNCTION(this);
-
-		return m_addrSrcId;
-	}
-
-	void HrWpanMacHeader::setStreamIndex(uint8_t streamIndex){
-
-		NS_LOG_FUNCTION(this);
-
-		m_StreamIndex = streamIndex;
-	}
-
-	uint8_t HrWpanMacHeader::getStreamIndex(void) const {
-
-		NS_LOG_FUNCTION(this);
-
-		return m_StreamIndex;
-	}
-
-	TypeId HrWpanMacHeader::GetTypeId(void)
-	{
-		static TypeId tid = TypeId("ns3::HrWpanMacHeader")
-			.SetParent<Header>()
-			.AddConstructor<HrWpanMacHeader>();
-		return tid;
-	}
-
-	TypeId HrWpanMacHeader::GetInstanceTypeId(void) const
-	{
-		NS_LOG_FUNCTION(this);
-
-		return GetTypeId();
-	}
-
-	void HrWpanMacHeader::setFragmentationControl(uint32_t fragmentationControl)
-	{
-		NS_LOG_FUNCTION(this);
-	}
-
-	uint32_t HrWpanMacHeader::getFragmentationControl() const {
+		MacHeader::MacHeader(enum FrameType wpanMacType,
+			uint8_t seqNum)
 		
-		NS_LOG_FUNCTION(this);
+		{
 
-		uint32_t result = 0;
+			NS_LOG_FUNCTION(this);
 
-		result |= m_fragControlMSDUnumber & 0x1FF;
-		result |= m_fragControlFragNumber & 0xFE00;
-		result |= m_fragControlLastFragNumber & 0x7F0000;
-		result |= m_fragControlReserved & 0x800000;
-
-		return result;
-
-	}
-
-	void HrWpanMacHeader::Print(std::ostream &os) const
-	{
-		NS_LOG_FUNCTION(this);
-		//TODO
+			SetType(wpanMacType);
+			//SetSeqNum(seqNum);
+			SetSecDisable();              // Assume there is No Aux Sec but
+			SetNoMoreData();               // No Frame Pending
+			SetAckPolicyType(HRWPAN_POLICY_NOACK);// No Ack Frame will be expected from recepient
+			SetFrmCtrlRes(0);             // Initialize the 3 reserved bits to 0
+			SetProtocolVer(0);               //Indicates an IEEE 802.15.4 frame
+		}
 
 
-	}
-
-	uint32_t HrWpanMacHeader::GetSerializedSize(void) const
-	{
-		/*
-		 * Each mac header will have
-		 * Frame Control      : 2 octet
-		 * PNID				  : 2 Octet
-		 * DestId			  : 1 Octet
-		 * SrcId			  : 1 Octet
-		 * FragmatationControl:	3 Octet
-		 * Stream index		  : 1 octet
-		 */
-
-		NS_LOG_FUNCTION(this);
-
-		uint32_t size = 10;
-
-		return size;
-	}
+		MacHeader::~MacHeader()
+		{
+			NS_LOG_FUNCTION(this);
+		}
 
 
-	//TODO: Ho qualche forte dubbio su queste funzioni
+		enum MacHeader::FrameType
+			MacHeader::GetType(void) const
+		{
 
-	void HrWpanMacHeader::Serialize(Buffer::Iterator start) const
-	{
+			NS_LOG_FUNCTION(this);
 
-		NS_LOG_FUNCTION(this);
-
-		Buffer::Iterator i = start;
-
-		//Writing first 2 bytes
-		i.WriteHtolsbU16(GetFrameControl());
-
-		i.WriteHtolsbU16(getPicoNetId());
-
-		uint8_t dstAddr, srcAddr;
-		getDstAddress().CopyTo(dstAddr);
-		getSrcAddress().CopyTo(srcAddr);
-
-		i.WriteU8(dstAddr);
-		i.WriteU8(srcAddr);
-
-		//Fragmentation control
-		i.WriteU8(0);
-		i.WriteU8(0);
-		i.WriteU8(0);
-
-		i.WriteU8(getStreamIndex());
-
-	}
+			switch (m_fctrlFrameType)
+			{
+			case HRWPAN_FRAME_BEACON:
+				return HRWPAN_FRAME_BEACON;
+			case HRWPAN_FRAME_IMM_ACK:
+				return HRWPAN_FRAME_IMM_ACK;
+			case HRWPAN_FRAME_DEL_ACK:
+				return HRWPAN_FRAME_DEL_ACK;
+			case HRWPAN_FRAME_COMMAND:
+				return HRWPAN_FRAME_COMMAND;
+			case HRWPAN_FRAME_DATA:
+				return HRWPAN_FRAME_DATA;
+			case HRWPAN_FRAME_LLC:
+				return HRWPAN_FRAME_LLC;
+			case HRWPAN_FRAME_SYNC:
+				return HRWPAN_FRAME_SYNC;
+			default:
+				return HRWPAN_MAC_RESERVED;
+			}
+		}
 
 
-	//TODO: Forte dubbio anche qui
 
-	uint32_t HrWpanMacHeader::Deserialize(Buffer::Iterator start)
-	{
-		NS_LOG_FUNCTION(this);
+		uint16_t MacHeader::GetFrameControl(void) const
+		{
 
-		Buffer::Iterator i = start;
-		uint16_t frameControl = i.ReadLsbtohU16();
-		SetFrameControl(frameControl);
+			NS_LOG_FUNCTION(this);
 
-		uint8_t picoNetId = i.ReadLsbtohU16();
-		setPicoNetId(picoNetId);
+			uint16_t val = 0;
 
-		HrWpanDevId dstAddrId, srcAddrId;
+			val = m_fctrlPtclVrs & (0x07);						// Bit 0-2
+			val |= (m_fctrlFrameType << 3) & (0x07 << 3);		// Bit 3-5
+			val |= (m_fctrlSEC << 6) & (0x01 << 6);				// Bit 6
+			val |= (m_fctrlAckPolicy << 7) & (0x03 << 7);		// Bit 7-8
+			val |= (m_fctrlRetry << 9) & (0x01 << 9);			// Bit 9
+			val |= (m_fctrlMoreData << 10) & (0x01 << 10);      // Bit 10
+			val |= (m_fctrlImpAckReq << 11) & (0x01 << 11);		// Bit 11
+			val |= (m_fctrlImpAckNack << 12) & (0x03 << 12);	// Bit 12
+			val |= (m_fctrlCTARelinquish << 13) & (0x03 << 13);	// Bit 13
+			val |= (m_fctrlBlk_ACK << 14) & (0x01 << 14);		// Bit 14
+			val |= (m_fctrlReserved << 15) & (0x01 << 15);		// Bit 15
+			return val;
 
-		uint8_t dstAddr = i.ReadU8();
+		}
 
-		dstAddrId.CopyFrom(dstAddr);
-		setDstAddress(dstAddrId);
+		bool MacHeader::IsSecEnable(void) const
+		{
+			NS_LOG_FUNCTION(this);
 
-		uint8_t srcAddr = i.ReadU8();
-		srcAddrId.CopyFrom(srcAddr);
-		setSrcAddress(srcAddrId);
+			return (m_fctrlSEC == HRWPAN_FRAME_PROT);
+		}
 
-		//Fragmentation control
-		//TODO
-		i.ReadU8();
-		i.ReadU8();
-		i.ReadU8();
-		setFragmentationControl(0);
+		uint8_t MacHeader::GetFrmCtrlRes(void) const
+		{
+			NS_LOG_FUNCTION(this);
 
-		uint8_t streamIndex = i.ReadU8();
-		setStreamIndex(streamIndex);
+			return (m_fctrlReserved);
+		}
+
+		uint8_t MacHeader::GetProtocolVer(void) const
+		{
+			NS_LOG_FUNCTION(this);
+
+			return m_fctrlPtclVrs;
+		}
+
+		void MacHeader::SetProtocolVer(uint8_t protVer)
+		{
+			NS_LOG_FUNCTION(this << protVer);
+
+			m_fctrlPtclVrs = protVer;
+		}
+
+		uint16_t MacHeader::getPicoNetId(void) const
+		{
+			NS_LOG_FUNCTION(this);
+			return m_picoNetID;
+		}
+
+		void MacHeader::setPicoNetId(uint16_t picoNetId)
+		{
+			NS_LOG_FUNCTION(this << picoNetId);
+
+			m_picoNetID = picoNetId;
+		}
+
+		void MacHeader::SetAckPolicyType(enum AckPolicy ackPolicy)
+		{
+			NS_LOG_FUNCTION(this << ackPolicy);
+
+			m_fctrlAckPolicy = ackPolicy & (0x3); //Bit 0-1
+			m_fctrlImpAckReq = (ackPolicy >> 2) & (0x1); //Bit 2
+			m_fctrlBlk_ACK = (ackPolicy >> 3) & 0x1; // Bit 3
+		}
+
+		enum AckPolicy MacHeader::GetAckPolicyType(void) const {
+
+			NS_LOG_FUNCTION(this);
+
+			switch (m_fctrlAckPolicy)
+			{
+			case 0x0:
+				return HRWPAN_POLICY_NOACK;
+				break;
+
+			case 0x1:
+
+				if (m_fctrlImpAckReq == 1) {
+					return HRWPAN_POLICY_IMPACK;
+				}
+
+				if (m_fctrlBlk_ACK == 1){
+					return HRWPAN_POLICY_BLKACK;
+				}
+
+				return HRWPAN_POLICY_IMMACK;
+				break;
+			case 0x2:
+
+				return HRWPAN_POLICY_DACK;
+				break;
+			case 0x3:
+
+				return HRWPAN_POLICY_DACK_REQ;
+				break;
+
+			default:
+				return HRWPAN_POLICY_NOACK;
+
+			}
+
+		}
 
 
-		return i.GetDistanceFrom(start);
+		bool MacHeader::IsBeacon(void) const
+		{
+			NS_LOG_FUNCTION(this);
+
+			return(m_fctrlFrameType == HRWPAN_FRAME_BEACON);
+		}
+
+
+
+		bool MacHeader::IsData(void) const
+		{
+			NS_LOG_FUNCTION(this);
+
+			return(m_fctrlFrameType == HRWPAN_FRAME_DATA);
+		}
+
+		bool MacHeader::IsImmediateAck(void) const
+		{
+			NS_LOG_FUNCTION(this);
+
+
+
+			return(true);
+		}
+
+		bool MacHeader::IsCommand(void) const
+		{
+			NS_LOG_FUNCTION(this);
+
+			return(m_fctrlFrameType == HRWPAN_FRAME_COMMAND);
+		}
+
+		void MacHeader::SetType(enum FrameType frameType)
+		{
+			NS_LOG_FUNCTION(this);
+
+			m_fctrlFrameType = frameType;
+		}
+
+
+		void MacHeader::SetFrameControl(uint16_t frameControl)
+		{
+
+			NS_LOG_FUNCTION(this);
+
+			m_fctrlPtclVrs = (frameControl)& (0x07);				//Bit 0-2
+			m_fctrlFrameType = (frameControl >> 3) & (0x07);        //Bit 3-5
+			m_fctrlSEC = (frameControl >> 6) & (0x01);				//Bit 6
+			m_fctrlAckPolicy = (frameControl >> 7) & (0x03);        //Bit 7-8
+			m_fctrlRetry = (frameControl >> 9) & (0x01);			//Bit 9
+			m_fctrlMoreData = (frameControl >> 10) & (0x01);        //Bit 10
+			m_fctrlImpAckReq = (frameControl >> 11) & (0x01);		//Bit 11
+			m_fctrlImpAckNack = (frameControl >> 12) & (0x01);      //Bit 12
+			m_fctrlCTARelinquish = (frameControl >> 13) & (0x01);   //Bit 13
+			m_fctrlBlk_ACK = (frameControl >> 14) & (0x01);			//Bit 14
+			m_fctrlReserved = (frameControl >> 15) & (0x01);		//Bit 15
+		}
+
+
+		void MacHeader::SetSecEnable(void)
+		{
+			NS_LOG_FUNCTION(this);
+
+			m_fctrlSEC = 1;
+		}
+
+
+		void MacHeader::SetSecDisable(void)
+		{
+			NS_LOG_FUNCTION(this);
+
+			m_fctrlSEC = 0;
+		}
+
+
+		void MacHeader::SetMoreData(void)
+		{
+			NS_LOG_FUNCTION(this);
+
+			m_fctrlMoreData = 1;
+		}
+
+
+		void MacHeader::SetNoMoreData(void)
+		{
+			NS_LOG_FUNCTION(this);
+
+			m_fctrlMoreData = 0;
+		}
+
+		void MacHeader::SetRetry(void)
+		{
+			NS_LOG_FUNCTION(this);
+
+			m_fctrlRetry = 1;
+		}
+
+		void MacHeader::SetNoRetry(void)
+		{
+			NS_LOG_FUNCTION(this);
+
+			m_fctrlRetry = 0;
+		}
+
+
+		void MacHeader::SetFrmCtrlRes(uint8_t res)
+		{
+			NS_LOG_FUNCTION(this);
+
+			m_fctrlReserved = res;
+		}
+
+		void MacHeader::setDstAddress(const HrWpanDevId & wpanDevId)
+		{
+			NS_LOG_FUNCTION(this);
+
+			m_addrDstId = wpanDevId;
+		}
+
+		HrWpanDevId MacHeader::getDstAddress(void) const
+		{
+			NS_LOG_FUNCTION(this);
+
+			return m_addrDstId;
+		}
+
+		void MacHeader::setSrcAddress(const HrWpanDevId & wpanDevId)
+		{
+			NS_LOG_FUNCTION(this);
+
+			m_addrSrcId = wpanDevId;
+		}
+
+		HrWpanDevId MacHeader::getSrcAddress(void) const
+		{
+
+			NS_LOG_FUNCTION(this);
+
+			return m_addrSrcId;
+		}
+
+		void MacHeader::setStreamIndex(uint8_t streamIndex){
+
+			NS_LOG_FUNCTION(this);
+
+			m_StreamIndex = streamIndex;
+		}
+
+		uint8_t MacHeader::getStreamIndex(void) const {
+
+			NS_LOG_FUNCTION(this);
+
+			return m_StreamIndex;
+		}
+
+		TypeId MacHeader::GetTypeId(void)
+		{
+			static TypeId tid = TypeId("ns3::HrWpan::MacHeader")
+				.SetParent<Header>()
+				.AddConstructor<MacHeader>();
+			return tid;
+		}
+
+		TypeId MacHeader::GetInstanceTypeId(void) const
+		{
+			NS_LOG_FUNCTION(this);
+
+			return GetTypeId();
+		}
+
+		void MacHeader::setFragmentationControl(uint32_t fragmentationControl)
+		{
+			NS_LOG_FUNCTION(this);
+		}
+
+		uint32_t MacHeader::getFragmentationControl() const {
+
+			NS_LOG_FUNCTION(this);
+
+			uint32_t result = 0;
+
+			result |= m_fragControlMSDUnumber & 0x1FF;
+			result |= m_fragControlFragNumber & 0xFE00;
+			result |= m_fragControlLastFragNumber & 0x7F0000;
+			result |= m_fragControlReserved & 0x800000;
+
+			return result;
+
+		}
+
+		void MacHeader::Print(std::ostream &os) const
+		{
+			NS_LOG_FUNCTION(this);
+			//TODO
+
+
+		}
+
+		uint32_t MacHeader::GetSerializedSize(void) const
+		{
+			/*
+			* Each mac header will have
+			* Frame Control      : 2 octet
+			* PNID				  : 2 Octet
+			* DestId			  : 1 Octet
+			* SrcId			  : 1 Octet
+			* FragmatationControl:	3 Octet
+			* Stream index		  : 1 octet
+			*/
+
+			NS_LOG_FUNCTION(this);
+
+			uint32_t size = 10;
+
+			return size;
+		}
+
+
+		//TODO: Ho qualche forte dubbio su queste funzioni
+
+		void MacHeader::Serialize(Buffer::Iterator start) const
+		{
+
+			NS_LOG_FUNCTION(this);
+
+			Buffer::Iterator i = start;
+
+			//Writing first 2 bytes
+			i.WriteHtolsbU16(GetFrameControl());
+
+			i.WriteHtolsbU16(getPicoNetId());
+
+			uint8_t dstAddr, srcAddr;
+			getDstAddress().CopyTo(dstAddr);
+			getSrcAddress().CopyTo(srcAddr);
+
+			i.WriteU8(dstAddr);
+			i.WriteU8(srcAddr);
+
+			//Fragmentation control
+			i.WriteU8(0);
+			i.WriteU8(0);
+			i.WriteU8(0);
+
+			i.WriteU8(getStreamIndex());
+
+		}
+
+
+		//TODO: Forte dubbio anche qui
+
+		uint32_t MacHeader::Deserialize(Buffer::Iterator start)
+		{
+			NS_LOG_FUNCTION(this);
+
+			Buffer::Iterator i = start;
+			uint16_t frameControl = i.ReadLsbtohU16();
+			SetFrameControl(frameControl);
+
+			uint8_t picoNetId = i.ReadLsbtohU16();
+			setPicoNetId(picoNetId);
+
+			HrWpanDevId dstAddrId, srcAddrId;
+
+			uint8_t dstAddr = i.ReadU8();
+
+			dstAddrId.CopyFrom(dstAddr);
+			setDstAddress(dstAddrId);
+
+			uint8_t srcAddr = i.ReadU8();
+			srcAddrId.CopyFrom(srcAddr);
+			setSrcAddress(srcAddrId);
+
+			//Fragmentation control
+			//TODO
+			i.ReadU8();
+			i.ReadU8();
+			i.ReadU8();
+			setFragmentationControl(0);
+
+			uint8_t streamIndex = i.ReadU8();
+			setStreamIndex(streamIndex);
+
+
+			return i.GetDistanceFrom(start);
+		}
+
 	}
 
 	// ----------------------------------------------------------------------------------------------------------

@@ -94,8 +94,6 @@ namespace ns3 {
 		HrWpanDevId m_devId;
 		Mac48Address m_macAddress;
 		
-
-
 		EventId m_ackWaitTimeout;
 
 		std::map <std::string, HrWpan::MacSapUser *> m_sapUsers;

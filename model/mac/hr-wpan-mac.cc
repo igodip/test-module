@@ -49,7 +49,7 @@ namespace ns3 {
 			.AddTraceSource("MacTx",
 			"Trace source indicating a packet has"
 			"arrived for transmission by this device",
-			MakeTraceSourceAccessor(&HrWpanMac::m_macTxOkTrace),
+			MakeTraceSourceAccessor(&HrWpanMac::m_macTxTrace),
 			"ns3::Packet::TracedCallback")
 			.AddTraceSource("MacTxOk",
 			"Trace source indicating a packet has"
@@ -113,7 +113,7 @@ namespace ns3 {
 	{
 		NS_LOG_FUNCTION(this << p);
 		
-		HrWpanMacHeader header;
+		HrWpan::MacHeader header;
 
 		p->RemoveHeader(header);
 

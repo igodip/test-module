@@ -1,9 +1,23 @@
-///////////////////////////////////////////////////////////
-//  hr-wpan-mac-queue.h
-//  Implementation of the Class HrWpanMacQueue
-//  Created on:      26-feb-2015 13:35:38
-//  Original author: Igor
-///////////////////////////////////////////////////////////
+/* -*-  Mode: C++; c-file-style: "gnu"; indent-tabs-mode:nil; -*- */
+/*
+* Copyright (c) 2015 KTH
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License version 2 as
+* published by the Free Software Foundation;
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*
+* Authors:
+*  Igor Di Paolo <igor.di.paolo@gmail.com>
+*/
 
 #ifndef HR_WPAN_MAC_QUEUE_H
 #define HR_WPAN_MAC_QUEUE_H
@@ -24,9 +38,9 @@ namespace ns3
 		virtual ~HrWpanMacQueue();
 
 		void SetMaxSize(uint32_t maxSize);
-		void Enqueue(Ptr<const Packet> packet, const HrWpanMacHeader & hdr);
+		void Enqueue(Ptr<const Packet> packet, const HrWpan::MacHeader & hdr);
 
-		Ptr<const Packet> Dequeue(HrWpanMacHeader * hdr);
+		Ptr<const Packet> Dequeue(HrWpan::MacHeader * hdr);
 
 	protected:
 
@@ -42,10 +56,10 @@ namespace ns3
 			* \param tstamp
 			*/
 			Item(Ptr<const Packet> packet,
-				const HrWpanMacHeader &hdr,
+				const HrWpan::MacHeader &hdr,
 				Time tstamp);
 			Ptr<const Packet> packet; //!< Actual packet
-			HrWpanMacHeader hdr; //!< Wifi MAC header associated with the packet
+			HrWpan::MacHeader hdr; //!< Wifi MAC header associated with the packet
 			Time tstamp; //!< timestamp when the packet arrived at the queue
 		};
 
