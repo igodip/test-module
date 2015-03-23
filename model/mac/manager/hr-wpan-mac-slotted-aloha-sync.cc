@@ -20,7 +20,7 @@
 */
 
 
-
+#include "hr-wpan-mac-slotted-aloha-sync.h"
 
 namespace ns3
 {

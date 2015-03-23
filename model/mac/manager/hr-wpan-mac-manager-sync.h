@@ -24,6 +24,10 @@
 #define HR_WPAN_MAC_MANAGER_SYNC_H
 
 #include <ns3/object.h>
+#include <list>
+#include <ns3/simulator.h>
+
+#include "hr-wpan-mac-manager-listener.h"
 
 namespace ns3
 {
@@ -33,10 +37,27 @@ namespace ns3
 		class MacManagerSync : public Object
 		{
 
+		public:
+
+			MacManagerSync();
+
+			void AddListener(MacManagerListener *);
+			
+
+		protected:
+
+			void Send() const;
+
+			std::list < MacManagerListener * > listeners;
+
+			Time m_timeSlot;
+			Time m_startTime;
+			Time m_stopTime;
+
 		};
 
 	} // namespace HrWpan
 
 } // namespace ns3
 
-#endif
+#endif //HR_WPAN_MAC_MANAGER_SYNC

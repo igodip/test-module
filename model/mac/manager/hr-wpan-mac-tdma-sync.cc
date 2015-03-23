@@ -20,7 +20,7 @@
 */
 
 
-
+#include "hr-wpan-mac-tdma-sync.h"
 
 namespace ns3
 {

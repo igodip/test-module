@@ -19,14 +19,27 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
+#ifndef HR_WPAN_MAC_MANAGER_LISTENER_H
+#define HR_WPAN_MAC_MANAGER_LISTENER_H
 
-
+#include <ns3/object.h>
 
 namespace ns3
 {
 	namespace HrWpan
 	{
 
+		class MacManagerListener : public Object
+		{
+
+		public:
+			virtual void SendPkt() = 0;
+
+		};
+
 	} // namespace HrWpan
 
 } // namespace ns3
+
+
+#endif //HR_WPAN_MAC_MANAGER_LISTENER_H

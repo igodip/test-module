@@ -19,13 +19,19 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-
-
+#include "hr-wpan-mac-manager-sync.h"
 
 namespace ns3
 {
 	namespace HrWpan
 	{
+
+		MacManagerSync::MacManagerSync()
+		{
+
+		}
+
+		
 
 	} // namespace HrWpan
 

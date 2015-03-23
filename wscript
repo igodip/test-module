@@ -3,6 +3,10 @@
 def build(bld):
     obj = bld.create_ns3_module('hr-wpan', ['core', 'network', 'mobility', 'spectrum', 'propagation','netanim'])
     obj.source = [
+		'model/mac/manager/hr-wpan-mac-manager-listener.cc',
+		'model/mac/manager/hr-wpan-mac-manager-sync.cc',
+		'model/mac/manager/hr-wpan-mac-slotted-aloha-sync.cc',
+		'model/mac/manager/hr-wpan-mac-tdma-sync.cc',
         'model/mac/hr-wpan-mac-header.cc',
         'model/mac/hr-wpan-mac-trailer.cc',
 		'model/mac/hr-wpan-dev-id.cc',
@@ -100,6 +104,10 @@ def build(bld):
 		'model/mac/sap/hr-wpan-mac-sap-isoch.h',
 		'model/mac/sap/hr-wpan-mac-sap-start.h',
 		'model/mac/sap/hr-wpan-mac-sap-values.h',
+		'model/mac/manager/hr-wpan-mac-manager-listener.h',
+		'model/mac/manager/hr-wpan-mac-manager-sync.h',
+		'model/mac/manager/hr-wpan-mac-slotted-aloha-sync.h',
+		'model/mac/manager/hr-wpan-mac-tdma-sync.h',
 		'model/mac/hr-wpan-mac-pib.h',
 		'helper/hr-wpan-phy-stat-helper.h',
 		'helper/hr-wpan-mac-stat-helper.h',

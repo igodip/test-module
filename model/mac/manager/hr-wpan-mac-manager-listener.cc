@@ -19,13 +19,14 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-
-
+#include "hr-wpan-mac-manager-listener.h"
 
 namespace ns3
 {
 	namespace HrWpan
 	{
+
+
 
 	} // namespace HrWpan
 

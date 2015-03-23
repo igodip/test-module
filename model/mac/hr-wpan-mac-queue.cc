@@ -29,6 +29,7 @@ namespace ns3
 
 	namespace HrWpan
 	{
+
 		NS_OBJECT_ENSURE_REGISTERED(MacQueue);
 
 		MacQueue::MacQueue()
@@ -41,18 +42,56 @@ namespace ns3
 			NS_LOG_FUNCTION(this);
 		}
 
-		void MacQueue::SetMaxSize(uint32_t maxSize)
+		TypeId MacQueue::GetTypeId(void)
 		{
-			NS_LOG_FUNCTION(this << maxSize);
-			m_maxSize = maxSize;
+			NS_LOG_FUNCTION_NOARGS();
+
+			static TypeId tid = TypeId("ns3::HrWpan::MacQueue").
+				SetParent<Queue>().
+				AddConstructor<MacQueue>();
+			
+			return tid;
+
+		}
+
+		bool MacQueue::DoEnqueue(Ptr<Packet> p)
+		{
+			NS_LOG_FUNCTION(this);
+
+			m_packets.push_back(p);
+
+			return true;
+
+		}
+
+		Ptr<Packet> MacQueue::DoDequeue(void)
+		{
+			NS_LOG_FUNCTION(this);
+
+			if (m_packets.size() == 0)
+			{
+				return NULL;
+			}
+
+			Ptr<Packet> packet = m_packets.front();
+			m_packets.pop_front();
+
+			return packet;
+		}
+
+		Ptr<const Packet> MacQueue::DoPeek(void) const
+		{
+			NS_LOG_FUNCTION(this);
+
+			if (m_packets.size() == 0)
+			{
+				return NULL;
+			}
+
+			return m_packets.front();
 		}
 
 
-		void MacQueue::Enqueue(Ptr<const Packet> packet, const HrWpan::MacHeader & hdr)
-		{
-			NS_LOG_FUNCTION(this << packet << hdr);
-
-		}
 	}
 
 }

@@ -42,7 +42,7 @@ private:
 HrWpanMacQueueTestCase::HrWpanMacQueueTestCase()
 	: TestCase("Test the MAC Queue")
 {
-
+	LogComponentEnable("HrWpanMacQueueTestCase",LOG_ALL);
 }
 
 HrWpanMacQueueTestCase::~HrWpanMacQueueTestCase()
@@ -54,7 +54,31 @@ void HrWpanMacQueueTestCase::DoRun(void)
 {
 
 	HrWpan::MacQueue macQueue;
-	//macQueue.
+	Ptr<Packet> p1 = Create<Packet>(30);
+	Ptr<Packet> p2 = Create<Packet>(40);
+	Ptr<Packet> p3 = Create<Packet>(50);
+
+	macQueue.Enqueue(p1);
+	NS_TEST_ASSERT_MSG_EQ(macQueue.GetNPackets(), 1, "Queue size not matching!");
+	macQueue.Enqueue(p2);
+	NS_TEST_ASSERT_MSG_EQ(macQueue.GetNPackets(), 2, "Queue size not matching!");
+	macQueue.Enqueue(p3);
+	NS_TEST_ASSERT_MSG_EQ(macQueue.GetNPackets(), 3, "Queue size not matching!");
+
+	Ptr<Packet> p4  = macQueue.Dequeue();
+
+	NS_TEST_ASSERT_MSG_EQ(p1, p4, "FIFO not working properly!");
+	NS_TEST_ASSERT_MSG_EQ(macQueue.GetNPackets(), 2, "Queue size not matching!");
+	Ptr<Packet> p5 = macQueue.Dequeue();
+
+	NS_TEST_ASSERT_MSG_EQ(p2, p5, "FIFO not working properly!");
+	NS_TEST_ASSERT_MSG_EQ(macQueue.GetNPackets(), 1, "Queue size not matching!");
+	
+	Ptr<Packet> p6 = macQueue.Dequeue();
+	NS_TEST_ASSERT_MSG_EQ(p3, p6, "FIFO not working properly!");
+
+	Ptr<Packet> p7 = macQueue.Dequeue();
+	NS_TEST_ASSERT_MSG_EQ(p7, 0, "FIFO not working properly!");
 
 }
 

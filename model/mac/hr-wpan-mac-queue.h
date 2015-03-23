@@ -28,6 +28,8 @@
 #include <ns3/nstime.h>
 #include <ns3/queue.h>
 
+#include <list>
+
 namespace ns3
 {
 	namespace HrWpan
@@ -37,47 +39,21 @@ namespace ns3
 		{
 
 		public:
+
 			MacQueue();
 			virtual ~MacQueue();
 
-			void SetMaxSize(uint32_t maxSize);
-			void Enqueue(Ptr<const Packet> packet, const HrWpan::MacHeader & hdr);
-
-			Ptr<const Packet> Dequeue(HrWpan::MacHeader * hdr);
+			static TypeId GetTypeId(void);
 
 		protected:
+			
+			virtual bool DoEnqueue(Ptr<Packet> p);
+			virtual Ptr<Packet> DoDequeue(void) ;
+			virtual Ptr<const Packet> DoPeek(void) const ;
 
-			void CleanUp(void);
+		private:
 
-			struct Item
-			{
-				/**
-				* Create a struct with the given parameters.
-				*
-				* \param packet
-				* \param hdr
-				* \param tstamp
-				*/
-				Item(Ptr<const Packet> packet,
-					const HrWpan::MacHeader &hdr,
-					Time tstamp);
-				Ptr<const Packet> packet; //!< Actual packet
-				HrWpan::MacHeader hdr; //!< Wifi MAC header associated with the packet
-				Time tstamp; //!< timestamp when the packet arrived at the queue
-			};
-
-			typedef std::list<struct Item> PacketQueue;
-			/**
-			* typedef for packet (struct Item) queue reverse iterator.
-			*/
-			typedef std::list<struct Item>::reverse_iterator PacketQueueRI;
-			/**
-			* typedef for packet (struct Item) queue iterator.
-			*/
-			typedef std::list<struct Item>::iterator PacketQueueI;
-
-			PacketQueue m_packetQueue;
-			uint32_t m_maxSize;
+			std::list<Ptr<Packet > > m_packets;
 
 		};
 
