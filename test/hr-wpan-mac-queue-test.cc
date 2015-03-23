@@ -65,6 +65,8 @@ void HrWpanMacQueueTestCase::DoRun(void)
 	macQueue.Enqueue(p3);
 	NS_TEST_ASSERT_MSG_EQ(macQueue.GetNPackets(), 3, "Queue size not matching!");
 
+	NS_TEST_ASSERT_MSG_EQ(macQueue.GetNBytes(), 120, "Queue byte size not matching!");
+
 	Ptr<Packet> p4  = macQueue.Dequeue();
 
 	NS_TEST_ASSERT_MSG_EQ(p1, p4, "FIFO not working properly!");
