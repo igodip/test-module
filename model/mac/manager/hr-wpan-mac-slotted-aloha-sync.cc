@@ -26,6 +26,19 @@ namespace ns3
 {
 	namespace HrWpan
 	{
+		void MacSlottedAlohaSync::Activate()
+		{
+
+		}
+
+		TypeId MacSlottedAlohaSync::GetTypeId(void)
+		{
+			static TypeId tid = TypeId("ns3::HrWpan::MacSlottedAlohaSync").
+				SetParent<MacManagerSync>().
+				AddConstructor<MacSlottedAlohaSync>();
+				
+			return tid;
+		}
 
 	} // namespace HrWpan
 

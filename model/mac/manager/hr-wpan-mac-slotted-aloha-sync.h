@@ -31,7 +31,16 @@ namespace ns3
 
 		class MacSlottedAlohaSync : public MacManagerSync
 		{
+		public:
+			
+			virtual void Activate();
 
+			static TypeId GetTypeId(void);
+
+		private:
+			Time m_timeSlot;
+			Time m_startTime;
+			Time m_stopTime;
 		};
 
 	} // namespace HrWpan

@@ -43,7 +43,16 @@ namespace ns3
 			
 			const MacSapIndicationParamsAsync & paramsAsync = dynamic_cast< const MacSapIndicationParamsAsync &>(indicationParams);
 			
-			m_netDevice->Receive(paramsAsync.m_data,paramsAsync.m_orgId);
+			//Check if the packet is for me
+			//Otherwise don't forward
+
+			if (paramsAsync.m_trgtId == m_netDevice->GetAddress())
+			{
+				//Set the trace to sent
+				m_netDevice->Receive(paramsAsync.m_data, paramsAsync.m_orgId);
+			}
+
+			
 
 		}
 

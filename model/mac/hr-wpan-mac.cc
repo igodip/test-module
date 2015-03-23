@@ -121,11 +121,8 @@ namespace ns3 {
 		indicationParams.m_data = p;
 		indicationParams.m_orgId = header.getSrcAddress();
 
-		//Check if src id is the same
-
 		//Switch but for now only forward
 		m_sapUsers["MacSapUserAsync"]->Indication(indicationParams);
-
 
 	}
 
@@ -189,6 +186,11 @@ namespace ns3 {
 		NS_LOG_FUNCTION(this << macSapUser);
 		m_sapUsers[macSapUser->GetName()] = macSapUser;
 
+	}
+
+	void HrWpanMac::SendPkt()
+	{
+		NS_LOG_FUNCTION(this);
 	}
 
 } //namespace ns3

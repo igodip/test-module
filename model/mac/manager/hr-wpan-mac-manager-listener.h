@@ -29,7 +29,7 @@ namespace ns3
 	namespace HrWpan
 	{
 
-		class MacManagerListener : public Object
+		class MacManagerListener
 		{
 
 		public:

@@ -18,3 +18,13 @@
 * Authors:
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
+
+#include "hr-wpan-tdma-helper.h"
+
+namespace ns3
+{
+	namespace HrWpan
+	{
+
+	}
+}

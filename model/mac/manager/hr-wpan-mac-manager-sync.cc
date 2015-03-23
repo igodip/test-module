@@ -21,6 +21,8 @@
 
 #include "hr-wpan-mac-manager-sync.h"
 
+#include <ns3/hr-wpan-net-device.h>
+
 namespace ns3
 {
 	namespace HrWpan
@@ -31,7 +33,36 @@ namespace ns3
 
 		}
 
-		
+		void MacManagerSync::AddListener(MacManagerListener * listener)
+		{
+			m_listeners.push_back(listener);
+		}
+
+		void MacManagerSync::AddListeners(NetDeviceContainer ndc)
+		{
+			NetDeviceContainer::Iterator i = ndc.Begin();
+
+			for (; i != ndc.End(); ++i)
+			{
+				Ptr<HrWpan::HrWpanNetDevice> netDevice = DynamicCast<HrWpan::HrWpanNetDevice>(*i);
+				
+				if (netDevice != 0)
+				{
+					AddListener(netDevice->GetMac()->GetPointer());
+				}
+
+			}
+
+		}
+
+		TypeId MacManagerSync::GetTypeId(void)
+		{
+			static TypeId tid = TypeId("ns3::HrWpan::MacManagerSync").
+				SetParent<Object>().
+				AddConstructor<Object>();
+
+			return tid;
+		}
 
 	} // namespace HrWpan
 

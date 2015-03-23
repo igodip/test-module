@@ -19,3 +19,15 @@
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
+#ifndef HR_WPAN_TDMA_HELPER_H
+#define HR_WPAN_TDMA_HELPER_H
+
+namespace ns3
+{
+	namespace HrWpan
+	{
+
+	}
+}
+
+#endif

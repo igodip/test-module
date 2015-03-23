@@ -30,8 +30,11 @@
 #include <ns3/hr-wpan-mac.h>
 #include <ns3/hr-wpan-mac-header.h>
 #include <ns3/hr-wpan-mac-trailer.h>
+#include <ns3/hr-wpan-mac-queue.h>
 #include <ns3/mac48-address.h>
 #include <ns3/event-id.h>
+
+#include <ns3/hr-wpan-mac-manager-listener.h>
 
 #include <ns3/hr-wpan-mac-sap.h>
 #include <ns3/hr-wpan-mac-sap-async.h>
@@ -41,7 +44,8 @@
 
 namespace ns3 {
 
-	class HrWpanMac : public Object, public HrWpanPhyUser{
+	class HrWpanMac : public Object, public HrWpanPhyUser , public HrWpan::MacManagerListener
+	{
 
 		friend class HrWpan::MacSapProviderAsync;
 
@@ -72,6 +76,7 @@ namespace ns3 {
 
 		void RegisterSapUser(HrWpan::MacSapUser * macSapUser);
 		
+		virtual void SendPkt();
 
 	protected:
 
@@ -93,6 +98,7 @@ namespace ns3 {
 
 		HrWpanDevId m_devId;
 		Mac48Address m_macAddress;
+		HrWpan::MacQueue queue;
 		
 		EventId m_ackWaitTimeout;
 

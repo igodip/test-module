@@ -23,9 +23,10 @@
 #ifndef HR_WPAN_MAC_MANAGER_SYNC_H
 #define HR_WPAN_MAC_MANAGER_SYNC_H
 
-#include <ns3/object.h>
-#include <list>
 #include <ns3/simulator.h>
+#include <ns3/net-device-container.h>
+
+#include <list>
 
 #include "hr-wpan-mac-manager-listener.h"
 
@@ -42,17 +43,14 @@ namespace ns3
 			MacManagerSync();
 
 			void AddListener(MacManagerListener *);
-			
+			void AddListeners(NetDeviceContainer ndc);
+			virtual void Activate() = 0;
+
+			static TypeId GetTypeId(void);
 
 		protected:
 
-			void Send() const;
-
-			std::list < MacManagerListener * > listeners;
-
-			Time m_timeSlot;
-			Time m_startTime;
-			Time m_stopTime;
+			std::list < MacManagerListener * > m_listeners;
 
 		};
 
