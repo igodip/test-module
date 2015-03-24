@@ -56,6 +56,7 @@ namespace ns3
 			m_mac->SetAddress(Mac48Address::Allocate());
 			m_phy->SetPhyUser(m_mac->GetPointer());
 			
+			NS_LOG_INFO(m_mac->GetAddress());
 
 			//Antenna
 			Ptr<SectorAntenna> sectorAntenna = CreateObject<SectorAntenna>();
@@ -182,6 +183,8 @@ namespace ns3
 			// inventing a fake ethertype and packet tag for McpsDataRequest
 			NS_LOG_FUNCTION(this << packet << dest << protocolNumber);
 
+			NS_LOG_INFO(dest);
+
 			HrWpan::MacSapRequestParamsAsync requestParams;
 			
 			requestParams.m_data = packet;
@@ -284,14 +287,18 @@ namespace ns3
 
 		Address	HrWpanNetDevice::GetMulticast(Ipv4Address multicastGroup) const
 		{
-			NS_ABORT_MSG("Unimplemented");
-			return Address();
+			NS_LOG_FUNCTION(this << multicastGroup);
+
+			Mac48Address ad = Mac48Address::GetMulticast(multicastGroup);
+			return ad;
 		}
 
 		Address	HrWpanNetDevice::GetMulticast(Ipv6Address multicastGroup) const
 		{
-			NS_ABORT_MSG("Unimplemented");
-			return Address();
+			NS_LOG_FUNCTION(this << multicastGroup);
+
+			Mac48Address ad = Mac48Address::GetMulticast(multicastGroup);
+			return ad;
 		}
 
 		bool HrWpanNetDevice::IsBridge(void) const

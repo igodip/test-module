@@ -48,13 +48,15 @@ NS_LOG_COMPONENT_DEFINE("HrWpanAnimSim");
 int main(int argc, char ** argv)
 {
 	LogComponentEnable("HrWpanAnimSim", LOG_LEVEL_ALL);
-	//LogComponentEnable("HrWpanNetDevice", LOG_LEVEL_ALL);
-	LogComponentEnable("HrWpanPhyRxOnState", LOG_LEVEL_ALL);
+	LogComponentEnable("HrWpanNetDevice", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpanPhyRxOnState", LOG_LEVEL_ALL);
+	LogComponentEnable("HrWpan::TopologyHelper", LOG_LEVEL_ALL);
+	LogComponentEnable("ArpL3Protocol", LOG_LEVEL_ALL);
 	LogComponentEnable("HrWpanDevIDHelper", LOG_LEVEL_ALL);
 
 	double lengthTop = 10;
 	double obsMaxSize = 1;
-	int pairDensity = 2;
+	int pairDensity = 1;
 	int obstacleDensity = 0;
 	int rounds = 1;
 	double beamwidth = 10;

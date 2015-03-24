@@ -298,9 +298,13 @@ namespace ns3
 					Ptr<Node> sender = link->GetSender();
 					Ptr<Node> receiver = link->GetReceiver();
 
-					//Ipv4Address senderIpv4 = sender->GetObject<Ipv4>()->GetAddress(1, 0).GetLocal();
+					Ipv4Address senderIpv4 = sender->GetObject<Ipv4>()->GetAddress(1, 0).GetLocal();
 					Ipv4Address receiverIpv4 = receiver->GetObject<Ipv4>()->GetAddress(1, 0).GetLocal();
+
+					Mac48Address receiverMac = Mac48Address::ConvertFrom(receiver->GetDevice(0)->GetAddress());
+					Mac48Address senderMac = Mac48Address::ConvertFrom(sender->GetDevice(0)->GetAddress());
 				
+
 
 					OnOffHelper onoff("ns3::UdpSocketFactory",
 						Address(InetSocketAddress(receiverIpv4, 15)));
@@ -317,6 +321,20 @@ namespace ns3
 					app = sink.Install(receiver);
 					app.Start(Seconds(1.0));
 					app.Stop(Seconds(10.0));
+
+					//Populate arp cache
+					Ptr<ArpCache> arpSender = sender->GetObject<Ipv4L3Protocol>()->GetInterface(1)->GetArpCache();
+					Ptr<ArpCache> arpReceiver = receiver->GetObject<Ipv4L3Protocol>()->GetInterface(1)->GetArpCache();
+
+					
+					ArpCache::Entry *entry = arpSender->Add(receiverIpv4);
+					entry->MarkWaitReply(0);
+					entry->MarkAlive(receiverMac);
+
+					ArpCache::Entry *entry2 = arpReceiver->Add(senderIpv4);
+					entry2->MarkWaitReply(0);
+					entry2->MarkAlive(senderMac);
+				
 
 
 				}
