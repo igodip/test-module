@@ -81,7 +81,7 @@ namespace ns3
 			return (char*) chars;
 		}
 
-		DevIdHelper DevIdHelper::GetInstance()
+		DevIdHelper & DevIdHelper::GetInstance()
 		{
 			static DevIdHelper devIdHelper;
 			return devIdHelper;
@@ -97,6 +97,7 @@ namespace ns3
 		Mac48Address DevIdHelper::GetMacByDevId(const HrWpanDevId & devId) const
 		{
 			NS_LOG_FUNCTION(this << devId);
+			NS_LOG_INFO(m_devIdToMac.size());
 			return m_devIdToMac.at(devId);
 
 		}

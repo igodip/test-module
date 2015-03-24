@@ -375,7 +375,9 @@ namespace ns3
 		{
 			NS_LOG_FUNCTION(this << p);
 			
-			m_receiveCallback(this,p,1,m_mac->GetAddress());
+			Mac48Address mac = HrWpan::DevIdHelper::GetInstance().GetMacByDevId(HrWpanDevId::convertFrom(address));
+
+			m_receiveCallback(this,p,0,Mac48Address::ConvertFrom(mac));
 		}
 
 

@@ -35,7 +35,7 @@ namespace ns3
 		{
 		public:
 
-			static DevIdHelper GetInstance();
+			static  DevIdHelper & GetInstance();
 			
 			void Install(NetDeviceContainer ndc);
 
