@@ -28,6 +28,7 @@
 #include <ns3/mobility-model.h>
 #include <ns3/spectrum-channel.h>
 #include <ns3/hr-wpan-sector-antenna.h>
+#include <ns3/hr-wpan-devid-helper.h>
 
 //Mac sap
 #include <ns3/hr-wpan-mac-sap-async.h>
@@ -50,13 +51,15 @@ namespace ns3
 
 			m_mac = CreateObject<HrWpanMac>();
 			m_phy = CreateObject<HrWpanPhy>();
-			Ptr<SectorAntenna> sectorAntenna = CreateObject<SectorAntenna>();
-
+			
 			m_mac->SetPhyProvider(m_phy->GetPointer()); 
+			m_mac->SetAddress(Mac48Address::Allocate());
 			m_phy->SetPhyUser(m_mac->GetPointer());
-			m_phy->SetAntenna(sectorAntenna);
+			
 
 			//Antenna
+			Ptr<SectorAntenna> sectorAntenna = CreateObject<SectorAntenna>();
+			m_phy->SetAntenna(sectorAntenna);
 
 			//Sap Providers
 
@@ -143,14 +146,14 @@ namespace ns3
 		void HrWpanNetDevice::SetAddress(Address address)
 		{
 			NS_LOG_FUNCTION(this);
-			m_mac->SetDevId(HrWpanDevId::convertFrom(address));
+			m_mac->SetAddress(Mac48Address::ConvertFrom(address));
 		}
 
 		Address	HrWpanNetDevice::GetAddress(void) const
 		{
 			NS_LOG_FUNCTION(this);
 
-			return m_mac->GetDevId();
+			return m_mac->GetAddress();
 		}
 
 		bool HrWpanNetDevice::SetMtu(const uint16_t mtu)
@@ -182,7 +185,7 @@ namespace ns3
 			HrWpan::MacSapRequestParamsAsync requestParams;
 			
 			requestParams.m_data = packet;
-			requestParams.m_trgtId = HrWpanDevId::convertFrom(dest);
+			requestParams.m_trgtId = HrWpan::DevIdHelper::GetInstance().GetDevIdByMac(Mac48Address::ConvertFrom(dest));
 
 			m_sapProviders["MacSapProviderAsync"]->Request(requestParams);
 
@@ -262,7 +265,7 @@ namespace ns3
 		{
 			NS_LOG_FUNCTION(this);
 
-			return HrWpanDevId("ff");
+			return Mac48Address::GetBroadcast();
 		}
 
 		bool HrWpanNetDevice::IsBroadcast(void) const
@@ -328,6 +331,7 @@ namespace ns3
 				return;
 			}
 
+
 			m_phy->SetMobility(m_node->GetObject<MobilityModel>());
 			m_phy->SetDevice(GetObject<NetDevice>());
 			
@@ -370,17 +374,8 @@ namespace ns3
 		void HrWpanNetDevice::Receive(Ptr<Packet> p,const Address & address)
 		{
 			NS_LOG_FUNCTION(this << p);
-
-			const HrWpanDevId & devId = HrWpanDevId::convertFrom(address);
-
-			if (devId == m_mac->GetDevId())
-			{
-				NS_LOG_INFO("Discarded packet same DevId: "<< devId);
-				//NOT FORWARD TO UPPER LAYERS
-				return;
-			}
 			
-			m_receiveCallback(this,p,1,m_mac->GetDevId());
+			m_receiveCallback(this,p,1,m_mac->GetAddress());
 		}
 
 

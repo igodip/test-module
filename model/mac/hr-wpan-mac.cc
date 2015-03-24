@@ -120,6 +120,7 @@ namespace ns3 {
 		HrWpan::MacSapIndicationParamsAsync indicationParams;
 		indicationParams.m_data = p;
 		indicationParams.m_orgId = header.getSrcAddress();
+		indicationParams.m_trgtId = header.getDstAddress();
 
 		//Switch but for now only forward
 		m_sapUsers["MacSapUserAsync"]->Indication(indicationParams);
@@ -191,6 +192,22 @@ namespace ns3 {
 	void HrWpanMac::SendPkt()
 	{
 		NS_LOG_FUNCTION(this);
+	}
+
+	void HrWpanMac::SetAddress(const Mac48Address & mac)
+	{
+		NS_LOG_FUNCTION(this);
+
+		m_macAddress = mac;
+
+	}
+
+	Mac48Address HrWpanMac::GetAddress() const
+	{
+		NS_LOG_FUNCTION(this);
+
+		return m_macAddress;
+
 	}
 
 } //namespace ns3

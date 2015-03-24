@@ -21,6 +21,7 @@
 
 
 #include "hr-wpan-mac-slotted-aloha-sync.h"
+#include <ns3/nstime.h>
 
 namespace ns3
 {
@@ -35,7 +36,9 @@ namespace ns3
 		{
 			static TypeId tid = TypeId("ns3::HrWpan::MacSlottedAlohaSync").
 				SetParent<MacManagerSync>().
-				AddConstructor<MacSlottedAlohaSync>();
+				AddConstructor<MacSlottedAlohaSync>()//.
+				//AddAttribute("StartTime","Start time of this manager",Seconds(1.0),
+				;
 				
 			return tid;
 		}

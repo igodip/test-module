@@ -46,7 +46,8 @@ namespace ns3
 			//Check if the packet is for me
 			//Otherwise don't forward
 
-			if (paramsAsync.m_trgtId == m_netDevice->GetAddress())
+
+			if (paramsAsync.m_trgtId == m_netDevice->GetAddress() || paramsAsync.m_trgtId == HrWpanDevId("FF"))
 			{
 				//Set the trace to sent
 				m_netDevice->Receive(paramsAsync.m_data, paramsAsync.m_orgId);
@@ -77,7 +78,7 @@ namespace ns3
 			
 			HrWpanPhyProvider* provider = m_mac->GetPhyProvider();
 			// Add header and trailer
-			
+
 			HrWpan::MacHeader header;
 			header.setSrcAddress(m_mac->GetDevId());
 			header.setDstAddress(paramsAsync.m_trgtId);

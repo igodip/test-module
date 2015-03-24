@@ -23,6 +23,9 @@
 #define HR_WPAN_DEVID_HELPER_H
 
 #include <ns3/net-device-container.h>
+#include <ns3/mac48-address.h>
+#include <ns3/hr-wpan-dev-id.h>
+#include <map>
 
 namespace ns3
 {
@@ -32,15 +35,24 @@ namespace ns3
 		{
 		public:
 
-			DevIdHelper();
+			static DevIdHelper GetInstance();
+			
 			void Install(NetDeviceContainer ndc);
 
+			HrWpanDevId GetDevIdByMac(const Mac48Address &  mac) const;
+			Mac48Address GetMacByDevId(const HrWpanDevId & devId) const;
+
 		protected:
+			
+			DevIdHelper();
 
 			void incrementAddress();
 			char * getAddress() const;
 
 		private:
+			
+			std::map<HrWpanDevId, Mac48Address> m_devIdToMac;
+			std::map<Mac48Address, HrWpanDevId> m_macToDevId;
 
 			unsigned char chars[3];
 

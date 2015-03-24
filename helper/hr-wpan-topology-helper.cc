@@ -181,7 +181,8 @@ namespace ns3
 
 		void TopologyHelper::PlaceObstacle(uint32_t num)
 		{
-			NS_ASSERT(num > 0);
+			NS_LOG_FUNCTION(this << num);
+
 
 			for (uint32_t i = 0; i < num; i++)
 			{
@@ -297,9 +298,12 @@ namespace ns3
 					Ptr<Node> sender = link->GetSender();
 					Ptr<Node> receiver = link->GetReceiver();
 
-					
+					//Ipv4Address senderIpv4 = sender->GetObject<Ipv4>()->GetAddress(1, 0).GetLocal();
+					Ipv4Address receiverIpv4 = receiver->GetObject<Ipv4>()->GetAddress(1, 0).GetLocal();
+				
+
 					OnOffHelper onoff("ns3::UdpSocketFactory",
-						Address(InetSocketAddress(Ipv4Address("255.255.255.255"), 15)));
+						Address(InetSocketAddress(receiverIpv4, 15)));
 					onoff.SetConstantRate(DataRate("500kb/s"));
 
 					ApplicationContainer app = onoff.Install(sender);

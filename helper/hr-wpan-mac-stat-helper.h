@@ -22,6 +22,8 @@
 #ifndef HR_WPAN_MAC_STAT_HELPER_H
 #define HR_WPAN_MAC_STAT_HELPER_H
 
+#include <ns3/packet.h>
+
 namespace ns3
 {
 	namespace HrWpan
@@ -32,7 +34,32 @@ namespace ns3
 			MacStatHelper();
 
 			void reset();
+
+			void attach();
+
+			uint32_t getTxBegin() const;
+			uint32_t getRxBegin() const;
+			uint32_t getTxDrop() const;
+			uint32_t getRxDrop() const;
+			uint32_t getTxEnd() const;
+			uint32_t getRxEnd() const;
+
 		private:
+
+			void incRxBegin(std::string str, Ptr<const Packet> p);
+			void incRxDrop(std::string str, Ptr<const Packet> p);
+			void incRxEnd(std::string str, Ptr<const Packet> p);
+
+			void incTxBegin(std::string str, Ptr<const Packet> p);
+			void incTxDrop(std::string str, Ptr<const Packet> p);
+			void incTxEnd(std::string str, Ptr<const Packet> p);
+
+			uint32_t m_txBegin;
+			uint32_t m_rxBegin;
+			uint32_t m_txDrop;
+			uint32_t m_rxDrop;
+			uint32_t m_rxEnd;
+			uint32_t m_txEnd;
 
 		};
 

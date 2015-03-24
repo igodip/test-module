@@ -28,12 +28,17 @@ namespace ns3
 
 		MacStatHelper::MacStatHelper()
 		{
-
+			reset();
 		}
 
 		void MacStatHelper::reset()
 		{
-
+			m_txBegin = 0;
+			m_rxBegin = 0;
+			m_txDrop = 0;
+			m_rxDrop = 0;
+			m_rxEnd = 0;
+			m_txEnd = 0;
 		}
 
 	} //namespace HrWpan

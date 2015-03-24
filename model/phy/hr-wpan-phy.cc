@@ -229,7 +229,9 @@ namespace ns3 {
 	{
 		NS_LOG_FUNCTION(this << packet);
 
-		Time txTime  = Seconds(packet->GetSize() * 8.0 / 5.62e09);
+		//TODO: It depends on the header of the packet
+
+		Time txTime  = Seconds(packet->GetSize() * 8.0 / 1.0e09);
 
 		return txTime;
 

@@ -78,6 +78,9 @@ namespace ns3 {
 		
 		virtual void SendPkt();
 
+		void SetAddress(const Mac48Address & mac);
+		Mac48Address GetAddress() const;
+
 	protected:
 
 		virtual void DoInitialize(void);

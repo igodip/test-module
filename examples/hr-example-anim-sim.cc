@@ -19,7 +19,6 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-
 #include <ns3/log.h>
 #include <ns3/abort.h>
 #include <ns3/node-container.h>
@@ -49,26 +48,32 @@ NS_LOG_COMPONENT_DEFINE("HrWpanAnimSim");
 int main(int argc, char ** argv)
 {
 	LogComponentEnable("HrWpanAnimSim", LOG_LEVEL_ALL);
-	
+	//LogComponentEnable("HrWpanNetDevice", LOG_LEVEL_ALL);
+	LogComponentEnable("HrWpanPhyRxOnState", LOG_LEVEL_ALL);
+	LogComponentEnable("HrWpanDevIDHelper", LOG_LEVEL_ALL);
 
-	double lengthTop = 20;
+	double lengthTop = 10;
 	double obsMaxSize = 1;
-	int pairNumber = 15;
-	int obstacleNumber = 15;
-	int rounds = 15;
-	double beamwidth = 3;
+	int pairDensity = 2;
+	int obstacleDensity = 0;
+	int rounds = 1;
+	double beamwidth = 10;
 	std::string reportFilename = "stats.csv";
 
 	CommandLine cmd;
 	cmd.AddValue("lengthTop", "Topology length", lengthTop);
 	cmd.AddValue("obsMaxSize", "Obstacle max size", obsMaxSize);
-	cmd.AddValue("pairNumber", "Number of pair sender/receiver", pairNumber);
-	cmd.AddValue("obstacleNumber", "Obstacle number", obstacleNumber);
+	cmd.AddValue("pairDensity", "Number of pair sender/receiver", pairDensity);
+	cmd.AddValue("obstacleDensity", "Obstacle number", obstacleDensity);
 	cmd.AddValue("reportFilename","Filename of the report",reportFilename);
 	cmd.AddValue("beamwidth", "Beamwidth", beamwidth);
+	cmd.AddValue("rounds", "Rounds per simulation", rounds);
 	cmd.Parse(argc, argv);
 
 	Config::SetDefault("ns3::HrWpan::SectorAntenna::Beamwidth", DoubleValue(DegreesToRadians(beamwidth)));
+
+	int pairNumber = pairDensity;
+	int obstacleNumber = obstacleDensity;
 
 	int nodeNumbers = pairNumber * 2;
 
@@ -100,8 +105,7 @@ int main(int argc, char ** argv)
 		topologyHelper.PlaceObstacle(obstacleNumber);
 
 		NS_LOG_INFO("Assigning DevId to MAC");
-		HrWpan::DevIdHelper devIdHelper;
-		devIdHelper.Install(netDevices);
+		HrWpan::DevIdHelper::GetInstance().Install(netDevices);
 
 
 		NS_LOG_INFO("Assign IP Address");
@@ -118,6 +122,9 @@ int main(int argc, char ** argv)
 		NS_LOG_INFO("Setting trace");
 		HrWpan::PhyStatHelper phyStatHelper;
 		phyStatHelper.attach();
+
+		AsciiTraceHelper ascii;
+		wpanHelper.EnablePcapAll("hrwpan-ping", false);
 
 		NS_LOG_INFO("Running simulation.");
 		Simulator::Run();

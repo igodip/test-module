@@ -101,6 +101,7 @@ HrWpanPacketTestCase::DoRun(void)
 	NS_TEST_ASSERT_MSG_EQ(srcReceivedAddress, srcAddress, "The srcAddress is different!");
 
 	HrWpanDevId dstReceivedAddress = receivedMacHeader.getDstAddress();
+	std::cout << dstReceivedAddress << std::endl;
 	NS_TEST_ASSERT_MSG_EQ(dstReceivedAddress, dstAddress, "The dstAddress is different!");
 
 	//Checking Trailer

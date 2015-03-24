@@ -74,8 +74,8 @@ int main(int argc, char ** argv)
 	topologyHelper.PlaceObstacle(2);
 
 	NS_LOG_INFO("Assigning DevId to MAC");
-	HrWpan::DevIdHelper devIdHelper;
-	devIdHelper.Install(netDevices);
+//	HrWpan::DevIdHelper devIdHelper;
+//	devIdHelper.Install(netDevices);
 
 
 	NS_LOG_INFO("Assign IP Address");

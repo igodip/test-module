@@ -21,6 +21,8 @@
 #include "hr-wpan-devid-helper.h"
 
 #include <ns3/hr-wpan-dev-id.h>
+#include <ns3/hr-wpan-net-device.h>
+#include <ns3/ipv4-address-helper.h>
 #include <ns3/log.h>
 
 namespace ns3
@@ -37,6 +39,12 @@ namespace ns3
 			chars[0] = 0x30;
 			chars[1] = 0x30;
 			chars[2] = '\0';
+
+			//Populate with broadcast
+			HrWpanDevId broadcastId = HrWpanDevId("FF");
+			m_devIdToMac[broadcastId] = Mac48Address::GetBroadcast();
+			m_macToDevId[Mac48Address::GetBroadcast()] = broadcastId;
+
 		}
 
 		void DevIdHelper::Install(NetDeviceContainer ndc)
@@ -46,14 +54,18 @@ namespace ns3
 			for (NetDeviceContainer::Iterator i = ndc.Begin(); i != ndc.End(); ++i)
 			{
 				incrementAddress();
-				(*i)->SetAddress(HrWpanDevId(getAddress()));
+				Ptr<HrWpan::HrWpanNetDevice> netDevice = DynamicCast<HrWpan::HrWpanNetDevice>(*i);
+				
+				netDevice->GetMac()->SetDevId(getAddress());
+				m_devIdToMac[getAddress()] = netDevice->GetMac()->GetAddress();
+				m_macToDevId[netDevice->GetMac()->GetAddress()] = getAddress();
 				
 			}
 		}
 
 		void DevIdHelper::incrementAddress()
 		{
-			NS_LOG_INFO(this);
+			NS_LOG_FUNCTION(this);
 			chars[1]++;
 
 			if (chars[1] == 0x3A)
@@ -65,8 +77,28 @@ namespace ns3
 
 		char * DevIdHelper::getAddress() const
 		{
-			NS_LOG_INFO(this << (const char * )chars);
+			NS_LOG_FUNCTION(this << (const char * )chars);
 			return (char*) chars;
+		}
+
+		DevIdHelper DevIdHelper::GetInstance()
+		{
+			static DevIdHelper devIdHelper;
+			return devIdHelper;
+		}
+
+		HrWpanDevId DevIdHelper::GetDevIdByMac(const Mac48Address & mac) const
+		{
+			NS_LOG_FUNCTION(this << mac);
+			return m_macToDevId.at(mac);
+
+		}
+
+		Mac48Address DevIdHelper::GetMacByDevId(const HrWpanDevId & devId) const
+		{
+			NS_LOG_FUNCTION(this << devId);
+			return m_devIdToMac.at(devId);
+
 		}
 
 	} //namespace HrWpan
