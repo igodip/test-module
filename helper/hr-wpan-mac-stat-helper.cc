@@ -20,6 +20,8 @@
 */
 
 #include "hr-wpan-mac-stat-helper.h"
+#include <ns3/config.h>
+#include <ns3/callback.h>
 
 namespace ns3
 {
@@ -31,14 +33,81 @@ namespace ns3
 			reset();
 		}
 
+		void MacStatHelper::attach()
+		{
+			Config::Connect("/NodeList/*/DeviceList/*/$ns3::HrWpan::HrWpanNetDevice/Mac/MacRx",
+				MakeCallback(&MacStatHelper::incRx, this));
+
+			Config::Connect("/NodeList/*/DeviceList/*/$ns3::HrWpan::HrWpanNetDevice/Mac/MacTx",
+				MakeCallback(&MacStatHelper::incTx, this));
+
+			Config::Connect("/NodeList/*/DeviceList/*/$ns3::HrWpan::HrWpanNetDevice/Mac/Queue/Drop",
+				MakeCallback(&MacStatHelper::incQueueDrop, this));
+
+			Config::Connect("/NodeList/*/DeviceList/*/$ns3::HrWpan::HrWpanNetDevice/Mac/Queue/$ns3::Queue/Enqueue",
+				MakeCallback(&MacStatHelper::incQueueIn, this));
+
+			Config::Connect("/NodeList/*/DeviceList/*/$ns3::HrWpan::HrWpanNetDevice/Mac/Queue/$ns3::Queue/Dequeue",
+				MakeCallback(&MacStatHelper::incQueueOut, this));
+		}
+
 		void MacStatHelper::reset()
 		{
-			m_txBegin = 0;
-			m_rxBegin = 0;
-			m_txDrop = 0;
-			m_rxDrop = 0;
-			m_rxEnd = 0;
-			m_txEnd = 0;
+			m_tx = 0;
+			m_rx = 0;
+			m_queueDrop = 0;
+			m_queueIn = 0;
+			m_queueOut = 0;
+		}
+
+		void MacStatHelper::incRx(std::string str, Ptr<const Packet> p)
+		{
+			++m_rx;
+		}
+
+		void MacStatHelper::incTx(std::string str, Ptr<const Packet> p)
+		{
+			++m_tx;
+		}
+
+		uint32_t MacStatHelper::getRx() const
+		{
+			return m_rx;
+		}
+
+		uint32_t MacStatHelper::getTx() const
+		{
+			return m_tx;
+		}
+
+		uint32_t MacStatHelper::getQueueDrop() const
+		{
+			return m_queueDrop;
+		}
+
+		uint32_t MacStatHelper::getQueueIn() const
+		{
+			return m_queueIn;
+		}
+
+		uint32_t MacStatHelper::getQueueOut() const
+		{
+			return m_queueOut;
+		}
+
+		void MacStatHelper::incQueueDrop(std::string str, Ptr<const Packet> p)
+		{
+			++m_queueDrop;
+		}
+
+		void MacStatHelper::incQueueIn(std::string str, Ptr<const Packet> p)
+		{
+			++m_queueIn;
+		}
+
+		void MacStatHelper::incQueueOut(std::string str, Ptr<const Packet> p)
+		{
+			++m_queueOut;
 		}
 
 	} //namespace HrWpan

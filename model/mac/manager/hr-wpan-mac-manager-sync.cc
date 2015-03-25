@@ -59,9 +59,14 @@ namespace ns3
 		{
 			static TypeId tid = TypeId("ns3::HrWpan::MacManagerSync").
 				SetParent<Object>().
-				AddConstructor<Object>();
+				AddConstructor<MacManagerSync>();
 
 			return tid;
+		}
+
+		void MacManagerSync::Activate()
+		{
+
 		}
 
 	} // namespace HrWpan

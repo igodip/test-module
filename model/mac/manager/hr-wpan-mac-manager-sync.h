@@ -44,7 +44,7 @@ namespace ns3
 
 			void AddListener(MacManagerListener *);
 			void AddListeners(NetDeviceContainer ndc);
-			virtual void Activate() = 0;
+			virtual void Activate();
 
 			static TypeId GetTypeId(void);
 

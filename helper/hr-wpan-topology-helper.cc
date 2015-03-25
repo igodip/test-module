@@ -287,6 +287,11 @@ namespace ns3
 			const std::list<Ptr<Line> > lines = m_topologyAggregator->getContainer();
 
 			std::list<Ptr<Line> >::const_iterator it = lines.begin();
+			
+			Ptr<UniformRandomVariable> uRandVar = CreateObject<UniformRandomVariable>();
+
+			uRandVar->SetAttribute("Min", DoubleValue(0.0));
+			uRandVar->SetAttribute("Max", DoubleValue(1.0));
 
 			while (it != lines.end())
 			{
@@ -304,14 +309,14 @@ namespace ns3
 					Mac48Address receiverMac = Mac48Address::ConvertFrom(receiver->GetDevice(0)->GetAddress());
 					Mac48Address senderMac = Mac48Address::ConvertFrom(sender->GetDevice(0)->GetAddress());
 				
-
-
 					OnOffHelper onoff("ns3::UdpSocketFactory",
 						Address(InetSocketAddress(receiverIpv4, 15)));
 					onoff.SetConstantRate(DataRate("500kb/s"));
-
+					
+					//double spost = uRandVar->GetValue()
+					
 					ApplicationContainer app = onoff.Install(sender);
-					// Start the application
+					
 					app.Start(Seconds(1.0));
 					app.Stop(Seconds(10.0));
 
@@ -325,8 +330,7 @@ namespace ns3
 					//Populate arp cache
 					Ptr<ArpCache> arpSender = sender->GetObject<Ipv4L3Protocol>()->GetInterface(1)->GetArpCache();
 					Ptr<ArpCache> arpReceiver = receiver->GetObject<Ipv4L3Protocol>()->GetInterface(1)->GetArpCache();
-
-					
+	
 					ArpCache::Entry *entry = arpSender->Add(receiverIpv4);
 					entry->MarkWaitReply(0);
 					entry->MarkAlive(receiverMac);
@@ -334,8 +338,6 @@ namespace ns3
 					ArpCache::Entry *entry2 = arpReceiver->Add(senderIpv4);
 					entry2->MarkWaitReply(0);
 					entry2->MarkAlive(senderMac);
-				
-
 
 				}
 

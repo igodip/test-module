@@ -48,6 +48,7 @@ namespace ns3 {
 	{
 
 		friend class HrWpan::MacSapProviderAsync;
+		friend class HrWpan::MacSapUserAsync;
 
 	public:
 
@@ -101,7 +102,7 @@ namespace ns3 {
 
 		HrWpanDevId m_devId;
 		Mac48Address m_macAddress;
-		HrWpan::MacQueue queue;
+		Ptr<HrWpan::MacQueue> m_queue;
 		
 		EventId m_ackWaitTimeout;
 

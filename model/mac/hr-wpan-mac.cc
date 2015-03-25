@@ -21,6 +21,7 @@
 
 #include "hr-wpan-mac.h"
 #include <ns3/log.h>
+#include <ns3/pointer.h>
 
 #include <ns3/hr-wpan-mac-sap-async.h>
 
@@ -77,7 +78,11 @@ namespace ns3 {
 			"Trace source simulating a non-promiscuous "
 			"packet sniffer attached to the device",
 			MakeTraceSourceAccessor(&HrWpanMac::m_snifferTrace),
-			"ns3::Packet::TracedCallback");
+			"ns3::Packet::TracedCallback")
+			.AddAttribute("Queue", "The Mac queue",
+			PointerValue(),
+			MakePointerAccessor(&HrWpanMac::m_queue),
+			MakePointerChecker<HrWpan::MacQueue>());
 
 		return tid;
 	}
@@ -137,7 +142,10 @@ namespace ns3 {
 	{
 		NS_LOG_FUNCTION(this);
 
+
 		Object::DoInitialize();
+		m_queue = CreateObject<HrWpan::MacQueue>();
+		
 	}
 
 	HrWpanMac * HrWpanMac::GetPointer(void) const
@@ -165,10 +173,9 @@ namespace ns3 {
 	void HrWpanMac::McpsDataRequest(Ptr<Packet> packet)
 	{
 		NS_LOG_FUNCTION(this << packet);
-
-		//Ptr<Packet> mpdu = CreateObject<Packet>();
 		
-		m_phyProvider->SendMacPdu(packet);
+		//m_phyProvider->SendMacPdu(packet);
+		m_queue->Enqueue(packet);
 	}
 
 	void HrWpanMac::SetDevId(HrWpanDevId devId)
@@ -192,6 +199,16 @@ namespace ns3 {
 	void HrWpanMac::SendPkt()
 	{
 		NS_LOG_FUNCTION(this);
+
+		Ptr<Packet> packet = m_queue->Dequeue();
+
+		if (packet == 0)
+		{
+			NS_LOG_INFO("No packet inside queue!");
+			return;
+		}
+
+		m_phyProvider->SendMacPdu(packet);
 	}
 
 	void HrWpanMac::SetAddress(const Mac48Address & mac)

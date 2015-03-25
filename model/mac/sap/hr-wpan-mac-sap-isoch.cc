@@ -53,8 +53,8 @@ namespace ns3
 		}
 
 
-		MacSapUserIsoch::MacSapUserIsoch(HrWpanNetDevice * netDevice) :
-			MacSapUser(netDevice)
+		MacSapUserIsoch::MacSapUserIsoch(HrWpanNetDevice * netDevice,HrWpanMac * mac) :
+			MacSapUser(netDevice,mac)
 		{
 
 		}

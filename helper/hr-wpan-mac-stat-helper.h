@@ -37,29 +37,25 @@ namespace ns3
 
 			void attach();
 
-			uint32_t getTxBegin() const;
-			uint32_t getRxBegin() const;
-			uint32_t getTxDrop() const;
-			uint32_t getRxDrop() const;
-			uint32_t getTxEnd() const;
-			uint32_t getRxEnd() const;
+			uint32_t getTx() const;
+			uint32_t getRx() const;
+			uint32_t getQueueDrop() const;
+			uint32_t getQueueIn() const;
+			uint32_t getQueueOut() const;
 
 		private:
 
-			void incRxBegin(std::string str, Ptr<const Packet> p);
-			void incRxDrop(std::string str, Ptr<const Packet> p);
-			void incRxEnd(std::string str, Ptr<const Packet> p);
+			void incRx(std::string str, Ptr<const Packet> p);
+			void incTx(std::string str, Ptr<const Packet> p);
+			void incQueueDrop(std::string str, Ptr<const Packet> p);
+			void incQueueIn(std::string str, Ptr<const Packet> p);
+			void incQueueOut(std::string str, Ptr<const Packet> p);
 
-			void incTxBegin(std::string str, Ptr<const Packet> p);
-			void incTxDrop(std::string str, Ptr<const Packet> p);
-			void incTxEnd(std::string str, Ptr<const Packet> p);
-
-			uint32_t m_txBegin;
-			uint32_t m_rxBegin;
-			uint32_t m_txDrop;
-			uint32_t m_rxDrop;
-			uint32_t m_rxEnd;
-			uint32_t m_txEnd;
+			uint32_t m_tx;
+			uint32_t m_rx;
+			uint32_t m_queueDrop;
+			uint32_t m_queueIn;
+			uint32_t m_queueOut;
 
 		};
 

@@ -36,6 +36,8 @@
 #include <ns3/hr-wpan-net-device.h>
 #include <ns3/hr-wpan-phy-stat-helper.h>
 #include <ns3/hr-wpan-mac-stat-helper.h>
+#include <ns3/hr-wpan-mac-tdma-sync.h>
+#include <ns3/hr-wpan-mac-slotted-aloha-sync.h>
 
 #include <ns3/packet-sink-helper.h>
 #include <ns3/internet-module.h>
@@ -45,11 +47,11 @@
 
 using namespace ns3;
 
-NS_LOG_COMPONENT_DEFINE("HrWpanAnimSim");
+NS_LOG_COMPONENT_DEFINE("HrWpanTdmaSim");
 
 int main(int argc, char ** argv)
 {
-	LogComponentEnable("HrWpanAnimSim", LOG_LEVEL_ALL);
+	LogComponentEnable("HrWpanTdmaSim", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpanMacSapAsync", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpanPhyRxOnState", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpan::TopologyHelper", LOG_LEVEL_ALL);
@@ -69,7 +71,7 @@ int main(int argc, char ** argv)
 	cmd.AddValue("obsMaxSize", "Obstacle max size", obsMaxSize);
 	cmd.AddValue("pairDensity", "Number of pair sender/receiver", pairDensity);
 	cmd.AddValue("obstacleDensity", "Obstacle number", obstacleDensity);
-	cmd.AddValue("reportFilename","Filename of the report",reportFilename);
+	cmd.AddValue("reportFilename", "Filename of the report", reportFilename);
 	cmd.AddValue("beamwidth", "Beamwidth", beamwidth);
 	cmd.AddValue("rounds", "Rounds per simulation", rounds);
 	cmd.Parse(argc, argv);
@@ -82,7 +84,7 @@ int main(int argc, char ** argv)
 
 	Ptr<ErlangRandomVariable> pairPoisson = CreateObject<ErlangRandomVariable>();
 	pairPoisson->SetAttribute("Lambda", DoubleValue(pairLam));
-	
+
 	Ptr<ErlangRandomVariable> obstaclePoisson = CreateObject<ErlangRandomVariable>();
 	obstaclePoisson->SetAttribute("Lambda", DoubleValue(obstacleLam));
 
@@ -98,13 +100,13 @@ int main(int argc, char ** argv)
 		NS_LOG_INFO("-----------------------------------");
 		NS_LOG_INFO("Rounds " << i << " of " << rounds);
 
-		int pairNumber = pairPoisson->GetInteger() ;
+		int pairNumber = pairPoisson->GetInteger();
 		int obstacleNumber = obstaclePoisson->GetInteger();
 
 		NS_LOG_INFO("pairNumber " << pairNumber);
 		NS_LOG_INFO("obstacleNumber " << obstacleNumber);
 
-		int nodeNumbers = pairNumber != 0 ? pairNumber*2 : 2;
+		int nodeNumbers = pairNumber != 0 ? pairNumber * 2 : 2;
 
 		NodeContainer nodeContainer;
 		nodeContainer.Create(nodeNumbers);
@@ -143,8 +145,12 @@ int main(int argc, char ** argv)
 		HrWpan::MacStatHelper macStatHelper;
 		macStatHelper.attach();
 
-		//AsciiTraceHelper ascii;
-		//wpanHelper.EnablePcapAll("hrwpan-ping", false);
+		NS_LOG_INFO("Setting up the manager");
+		//Ptr<HrWpan::MacTdmaSync> tdmaSync = CreateObject<HrWpan::MacTdmaSync>();
+		Ptr<HrWpan::MacSlottedAlohaSync> tdmaSync = CreateObject<HrWpan::MacSlottedAlohaSync>();
+		tdmaSync->AddListeners(netDevices);
+		tdmaSync->Activate();
+		
 
 		NS_LOG_INFO("Running simulation.");
 		Simulator::Run();
@@ -163,6 +169,9 @@ int main(int argc, char ** argv)
 
 		NS_LOG_INFO("MacRx = " << macStatHelper.getRx());
 		NS_LOG_INFO("MacTx = " << macStatHelper.getTx());
+		NS_LOG_INFO("MacQueueDro = " << macStatHelper.getQueueDrop());
+		NS_LOG_INFO("MacQueueEnq = " << macStatHelper.getQueueIn());
+		NS_LOG_INFO("MacQueueDeq = " << macStatHelper.getQueueOut());
 
 		outfile << phyStatHelper.getRxBegin() << ",";
 		outfile << phyStatHelper.getRxDrop() << ",";
@@ -173,11 +182,14 @@ int main(int argc, char ** argv)
 		outfile << phyStatHelper.getTxEnd() << ",";
 
 		outfile << macStatHelper.getRx() << ",";
-		outfile << macStatHelper.getTx() << std::endl;
-
+		outfile << macStatHelper.getTx() << ",";
+		outfile << macStatHelper.getQueueDrop() << ",";
+		outfile << macStatHelper.getQueueIn() << ",";
+		outfile << macStatHelper.getQueueOut() << std::endl;
+		
 		outfile.flush();
 	}
-	
+
 	outfile.close();
 
 	return 0;

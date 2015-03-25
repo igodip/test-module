@@ -33,14 +33,20 @@ namespace ns3
 		{
 		public:
 			
+			MacSlottedAlohaSync();
 			virtual void Activate();
 
 			static TypeId GetTypeId(void);
 
 		private:
+
+			void nextSlot();
+
+			uint64_t m_timeSlotNumber;
+
 			Time m_timeSlot;
 			Time m_startTime;
-			Time m_stopTime;
+			Time m_endTime;
 		};
 
 	} // namespace HrWpan

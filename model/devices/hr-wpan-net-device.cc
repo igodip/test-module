@@ -69,7 +69,7 @@ namespace ns3
 
 			//Sap users
 			
-			HrWpan::MacSapUserAsync * userAsync = new HrWpan::MacSapUserAsync(this);
+			HrWpan::MacSapUserAsync * userAsync = new HrWpan::MacSapUserAsync(this,m_mac->GetPointer());
 			m_mac->RegisterSapUser(userAsync);
 
 			CompleteConfig();
@@ -80,7 +80,8 @@ namespace ns3
 		{
 			NS_LOG_FUNCTION(this);
 
-			//TODO: Delete all the pointers inside
+			//delete userAsync;
+			//delete providerAsync;
 
 		}
 
@@ -170,7 +171,7 @@ namespace ns3
 			//                        = 127      - 2             - 1     - (2+2+2+2)  - 0        - 2
 			//                        = 114
 			// assuming no security and addressing with only 16 bit addresses without pan id compression.
-			return 114;
+			return 1500;
 		}
 
 		bool HrWpanNetDevice::Send(Ptr<Packet> packet, const Address& dest, uint16_t protocolNumber)

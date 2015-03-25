@@ -72,7 +72,7 @@ namespace ns3
 		{
 		public:
 
-			MacSapUserIsoch(HrWpanNetDevice * netDevice);
+			MacSapUserIsoch(HrWpanNetDevice * netDevice,HrWpanMac * mac);
 
 			virtual void Confirm(const MacSapConfirmParamsIsoch & confirmParams);
 			virtual void Indication(const MacSapIndicationParamsIsoch & indicationParams);

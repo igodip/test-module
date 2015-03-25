@@ -46,10 +46,14 @@ namespace ns3
 			//Check if the packet is for me
 			//Otherwise don't forward
 
+			NS_LOG_INFO("Address received " << paramsAsync.m_trgtId);
 
-			if (paramsAsync.m_trgtId == m_netDevice->GetAddress() || paramsAsync.m_trgtId == HrWpanDevId("FF"))
+			if (paramsAsync.m_trgtId == m_netDevice->GetMac()->GetDevId() || paramsAsync.m_trgtId == HrWpanDevId("FF"))
 			{
 				//Set the trace to sent
+				NS_LOG_INFO("Packet being forwarded");
+
+				m_mac->m_macRxTrace(paramsAsync.m_data);
 				m_netDevice->Receive(paramsAsync.m_data, paramsAsync.m_orgId);
 			}
 
@@ -57,8 +61,8 @@ namespace ns3
 
 		}
 
-		MacSapUserAsync::MacSapUserAsync(HrWpanNetDevice * netDevice) :
-			MacSapUser(netDevice)
+		MacSapUserAsync::MacSapUserAsync(HrWpanNetDevice * netDevice,HrWpanMac * mac) :
+			MacSapUser(netDevice,mac)
 		{
 			NS_LOG_FUNCTION(this);
 		}
@@ -76,7 +80,7 @@ namespace ns3
 
 			const MacSapRequestParamsAsync & paramsAsync = dynamic_cast<const MacSapRequestParamsAsync &>(requestParams);
 			
-			HrWpanPhyProvider* provider = m_mac->GetPhyProvider();
+			//HrWpanPhyProvider* provider = m_mac->GetPhyProvider();
 			// Add header and trailer
 
 			HrWpan::MacHeader header;
@@ -86,9 +90,10 @@ namespace ns3
 			Ptr<Packet> packet = paramsAsync.m_data;
 			packet->AddHeader(header);
 
-			m_mac->m_snifferTrace(packet);
+			m_mac->m_macTxTrace(packet);
 
-			provider->SendMacPdu(paramsAsync.m_data);
+			//provider->SendMacPdu(paramsAsync.m_data);
+			m_mac->m_queue->Enqueue(packet);
 
 		}
 

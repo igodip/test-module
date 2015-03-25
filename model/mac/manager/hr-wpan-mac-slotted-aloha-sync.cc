@@ -27,20 +27,51 @@ namespace ns3
 {
 	namespace HrWpan
 	{
-		void MacSlottedAlohaSync::Activate()
-		{
-
-		}
 
 		TypeId MacSlottedAlohaSync::GetTypeId(void)
 		{
 			static TypeId tid = TypeId("ns3::HrWpan::MacSlottedAlohaSync").
 				SetParent<MacManagerSync>().
 				AddConstructor<MacSlottedAlohaSync>()//.
-				//AddAttribute("StartTime","Start time of this manager",Seconds(1.0),
+				
 				;
 				
 			return tid;
+		}
+
+		MacSlottedAlohaSync::MacSlottedAlohaSync()
+		{
+			m_startTime = Seconds(1.0);
+			m_endTime = Seconds(10.0);
+			m_timeSlot = MicroSeconds(10.0);
+		}
+
+		void MacSlottedAlohaSync::Activate()
+		{
+			m_timeSlotNumber = 0;
+			Simulator::Schedule(m_startTime, &MacSlottedAlohaSync::nextSlot, this);
+		}
+
+		void MacSlottedAlohaSync::nextSlot()
+		{
+			std::list< MacManagerListener * >::iterator i = m_listeners.begin();
+
+			while (i != m_listeners.end())
+			{
+
+				(*i)->SendPkt();
+				++i;
+			}
+
+			m_timeSlotNumber++;
+
+			Time nextTrigger = m_startTime + (m_timeSlot*m_timeSlotNumber);
+
+			if (nextTrigger < m_endTime)
+			{
+				Simulator::Schedule(nextTrigger, &MacSlottedAlohaSync::nextSlot, this);
+			}
+
 		}
 
 	} // namespace HrWpan

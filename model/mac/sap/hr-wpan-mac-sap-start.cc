@@ -28,8 +28,8 @@ namespace ns3
 	namespace HrWpan
 	{
 
-		MacSapUserStart::MacSapUserStart(HrWpanNetDevice * netDevice) :
-			MacSapUser(netDevice)
+		MacSapUserStart::MacSapUserStart(HrWpanNetDevice * netDevice, HrWpanMac * mac) :
+			MacSapUser(netDevice,mac)
 		{
 
 		}

@@ -32,15 +32,23 @@ namespace ns3
 		class MacTdmaSync : public MacManagerSync
 		{
 		public:
-			
+			MacTdmaSync();
 			virtual void Activate();
 
 			static TypeId GetTypeId(void);
 
-		private:
+		protected:
+
+			void nextDevice();
+
+			std::list< MacManagerListener * >::iterator m_current;
+			EventId timeSlotTrigger;
+
+			uint64_t m_timeSlotNumber;
+
 			Time m_timeSlot;
 			Time m_startTime;
-			Time m_stopTime;
+			Time m_endTime;
 
 		};
 

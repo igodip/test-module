@@ -61,15 +61,10 @@ namespace ns3
 					DoubleValue(DegreesToRadians(10)),
 					MakeDoubleAccessor(&SectorAntenna::m_beamwidth),
 					MakeDoubleChecker<double>()).
-				AddAttribute("Gain",
-					"The gain inside the main cone in dbm",
-					DoubleValue(30),
-					MakeDoubleAccessor(&SectorAntenna::m_gain),
-					MakeDoubleChecker<double>()).
-				AddAttribute("Loss",
-					"The loss outside the main cone in dbm",
-					DoubleValue(-30),
-					MakeDoubleAccessor(&SectorAntenna::m_loss),
+				AddAttribute("Epsilon",
+					"Side lobe gain (db) ",
+					DoubleValue(-10),
+					MakeDoubleAccessor(&SectorAntenna::m_epsilon),
 					MakeDoubleChecker<double>());
 
 			return tid;
@@ -82,7 +77,7 @@ namespace ns3
 
 			double phi = a.phi - m_orientation;
 
-			NS_LOG_INFO("Phi = " << phi);
+			NS_LOG_INFO("Phi = " << phi << " " << m_orientation);
 
 			// make sure phi is in (-pi, pi]
 			while (phi <= -M_PI)
@@ -96,13 +91,24 @@ namespace ns3
 
 			NS_LOG_LOGIC("phi = " << phi);
 
-			if (phi <= m_beamwidth / double(2) && phi >= -m_beamwidth / double(2))
+			//double epsilon_w = pow(10.0, m_epsilon / 10.0) / 1000.0;
+			/*
+			if (phi <= m_beamwidth / 2.0 && phi >= -m_beamwidth / 2.0)
 			{
-				return m_gain;
+				double r =  (2 * M_PI - (2 * M_PI - phi))*epsilon_w / m_beamwidth;
+				return 10 * log10(r / 1000.0);
 			}
 
-			return m_loss;
-			
+			return m_epsilon;
+			*/
+
+			if (phi <= m_beamwidth / 2.0 && phi >= -m_beamwidth / 2.0)
+			{
+				return 50;
+			}
+
+			return -10;
+
 		}
 
 	} // HrWpan namespace

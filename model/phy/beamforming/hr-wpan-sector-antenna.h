@@ -43,10 +43,9 @@ namespace ns3
 
 		protected:
 
-			double m_orientation; // degrees
-			double m_beamwidth; // degrees
-			double m_loss;
-			double m_gain;
+			double m_orientation; // radiants
+			double m_beamwidth; // radiants
+			double m_epsilon;
 
 		};
 

@@ -54,7 +54,7 @@ namespace ns3
 		{
 		public:
 
-			MacSapUser(HrWpanNetDevice * netDevice);
+			MacSapUser(HrWpanNetDevice * netDevice,HrWpanMac * mac);
 
 			virtual void Confirm (const MacSapConfirmParams & confirmParams) {}
 			virtual void Indication (const MacSapIndicationParams & indicationParams) {}
@@ -63,6 +63,7 @@ namespace ns3
 
 		protected:
 			HrWpanNetDevice * m_netDevice;
+			HrWpanMac * m_mac;
 
 		};
 

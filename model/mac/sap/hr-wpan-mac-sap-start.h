@@ -45,7 +45,7 @@ namespace ns3
 		{
 		public:
 
-			MacSapUserStart(HrWpanNetDevice * netDevice);
+			MacSapUserStart(HrWpanNetDevice * netDevice,HrWpanMac * mac);
 
 			virtual void Confirm(const MacSapConfirmParams & confirmParams);
 			virtual void Indication(const MacSapIndicationParams & indicationParams);

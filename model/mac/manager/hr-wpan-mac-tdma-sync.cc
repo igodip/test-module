@@ -21,11 +21,58 @@
 
 
 #include "hr-wpan-mac-tdma-sync.h"
+#include <ns3/nstime.h>
 
 namespace ns3
 {
 	namespace HrWpan
 	{
+		TypeId MacTdmaSync::GetTypeId()
+		{
+
+			static TypeId tid = TypeId("ns3::HrWpan::MacTdmaSync").
+				SetParent<MacManagerSync>().
+				AddConstructor<MacTdmaSync>();
+
+			return tid;
+		}
+
+		MacTdmaSync::MacTdmaSync()
+		{
+			m_startTime = Seconds(1.0);
+			m_endTime = Seconds(10.0);
+			m_timeSlot = MicroSeconds(10.0);
+		}
+
+		void MacTdmaSync::Activate()
+		{
+			m_current = m_listeners.begin();
+			m_timeSlotNumber = 0;
+			Simulator::Schedule(m_startTime, &MacTdmaSync::nextDevice,this);
+		}
+
+		void MacTdmaSync::nextDevice()
+		{
+			(*m_current)->SendPkt();
+			
+			m_current++;
+			m_timeSlotNumber++;
+
+			if (m_current == m_listeners.end())
+			{
+				m_current = m_listeners.begin();
+			}
+
+			Time nextTrigger = m_startTime + (m_timeSlot*m_timeSlotNumber);
+
+			if (nextTrigger < m_endTime)
+			{
+				Simulator::Schedule(nextTrigger, &MacTdmaSync::nextDevice, this);
+			}
+
+			
+
+		}
 
 	} // namespace HrWpan
 
