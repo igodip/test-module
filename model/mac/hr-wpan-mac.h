@@ -44,6 +44,8 @@
 
 namespace ns3 {
 
+	
+
 	class HrWpanMac : public Object, public HrWpanPhyUser , public HrWpan::MacManagerListener
 	{
 
@@ -77,10 +79,13 @@ namespace ns3 {
 
 		void RegisterSapUser(HrWpan::MacSapUser * macSapUser);
 		
-		virtual void SendPkt();
+		virtual void SendPkt(Time endTime);
 
 		void SetAddress(const Mac48Address & mac);
 		Mac48Address GetAddress() const;
+
+		void SetNetDevice(Ptr<HrWpan::HrWpanNetDevice> netDevice);
+		Ptr<HrWpan::HrWpanNetDevice> GetNetDevice() const;
 
 	protected:
 
@@ -103,6 +108,8 @@ namespace ns3 {
 		HrWpanDevId m_devId;
 		Mac48Address m_macAddress;
 		Ptr<HrWpan::MacQueue> m_queue;
+
+		Ptr<HrWpan::HrWpanNetDevice> m_netDevice;
 		
 		EventId m_ackWaitTimeout;
 

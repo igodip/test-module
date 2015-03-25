@@ -47,13 +47,12 @@
 
 using namespace ns3;
 
-NS_LOG_COMPONENT_DEFINE("HrWpanTdmaSim");
+NS_LOG_COMPONENT_DEFINE("HrSlottedAlohaSim");
 
 int main(int argc, char ** argv)
 {
-	LogComponentEnable("HrWpanTdmaSim", LOG_LEVEL_ALL);
-	LogComponentEnable("HrWpanMac", LOG_LEVEL_INFO);
-	LogComponentEnable("Config", LOG_LEVEL_ALL);
+	LogComponentEnable("HrSlottedAlohaSim", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpanMacSapAsync", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpanPhyRxOnState", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpan::TopologyHelper", LOG_LEVEL_ALL);
 	//LogComponentEnable("ArpL3Protocol", LOG_LEVEL_ALL);
@@ -63,7 +62,7 @@ int main(int argc, char ** argv)
 	double obsMaxSize = 2;
 	double pairDensity = 0.5;
 	double obstacleDensity = 0.1;
-	int rounds = 2;
+	int rounds = 1;
 	double beamwidth = 10;
 	std::string reportFilename = "stats.csv";
 
@@ -147,16 +146,15 @@ int main(int argc, char ** argv)
 		macStatHelper.attach();
 
 		NS_LOG_INFO("Setting up the manager");
-		Ptr<HrWpan::MacTdmaSync> tdmaSync = CreateObject<HrWpan::MacTdmaSync>();
-		//Ptr<HrWpan::MacSlottedAlohaSync> tdmaSync = CreateObject<HrWpan::MacSlottedAlohaSync>();
+		//Ptr<HrWpan::MacTdmaSync> tdmaSync = CreateObject<HrWpan::MacTdmaSync>();
+		Ptr<HrWpan::MacSlottedAlohaSync> tdmaSync = CreateObject<HrWpan::MacSlottedAlohaSync>();
 		tdmaSync->AddListeners(netDevices);
 		tdmaSync->Activate();
-		
+
 
 		NS_LOG_INFO("Running simulation.");
 		Simulator::Run();
 		Simulator::Destroy();
-		
 		NS_LOG_INFO("Done.");
 
 		NS_LOG_INFO("Writing Stats");
@@ -188,7 +186,7 @@ int main(int argc, char ** argv)
 		outfile << macStatHelper.getQueueDrop() << ",";
 		outfile << macStatHelper.getQueueIn() << ",";
 		outfile << macStatHelper.getQueueOut() << std::endl;
-		
+
 		outfile.flush();
 	}
 

@@ -43,7 +43,7 @@ namespace ns3
 		{
 			m_startTime = Seconds(1.0);
 			m_endTime = Seconds(10.0);
-			m_timeSlot = MicroSeconds(10.0);
+			m_timeSlot = MilliSeconds(100.0);
 		}
 
 		void MacSlottedAlohaSync::Activate()
@@ -55,21 +55,22 @@ namespace ns3
 		void MacSlottedAlohaSync::nextSlot()
 		{
 			std::list< MacManagerListener * >::iterator i = m_listeners.begin();
+			Time nextTrigger = m_startTime + (m_timeSlot*m_timeSlotNumber);
 
 			while (i != m_listeners.end())
 			{
 
-				(*i)->SendPkt();
+				(*i)->SendPkt(m_timeSlot);
 				++i;
 			}
 
 			m_timeSlotNumber++;
 
-			Time nextTrigger = m_startTime + (m_timeSlot*m_timeSlotNumber);
+			
 
 			if (nextTrigger < m_endTime)
 			{
-				Simulator::Schedule(nextTrigger, &MacSlottedAlohaSync::nextSlot, this);
+				Simulator::Schedule(m_timeSlot, &MacSlottedAlohaSync::nextSlot, this);
 			}
 
 		}

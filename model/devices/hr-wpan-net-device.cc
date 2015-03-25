@@ -54,6 +54,7 @@ namespace ns3
 			
 			m_mac->SetPhyProvider(m_phy->GetPointer()); 
 			m_mac->SetAddress(Mac48Address::Allocate());
+			m_mac->SetNetDevice(this);
 			m_phy->SetPhyUser(m_mac->GetPointer());
 			
 			NS_LOG_INFO(m_mac->GetAddress());

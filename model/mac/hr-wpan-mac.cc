@@ -22,8 +22,10 @@
 #include "hr-wpan-mac.h"
 #include <ns3/log.h>
 #include <ns3/pointer.h>
+#include <ns3/simulator.h>
 
 #include <ns3/hr-wpan-mac-sap-async.h>
+#include <ns3/hr-wpan-net-device.h>
 
 namespace ns3 {
 
@@ -196,19 +198,33 @@ namespace ns3 {
 
 	}
 
-	void HrWpanMac::SendPkt()
+	void HrWpanMac::SendPkt(Time remTime)
 	{
 		NS_LOG_FUNCTION(this);
 
+		
 		Ptr<Packet> packet = m_queue->Dequeue();
-
+		
 		if (packet == 0)
 		{
 			NS_LOG_INFO("No packet inside queue!");
 			return;
 		}
 
+		Time currentTime = Simulator::Now(); 
+		static Time sfis = MicroSeconds(2);
+		Time transmissionTime = m_netDevice->GetPhy()->CalculateTxTime(packet) + sfis;
+
+		if (remTime < transmissionTime)
+		{
+			NS_LOG_INFO("Expired");
+			return;
+		}
+
 		m_phyProvider->SendMacPdu(packet);
+		//NS_LOG_INFO(remTime - transmissionTime);
+		//NS_LOG_INFO(currentTime + transmissionTime);
+		Simulator::Schedule(transmissionTime, &HrWpanMac::SendPkt,this, remTime-transmissionTime);
 	}
 
 	void HrWpanMac::SetAddress(const Mac48Address & mac)
@@ -224,6 +240,22 @@ namespace ns3 {
 		NS_LOG_FUNCTION(this);
 
 		return m_macAddress;
+
+	}
+
+	void HrWpanMac::SetNetDevice(Ptr<HrWpan::HrWpanNetDevice> netDevice)
+	{
+		NS_LOG_FUNCTION(this);
+
+		m_netDevice = netDevice;
+
+	}
+
+	Ptr<HrWpan::HrWpanNetDevice> HrWpanMac::GetNetDevice() const
+	{
+		NS_LOG_FUNCTION(this);
+
+		return m_netDevice;
 
 	}
 

@@ -23,6 +23,7 @@
 #define HR_WPAN_MAC_MANAGER_LISTENER_H
 
 #include <ns3/object.h>
+#include <ns3/nstime.h>
 
 namespace ns3
 {
@@ -33,7 +34,7 @@ namespace ns3
 		{
 
 		public:
-			virtual void SendPkt() = 0;
+			virtual void SendPkt(Time endTime) = 0;
 
 		};
 

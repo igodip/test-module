@@ -41,7 +41,7 @@ namespace ns3
 		{
 			m_startTime = Seconds(1.0);
 			m_endTime = Seconds(10.0);
-			m_timeSlot = MicroSeconds(10.0);
+			m_timeSlot = MilliSeconds(100.0);
 		}
 
 		void MacTdmaSync::Activate()
@@ -53,7 +53,8 @@ namespace ns3
 
 		void MacTdmaSync::nextDevice()
 		{
-			(*m_current)->SendPkt();
+			Time nextTrigger = m_startTime + (m_timeSlot*m_timeSlotNumber);
+			(*m_current)->SendPkt(m_timeSlot);
 			
 			m_current++;
 			m_timeSlotNumber++;
@@ -63,14 +64,10 @@ namespace ns3
 				m_current = m_listeners.begin();
 			}
 
-			Time nextTrigger = m_startTime + (m_timeSlot*m_timeSlotNumber);
-
 			if (nextTrigger < m_endTime)
 			{
-				Simulator::Schedule(nextTrigger, &MacTdmaSync::nextDevice, this);
+				Simulator::Schedule(m_timeSlot, &MacTdmaSync::nextDevice, this);
 			}
-
-			
 
 		}
 
