@@ -37,6 +37,9 @@ namespace ns3 {
 	{
 		NS_LOG_FUNCTION(this);
 
+		m_queue = CreateObject<HrWpan::MacQueue>();
+
+
 	}
 
 	HrWpanMac::~HrWpanMac()
@@ -104,7 +107,7 @@ namespace ns3 {
 	void HrWpanMac::DoDispose()
 	{
 		NS_LOG_FUNCTION(this);
-
+		m_queue->Dispose();
 		Object::DoDispose();
 	}
 
@@ -146,7 +149,7 @@ namespace ns3 {
 
 
 		Object::DoInitialize();
-		m_queue = CreateObject<HrWpan::MacQueue>();
+		//m_queue = CreateObject<HrWpan::MacQueue>();
 		
 	}
 

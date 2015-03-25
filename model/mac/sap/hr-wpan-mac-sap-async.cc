@@ -88,6 +88,8 @@ namespace ns3
 			header.setDstAddress(paramsAsync.m_trgtId);
 
 			Ptr<Packet> packet = paramsAsync.m_data;
+			TimestampTag timestamp;
+			timestamp.SetTimestamp(Simulator::Now());
 			packet->AddHeader(header);
 
 			m_mac->m_macTxTrace(packet);

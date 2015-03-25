@@ -52,8 +52,8 @@ NS_LOG_COMPONENT_DEFINE("HrWpanTdmaSim");
 int main(int argc, char ** argv)
 {
 	LogComponentEnable("HrWpanTdmaSim", LOG_LEVEL_ALL);
-	LogComponentEnable("HrWpanMac", LOG_LEVEL_INFO);
-	LogComponentEnable("Config", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpanMac", LOG_LEVEL_INFO);
+	//LogComponentEnable("Config", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpanPhyRxOnState", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpan::TopologyHelper", LOG_LEVEL_ALL);
 	//LogComponentEnable("ArpL3Protocol", LOG_LEVEL_ALL);
@@ -62,8 +62,8 @@ int main(int argc, char ** argv)
 	double lengthTop = 5;
 	double obsMaxSize = 2;
 	double pairDensity = 0.5;
-	double obstacleDensity = 0.1;
-	int rounds = 2;
+	double obstacleDensity = 0.5;
+	int rounds = 70;
 	double beamwidth = 10;
 	std::string reportFilename = "stats.csv";
 
