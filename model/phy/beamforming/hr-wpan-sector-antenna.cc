@@ -107,7 +107,7 @@ namespace ns3
 				return 50;
 			}
 
-			return -10;
+			return -20;
 
 		}
 

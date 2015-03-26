@@ -1,4 +1,7 @@
 
+#ifndef HR_WPAN_TIMESTAMPTAG_H
+#define HR_WPAN_TIMESTAMPTAG_H
+
 #include <ns3/object.h>
 #include <ns3/tag.h>
 #include <ns3/nstime.h>
@@ -29,3 +32,5 @@ namespace ns3
 	};
 
 }
+
+#endif

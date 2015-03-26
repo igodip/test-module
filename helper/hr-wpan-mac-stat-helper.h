@@ -23,6 +23,8 @@
 #define HR_WPAN_MAC_STAT_HELPER_H
 
 #include <ns3/packet.h>
+#include <ns3/nstime.h>
+#include <ns3/simulator.h>
 
 namespace ns3
 {
@@ -42,6 +44,9 @@ namespace ns3
 			uint32_t getQueueDrop() const;
 			uint32_t getQueueIn() const;
 			uint32_t getQueueOut() const;
+			Time getTotalDelay() const;
+			Time getAvgDelay() const;
+			
 
 		private:
 
@@ -51,6 +56,7 @@ namespace ns3
 			void incQueueIn(std::string str, Ptr<const Packet> p);
 			void incQueueOut(std::string str, Ptr<const Packet> p);
 
+			Time m_totalDelay;
 			uint32_t m_tx;
 			uint32_t m_rx;
 			uint32_t m_queueDrop;

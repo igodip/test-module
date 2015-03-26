@@ -311,7 +311,7 @@ namespace ns3
 				
 					OnOffHelper onoff("ns3::UdpSocketFactory",
 						Address(InetSocketAddress(receiverIpv4, 15)));
-					onoff.SetConstantRate(DataRate("2Mb/s"));
+					onoff.SetConstantRate(DataRate("10Mb/s"));
 					
 					//double spost = uRandVar->GetValue()
 					

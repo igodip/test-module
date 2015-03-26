@@ -23,6 +23,8 @@
 #include <ns3/log.h>
 #include <ns3/hr-wpan-mac.h>
 #include <ns3/hr-wpan-net-device.h>
+#include <ns3/hr-wpan-timestamp-tag.h>
+#include <ns3/simulator.h>
 
 namespace ns3
 {
@@ -90,7 +92,9 @@ namespace ns3
 			Ptr<Packet> packet = paramsAsync.m_data;
 			TimestampTag timestamp;
 			timestamp.SetTimestamp(Simulator::Now());
+			
 			packet->AddHeader(header);
+			packet->AddPacketTag(timestamp);
 
 			m_mac->m_macTxTrace(packet);
 

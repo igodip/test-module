@@ -22,6 +22,7 @@
 #include "hr-wpan-mac-manager-sync.h"
 
 #include <ns3/hr-wpan-net-device.h>
+#include <ns3/log.h>
 
 namespace ns3
 {

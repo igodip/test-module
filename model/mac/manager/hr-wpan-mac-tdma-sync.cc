@@ -22,9 +22,12 @@
 
 #include "hr-wpan-mac-tdma-sync.h"
 #include <ns3/nstime.h>
+#include <ns3/log.h>
 
 namespace ns3
 {
+	//NS_LOG_COMPONENT_DEFINE("HrWpanMacTdmaSync");
+
 	namespace HrWpan
 	{
 		TypeId MacTdmaSync::GetTypeId()
@@ -41,7 +44,7 @@ namespace ns3
 		{
 			m_startTime = Seconds(1.0);
 			m_endTime = Seconds(10.0);
-			m_timeSlot = MilliSeconds(10.0);
+			m_timeSlot = MilliSeconds(1.0);
 		}
 
 		void MacTdmaSync::Activate()

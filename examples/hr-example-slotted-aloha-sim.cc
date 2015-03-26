@@ -52,6 +52,7 @@ NS_LOG_COMPONENT_DEFINE("HrSlottedAlohaSim");
 int main(int argc, char ** argv)
 {
 	LogComponentEnable("HrSlottedAlohaSim", LOG_LEVEL_ALL);
+	LogComponentEnable("HrWpanMacStatHelper", LOG_LEVEL_INFO);
 	//LogComponentEnable("HrWpanMacSapAsync", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpanPhyRxOnState", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpan::TopologyHelper", LOG_LEVEL_ALL);
@@ -172,6 +173,8 @@ int main(int argc, char ** argv)
 		NS_LOG_INFO("MacQueueDro = " << macStatHelper.getQueueDrop());
 		NS_LOG_INFO("MacQueueEnq = " << macStatHelper.getQueueIn());
 		NS_LOG_INFO("MacQueueDeq = " << macStatHelper.getQueueOut());
+		NS_LOG_INFO("MacTotalWaitTime = " << macStatHelper.getTotalDelay());
+		NS_LOG_INFO("MacAvgWaitTime = " << macStatHelper.getAvgDelay());
 
 		outfile << phyStatHelper.getRxBegin() << ",";
 		outfile << phyStatHelper.getRxDrop() << ",";
