@@ -225,8 +225,7 @@ namespace ns3 {
 		}
 
 		m_phyProvider->SendMacPdu(packet);
-		//NS_LOG_INFO(remTime - transmissionTime);
-		//NS_LOG_INFO(currentTime + transmissionTime);
+
 		Simulator::Schedule(transmissionTime, &HrWpanMac::SendPkt,this, remTime-transmissionTime);
 	}
 

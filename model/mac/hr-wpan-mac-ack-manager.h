@@ -18,3 +18,51 @@
 * Authors:
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
+
+#ifndef HR_WPAN_MAC_ACK_MANAGER_H
+#define HR_WPAN_MAC_ACK_MANAGER_H
+
+#include <ns3/object.h>
+#include <ns3/packet.h>
+#include <ns3/nstime.h>
+#include <map>
+
+namespace ns3
+{
+	class HrWpanMac;
+
+	namespace HrWpan
+	{
+		class MacAckManager :public Object
+		{
+			enum AckState 
+			{
+				NONE = 0,
+				WAITING = 1,
+				RECEIVED = 2
+			};
+
+		public:
+			
+			MacAckManager();
+
+			static TypeId GetTypeId();
+			
+
+			void AddPacket(Ptr<Packet> packet);
+
+
+		protected:
+
+			void ackExpired(Ptr<Packet> packet);
+
+			std::map<Ptr<Packet>, AckState> m_packets;
+			Ptr<HrWpanMac> m_mac;
+
+			static Time m_maxWaitAck;
+
+		};
+	}
+}
+
+#endif

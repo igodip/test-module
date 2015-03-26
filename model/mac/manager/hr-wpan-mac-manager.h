@@ -18,3 +18,31 @@
 * Authors:
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
+
+#ifndef HR_WPAN_MAC_MANAGER_H
+#define HR_WPAN_MAC_MANAGER_H
+
+#include <ns3/object.h>
+#include <ns3/packet.h>
+
+namespace ns3
+{
+	class HrWpanMac;
+
+	namespace HrWpan
+	{
+		class MacManager : public Object
+		{
+		public:
+			static TypeId GetTypeId();
+			
+
+		protected:
+
+			Ptr<HrWpanMac> m_mac;
+
+		};
+	}
+}
+
+#endif

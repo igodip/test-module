@@ -18,3 +18,13 @@
 * Authors:
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
+
+#include "hr-wpan-mac-manager.h"
+
+namespace ns3
+{
+	namespace HrWpan
+	{
+
+	}
+}

@@ -18,3 +18,26 @@
 * Authors:
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
+
+#include "hr-wpan-mac-ack-manager.h"
+
+namespace ns3
+{
+	namespace HrWpan
+	{
+		MacAckManager::MacAckManager()
+		{
+
+		}
+
+		TypeId MacAckManager::GetTypeId()
+		{
+
+		}
+
+		void MacAckManager::AddPacket(Ptr<Packet> packet)
+		{
+
+		}
+	}
+}

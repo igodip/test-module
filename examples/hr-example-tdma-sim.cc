@@ -152,7 +152,6 @@ int main(int argc, char ** argv)
 		tdmaSync->AddListeners(netDevices);
 		tdmaSync->Activate();
 		
-
 		NS_LOG_INFO("Running simulation.");
 		Simulator::Run();
 		Simulator::Destroy();
@@ -174,6 +173,8 @@ int main(int argc, char ** argv)
 		NS_LOG_INFO("MacQueueDro = " << macStatHelper.getQueueDrop());
 		NS_LOG_INFO("MacQueueEnq = " << macStatHelper.getQueueIn());
 		NS_LOG_INFO("MacQueueDeq = " << macStatHelper.getQueueOut());
+		NS_LOG_INFO("MacTotalWaitTime = " << macStatHelper.getTotalDelay());
+		NS_LOG_INFO("MacAvgWaitTime = " << macStatHelper.getAvgDelay());
 
 		outfile << phyStatHelper.getRxBegin() << ",";
 		outfile << phyStatHelper.getRxDrop() << ",";
@@ -187,7 +188,8 @@ int main(int argc, char ** argv)
 		outfile << macStatHelper.getTx() << ",";
 		outfile << macStatHelper.getQueueDrop() << ",";
 		outfile << macStatHelper.getQueueIn() << ",";
-		outfile << macStatHelper.getQueueOut() << std::endl;
+		outfile << macStatHelper.getQueueOut() << ",";
+		outfile << macStatHelper.getAvgDelay() << std::endl;
 		
 		outfile.flush();
 	}
