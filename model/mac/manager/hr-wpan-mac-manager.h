@@ -24,6 +24,7 @@
 
 #include <ns3/object.h>
 #include <ns3/packet.h>
+#include <ns3/backoff.h>
 
 namespace ns3
 {
@@ -40,6 +41,7 @@ namespace ns3
 		protected:
 
 			Ptr<HrWpanMac> m_mac;
+			Backoff backoff;
 
 		};
 	}

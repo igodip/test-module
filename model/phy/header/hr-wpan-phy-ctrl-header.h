@@ -15,51 +15,23 @@
 * along with this program; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *
-* Authors:
-*  Igor Di Paolo <igor.di.paolo@gmail.com>
+* Author:
+*	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef HR_WPAN_MAC_ACK_MANAGER_H
-#define HR_WPAN_MAC_ACK_MANAGER_H
+#ifndef HR_WPAN_PHY_CTRL_HEADER_H
+#define HR_WPAN_PHY_CTRL_HEADER_H
 
-#include <ns3/object.h>
-#include <ns3/packet.h>
-#include <ns3/nstime.h>
-#include <map>
+#include "hr-wpan-phy-header.h"
 
 namespace ns3
 {
-	class HrWpanMac;
-
 	namespace HrWpan
 	{
-		class MacAckManager :public Object
+		class PhyCtrlHeader : public PhyHeader
 		{
-			enum AckState 
-			{
-				NONE = 0,
-				WAITING = 1,
-				RECEIVED = 2
-			};
 
-		public:
-			
-			MacAckManager();
-
-			static TypeId GetTypeId();
-			
-
-			void AddPacket(Ptr<Packet> packet);
-
-
-		protected:
-
-			void ackExpired(Ptr<Packet> packet);
-
-			std::map<Ptr<Packet>, AckState> m_packets;
-			Ptr<HrWpanMac> m_mac;
-
-			static Time m_maxWaitAck;
+		private:
 
 		};
 	}

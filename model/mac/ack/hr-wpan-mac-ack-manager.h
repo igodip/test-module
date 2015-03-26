@@ -1,6 +1,6 @@
 /* -*-  Mode: C++; c-file-style: "gnu"; indent-tabs-mode:nil; -*- */
 /*
-* Copyright (c) 2015
+* Copyright (c) 2015 KTH
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License version 2 as
@@ -19,38 +19,44 @@
 *  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef HR_WPAN_MAC_SUBHEADER_H
-#define HR_WPAN_MAC_SUBHEADER_H
+#ifndef HR_WPAN_MAC_ACK_MANAGER_H
+#define HR_WPAN_MAC_ACK_MANAGER_H
 
+#include <ns3/object.h>
+#include <ns3/packet.h>
+#include <ns3/nstime.h>
+#include <ns3/simulator.h>
+#include <map>
 
-#include <ns3\header.h>
-#include "hr-wpan-blk-ack-bitmap.h"
+namespace ns3
+{
+	class HrWpanMac;
 
-namespace ns3 {
-
-	namespace HrWpan {
-
-		class MacSubheader : public Header
+	namespace HrWpan
+	{
+		class MacAckManager :public Object
 		{
 
 		public:
-
-			//Inherited from Header
-			void Print(std::ostream &os) const;
-			uint32_t GetSerializedSize(void) const;
-			void Serialize(Buffer::Iterator start) const;
-			uint32_t Deserialize(Buffer::Iterator start);
-
-		private:
-
 			
+			MacAckManager();
+
+			static TypeId GetTypeId();
+			
+			void AddPacket(Ptr<Packet> packet);
 
 
+		protected:
 
+			void ackExpired(Ptr<Packet> packet);
 
+			std::map<Ptr<Packet>, EventId> m_packetEvent;
+			
+			Ptr<HrWpanMac> m_mac;
+
+			static Time m_maxWaitAck;
 
 		};
-
 	}
 }
 

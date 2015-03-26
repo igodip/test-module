@@ -313,8 +313,6 @@ namespace ns3
 						Address(InetSocketAddress(receiverIpv4, 15)));
 					onoff.SetConstantRate(DataRate("512kb/s"));
 					
-					//double spost = uRandVar->GetValue()
-					
 					ApplicationContainer app = onoff.Install(sender);
 					
 					app.Start(Seconds(1.0));

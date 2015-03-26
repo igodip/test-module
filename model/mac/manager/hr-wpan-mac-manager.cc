@@ -25,6 +25,10 @@ namespace ns3
 {
 	namespace HrWpan
 	{
-
+		TypeId MacManager::GetTypeId()
+		{
+			static TypeId typeId = TypeId("ns3::HrWpan::MacManager").
+				SetParent<Object>();
+		}
 	}
 }

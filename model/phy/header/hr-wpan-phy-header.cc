@@ -1,6 +1,6 @@
 /* -*-  Mode: C++; c-file-style: "gnu"; indent-tabs-mode:nil; -*- */
 /*
-* Copyright (c) 2015
+* Copyright (c) 2015 KTH
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License version 2 as
@@ -15,43 +15,42 @@
 * along with this program; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *
-* Authors:
-*  Igor Di Paolo <igor.di.paolo@gmail.com>
+* Author:
+*	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
-
-#ifndef HR_WPAN_MAC_SUBHEADER_H
-#define HR_WPAN_MAC_SUBHEADER_H
-
-
-#include <ns3\header.h>
-#include "hr-wpan-blk-ack-bitmap.h"
+#include "hr-wpan-phy-header.h"
+#include <ns3/log.h>
 
 namespace ns3 {
 
-	namespace HrWpan {
+	NS_LOG_COMPONENT_DEFINE("HrWpanPhyHeader");
 
-		class MacSubheader : public Header
+	namespace HrWpan
+	{
+
+		
+
+		PhyHeader::~PhyHeader()
 		{
+			NS_LOG_FUNCTION(this);
+		}
 
-		public:
+		TypeId
+			PhyHeader::GetTypeId(void)
+		{
+			static TypeId tid = TypeId("ns3::PhyHeader")
+				.SetParent<Header>()
+				;
+			return tid;
+		}
 
-			//Inherited from Header
-			void Print(std::ostream &os) const;
-			uint32_t GetSerializedSize(void) const;
-			void Serialize(Buffer::Iterator start) const;
-			uint32_t Deserialize(Buffer::Iterator start);
-
-		private:
-
-			
-
-
-
-
-
-		};
+		std::ostream & operator << (std::ostream &os, const PhyHeader &phyHeader)
+		{
+			//phyHeader.Print(os);
+			return os;
+		}
 
 	}
-}
 
-#endif
+
+} // namespace ns3
