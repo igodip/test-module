@@ -115,7 +115,7 @@ namespace ns3 {
 		std::map <std::string, HrWpan::MacSapUser *> m_sapUsers;
 		std::map<uint32_t, EventId> m_timeoutPackets;
 		
-
+		double m_trasProb;
 	};
 
 }

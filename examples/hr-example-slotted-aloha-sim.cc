@@ -65,6 +65,7 @@ int main(int argc, char ** argv)
 	double obstacleDensity = 0.5;
 	int rounds = 20;
 	double beamwidth = 10;
+	double trasProb = 0.8;
 	std::string reportFilename = "stats.csv";
 
 	CommandLine cmd;
@@ -75,10 +76,11 @@ int main(int argc, char ** argv)
 	cmd.AddValue("reportFilename", "Filename of the report", reportFilename);
 	cmd.AddValue("beamwidth", "Beamwidth", beamwidth);
 	cmd.AddValue("rounds", "Rounds per simulation", rounds);
+	cmd.AddValue("trasProb", "Trasmission probability", trasProb);
 	cmd.Parse(argc, argv);
 
 	Config::SetDefault("ns3::HrWpan::SectorAntenna::Beamwidth", DoubleValue(DegreesToRadians(beamwidth)));
-	//Config::SetDefault("ns3::HrWpan::SectorAntenna::Beamwidth",)
+	Config::SetDefault("ns3::HrWpanMac::TrasProb", DoubleValue(trasProb));
 
 	int pairLam = pairDensity*lengthTop*lengthTop;
 	int obstacleLam = obstacleDensity*lengthTop*lengthTop;
@@ -191,7 +193,9 @@ int main(int argc, char ** argv)
 		outfile << macStatHelper.getTx() << ",";
 		outfile << macStatHelper.getQueueDrop() << ",";
 		outfile << macStatHelper.getQueueIn() << ",";
-		outfile << macStatHelper.getQueueOut() << std::endl;
+		outfile << macStatHelper.getQueueOut() << ",";
+		outfile << macStatHelper.getQueueReIn() << ",";
+		outfile << macStatHelper.getAvgDelay() << std::endl;
 
 		outfile.flush();
 	}

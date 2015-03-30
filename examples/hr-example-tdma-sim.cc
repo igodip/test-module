@@ -177,6 +177,7 @@ int main(int argc, char ** argv)
 		NS_LOG_INFO("MacQueueDeq = " << macStatHelper.getQueueOut());
 		NS_LOG_INFO("MacTotalWaitTime = " << macStatHelper.getTotalDelay());
 		NS_LOG_INFO("MacAvgWaitTime = " << macStatHelper.getAvgDelay());
+		NS_LOG_INFO("MacQueueReIn = " << macStatHelper.getQueueReIn());
 
 		outfile << nodeNumbers / 2 << ",";
 
@@ -193,6 +194,7 @@ int main(int argc, char ** argv)
 		outfile << macStatHelper.getQueueDrop() << ",";
 		outfile << macStatHelper.getQueueIn() << ",";
 		outfile << macStatHelper.getQueueOut() << ",";
+		outfile << macStatHelper.getQueueReIn() << ",";
 		outfile << macStatHelper.getAvgDelay() << std::endl;
 		
 		outfile.flush();

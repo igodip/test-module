@@ -91,7 +91,11 @@ namespace ns3 {
 			.AddAttribute("Queue", "The Mac queue",
 			PointerValue(),
 			MakePointerAccessor(&HrWpanMac::m_queue),
-			MakePointerChecker<HrWpan::MacQueue>());
+			MakePointerChecker<HrWpan::MacQueue>())
+			.AddAttribute("TrasProb","The Trasmission probability",
+			DoubleValue(1),
+			MakeDoubleAccessor(&HrWpanMac::m_trasProb),
+			MakeDoubleChecker<double>());
 
 		return tid;
 	}
@@ -204,7 +208,7 @@ namespace ns3 {
 
 		double val = urv->GetValue();
 
-		if (val < 0.7)
+		if (val < m_trasProb)
 		{
 			NS_LOG_INFO("Don't Trasmit");
 			return;
