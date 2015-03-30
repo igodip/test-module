@@ -53,7 +53,7 @@ int main(int argc, char ** argv)
 {
 	LogComponentEnable("HrWpanTdmaSim", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpanMac", LOG_LEVEL_INFO);
-	LogComponentEnable("HrWpanMacSapAsync", LOG_LEVEL_INFO);
+	//LogComponentEnable("HrWpanMacSapAsync", LOG_LEVEL_INFO);
 	//LogComponentEnable("HrWpanPhyRxOnState", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpan::TopologyHelper", LOG_LEVEL_ALL);
 	//LogComponentEnable("ArpL3Protocol", LOG_LEVEL_ALL);

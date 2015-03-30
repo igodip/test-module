@@ -204,7 +204,7 @@ namespace ns3 {
 
 		double val = urv->GetValue();
 
-		if (val < 0.5)
+		if (val < 0.7)
 		{
 			NS_LOG_INFO("Don't Trasmit");
 			return;
@@ -301,7 +301,7 @@ namespace ns3 {
 		m_timeoutPackets.erase(hash);
 
 		//NS_LOG_INFO("Packet expired" << packet << this);
-		m_queue->Enqueue(packet);
+		m_queue->PushFront(packet);
 
 		return;
 	}

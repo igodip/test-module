@@ -44,6 +44,7 @@ namespace ns3
 			uint32_t getQueueDrop() const;
 			uint32_t getQueueIn() const;
 			uint32_t getQueueOut() const;
+			uint32_t getQueueReIn() const;
 			Time getTotalDelay() const;
 			Time getAvgDelay() const;
 			
@@ -55,6 +56,7 @@ namespace ns3
 			void incQueueDrop(std::string str, Ptr<const Packet> p);
 			void incQueueIn(std::string str, Ptr<const Packet> p);
 			void incQueueOut(std::string str, Ptr<const Packet> p);
+			void incQueueReIn(std::string str, Ptr<const Packet> p);
 
 			Time m_totalDelay;
 			uint32_t m_tx;
@@ -62,6 +64,7 @@ namespace ns3
 			uint32_t m_queueDrop;
 			uint32_t m_queueIn;
 			uint32_t m_queueOut;
+			uint32_t m_queueReIn;
 
 		};
 

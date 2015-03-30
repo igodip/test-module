@@ -96,6 +96,8 @@ int main(int argc, char ** argv)
 		NS_ABORT_MSG("Can't create the file");
 	}
 
+	Ptr<HrWpan::TopologyAggregator> topologyAggregator = &HrWpan::TopologyAggregator::getInstance();
+
 	for (int i = 1; i <= rounds; i++)
 	{
 		NS_LOG_INFO("-----------------------------------");
@@ -112,7 +114,7 @@ int main(int argc, char ** argv)
 		NodeContainer nodeContainer;
 		nodeContainer.Create(nodeNumbers);
 
-		Ptr<HrWpan::TopologyAggregator> topologyAggregator = &HrWpan::TopologyAggregator::getInstance();
+		topologyAggregator->clear();
 		HrWpan::TopologyHelper topologyHelper(lengthTop, lengthTop, obsMaxSize, topologyAggregator);
 		HrWpan::HrWpanHelper wpanHelper(topologyAggregator);
 
@@ -175,6 +177,7 @@ int main(int argc, char ** argv)
 		NS_LOG_INFO("MacQueueDeq = " << macStatHelper.getQueueOut());
 		NS_LOG_INFO("MacTotalWaitTime = " << macStatHelper.getTotalDelay());
 		NS_LOG_INFO("MacAvgWaitTime = " << macStatHelper.getAvgDelay());
+		NS_LOG_INFO("MacQueueReIn = " << macStatHelper.getQueueReIn());
 
 		outfile << phyStatHelper.getRxBegin() << ",";
 		outfile << phyStatHelper.getRxDrop() << ",";

@@ -54,6 +54,9 @@ namespace ns3
 
 			Config::Connect("/NodeList/*/DeviceList/*/$ns3::HrWpan::HrWpanNetDevice/Mac/Queue/$ns3::Queue/Dequeue",
 				MakeCallback(&MacStatHelper::incQueueOut, this));
+
+			Config::Connect("/NodeList/*/DeviceList/*/$ns3::HrWpan::HrWpanNetDevice/Mac/Queue/Reinsert",
+				MakeCallback(&MacStatHelper::incQueueReIn, this));
 		}
 
 		void MacStatHelper::reset()
@@ -63,7 +66,9 @@ namespace ns3
 			m_queueDrop = 0;
 			m_queueIn = 0;
 			m_queueOut = 0;
+			m_queueReIn = 0;
 			m_totalDelay = Seconds(0);
+
 		}
 
 		void MacStatHelper::incRx(std::string str, Ptr<const Packet> p)
@@ -113,6 +118,11 @@ namespace ns3
 			return m_queueIn;
 		}
 
+		uint32_t MacStatHelper::getQueueReIn() const
+		{
+			return m_queueReIn;
+		}
+
 		uint32_t MacStatHelper::getQueueOut() const
 		{
 			NS_LOG_FUNCTION(this);
@@ -130,6 +140,13 @@ namespace ns3
 			NS_LOG_FUNCTION(this);
 			++m_queueIn;
 		}
+
+		void MacStatHelper::incQueueReIn(std::string str, Ptr<const Packet> p)
+		{
+			NS_LOG_FUNCTION(this);
+			++m_queueReIn;
+		}
+
 
 		void MacStatHelper::incQueueOut(std::string str, Ptr<const Packet> p)
 		{

@@ -48,7 +48,10 @@ namespace ns3
 
 			static TypeId tid = TypeId("ns3::HrWpan::MacQueue").
 				SetParent<Queue>().
-				AddConstructor<MacQueue>();
+				AddConstructor<MacQueue>()
+				.AddTraceSource("Reinsert", "Renqueue a packet in the queue.",
+				MakeTraceSourceAccessor(&MacQueue::m_traceReinsert),
+				"ns3::Packet::TracedCallback");
 			
 			return tid;
 
@@ -89,6 +92,13 @@ namespace ns3
 			}
 
 			return m_packets.front();
+		}
+
+		bool MacQueue::PushFront(Ptr<Packet> p)
+		{
+			m_packets.push_front(p);
+			m_traceReinsert(p);
+			return true;
 		}
 
 

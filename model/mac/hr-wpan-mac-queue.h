@@ -45,6 +45,8 @@ namespace ns3
 
 			static TypeId GetTypeId(void);
 
+			bool PushFront(Ptr<Packet> p);
+
 		protected:
 			
 			virtual bool DoEnqueue(Ptr<Packet> p);
@@ -54,6 +56,7 @@ namespace ns3
 		private:
 
 			std::list<Ptr<Packet > > m_packets;
+			TracedCallback<Ptr<const Packet> > m_traceReinsert;
 
 		};
 
