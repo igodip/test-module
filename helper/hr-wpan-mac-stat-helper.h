@@ -47,6 +47,8 @@ namespace ns3
 			uint32_t getQueueReIn() const;
 			Time getTotalDelay() const;
 			Time getAvgDelay() const;
+			uint32_t getRtPackets() const;
+			double getAvgRtsPackets() const;
 			
 
 		private:
@@ -57,6 +59,7 @@ namespace ns3
 			void incQueueIn(std::string str, Ptr<const Packet> p);
 			void incQueueOut(std::string str, Ptr<const Packet> p);
 			void incQueueReIn(std::string str, Ptr<const Packet> p);
+			
 
 			Time m_totalDelay;
 			uint32_t m_tx;
@@ -65,6 +68,7 @@ namespace ns3
 			uint32_t m_queueIn;
 			uint32_t m_queueOut;
 			uint32_t m_queueReIn;
+			uint32_t m_rtPackets;
 
 		};
 

@@ -49,8 +49,8 @@ namespace ns3 {
 			Ptr<LogDistancePropagationLossModel> lossModel = CreateObject<LogDistancePropagationLossModel>();
 			m_channel->AddPropagationLossModel(lossModel);
 
-			//Ptr<ObstaclePropagationLossModel> obstacleModel = CreateObject<ObstaclePropagationLossModel>(topologyAggregator);
-			//lossModel->SetNext(obstacleModel);
+			Ptr<ObstaclePropagationLossModel> obstacleModel = CreateObject<ObstaclePropagationLossModel>(topologyAggregator);
+			lossModel->SetNext(obstacleModel);
 
 			Ptr<ConstantSpeedPropagationDelayModel> delayModel = CreateObject<ConstantSpeedPropagationDelayModel>();
 			m_channel->SetPropagationDelayModel(delayModel);

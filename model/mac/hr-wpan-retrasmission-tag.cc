@@ -21,6 +21,7 @@
 
 #include "hr-wpan-retrasmission-tag.h"
 #include <ns3/integer.h>
+#include <ns3/log.h>
 
 namespace ns3
 {
@@ -33,7 +34,7 @@ namespace ns3
 				.AddConstructor<RetrasmissionTag>()
 				.AddAttribute("Counter",
 				"Retrasmission attempt counter!",
-				EmptyAttributeValue(),
+				IntegerValue(0),
 				MakeIntegerAccessor(&RetrasmissionTag::m_counter),
 				MakeIntegerChecker<uint8_t>());
 			return tid;

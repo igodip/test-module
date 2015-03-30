@@ -21,9 +21,11 @@
 
 #include "hr-wpan-mac-sap-async.h"
 #include <ns3/log.h>
+#include <ns3/integer.h>
 #include <ns3/hr-wpan-mac.h>
 #include <ns3/hr-wpan-net-device.h>
 #include <ns3/hr-wpan-timestamp-tag.h>
+#include <ns3/hr-wpan-retrasmission-tag.h>
 #include <ns3/hr-wpan-topology-aggregator.h>
 #include <ns3/simulator.h>
 
@@ -104,8 +106,14 @@ namespace ns3
 			TimestampTag timestamp;
 			timestamp.SetTimestamp(Simulator::Now());
 			
+			HrWpan::RetrasmissionTag retrasmissionTag;
+			retrasmissionTag.SetAttribute("Counter", IntegerValue(0));
+
 			packet->AddHeader(header);
 			packet->AddPacketTag(timestamp);
+			packet->AddPacketTag(retrasmissionTag);
+
+			
 
 			m_mac->m_macTxTrace(packet);
 

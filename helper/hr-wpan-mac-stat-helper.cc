@@ -23,6 +23,7 @@
 #include <ns3/config.h>
 #include <ns3/callback.h>
 #include <ns3/hr-wpan-timestamp-tag.h>
+#include <ns3/hr-wpan-retrasmission-tag.h>
 #include <ns3/log.h>
 
 namespace ns3
@@ -68,6 +69,7 @@ namespace ns3
 			m_queueOut = 0;
 			m_queueReIn = 0;
 			m_totalDelay = Seconds(0);
+			m_rtPackets = 0;
 
 		}
 
@@ -76,6 +78,7 @@ namespace ns3
 			NS_LOG_FUNCTION(this);
 			++m_rx;
 
+			//Delay
 			TimestampTag timestampTag;
 			bool pickedUp = p->PeekPacketTag(timestampTag);
 			
@@ -88,6 +91,17 @@ namespace ns3
 
 				m_totalDelay += delay;
 
+			}
+
+			//Retrasmission
+			RetrasmissionTag retrasmissionTag;
+
+			bool retras = p->PeekPacketTag(retrasmissionTag);
+
+			if (retras)
+			{
+				NS_LOG_INFO((int)retrasmissionTag.GetCounter());
+				m_rtPackets += retrasmissionTag.GetCounter();
 			}
 
 		}
@@ -167,6 +181,21 @@ namespace ns3
 				return Seconds(0);
 			}
 			return m_totalDelay / double(getRx());
+		}
+
+		uint32_t MacStatHelper::getRtPackets() const
+		{
+			NS_LOG_FUNCTION(this);
+
+			return m_rtPackets;
+
+		}
+
+		double MacStatHelper::getAvgRtsPackets() const
+		{
+			NS_LOG_FUNCTION(this);
+
+			return m_rtPackets / double(getRx());
 		}
 
 	} //namespace HrWpan

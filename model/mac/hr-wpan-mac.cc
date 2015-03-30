@@ -30,6 +30,7 @@
 
 #include <ns3/random-variable-stream.h>
 #include <ns3/double.h>
+#include <ns3/hr-wpan-retrasmission-tag.h>
 
 namespace ns3 {
 
@@ -214,7 +215,7 @@ namespace ns3 {
 			return;
 		}
 		
-		NS_LOG_INFO("Trasmit");
+		//NS_LOG_INFO("Trasmit");
 
 		//Removing packet
 		Ptr<Packet> packet = m_queue->Dequeue();
@@ -229,7 +230,9 @@ namespace ns3 {
 		static uint8_t buffer[2000];
 		packet->Serialize(buffer, 2000);
 		uint32_t  hash = Hash32((char*)buffer, 2000);
-		m_timeoutPackets[hash] = Simulator::Schedule(MilliSeconds(100), &HrWpanMac::AckExpired, this, packet);
+		
+		m_timeoutPackets[hash] = Simulator::Schedule(MilliSeconds(10), &HrWpanMac::AckExpired, this, packet);
+		
 		m_phyProvider->SendMacPdu(packet);
 
 		/*
@@ -304,7 +307,15 @@ namespace ns3 {
 
 		m_timeoutPackets.erase(hash);
 
-		//NS_LOG_INFO("Packet expired" << packet << this);
+		//NS_LOG_INFO("Packet expired" << packet);
+		HrWpan::RetrasmissionTag retrasmissionTag;
+		packet->PeekPacketTag(retrasmissionTag);
+		retrasmissionTag.IncCounter();
+
+		NS_LOG_INFO("CurrentPacket" << retrasmissionTag.GetCounter());
+
+		packet->ReplacePacketTag(retrasmissionTag);
+
 		m_queue->PushFront(packet);
 
 		return;

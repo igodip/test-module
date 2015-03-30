@@ -52,7 +52,7 @@ NS_LOG_COMPONENT_DEFINE("HrSlottedAlohaSim");
 int main(int argc, char ** argv)
 {
 	LogComponentEnable("HrSlottedAlohaSim", LOG_LEVEL_ALL);
-	LogComponentEnable("HrWpanMacStatHelper", LOG_LEVEL_INFO);
+	//LogComponentEnable("HrWpanMacStatHelper", LOG_LEVEL_INFO);
 	//LogComponentEnable("HrWpanMacSapAsync", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpanPhyRxOnState", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpan::TopologyHelper", LOG_LEVEL_ALL);
@@ -65,7 +65,7 @@ int main(int argc, char ** argv)
 	double obstacleDensity = 0.5;
 	int rounds = 20;
 	double beamwidth = 10;
-	double trasProb = 0.8;
+	double trasProb = 0.6;
 	std::string reportFilename = "stats.csv";
 
 	CommandLine cmd;
@@ -151,7 +151,7 @@ int main(int argc, char ** argv)
 		macStatHelper.attach();
 
 		NS_LOG_INFO("Setting up the manager");
-		//Ptr<HrWpan::MacTdmaSync> tdmaSync = CreateObject<HrWpan::MacTdmaSync>();
+		
 		Ptr<HrWpan::MacSlottedAlohaSync> tdmaSync = CreateObject<HrWpan::MacSlottedAlohaSync>();
 		tdmaSync->AddListeners(netDevices);
 		tdmaSync->Activate();
@@ -180,6 +180,8 @@ int main(int argc, char ** argv)
 		NS_LOG_INFO("MacTotalWaitTime = " << macStatHelper.getTotalDelay());
 		NS_LOG_INFO("MacAvgWaitTime = " << macStatHelper.getAvgDelay());
 		NS_LOG_INFO("MacQueueReIn = " << macStatHelper.getQueueReIn());
+		NS_LOG_INFO("TotalRetrasmissions = " << macStatHelper.getRtPackets());
+		NS_LOG_INFO("AvgRetrasmission = " << macStatHelper.getAvgRtsPackets());
 
 		outfile << phyStatHelper.getRxBegin() << ",";
 		outfile << phyStatHelper.getRxDrop() << ",";

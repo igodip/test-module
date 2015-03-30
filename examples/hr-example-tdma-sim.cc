@@ -52,15 +52,15 @@ NS_LOG_COMPONENT_DEFINE("HrWpanTdmaSim");
 int main(int argc, char ** argv)
 {
 	LogComponentEnable("HrWpanTdmaSim", LOG_LEVEL_ALL);
-	LogComponentEnable("SingleModelSpectrumChannel", LOG_LEVEL_ALL);
-	LogComponentEnable("HrWpanObstaclePropagationModel", LOG_LEVEL_ALL);
+	//LogComponentEnable("SingleModelSpectrumChannel", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpanObstaclePropagationModel", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpanPhyRxOnState", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpanMac", LOG_LEVEL_INFO);
 	//LogComponentEnable("HrWpanMacSapAsync", LOG_LEVEL_INFO);
 	//LogComponentEnable("HrWpanPhyRxOnState", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpan::TopologyHelper", LOG_LEVEL_ALL);
 	//LogComponentEnable("ArpL3Protocol", LOG_LEVEL_ALL);
-	//LogComponentEnable("HrWpanDevIDHelper", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpanMacStatHelper", LOG_LEVEL_INFO);
 
 	double lengthTop = 5;
 	double obsMaxSize = 2;
@@ -181,6 +181,8 @@ int main(int argc, char ** argv)
 		NS_LOG_INFO("MacTotalWaitTime = " << macStatHelper.getTotalDelay());
 		NS_LOG_INFO("MacAvgWaitTime = " << macStatHelper.getAvgDelay());
 		NS_LOG_INFO("MacQueueReIn = " << macStatHelper.getQueueReIn());
+		NS_LOG_INFO("TotalRetrasmissions = " << macStatHelper.getRtPackets());
+		NS_LOG_INFO("AvgRetrasmission = " << macStatHelper.getAvgRtsPackets());
 
 		outfile << nodeNumbers / 2 << ",";
 
