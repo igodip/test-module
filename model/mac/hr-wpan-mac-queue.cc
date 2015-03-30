@@ -98,6 +98,13 @@ namespace ns3
 		{
 			m_packets.push_front(p);
 			m_traceReinsert(p);
+
+			uint32_t size = p->GetSize();
+			m_nBytes += size;
+			m_nTotalReceivedBytes += size;
+
+			m_nPackets++;
+			m_nTotalReceivedPackets++;
 			return true;
 		}
 

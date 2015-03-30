@@ -93,7 +93,7 @@ namespace ns3 {
 			MakePointerAccessor(&HrWpanMac::m_queue),
 			MakePointerChecker<HrWpan::MacQueue>())
 			.AddAttribute("TrasProb","The Trasmission probability",
-			DoubleValue(1),
+			DoubleValue(0),
 			MakeDoubleAccessor(&HrWpanMac::m_trasProb),
 			MakeDoubleChecker<double>());
 
