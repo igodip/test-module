@@ -70,13 +70,24 @@ namespace ns3
 
 			if (chars[1] == 0x3A)
 			{
+				chars[1] = 0x41;
+			}
+
+			if (chars[1] == 0x47)
+			{
+				chars[1] = 0x30;
+
 				chars[0]++;
 				if (chars[0] == 0x3A)
+				{
+					chars[0] = 0x41;
+				}
+
+				if (chars[0] == 0x46)
 				{
 					chars[0] = 0x30;
 				}
 
-				chars[1] = 0x30;
 			}
 		}
 

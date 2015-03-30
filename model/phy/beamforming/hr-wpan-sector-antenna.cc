@@ -63,7 +63,7 @@ namespace ns3
 					MakeDoubleChecker<double>()).
 				AddAttribute("Epsilon",
 					"Side lobe gain (db) ",
-					DoubleValue(-10),
+					DoubleValue(-40),
 					MakeDoubleAccessor(&SectorAntenna::m_epsilon),
 					MakeDoubleChecker<double>());
 
@@ -91,24 +91,17 @@ namespace ns3
 
 			NS_LOG_LOGIC("phi = " << phi);
 
-			//double epsilon_w = pow(10.0, m_epsilon / 10.0) / 1000.0;
-			/*
+			double epsilon_w = pow(10.0, m_epsilon / 10.0) / 1000.0;
+			
 			if (phi <= m_beamwidth / 2.0 && phi >= -m_beamwidth / 2.0)
 			{
-				double r =  (2 * M_PI - (2 * M_PI - phi))*epsilon_w / m_beamwidth;
-				return 10 * log10(r / 1000.0);
+				NS_LOG_INFO("Inside main lobe");
+				double r = (2 * M_PI - (2 * M_PI - m_beamwidth)*epsilon_w) / m_beamwidth;
+				return 10 * log10(r * 1000.0);
 			}
 
 			return m_epsilon;
-			*/
-
-			if (phi <= m_beamwidth / 2.0 && phi >= -m_beamwidth / 2.0)
-			{
-				return 50;
-			}
-
-			return -20;
-
+			
 		}
 
 	} // HrWpan namespace

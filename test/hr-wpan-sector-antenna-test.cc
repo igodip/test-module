@@ -61,6 +61,8 @@ void HrWpanSectorAntennaLosTestCase::DoRun()
 	Angles secondAngle(DegreesToRadians(99), 0);
 	Angles thirdAngle(DegreesToRadians(81), 0);
 
+	NS_LOG_INFO(sectorAntenna->GetGainDb(firstAngle));
+
 	NS_TEST_ASSERT_MSG_GT(sectorAntenna->GetGainDb(firstAngle), 0, " Not working!");
 	NS_TEST_ASSERT_MSG_GT(sectorAntenna->GetGainDb(secondAngle), 0, " Not working!");
 	NS_TEST_ASSERT_MSG_GT(sectorAntenna->GetGainDb(thirdAngle), 0, " Not working!");
