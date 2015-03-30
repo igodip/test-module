@@ -53,7 +53,7 @@ int main(int argc, char ** argv)
 {
 	LogComponentEnable("HrWpanTdmaSim", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpanMac", LOG_LEVEL_INFO);
-	//LogComponentEnable("Config", LOG_LEVEL_ALL);
+	LogComponentEnable("HrWpanMacSapAsync", LOG_LEVEL_INFO);
 	//LogComponentEnable("HrWpanPhyRxOnState", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpan::TopologyHelper", LOG_LEVEL_ALL);
 	//LogComponentEnable("ArpL3Protocol", LOG_LEVEL_ALL);
@@ -91,6 +91,8 @@ int main(int argc, char ** argv)
 
 	std::ofstream outfile(reportFilename.c_str(), std::ios::trunc);
 
+	Ptr<HrWpan::TopologyAggregator> topologyAggregator = &HrWpan::TopologyAggregator::getInstance();
+
 	if (!outfile.is_open())
 	{
 		NS_ABORT_MSG("Can't create the file");
@@ -112,7 +114,7 @@ int main(int argc, char ** argv)
 		NodeContainer nodeContainer;
 		nodeContainer.Create(nodeNumbers);
 
-		Ptr<HrWpan::TopologyAggregator> topologyAggregator = CreateObject<HrWpan::TopologyAggregator>();
+		topologyAggregator->clear();
 		HrWpan::TopologyHelper topologyHelper(lengthTop, lengthTop, obsMaxSize, topologyAggregator);
 		HrWpan::HrWpanHelper wpanHelper(topologyAggregator);
 
@@ -175,6 +177,8 @@ int main(int argc, char ** argv)
 		NS_LOG_INFO("MacQueueDeq = " << macStatHelper.getQueueOut());
 		NS_LOG_INFO("MacTotalWaitTime = " << macStatHelper.getTotalDelay());
 		NS_LOG_INFO("MacAvgWaitTime = " << macStatHelper.getAvgDelay());
+
+		outfile << nodeNumbers / 2 << ",";
 
 		outfile << phyStatHelper.getRxBegin() << ",";
 		outfile << phyStatHelper.getRxDrop() << ",";

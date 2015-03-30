@@ -19,37 +19,19 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef HR_WPAN_TIMESTAMPTAG_H
-#define HR_WPAN_TIMESTAMPTAG_H
+#ifndef HR_WPAN_RETRASMISSION_H
+#define HR_WPAN_RETRASMISSION_H
 
 #include <ns3/object.h>
 #include <ns3/tag.h>
-#include <ns3/nstime.h>
 
 namespace ns3
 {
-	
-	class TimestampTag : public Tag {
-	public:
-		static TypeId GetTypeId(void);
-		virtual TypeId GetInstanceTypeId(void) const;
+	namespace HrWpan
+	{
 
-		virtual uint32_t GetSerializedSize(void) const;
-		virtual void Serialize(TagBuffer i) const;
-		virtual void Deserialize(TagBuffer i);
+	} //namespace HrWpan
 
-		// these are our accessors to our tag structure
-		void SetTimestamp(Time time);
-		Time GetTimestamp(void) const;
+} //namespace ns3
 
-		void Print(std::ostream &os) const;
-
-	private:
-		Time m_timestamp;
-
-
-	};
-
-}
-
-#endif
+#endif //HR_WPAN_RETRASMISSION_H

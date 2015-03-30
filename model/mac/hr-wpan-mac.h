@@ -33,6 +33,7 @@
 #include <ns3/hr-wpan-mac-queue.h>
 #include <ns3/mac48-address.h>
 #include <ns3/event-id.h>
+#include <ns3/simulator.h>
 
 #include <ns3/hr-wpan-mac-manager-listener.h>
 
@@ -64,9 +65,6 @@ namespace ns3 {
 		virtual void ReceivePhyPdu(Ptr<Packet> p) ;
 		virtual void ReceivePhyControlMessage(Ptr<HrWpanPhyControlMessage> msg) ;
 
-		void AckWaitTimeout(void);
-		void PrepareRetransmission(void);
-
 		HrWpanMac * GetPointer(void) const;
 
 		void SetPhyProvider(HrWpanPhyProvider * provider);
@@ -86,6 +84,9 @@ namespace ns3 {
 
 		void SetNetDevice(Ptr<HrWpan::HrWpanNetDevice> netDevice);
 		Ptr<HrWpan::HrWpanNetDevice> GetNetDevice() const;
+
+		void AckExpired(Ptr<Packet> packet);
+		void AckReceived(Ptr<Packet> packet);
 
 	protected:
 
@@ -110,10 +111,9 @@ namespace ns3 {
 		Ptr<HrWpan::MacQueue> m_queue;
 
 		Ptr<HrWpan::HrWpanNetDevice> m_netDevice;
-		
-		EventId m_ackWaitTimeout;
 
 		std::map <std::string, HrWpan::MacSapUser *> m_sapUsers;
+		std::map<uint32_t, EventId> m_timeoutPackets;
 		
 
 	};

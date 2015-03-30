@@ -27,26 +27,35 @@
 #include <ns3/object.h>
 #include <ns3/node.h>
 #include "hr-wpan-line.h"
+#include "hr-wpan-link.h"
 
 namespace ns3
 {
 	namespace HrWpan
 	{
 
+		
+
 		class TopologyAggregator : public Object
 		{
 		public:
 			static TypeId GetTypeId();
-
 			TopologyAggregator();
+
+			static TopologyAggregator & getInstance();
+
 			void addLine(Ptr<Line> line);
 			const std::list<Ptr<Line> > & getContainer() const;
-			Ptr<Line>  getLineByNode(Ptr<Node> node) const;
+			Ptr<Link> getLineByNode(Ptr<Node> node);
+
+			void clear();
 
 		protected:
 
+			
+
 			std::list<Ptr<Line> > m_lines;
-			std::map<Ptr<Node>, Ptr<Line> > m_nodes_map;
+			std::map<Ptr<Node>, Ptr<Link> > m_nodes_map;
 
 		};
 
@@ -54,4 +63,4 @@ namespace ns3
 
 } // namespace ns3
 
-#endif
+#endif //HR_WPAN_TOPOLOGY_AGGREGATOR_H

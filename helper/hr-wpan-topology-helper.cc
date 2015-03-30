@@ -284,7 +284,9 @@ namespace ns3
 
 		void TopologyHelper::InstallApplication()
 		{
-			const std::list<Ptr<Line> > lines = m_topologyAggregator->getContainer();
+			NS_LOG_FUNCTION(this);
+
+			const std::list<Ptr<Line> > lines = HrWpan::TopologyAggregator::getInstance().getContainer();
 
 			std::list<Ptr<Line> >::const_iterator it = lines.begin();
 			
@@ -311,19 +313,19 @@ namespace ns3
 				
 					OnOffHelper onoff("ns3::UdpSocketFactory",
 						Address(InetSocketAddress(receiverIpv4, 15)));
-					onoff.SetConstantRate(DataRate("512kb/s"));
+					onoff.SetConstantRate(DataRate("4Mb/s"));
 					
 					ApplicationContainer app = onoff.Install(sender);
 					
 					app.Start(Seconds(1.0));
-					app.Stop(Seconds(10.0));
+					app.Stop(Seconds(4.0));
 
 					PacketSinkHelper sink("ns3::UdpSocketFactory",
 						Address(InetSocketAddress(Ipv4Address::GetAny(), 15)));
 
 					app = sink.Install(receiver);
 					app.Start(Seconds(1.0));
-					app.Stop(Seconds(10.0));
+					app.Stop(Seconds(4.0));
 
 					//Populate arp cache
 					Ptr<ArpCache> arpSender = sender->GetObject<Ipv4L3Protocol>()->GetInterface(1)->GetArpCache();

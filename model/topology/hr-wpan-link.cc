@@ -46,7 +46,7 @@ namespace ns3
 
 		TypeId Link::GetTypeId(void)
 		{
-			static TypeId tid = TypeId("HrWpan::Link").
+			static TypeId tid = TypeId("ns3::HrWpan::Link").
 				SetParent<Line>().
 				AddConstructor<Link>();
 				

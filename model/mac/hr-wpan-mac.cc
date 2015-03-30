@@ -21,11 +21,15 @@
 
 #include "hr-wpan-mac.h"
 #include <ns3/log.h>
+#include <ns3/hash.h>
 #include <ns3/pointer.h>
 #include <ns3/simulator.h>
 
 #include <ns3/hr-wpan-mac-sap-async.h>
 #include <ns3/hr-wpan-net-device.h>
+
+#include <ns3/random-variable-stream.h>
+#include <ns3/double.h>
 
 namespace ns3 {
 
@@ -92,17 +96,6 @@ namespace ns3 {
 		return tid;
 	}
 
-	void HrWpanMac::AckWaitTimeout(void)
-	{
-		NS_LOG_FUNCTION(this);
-
-	}
-
-	void HrWpanMac::PrepareRetransmission(void)
-	{
-		NS_LOG_FUNCTION(this);
-
-	}
 
 	void HrWpanMac::DoDispose()
 	{
@@ -125,7 +118,7 @@ namespace ns3 {
 		
 		HrWpan::MacHeader header;
 
-		p->RemoveHeader(header);
+		p->PeekHeader(header);
 
 		HrWpan::MacSapIndicationParamsAsync indicationParams;
 		indicationParams.m_data = p;
@@ -178,8 +171,7 @@ namespace ns3 {
 	void HrWpanMac::McpsDataRequest(Ptr<Packet> packet)
 	{
 		NS_LOG_FUNCTION(this << packet);
-		
-		//m_phyProvider->SendMacPdu(packet);
+
 		m_queue->Enqueue(packet);
 	}
 
@@ -205,15 +197,38 @@ namespace ns3 {
 	{
 		NS_LOG_FUNCTION(this);
 
+		//Bernoulli probability
+		Ptr<UniformRandomVariable> urv = CreateObject<UniformRandomVariable>();
+		urv->SetAttribute("Max", DoubleValue(1));
+		urv->SetAttribute("Min", DoubleValue(0));
+
+		double val = urv->GetValue();
+
+		if (val < 0.5)
+		{
+			NS_LOG_INFO("Don't Trasmit");
+			return;
+		}
 		
+		NS_LOG_INFO("Trasmit");
+
+		//Removing packet
 		Ptr<Packet> packet = m_queue->Dequeue();
 		
 		if (packet == 0)
 		{
-			NS_LOG_INFO("No packet inside queue!");
+			//NS_LOG_INFO("No packet inside queue!");
 			return;
 		}
 
+		//Setting callback
+		static uint8_t buffer[2000];
+		packet->Serialize(buffer, 2000);
+		uint32_t  hash = Hash32((char*)buffer, 2000);
+		m_timeoutPackets[hash] = Simulator::Schedule(MilliSeconds(100), &HrWpanMac::AckExpired, this, packet);
+		m_phyProvider->SendMacPdu(packet);
+
+		/*
 		Time currentTime = Simulator::Now(); 
 		static Time sfis = MicroSeconds(2);
 		Time transmissionTime = m_netDevice->GetPhy()->CalculateTxTime(packet) + sfis;
@@ -227,6 +242,20 @@ namespace ns3 {
 		m_phyProvider->SendMacPdu(packet);
 
 		Simulator::Schedule(transmissionTime, &HrWpanMac::SendPkt,this, remTime-transmissionTime);
+		*/
+	}
+
+	void HrWpanMac::AckReceived(Ptr<Packet> packet)
+	{
+		NS_LOG_FUNCTION(this);
+		
+		static uint8_t buffer[2000];
+		packet->Serialize(buffer, 2000);
+		uint32_t  hash = Hash32((char*)buffer, 2000);
+
+		m_timeoutPackets.at(hash);
+
+		Simulator::Remove(m_timeoutPackets[hash]);
 	}
 
 	void HrWpanMac::SetAddress(const Mac48Address & mac)
@@ -259,6 +288,22 @@ namespace ns3 {
 
 		return m_netDevice;
 
+	}
+
+	void HrWpanMac::AckExpired(Ptr<Packet> packet)
+	{
+		NS_LOG_FUNCTION(this << packet);
+		
+		static uint8_t buffer[2000];
+		packet->Serialize(buffer, 2000);
+		uint32_t  hash = Hash32((char*)buffer, 2000);
+
+		m_timeoutPackets.erase(hash);
+
+		//NS_LOG_INFO("Packet expired" << packet << this);
+		m_queue->Enqueue(packet);
+
+		return;
 	}
 
 } //namespace ns3

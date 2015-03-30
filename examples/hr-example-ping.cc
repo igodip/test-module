@@ -47,20 +47,12 @@ int main(int argc, char ** argv)
 	//LogComponentEnable("HrWpanPhyTxBusyState", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpanPhyRxOnState", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpanPhyRxBusyState", LOG_LEVEL_ALL);
-	//LogComponentEnable("HrWpanPhyTxOnState", LOG_LEVEL_ALL);
-	//LogComponentEnable("HrWpanPhyTxBusyState", LOG_LEVEL_ALL);
-	//LogComponentEnable("HrWpanMacSapAsync", LOG_ALL);
-	//LogComponentEnable("HrWpanPhy", LOG_ALL);
-	//LogComponentEnable("SingleModelSpectrumChannel", LOG_LEVEL_ALL);
-	//LogComponentEnable("HrWpan::SectorAntenna", LOG_LEVEL_ALL);
-	//LogComponentEnable("HrWpan::TopologyHelper", LOG_LEVEL_ALL);
-	//LogComponentEnable("HrWpanObstaclePropagationModel", LOG_LEVEL_ALL);
 	
 
 	NodeContainer nodeContainer;
 	nodeContainer.Create(4);
 
-	Ptr<HrWpan::TopologyAggregator> topologyAggregator = CreateObject<HrWpan::TopologyAggregator>();
+	Ptr<HrWpan::TopologyAggregator> topologyAggregator = &HrWpan::TopologyAggregator::getInstance();
 	HrWpan::TopologyHelper topologyHelper(20, 20,3,topologyAggregator);
 	HrWpan::HrWpanHelper wpanHelper(topologyAggregator);
 

@@ -24,6 +24,7 @@
 #include <ns3/hr-wpan-mac.h>
 #include <ns3/hr-wpan-net-device.h>
 #include <ns3/hr-wpan-timestamp-tag.h>
+#include <ns3/hr-wpan-topology-aggregator.h>
 #include <ns3/simulator.h>
 
 namespace ns3
@@ -48,12 +49,22 @@ namespace ns3
 			//Check if the packet is for me
 			//Otherwise don't forward
 
-			NS_LOG_INFO("Address received " << paramsAsync.m_trgtId);
+			//NS_LOG_INFO("Address received " << paramsAsync.m_trgtId);
 
 			if (paramsAsync.m_trgtId == m_netDevice->GetMac()->GetDevId() || paramsAsync.m_trgtId == HrWpanDevId("FF"))
 			{
 				//Set the trace to sent
-				NS_LOG_INFO("Packet being forwarded");
+				//NS_LOG_INFO("Packet being forwarded");
+
+				//Get the mac
+				Ptr<Link> link = HrWpan::TopologyAggregator::getInstance().getLineByNode(m_netDevice->GetNode());
+				
+				Ptr<HrWpanNetDevice> senderDev = DynamicCast<HrWpanNetDevice>(link->GetSender()->GetDevice(0));
+				
+				NS_LOG_INFO(senderDev->GetMac()->m_timeoutPackets.size());
+				
+
+				senderDev->GetMac()->AckReceived(paramsAsync.m_data);
 
 				m_mac->m_macRxTrace(paramsAsync.m_data);
 				m_netDevice->Receive(paramsAsync.m_data, paramsAsync.m_orgId);

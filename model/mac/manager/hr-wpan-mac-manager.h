@@ -26,6 +26,8 @@
 #include <ns3/packet.h>
 #include <ns3/backoff.h>
 
+#include <map>
+
 namespace ns3
 {
 	class HrWpanMac;
@@ -38,13 +40,16 @@ namespace ns3
 			static TypeId GetTypeId();
 			
 
+
 		protected:
 
+			
+
 			Ptr<HrWpanMac> m_mac;
-			Backoff backoff;
+			
 
 		};
 	}
 }
 
-#endif
+#endif //HR_WPAN_MAC_MANAGER_H

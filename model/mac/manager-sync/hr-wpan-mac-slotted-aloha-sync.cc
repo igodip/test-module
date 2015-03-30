@@ -43,7 +43,7 @@ namespace ns3
 		MacSlottedAlohaSync::MacSlottedAlohaSync()
 		{
 			m_startTime = Seconds(1.0);
-			m_endTime = Seconds(10.0);
+			m_endTime = Seconds(4.0);
 			m_timeSlot = MilliSeconds(1.0);
 		}
 
@@ -66,8 +66,6 @@ namespace ns3
 			}
 
 			m_timeSlotNumber++;
-
-			
 
 			if (nextTrigger < m_endTime)
 			{
