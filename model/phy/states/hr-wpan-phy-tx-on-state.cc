@@ -63,6 +63,7 @@ namespace ns3
 		m_hrWpanPhy->m_channel->StartTx(params);
 
 		m_hrWpanPhy->m_currentState = m_hrWpanPhy->m_stateFactory->GetTxBusyState();
+		
 		Simulator::Schedule(params->duration, &HrWpanPhy::EndTx, m_hrWpanPhy->GetPointer(), params);
 
 	}

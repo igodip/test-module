@@ -29,6 +29,23 @@ namespace ns3
 {
 	namespace HrWpan
 	{
+		class RetrasmissionTag : public Tag {
+		public:
+			static TypeId GetTypeId(void);
+			virtual TypeId GetInstanceTypeId(void) const;
+
+			virtual uint32_t GetSerializedSize(void) const;
+			virtual void Serialize(TagBuffer i) const;
+			virtual void Deserialize(TagBuffer i);
+
+			// these are our accessors to our tag structure
+			void incCounter();
+			uint8_t GetCounter(void) const;
+
+			void Print(std::ostream &os) const;
+
+		private:
+			uint8_t m_counter;
 
 	} //namespace HrWpan
 

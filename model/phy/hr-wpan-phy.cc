@@ -48,7 +48,7 @@ namespace ns3 {
 	{
 		NS_LOG_FUNCTION(this);
 
-		m_txPsd = m_psdHelper.CreateTxPowerSpectralDensity(40, 1);
+		m_txPsd = m_psdHelper.CreateTxPowerSpectralDensity(4, 1);
 		m_stateFactory = CreateObject<HrWpanPhyStateFactory>(GetObject<HrWpanPhy>());
 		m_currentState = m_stateFactory->GetIdleState();
 

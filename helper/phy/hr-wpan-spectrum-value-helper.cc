@@ -105,6 +105,8 @@ namespace ns3 {
 		
 		totalAvgPower *= 3.0e6;
 
+		totalAvgPower = 10 * log10(1000 * totalAvgPower);
+
 		return totalAvgPower;
 	}
 

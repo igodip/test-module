@@ -26,6 +26,7 @@
 #include <ns3/simulator.h>
 
 #include <ns3/hr-wpan-spectrum-value-helper.h>
+#include <ns3/spectrum-value.h>
 
 namespace ns3
 {
@@ -57,6 +58,11 @@ namespace ns3
 
 		Ptr<Packet> p = (hrWpanRxParams->packetBurst->GetPackets()).front();
 		m_hrWpanPhy->m_currentPacket = hrWpanRxParams;
+
+		Ptr<SpectrumValue> spectrumValue = hrWpanRxParams->psd;
+
+		NS_LOG_INFO(HrWpanSpectrumValueHelper::TotalAvgPower(spectrumValue, 1));
+
 
 		NS_ASSERT(p != 0);
 		m_hrWpanPhy->m_phyRxBeginTrace(p);

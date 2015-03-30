@@ -63,6 +63,7 @@ namespace ns3
 		double ObstaclePropagationLossModel::DoCalcRxPower(double txPowerDbm, Ptr<MobilityModel> a, Ptr<MobilityModel> b) const
 		{
 			NS_LOG_FUNCTION(this << txPowerDbm << a << b);
+
 			
 			Ptr<Line> line = CreateObject<Line>(a->GetPosition().x, a->GetPosition().y,b->GetPosition().x,
 				b->GetPosition().y);
@@ -75,6 +76,7 @@ namespace ns3
 
 			for (; i != lines.end();++i)
 			{
+
 
 				Ptr<Obstacle> obstacle = DynamicCast<Obstacle>(*i);
 
@@ -93,6 +95,7 @@ namespace ns3
 			}
 
 			NS_LOG_INFO("Line of sight!");
+			
 			return txPowerDbm;
 
 		}
