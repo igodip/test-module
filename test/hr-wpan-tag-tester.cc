@@ -15,41 +15,25 @@
 * along with this program; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *
-* Author:
-*	Igor Di Paolo <igor.di.paolo@gmail.com>
+* Author: Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef HR_WPAN_RETRASMISSION_H
-#define HR_WPAN_RETRASMISSION_H
+#include <ns3/log.h>
+#include <ns3/test.h>
 
-#include <ns3/object.h>
-#include <ns3/tag.h>
+using namespace ns3;
 
-namespace ns3
+NS_LOG_COMPONENT_DEFINE("HrWpanTopologyTestCase");
+
+/********************* TEST CASE *********************/
+
+class HrWpanTopologyTestCase : public TestCase
 {
-	namespace HrWpan
-	{
-		class RetrasmissionTag : public Tag {
-		public:
-			static TypeId GetTypeId(void);
-			virtual TypeId GetInstanceTypeId(void) const;
+public:
+	HrWpanTopologyTestCase();
+	virtual ~HrWpanTopologyTestCase();
 
-			virtual uint32_t GetSerializedSize(void) const;
-			virtual void Serialize(TagBuffer i) const;
-			virtual void Deserialize(TagBuffer i);
-
-			// these are our accessors to our tag structure
-			void IncCounter();
-			uint8_t GetCounter(void) const;
-
-			void Print(std::ostream &os) const;
-
-		private:
-			uint8_t m_counter;
-		};
-
-	} //namespace HrWpan
-
-} //namespace ns3
-
-#endif //HR_WPAN_RETRASMISSION_H
+private:
+	virtual void DoRun(void);
+};
+//

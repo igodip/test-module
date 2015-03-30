@@ -35,45 +35,42 @@ namespace ns3
 				"Retrasmission attempt counter!",
 				EmptyAttributeValue(),
 				MakeIntegerAccessor(&RetrasmissionTag::m_counter),
-				MakeIntegerChecker());
+				MakeIntegerChecker<uint8_t>());
 			return tid;
 		}
 
-		TypeId	TimestampTag::GetInstanceTypeId(void) const
+		TypeId	RetrasmissionTag::GetInstanceTypeId(void) const
 		{
 			return GetTypeId();
 		}
 
-		uint32_t TimestampTag::GetSerializedSize(void) const
+		uint32_t RetrasmissionTag::GetSerializedSize(void) const
 		{
-			return 8;
+			return 1;
 		}
 
-		void TimestampTag::Serialize(TagBuffer i) const
+		void RetrasmissionTag::Serialize(TagBuffer i) const
 		{
-			int64_t t = m_timestamp.GetNanoSeconds();
-			i.Write((const uint8_t *)&t, 8);
+			i.WriteU8(m_counter);
 		}
 
-		void TimestampTag::Deserialize(TagBuffer i)
+		void RetrasmissionTag::Deserialize(TagBuffer i)
 		{
-			int64_t t;
-			i.Read((uint8_t *)&t, 8);
-			m_timestamp = NanoSeconds(t);
+			m_counter = i.ReadU8();	
 		}
 
-		void TimestampTag::SetTimestamp(Time time)
+		void RetrasmissionTag::IncCounter()
 		{
-			m_timestamp = time;
+			m_counter++;
 		}
-		Time TimestampTag::GetTimestamp(void) const
+		uint8_t RetrasmissionTag::GetCounter(void) const
 		{
-			return m_timestamp;
+			return m_counter;
 		}
 
-		void TimestampTag::Print(std::ostream &os) const
+		void RetrasmissionTag::Print(std::ostream &os) const
 		{
-			os << "t=" << m_timestamp;
+			os << "rt=" << m_counter;
 		}
 	} // namespace HrWpan
 
