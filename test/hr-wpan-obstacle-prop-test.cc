@@ -25,11 +25,15 @@
 #include <ns3/mobility-model.h>
 #include <ns3/hr-wpan-topology-aggregator.h>
 #include <ns3/constant-position-mobility-model.h>
+
+#include <ns3/hr-wpan-devid-helper.h>
 #include <ns3/hr-wpan-dev-id.h>
 #include <ns3/node-container.h>
 #include <ns3/hr-wpan-helper.h>
 #include <ns3/hr-wpan-link.h>
 #include <ns3/hr-wpan-obstacle.h>
+
+#include <ns3/mac48-address.h>
 #include <ns3/ptr.h>
 #include <ns3/log.h>
 
@@ -53,6 +57,8 @@ HrWpanObstaclePropTestCase::HrWpanObstaclePropTestCase()
 	LogComponentEnable("HrWpanObstaclePropTest", LOG_LEVEL_ALL);
 	LogComponentEnable("SingleModelSpectrumChannel", LOG_LEVEL_ALL);
 	LogComponentEnable("HrWpanObstaclePropagationModel", LOG_LEVEL_ALL);
+	LogComponentEnable("HrWpanMacSapAsync", LOG_LEVEL_ALL);
+	LogComponentEnable("HrWpanNetDevice", LOG_LEVEL_ALL);
 
 }
 
@@ -66,7 +72,7 @@ void HrWpanObstaclePropTestCase::DoRun(void)
 	NodeContainer nodeContainer;
 	nodeContainer.Create(2);
 
-	Ptr<HrWpan::TopologyAggregator> topologyAggregator = CreateObject<HrWpan::TopologyAggregator>();
+	Ptr<HrWpan::TopologyAggregator> topologyAggregator = &HrWpan::TopologyAggregator::getInstance();
 
 	HrWpan::HrWpanHelper hrWpanHelper(topologyAggregator);
 
@@ -96,11 +102,13 @@ void HrWpanObstaclePropTestCase::DoRun(void)
 	Ptr<NetDevice> netDevice1 = netDeviceContainer.Get(0);
 	Ptr<NetDevice> netDevice2 = netDeviceContainer.Get(1);
 
-	HrWpan::DevId addr1 = HrWpan::DevId::Allocate();
-	HrWpan::DevId addr2 = HrWpan::DevId::Allocate();
+	Mac48Address addr1 = Mac48Address::Allocate();
+	Mac48Address addr2 = Mac48Address::Allocate();
 
 	netDevice1->SetAddress(addr1);
 	netDevice2->SetAddress(addr2);
+
+	HrWpan::DevIdHelper::GetInstance().Install(netDeviceContainer);
 
 	Ptr<Packet> p = Create<Packet>(20);
 
@@ -129,12 +137,12 @@ private:
 HrWpanNoObstaclePropTestCase::HrWpanNoObstaclePropTestCase()
 	: TestCase("Testing the signal propagation through obstacles")
 {
-	LogComponentEnableAll(LOG_PREFIX_FUNC);
+	//LogComponentEnableAll(LOG_PREFIX_FUNC);
 
 	LogComponentEnable("HrWpanObstaclePropTest", LOG_LEVEL_ALL);
 	LogComponentEnable("SingleModelSpectrumChannel", LOG_LEVEL_ALL);
 	LogComponentEnable("HrWpanObstaclePropagationModel", LOG_LEVEL_ALL);
-	LogComponentEnable("HrWpanPhy", LOG_LEVEL_ALL);
+	LogComponentEnable("HrWpanNetDevice", LOG_LEVEL_ALL);
 
 }
 
@@ -148,7 +156,7 @@ void HrWpanNoObstaclePropTestCase::DoRun(void)
 	NodeContainer nodeContainer;
 	nodeContainer.Create(2);
 
-	Ptr<HrWpan::TopologyAggregator> topologyAggregator = CreateObject<HrWpan::TopologyAggregator>();
+	Ptr<HrWpan::TopologyAggregator> topologyAggregator = &HrWpan::TopologyAggregator::getInstance();
 
 	HrWpan::HrWpanHelper hrWpanHelper(topologyAggregator);
 
@@ -178,11 +186,13 @@ void HrWpanNoObstaclePropTestCase::DoRun(void)
 	Ptr<NetDevice> netDevice1 = netDeviceContainer.Get(0);
 	Ptr<NetDevice> netDevice2 = netDeviceContainer.Get(1);
 
-	HrWpan::DevId addr1 = HrWpan::DevId::Allocate();
-	HrWpan::DevId addr2 = HrWpan::DevId::Allocate();
+	Mac48Address addr1 = Mac48Address::Allocate();
+	Mac48Address addr2 = Mac48Address::Allocate();
 
 	netDevice1->SetAddress(addr1);
 	netDevice2->SetAddress(addr2);
+
+	HrWpan::DevIdHelper::GetInstance().Install(netDeviceContainer);
 
 	Ptr<Packet> p = Create<Packet>(20);
 

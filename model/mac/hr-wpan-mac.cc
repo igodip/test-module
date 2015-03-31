@@ -128,6 +128,7 @@ namespace ns3 {
 		HrWpan::MacSapIndicationParamsAsync indicationParams;
 		indicationParams.m_data = p;
 		indicationParams.m_orgId = header.getSrcAddress();
+		NS_LOG_INFO(indicationParams.m_orgId);
 		indicationParams.m_trgtId = header.getDstAddress();
 
 		//Switch but for now only forward

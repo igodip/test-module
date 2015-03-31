@@ -81,7 +81,9 @@ namespace ns3
 		{
 			NS_LOG_FUNCTION(this << devId);
 			NS_LOG_INFO(m_devIdToMac.size());
-			return m_devIdToMac.at(devId);
+			Mac48Address address = m_devIdToMac.at(devId);
+			NS_LOG_INFO("ciao");
+			return address;
 
 		}
 

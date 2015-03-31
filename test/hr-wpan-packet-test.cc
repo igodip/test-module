@@ -51,7 +51,7 @@ void
 HrWpanPacketTestCase::DoRun(void)
 {
 	
-	const char * addr = "11::12";
+	const char * addr = "11:12";
 
 	HrWpan::MacHeader macHdr(HrWpan::MacHeader::HRWPAN_FRAME_BEACON, 0);
 	macHdr.SetSecDisable();
@@ -69,19 +69,19 @@ HrWpanPacketTestCase::DoRun(void)
 
 	packet->AddHeader(macHdr); //+10 bytes fixed
 	std::cout << "<--Mac header added " << std::endl;
-	NS_TEST_ASSERT_MSG_EQ(packet->GetSize(), 30, "Packet wrong size after macHdr addition!");
+	NS_TEST_ASSERT_MSG_EQ(packet->GetSize(), 32, "Packet wrong size after macHdr addition!");
 
 	//macTrailer.
 	packet->AddTrailer(macTrailer); //+4 bytes fixed
 	std::cout << "<-- Mac trailer added " << std::endl;
-	NS_TEST_ASSERT_MSG_EQ(packet->GetSize(), 34, "Packet wrong size after macTrailer addition!");
+	NS_TEST_ASSERT_MSG_EQ(packet->GetSize(), 36, "Packet wrong size after macTrailer addition!");
 
 	uint32_t size = packet->GetSerializedSize();
 	uint8_t buffer[size];
 	packet->Serialize(buffer, size);
 	Ptr<Packet> p2 = Create<Packet>(buffer, size, true);
 
-	NS_TEST_ASSERT_MSG_EQ(p2->GetSize(), 34, "Packet wrong size after deserialization");
+	NS_TEST_ASSERT_MSG_EQ(p2->GetSize(), 36, "Packet wrong size after deserialization");
 
 	HrWpan::MacHeader receivedMacHeader;
 	p2->RemoveHeader(receivedMacHeader);

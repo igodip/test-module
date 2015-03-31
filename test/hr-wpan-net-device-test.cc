@@ -47,8 +47,8 @@ HrWpanNetDeviceTestCase::~HrWpanNetDeviceTestCase()
 
 void HrWpanNetDeviceTestCase::DoRun(void)
 {
-	Ptr<HrWpan::TopologyAggregator > aggregator = CreateObject<HrWpan::TopologyAggregator>();
-	HrWpan::HrWpanHelper helper(aggregator);
+	//Ptr<HrWpan::TopologyAggregator > aggregator = CreateObject<HrWpan::TopologyAggregator>();
+	//HrWpan::HrWpanHelper helper(aggregator);
 
 	NodeContainer nodeContainer;
 	nodeContainer.Create(2);

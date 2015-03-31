@@ -177,10 +177,11 @@ namespace ns3{
 			os.setf(std::ios::hex, std::ios::basefield);
 			os.fill('0');
 
-			for (uint8_t i = 0; i < 2; i++)
+			for (uint8_t i = 0; i < 1; i++)
 			{
 				os << std::setw(2) << (uint32_t)ad[i] << ":";
 			}
+			os << std::setw(2) << (uint32_t)ad[1];
 			os.setf(std::ios::dec, std::ios::basefield);
 			os.fill(' ');
 			return os;

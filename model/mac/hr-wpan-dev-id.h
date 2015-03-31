@@ -152,12 +152,12 @@ namespace ns3 {
 
 		inline bool operator != (const DevId &a, const DevId &b)
 		{
-			return memcmp(a.m_address, b.m_address, 6) != 0;
+			return memcmp(a.m_address, b.m_address, 2) != 0;
 		}
 
 		inline bool operator < (const DevId &a, const DevId & b)
 		{
-			return memcmp(a.m_address, b.m_address, 6) < 0;
+			return memcmp(a.m_address, b.m_address, 2) < 0;
 		}
 
 		std::ostream& operator<<(std::ostream & os, const DevId & address);
