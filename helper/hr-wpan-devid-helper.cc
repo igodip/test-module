@@ -80,9 +80,7 @@ namespace ns3
 		Mac48Address DevIdHelper::GetMacByDevId(const DevId & devId) const
 		{
 			NS_LOG_FUNCTION(this << devId);
-			NS_LOG_INFO(m_devIdToMac.size());
 			Mac48Address address = m_devIdToMac.at(devId);
-			NS_LOG_INFO("ciao");
 			return address;
 
 		}
