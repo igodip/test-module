@@ -28,6 +28,7 @@
 #include <ns3/hr-wpan-link.h>
 #include <ns3/constant-position-mobility-model.h>
 #include <ns3/hr-wpan-dev-id.h>
+#include <ns3/mac48-address.h>
 
 using namespace ns3;
 
@@ -52,6 +53,7 @@ HrWpanTopologyTestCase::HrWpanTopologyTestCase()
 	//LogComponentEnable("HrWpan::TopologyHelper", LOG_ALL);
 	//LogComponentEnable("HrWpan::Link", LOG_ALL);
 	//LogComponentEnable("HrWpanTopologyTestCase", LOG_ALL);
+	
 
 }
 
@@ -63,10 +65,13 @@ HrWpanTopologyTestCase::~HrWpanTopologyTestCase()
 void HrWpanTopologyTestCase::DoRun(void)
 {
 
-	Ptr<HrWpan::TopologyAggregator> topologyAggregator = CreateObject<HrWpan::TopologyAggregator>();
+	Ptr<HrWpan::TopologyAggregator> topologyAggregator = &HrWpan::TopologyAggregator::getInstance();
 
 	NodeContainer nodes;
 	nodes.Create(20);
+
+	HrWpan::HrWpanHelper wpanHelper(topologyAggregator);
+	wpanHelper.Install(nodes);
 
 	HrWpan::TopologyHelper topologyHelper(10, 10, 3, topologyAggregator);
 	topologyHelper.Install(nodes);
@@ -90,7 +95,6 @@ HrWpanPlacingObstaclesTestCase::HrWpanPlacingObstaclesTestCase()
 	: TestCase("Placing obstacle test")
 {
 	//LogComponentEnableAll(LOG_PREFIX_FUNC);
-	//LogComponentEnable("HrWpan::TopologyHelper", LOG_ALL);
 	//LogComponentEnable("HrWpan::TopologyAggregator", LOG_ALL);
 	//LogComponentEnable("HrWpanTopologyTestCase", LOG_ALL);
 	//LogComponentEnable("ObjectBase", LOG_ALL);
@@ -106,7 +110,7 @@ HrWpanPlacingObstaclesTestCase::~HrWpanPlacingObstaclesTestCase()
 void HrWpanPlacingObstaclesTestCase::DoRun()
 {
 
-	Ptr<HrWpan::TopologyAggregator> topologyAggregator = CreateObject<HrWpan::TopologyAggregator>();
+	Ptr<HrWpan::TopologyAggregator> topologyAggregator = &HrWpan::TopologyAggregator::getInstance();
 
 	HrWpan::TopologyHelper topologyHelper(10, 10, 3, topologyAggregator);
 	topologyHelper.PlaceObstacle(20);
@@ -128,7 +132,7 @@ private:
 HrWpanPlacingNodesTestCase::HrWpanPlacingNodesTestCase()
 	: TestCase("Placing nodes Test")
 {
-
+	//LogComponentEnable("HrWpan::TopologyHelper", LOG_ALL);
 }
 
 HrWpanPlacingNodesTestCase::~HrWpanPlacingNodesTestCase()
@@ -140,10 +144,13 @@ HrWpanPlacingNodesTestCase::~HrWpanPlacingNodesTestCase()
 void HrWpanPlacingNodesTestCase::DoRun()
 {
 
-	Ptr<HrWpan::TopologyAggregator> topologyAggregator = CreateObject<HrWpan::TopologyAggregator>();
+	Ptr<HrWpan::TopologyAggregator> topologyAggregator = &HrWpan::TopologyAggregator::getInstance();
 
 	NodeContainer nodes;
 	nodes.Create(20);
+
+	HrWpan::HrWpanHelper wpanHelper(topologyAggregator);
+	wpanHelper.Install(nodes);
 
 	HrWpan::TopologyHelper topologyHelper(10, 10, 3, topologyAggregator);
 	topologyHelper.Install(nodes);
@@ -173,9 +180,9 @@ HrWpanSteeringAntennaTestCase::HrWpanSteeringAntennaTestCase(Vector senderVec, V
 	//LogComponentEnable("HrWpanTopologyTestCase", LOG_ALL);
 	//LogComponentEnable("HrWpan::TopologyHelper", LOG_ALL);
 	//LogComponentEnable("SingleModelSpectrumChannel", LOG_ALL);
-	LogComponentEnable("HrWpan::SectorAntenna", LOG_ALL);
+	//LogComponentEnable("HrWpan::SectorAntenna", LOG_ALL);
 
-	topologyAggregator = CreateObject<HrWpan::TopologyAggregator>();
+	topologyAggregator = &HrWpan::TopologyAggregator::getInstance();
 
 	nodeContainer.Create(2);
 
@@ -201,7 +208,7 @@ HrWpanSteeringAntennaTestCase::HrWpanSteeringAntennaTestCase(Vector senderVec, V
 	link->SetSender(nodeContainer.Get(0));
 	link->SetReceiver(nodeContainer.Get(1));
 
-
+	//NS_LOG_INFO("Son figo!");
 
 }
 
@@ -219,7 +226,7 @@ void HrWpanSteeringAntennaTestCase::DoRun()
 
 	HrWpan::TopologyHelper::steerAntennas(link);
 
-	netDevCont.Get(0)->Send(Create<Packet>(20), HrWpan::DevId::GetBroadcast(), 1);
+	netDevCont.Get(0)->Send(Create<Packet>(20), Mac48Address::GetBroadcast(), 1);
 
 
 }

@@ -77,8 +77,6 @@ namespace ns3
 
 			double phi = a.phi - m_orientation;
 
-			NS_LOG_INFO("Phi = " << phi << " " << m_orientation);
-
 			// make sure phi is in (-pi, pi]
 			while (phi <= -M_PI)
 			{
@@ -90,6 +88,7 @@ namespace ns3
 			}
 
 			NS_LOG_LOGIC("phi = " << phi);
+			NS_LOG_LOGIC("Beamwidth = " << m_beamwidth);
 
 			double epsilon_w = pow(10.0, m_epsilon / 10.0) ;
 			

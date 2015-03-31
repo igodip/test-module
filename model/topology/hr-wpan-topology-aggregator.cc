@@ -83,6 +83,8 @@ namespace ns3
 
 		void TopologyAggregator::clear()
 		{
+			NS_LOG_FUNCTION(this);
+
 			m_lines.clear();
 			m_nodes_map.clear();
 		}

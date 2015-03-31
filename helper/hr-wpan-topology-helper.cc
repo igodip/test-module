@@ -76,6 +76,9 @@ namespace ns3
 			m_randomRectanglePositionAllocator->SetX(m_uRandomVar_x);
 			m_randomRectanglePositionAllocator->SetY(m_uRandomVar_y);
 
+			m_linkMinSize = 1.0;
+			m_linkMaxSize = 10.0;
+
 			
 		}
 
@@ -100,12 +103,26 @@ namespace ns3
 
 			Vector sender_point;
 			Vector receiver_point;
+			double distance = 0;
 
 			NS_LOG_INFO("Placing a link");
 
 			sender_point = m_randomRectanglePositionAllocator->GetNext();
-			receiver_point = m_randomRectanglePositionAllocator->GetNext();
+			do {
+				
+				receiver_point = m_randomRectanglePositionAllocator->GetNext();
+
+				double dx = receiver_point.x - sender_point.x;
+				double dy = receiver_point.y - sender_point.y;
+
+				distance = sqrt(dx*dx + dy*dy);
+
+				NS_LOG_INFO("Distance = " << distance);
+
+			} while (distance <= m_linkMinSize || distance >= m_linkMaxSize);
 			
+			
+
 			addPosition(sender, sender_point);
 			addPosition(receiver, receiver_point);
 
@@ -276,9 +293,9 @@ namespace ns3
 			NS_LOG_INFO("Angle = " << angle);
 
 			senderAntenna->SetAttribute("Orientation", DoubleValue(angle));
-			senderAntenna->SetAttribute("Beamwidth", DoubleValue(DegreesToRadians(3)));
+			
 			receiverAntenna->SetAttribute("Orientation", DoubleValue(angle+M_PI));
-			senderAntenna->SetAttribute("Beamwidth", DoubleValue(DegreesToRadians(3)));
+			
 
 		}
 

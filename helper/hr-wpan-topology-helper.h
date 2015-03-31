@@ -74,6 +74,9 @@ namespace ns3
 			static char get_line_intersection(double p0_x, double p0_y, double p1_x, double p1_y,
 				double p2_x, double p2_y, double p3_x, double p3_y);
 
+			double m_linkMaxSize;
+			double m_linkMinSize;
+
 		};
 
 	} // namespace HrWpan

@@ -18,3 +18,6 @@
 * Author:
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
+
+#include "hr-wpan-net-device-event-manager.h"
+

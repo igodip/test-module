@@ -194,7 +194,9 @@ namespace ns3
 		double MacStatHelper::getAvgRtsPackets() const
 		{
 			NS_LOG_FUNCTION(this);
-
+			if (getRx() == 0){
+				return 0;
+			}
 			return m_rtPackets / double(getRx());
 		}
 
