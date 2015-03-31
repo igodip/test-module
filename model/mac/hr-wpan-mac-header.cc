@@ -45,9 +45,7 @@ namespace ns3 {
 		}
 
 
-		MacHeader::MacHeader(enum FrameType wpanMacType,
-			uint8_t seqNum)
-		
+		MacHeader::MacHeader(enum FrameType wpanMacType, uint8_t seqNum)
 		{
 
 			NS_LOG_FUNCTION(this);
@@ -320,28 +318,28 @@ namespace ns3 {
 			m_fctrlReserved = res;
 		}
 
-		void MacHeader::setDstAddress(const HrWpanDevId & wpanDevId)
+		void MacHeader::setDstAddress(const HrWpan::DevId & wpanDevId)
 		{
 			NS_LOG_FUNCTION(this);
 
 			m_addrDstId = wpanDevId;
 		}
 
-		HrWpanDevId MacHeader::getDstAddress(void) const
+		HrWpan::DevId MacHeader::getDstAddress(void) const
 		{
 			NS_LOG_FUNCTION(this);
 
 			return m_addrDstId;
 		}
 
-		void MacHeader::setSrcAddress(const HrWpanDevId & wpanDevId)
+		void MacHeader::setSrcAddress(const HrWpan::DevId & wpanDevId)
 		{
 			NS_LOG_FUNCTION(this);
 
 			m_addrSrcId = wpanDevId;
 		}
 
-		HrWpanDevId MacHeader::getSrcAddress(void) const
+		HrWpan::DevId MacHeader::getSrcAddress(void) const
 		{
 
 			NS_LOG_FUNCTION(this);
@@ -410,17 +408,17 @@ namespace ns3 {
 		{
 			/*
 			* Each mac header will have
-			* Frame Control      : 2 octet
+			* Frame Control       : 2 octet
 			* PNID				  : 2 Octet
-			* DestId			  : 1 Octet
-			* SrcId			  : 1 Octet
-			* FragmatationControl:	3 Octet
+			* DestId			  : 2 Octet
+			* SrcId			      : 2 Octet
+			* FragmatationControl :	3 Octet
 			* Stream index		  : 1 octet
 			*/
 
 			NS_LOG_FUNCTION(this);
 
-			uint32_t size = 10;
+			uint32_t size = 12;
 
 			return size;
 		}
@@ -440,12 +438,8 @@ namespace ns3 {
 
 			i.WriteHtolsbU16(getPicoNetId());
 
-			uint8_t dstAddr, srcAddr;
-			getDstAddress().CopyTo(dstAddr);
-			getSrcAddress().CopyTo(srcAddr);
-
-			i.WriteU8(dstAddr);
-			i.WriteU8(srcAddr);
+			WriteTo(i, getDstAddress());
+			WriteTo(i, getSrcAddress());
 
 			//Fragmentation control
 			i.WriteU8(0);
@@ -470,16 +464,13 @@ namespace ns3 {
 			uint8_t picoNetId = i.ReadLsbtohU16();
 			setPicoNetId(picoNetId);
 
-			HrWpanDevId dstAddrId, srcAddrId;
+			Address dstAddrId, srcAddrId;
 
-			uint8_t dstAddr = i.ReadU8();
+			ReadFrom(i, dstAddrId, 2);
+			ReadFrom(i, srcAddrId, 2);
 
-			dstAddrId.CopyFrom(dstAddr);
-			setDstAddress(dstAddrId);
-
-			uint8_t srcAddr = i.ReadU8();
-			srcAddrId.CopyFrom(srcAddr);
-			setSrcAddress(srcAddrId);
+			setDstAddress(DevId::convertFrom(dstAddrId));
+			setSrcAddress(DevId::convertFrom(srcAddrId));
 
 			//Fragmentation control
 			//TODO

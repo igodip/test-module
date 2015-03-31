@@ -36,14 +36,10 @@ namespace ns3
 		{
 			NS_LOG_FUNCTION(this);
 
-			chars[0] = 0x30;
-			chars[1] = 0x30;
-			chars[2] = '\0';
-
 			//Populate with broadcast
-			HrWpanDevId broadcastId = HrWpanDevId("FF");
-			m_devIdToMac[broadcastId] = Mac48Address::GetBroadcast();
-			m_macToDevId[Mac48Address::GetBroadcast()] = broadcastId;
+			
+			m_devIdToMac[DevId::GetBroadcast()] = Mac48Address::GetBroadcast();
+			m_macToDevId[Mac48Address::GetBroadcast()] = DevId::GetBroadcast();
 
 		}
 
@@ -53,49 +49,20 @@ namespace ns3
 
 			for (NetDeviceContainer::Iterator i = ndc.Begin(); i != ndc.End(); ++i)
 			{
-				incrementAddress();
+				
 				Ptr<HrWpan::HrWpanNetDevice> netDevice = DynamicCast<HrWpan::HrWpanNetDevice>(*i);
 				
-				netDevice->GetMac()->SetDevId(getAddress());
-				m_devIdToMac[getAddress()] = netDevice->GetMac()->GetAddress();
-				m_macToDevId[netDevice->GetMac()->GetAddress()] = getAddress();
+				DevId devId = DevId::Allocate();
+
+				netDevice->GetMac()->SetDevId(devId);
+
+				//populate
+				m_devIdToMac[devId] = netDevice->GetMac()->GetAddress();
+				m_macToDevId[netDevice->GetMac()->GetAddress()] = devId;
 				
 			}
 		}
 
-		void DevIdHelper::incrementAddress()
-		{
-			NS_LOG_FUNCTION(this);
-			chars[1]++;
-
-			if (chars[1] == 0x3A)
-			{
-				chars[1] = 0x41;
-			}
-
-			if (chars[1] == 0x47)
-			{
-				chars[1] = 0x30;
-
-				chars[0]++;
-				if (chars[0] == 0x3A)
-				{
-					chars[0] = 0x41;
-				}
-
-				if (chars[0] == 0x46)
-				{
-					chars[0] = 0x30;
-				}
-
-			}
-		}
-
-		char * DevIdHelper::getAddress() const
-		{
-			NS_LOG_FUNCTION(this << (const char * )chars);
-			return (char*) chars;
-		}
 
 		DevIdHelper & DevIdHelper::GetInstance()
 		{
@@ -103,14 +70,14 @@ namespace ns3
 			return devIdHelper;
 		}
 
-		HrWpanDevId DevIdHelper::GetDevIdByMac(const Mac48Address & mac) const
+		DevId DevIdHelper::GetDevIdByMac(const Mac48Address & mac) const
 		{
 			NS_LOG_FUNCTION(this << mac);
 			return m_macToDevId.at(mac);
 
 		}
 
-		Mac48Address DevIdHelper::GetMacByDevId(const HrWpanDevId & devId) const
+		Mac48Address DevIdHelper::GetMacByDevId(const DevId & devId) const
 		{
 			NS_LOG_FUNCTION(this << devId);
 			NS_LOG_INFO(m_devIdToMac.size());

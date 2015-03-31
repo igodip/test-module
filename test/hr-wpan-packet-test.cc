@@ -51,15 +51,15 @@ void
 HrWpanPacketTestCase::DoRun(void)
 {
 	
-	const char * addr = "11";
+	const char * addr = "11::12";
 
 	HrWpan::MacHeader macHdr(HrWpan::MacHeader::HRWPAN_FRAME_BEACON, 0);
 	macHdr.SetSecDisable();
 	
-	HrWpanDevId dstAddress(addr);
+	HrWpan::DevId dstAddress(addr);
 	macHdr.setDstAddress(dstAddress);
 
-	HrWpanDevId srcAddress(addr);
+	HrWpan::DevId srcAddress(addr);
 	macHdr.setSrcAddress(srcAddress);
 
 	HrWpan::MacTrailer macTrailer;
@@ -97,10 +97,10 @@ HrWpanPacketTestCase::DoRun(void)
 	
 
 	//Checking address
-	HrWpanDevId srcReceivedAddress = receivedMacHeader.getSrcAddress();
+	HrWpan::DevId srcReceivedAddress = receivedMacHeader.getSrcAddress();
 	NS_TEST_ASSERT_MSG_EQ(srcReceivedAddress, srcAddress, "The srcAddress is different!");
 
-	HrWpanDevId dstReceivedAddress = receivedMacHeader.getDstAddress();
+	HrWpan::DevId dstReceivedAddress = receivedMacHeader.getDstAddress();
 	std::cout << dstReceivedAddress << std::endl;
 	NS_TEST_ASSERT_MSG_EQ(dstReceivedAddress, dstAddress, "The dstAddress is different!");
 

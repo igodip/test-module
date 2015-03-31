@@ -180,12 +180,13 @@ namespace ns3 {
 		m_queue->Enqueue(packet);
 	}
 
-	void HrWpanMac::SetDevId(HrWpanDevId devId)
+	void HrWpanMac::SetDevId(HrWpan::DevId devId)
 	{
+		NS_LOG_FUNCTION(this);
 		m_devId = devId;
 	}
 
-	HrWpanDevId HrWpanMac::GetDevId(void) const
+	HrWpan::DevId HrWpanMac::GetDevId(void) const
 	{
 		NS_LOG_FUNCTION(this);
 		return m_devId;

@@ -72,8 +72,8 @@ namespace ns3 {
 
 		void McpsDataRequest(Ptr<Packet> p);
 
-		HrWpanDevId GetDevId() const;
-		void SetDevId(HrWpanDevId devId);
+		HrWpan::DevId GetDevId() const;
+		void SetDevId(HrWpan::DevId devId);
 
 		void RegisterSapUser(HrWpan::MacSapUser * macSapUser);
 		
@@ -106,7 +106,7 @@ namespace ns3 {
 
 		HrWpanPhyProvider* m_phyProvider;
 
-		HrWpanDevId m_devId;
+		HrWpan::DevId m_devId;
 		Mac48Address m_macAddress;
 		Ptr<HrWpan::MacQueue> m_queue;
 

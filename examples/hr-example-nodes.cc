@@ -32,7 +32,7 @@ void SendOnePacket(Ptr<NetDevice> sender )
 {
 	Ptr<Packet> p = Create<Packet>(20);
 
-	sender->Send(p, HrWpanDevId("ff"), 0);
+	sender->Send(p, HrWpan::DevId::GetBroadcast(), 0);
 }
 
 int main(int argc, char** argv)
@@ -67,8 +67,8 @@ int main(int argc, char** argv)
 	Ptr<NetDevice> netDevice1 = netDeviceContainer.Get(0);
 	Ptr<NetDevice> netDevice2 = netDeviceContainer.Get(1);
 
-	netDevice1->SetAddress(HrWpanDevId("01"));
-	netDevice2->SetAddress(HrWpanDevId("02"));
+	netDevice1->SetAddress(HrWpan::DevId::Allocate());
+	netDevice2->SetAddress(HrWpan::DevId::Allocate());
 
 	Simulator::Stop(Seconds(10.0));
 	Simulator::ScheduleWithContext(1,Seconds(2.0), &SendOnePacket, netDevice1);

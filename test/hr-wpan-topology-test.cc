@@ -219,7 +219,7 @@ void HrWpanSteeringAntennaTestCase::DoRun()
 
 	HrWpan::TopologyHelper::steerAntennas(link);
 
-	netDevCont.Get(0)->Send(Create<Packet>(20), HrWpanDevId("FF"), 1);
+	netDevCont.Get(0)->Send(Create<Packet>(20), HrWpan::DevId::GetBroadcast(), 1);
 
 
 }

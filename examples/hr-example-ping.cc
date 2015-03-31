@@ -43,10 +43,6 @@ int main(int argc, char ** argv)
 
 	
 	LogComponentEnable("HrWpanExamplePing", LOG_ALL);
-	//LogComponentEnable("HrWpanPhyTxOnState", LOG_LEVEL_ALL);
-	//LogComponentEnable("HrWpanPhyTxBusyState", LOG_LEVEL_ALL);
-	//LogComponentEnable("HrWpanPhyRxOnState", LOG_LEVEL_ALL);
-	//LogComponentEnable("HrWpanPhyRxBusyState", LOG_LEVEL_ALL);
 	
 
 	NodeContainer nodeContainer;

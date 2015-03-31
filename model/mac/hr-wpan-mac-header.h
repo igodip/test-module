@@ -258,22 +258,22 @@ namespace ns3
 			* setDstAddress
 			* \return piconetId
 			*/
-			void setDstAddress(const HrWpanDevId & addrDistId);
+			void setDstAddress(const HrWpan::DevId & addrDistId);
 			/**
 			* getDstAddress
 			* \return piconetId
 			*/
-			HrWpanDevId getDstAddress(void) const;
+			HrWpan::DevId getDstAddress(void) const;
 			/**
 			* setSrcAddress
 			* \param piconetId
 			*/
-			void setSrcAddress(const HrWpanDevId & addrSrcId);
+			void setSrcAddress(const HrWpan::DevId & addrSrcId);
 			/**
 			* getSrcAddress
 			* \return piconetId
 			*/
-			HrWpanDevId getSrcAddress(void) const;
+			HrWpan::DevId getSrcAddress(void) const;
 			/**
 			* setStreamIndex
 			* \return piconetId
@@ -327,8 +327,8 @@ namespace ns3
 			uint16_t m_picoNetID;			  //!< Piconet ID (2 Octet)
 
 			/* Addressing fields */
-			HrWpanDevId m_addrDstId;              //!< Dst id (1 Octet)
-			HrWpanDevId m_addrSrcId;			  //!< Src id (1 Octet);
+			HrWpan::DevId m_addrDstId;              //!< Dst id (2 Octet)
+			HrWpan::DevId m_addrSrcId;			  //!< Src id (2 Octet);
 
 			/* Fragmentation Control*/
 			uint16_t m_fragControlMSDUnumber;	//!< Fragmentation control MSDU number Bit 0-8

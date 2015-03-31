@@ -39,22 +39,17 @@ namespace ns3
 			
 			void Install(NetDeviceContainer ndc);
 
-			HrWpanDevId GetDevIdByMac(const Mac48Address &  mac) const;
-			Mac48Address GetMacByDevId(const HrWpanDevId & devId) const;
+			DevId GetDevIdByMac(const Mac48Address &  mac) const;
+			Mac48Address GetMacByDevId(const DevId & devId) const;
 
 		protected:
 			
 			DevIdHelper();
 
-			void incrementAddress();
-			char * getAddress() const;
-
 		private:
 			
-			std::map<HrWpanDevId, Mac48Address> m_devIdToMac;
-			std::map<Mac48Address, HrWpanDevId> m_macToDevId;
-
-			unsigned char chars[3];
+			std::map<DevId, Mac48Address> m_devIdToMac;
+			std::map<Mac48Address, DevId> m_macToDevId;
 
 		}; // DevIdHelper
 

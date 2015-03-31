@@ -38,8 +38,8 @@ namespace ns3
 		class MacSapIndicationParamsAsync : public MacSapIndicationParams
 		{
 		public:
-			HrWpanDevId m_trgtId;
-			HrWpanDevId m_orgId;
+			HrWpan::DevId m_trgtId;
+			HrWpan::DevId m_orgId;
 			SNAPHeaderPresent m_snapHeaderPresent;
 			Length length;
 			Ptr<Packet> m_data;
@@ -74,7 +74,7 @@ namespace ns3
 		{
 		public:
 			RequestId m_requestId;
-			HrWpanDevId m_trgtId;
+			HrWpan::DevId m_trgtId;
 			TransmitTimeout m_transmitTimeout;
 			MaxRetries m_maxRetries;
 			SNAPHeaderPresent m_snapHeaderPresent;

@@ -96,12 +96,15 @@ void HrWpanObstaclePropTestCase::DoRun(void)
 	Ptr<NetDevice> netDevice1 = netDeviceContainer.Get(0);
 	Ptr<NetDevice> netDevice2 = netDeviceContainer.Get(1);
 
-	netDevice1->SetAddress(HrWpanDevId("01"));
-	netDevice2->SetAddress(HrWpanDevId("02"));
+	HrWpan::DevId addr1 = HrWpan::DevId::Allocate();
+	HrWpan::DevId addr2 = HrWpan::DevId::Allocate();
+
+	netDevice1->SetAddress(addr1);
+	netDevice2->SetAddress(addr2);
 
 	Ptr<Packet> p = Create<Packet>(20);
 
-	netDevice1->Send(p, HrWpanDevId("02"), 1);
+	netDevice1->Send(p, addr2, 1);
 }
 
 /**
@@ -175,12 +178,15 @@ void HrWpanNoObstaclePropTestCase::DoRun(void)
 	Ptr<NetDevice> netDevice1 = netDeviceContainer.Get(0);
 	Ptr<NetDevice> netDevice2 = netDeviceContainer.Get(1);
 
-	netDevice1->SetAddress(HrWpanDevId("01"));
-	netDevice2->SetAddress(HrWpanDevId("02"));
+	HrWpan::DevId addr1 = HrWpan::DevId::Allocate();
+	HrWpan::DevId addr2 = HrWpan::DevId::Allocate();
+
+	netDevice1->SetAddress(addr1);
+	netDevice2->SetAddress(addr2);
 
 	Ptr<Packet> p = Create<Packet>(20);
 
-	netDevice1->Send(p, HrWpanDevId("02"), 1);
+	netDevice1->Send(p, addr2, 1);
 }
 
 

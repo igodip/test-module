@@ -53,7 +53,7 @@ namespace ns3
 
 			//NS_LOG_INFO("Address received " << paramsAsync.m_trgtId);
 
-			if (paramsAsync.m_trgtId == m_netDevice->GetMac()->GetDevId() || paramsAsync.m_trgtId == HrWpanDevId("FF"))
+			if (paramsAsync.m_trgtId == m_netDevice->GetMac()->GetDevId() || paramsAsync.m_trgtId == DevId::GetBroadcast())
 			{
 				//Set the trace to sent
 				//NS_LOG_INFO("Packet being forwarded");
