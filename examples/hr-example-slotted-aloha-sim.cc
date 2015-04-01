@@ -59,13 +59,14 @@ int main(int argc, char ** argv)
 	//LogComponentEnable("ArpL3Protocol", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpanDevIDHelper", LOG_LEVEL_ALL);
 
-	double lengthTop = 5;
-	double obsMaxSize = 2;
+	double lengthTop = 10;
+	double obsMaxSize = 1;
 	double pairDensity = 0.5;
-	double obstacleDensity = 0.5;
-	int rounds = 20;
+	double obstacleDensity = 0.2;
+	int rounds = 50;
 	double beamwidth = 10;
 	double trasProb = 0.6;
+
 	std::string reportFilename = "stats.csv";
 
 	CommandLine cmd;
@@ -110,6 +111,11 @@ int main(int argc, char ** argv)
 
 		NS_LOG_INFO("pairNumber " << pairNumber);
 		NS_LOG_INFO("obstacleNumber " << obstacleNumber);
+
+		if (pairNumber == 0)
+		{
+			continue;
+		}
 
 		int nodeNumbers = pairNumber != 0 ? pairNumber * 2 : 2;
 
@@ -183,6 +189,9 @@ int main(int argc, char ** argv)
 		NS_LOG_INFO("TotalRetrasmissions = " << macStatHelper.getRtPackets());
 		NS_LOG_INFO("AvgRetrasmission = " << macStatHelper.getAvgRtsPackets());
 
+		outfile << nodeNumbers / 2 << ",";
+		outfile << obstacleNumber << ",";
+
 		outfile << phyStatHelper.getRxBegin() << ",";
 		outfile << phyStatHelper.getRxDrop() << ",";
 		outfile << phyStatHelper.getRxEnd() << ",";
@@ -197,6 +206,7 @@ int main(int argc, char ** argv)
 		outfile << macStatHelper.getQueueIn() << ",";
 		outfile << macStatHelper.getQueueOut() << ",";
 		outfile << macStatHelper.getQueueReIn() << ",";
+		outfile << macStatHelper.getAvgRtsPackets() << ",";
 		outfile << macStatHelper.getAvgDelay() << std::endl;
 
 		outfile.flush();

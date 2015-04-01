@@ -44,7 +44,7 @@ namespace ns3
 		{
 			m_startTime = Seconds(1.0);
 			m_endTime = Seconds(4.0);
-			m_timeSlot = MilliSeconds(1.0);
+			m_timeSlot = MicroSeconds(100.0);
 		}
 
 		void MacSlottedAlohaSync::Activate()
