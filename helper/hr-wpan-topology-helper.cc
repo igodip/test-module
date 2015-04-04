@@ -330,18 +330,19 @@ namespace ns3
 				
 					OnOffHelper onoff("ns3::UdpSocketFactory",
 						Address(InetSocketAddress(receiverIpv4, 15)));
-					onoff.SetConstantRate(DataRate("4Mb/s"));
-					
+					onoff.SetConstantRate(DataRate("3Mb/s"));
+					onoff.SetAttribute("OffTime",StringValue( "ns3::ConstantRandomVariable[Constant=0.0]"));
+
 					ApplicationContainer app = onoff.Install(sender);
 					
-					app.Start(Seconds(1.0));
+					app.Start(Seconds(0.0));
 					app.Stop(Seconds(4.0));
 
 					PacketSinkHelper sink("ns3::UdpSocketFactory",
 						Address(InetSocketAddress(Ipv4Address::GetAny(), 15)));
 
 					app = sink.Install(receiver);
-					app.Start(Seconds(1.0));
+					app.Start(Seconds(0.0));
 					app.Stop(Seconds(4.0));
 
 					//Populate arp cache

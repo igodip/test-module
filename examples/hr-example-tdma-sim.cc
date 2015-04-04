@@ -61,7 +61,7 @@ int main(int argc, char ** argv)
 	double lengthTop = 10;
 	double obsMaxSize = 1;
 	double pairDensity = 0.5;
-	double obstacleDensity = 0.2;
+	double obstacleDensity = 0.25;
 	int rounds = 50;
 	double beamwidth = 10;
 	std::string reportFilename = "stats.csv";
