@@ -225,11 +225,6 @@ namespace ns3 {
 			//NS_LOG_INFO("No packet inside queue!");
 			return;
 		}
-
-		//Setting callback
-		//static uint8_t buffer[2000];
-		//packet->Serialize(buffer, 2000);
-		//uint32_t  hash = Hash32((char*)buffer, 2000);
 		
 		m_timeoutPackets[packet] = Simulator::Schedule(MilliSeconds(10), &HrWpanMac::AckExpired, this, packet);
 		
@@ -258,7 +253,14 @@ namespace ns3 {
 
 		Simulator::Remove(m_timeoutPackets.at(packet));
 
-		m_timeoutPackets.erase(packet);
+		if (m_timeoutPackets.erase(packet) == 1)
+		{
+			NS_LOG_INFO("Ok! Received");
+		}
+		else
+		{
+			NS_LOG_INFO("Problema! Received");
+		}
 		
 	}
 
@@ -298,14 +300,21 @@ namespace ns3 {
 	{
 		NS_LOG_FUNCTION(this << packet);
 
-		m_timeoutPackets.erase(packet);
+		if (m_timeoutPackets.erase(packet) == 1)
+		{
+			NS_LOG_INFO("Ok! Retrasmitted");
+		}
+		else
+		{
+			NS_LOG_INFO("Problema! Retrasmitted");
+		}
 
 		//NS_LOG_INFO("Packet expired" << packet);
 		HrWpan::RetrasmissionTag retrasmissionTag;
 		packet->PeekPacketTag(retrasmissionTag);
 		retrasmissionTag.IncCounter();
 
-		NS_LOG_INFO("CurrentPacket" << retrasmissionTag.GetCounter());
+		//NS_LOG_INFO("CurrentPacket" << retrasmissionTag.GetCounter());
 
 		packet->ReplacePacketTag(retrasmissionTag);
 

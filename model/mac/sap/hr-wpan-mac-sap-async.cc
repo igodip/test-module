@@ -64,7 +64,7 @@ namespace ns3
 
 				packet->PeekPacketTag(senderTag);
 
-				//senderTag.GetSenderMac()->AckReceived(senderTag.GetSenderPacket());
+				senderTag.GetSenderMac()->AckReceived(senderTag.GetSenderPacket());
 
 				m_mac->m_macRxTrace(paramsAsync.m_data);
 				m_netDevice->Receive(paramsAsync.m_data, paramsAsync.m_orgId);
