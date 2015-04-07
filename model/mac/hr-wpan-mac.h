@@ -113,7 +113,7 @@ namespace ns3 {
 		Ptr<HrWpan::HrWpanNetDevice> m_netDevice;
 
 		std::map <std::string, HrWpan::MacSapUser *> m_sapUsers;
-		std::map<uint32_t, EventId> m_timeoutPackets;
+		std::map<Ptr<Packet>, EventId> m_timeoutPackets;
 		
 		double m_trasProb;
 	};

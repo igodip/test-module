@@ -19,59 +19,83 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#include "hr-wpan-retrasmission-tag.h"
-#include <ns3/integer.h>
+#include "hr-wpan-sender-tag.h"
+#include <ns3/pointer.h>
 #include <ns3/log.h>
 
 namespace ns3
 {
+	NS_LOG_COMPONENT_DEFINE("HrWpan::SenderTag");
+
 	namespace HrWpan
 	{
-		TypeId	RetrasmissionTag::GetTypeId(void)
+		TypeId	SenderTag::GetTypeId(void)
 		{
-			static TypeId tid = TypeId("ns3::HrWpan::RetrasmissionTag")
+			static TypeId tid = TypeId("ns3::HrWpan::SenderTag")
 				.SetParent<Tag>()
-				.AddConstructor<RetrasmissionTag>()
-				.AddAttribute("Counter",
-				"Retrasmission attempt counter!",
-				IntegerValue(0),
-				MakeIntegerAccessor(&RetrasmissionTag::m_counter),
-				MakeIntegerChecker<uint8_t>());
+				.AddConstructor<SenderTag>();
+
 			return tid;
 		}
 
-		TypeId	RetrasmissionTag::GetInstanceTypeId(void) const
+		TypeId	SenderTag::GetInstanceTypeId(void) const
 		{
 			return GetTypeId();
 		}
 
-		uint32_t RetrasmissionTag::GetSerializedSize(void) const
+		uint32_t SenderTag::GetSerializedSize(void) const
 		{
-			return 1;
+			return sizeof(Ptr<HrWpanMac>)+sizeof(Ptr<Packet>);
 		}
 
-		void RetrasmissionTag::Serialize(TagBuffer i) const
+		void SenderTag::Serialize(TagBuffer i) const
 		{
-			i.WriteU8(m_counter);
+			NS_LOG_FUNCTION(this << m_senderMac << m_senderPacket);
+
+			i.Write((uint8_t*)(&m_senderMac), sizeof(Ptr<HrWpanMac>));
+			i.Write((uint8_t*)(&m_senderPacket), sizeof(Ptr<Packet>));
+
 		}
 
-		void RetrasmissionTag::Deserialize(TagBuffer i)
+		void SenderTag::Deserialize(TagBuffer i)
 		{
-			m_counter = i.ReadU8();
+			NS_LOG_FUNCTION(this << m_senderMac << m_senderPacket);
+			
+			i.Read(((uint8_t*) & m_senderMac), sizeof(Ptr<HrWpanMac>));
+			i.Read(((uint8_t* ) & m_senderPacket), sizeof(Ptr<Packet>));
+
+			//Magic
+			m_senderMac->Ref();
+			m_senderPacket->Ref();
+			
 		}
 
-		void RetrasmissionTag::IncCounter()
+		void SenderTag::SetSenderMac(Ptr<HrWpanMac> mac)
 		{
-			m_counter++;
-		}
-		uint8_t RetrasmissionTag::GetCounter(void) const
-		{
-			return m_counter;
+			NS_LOG_FUNCTION(this << mac);
+			m_senderMac = mac;
 		}
 
-		void RetrasmissionTag::Print(std::ostream &os) const
+		void SenderTag::SetSenderPacket(Ptr<Packet> packet)
 		{
-			os << "rt=" << m_counter;
+			NS_LOG_FUNCTION(this << packet);
+			m_senderPacket = packet;
+		}
+
+		Ptr<HrWpanMac> SenderTag::GetSenderMac() const
+		{
+			return m_senderMac;
+		}
+
+		Ptr<Packet> SenderTag::GetSenderPacket() const
+		{
+			return m_senderPacket;
+		}
+
+
+		void SenderTag::Print(std::ostream &os) const
+		{
+			os << "sender=" << m_senderMac << "senderP=" << m_senderPacket;
 		}
 	} // namespace HrWpan
 

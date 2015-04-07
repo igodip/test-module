@@ -44,7 +44,6 @@ namespace ns3 {
 
 		m_queue = CreateObject<HrWpan::MacQueue>();
 
-
 	}
 
 	HrWpanMac::~HrWpanMac()
@@ -228,11 +227,11 @@ namespace ns3 {
 		}
 
 		//Setting callback
-		static uint8_t buffer[2000];
-		packet->Serialize(buffer, 2000);
-		uint32_t  hash = Hash32((char*)buffer, 2000);
+		//static uint8_t buffer[2000];
+		//packet->Serialize(buffer, 2000);
+		//uint32_t  hash = Hash32((char*)buffer, 2000);
 		
-		m_timeoutPackets[hash] = Simulator::Schedule(MilliSeconds(10), &HrWpanMac::AckExpired, this, packet);
+		m_timeoutPackets[packet] = Simulator::Schedule(MilliSeconds(10), &HrWpanMac::AckExpired, this, packet);
 		
 		m_phyProvider->SendMacPdu(packet);
 
@@ -256,14 +255,11 @@ namespace ns3 {
 	void HrWpanMac::AckReceived(Ptr<Packet> packet)
 	{
 		NS_LOG_FUNCTION(this);
+
+		Simulator::Remove(m_timeoutPackets.at(packet));
+
+		m_timeoutPackets.erase(packet);
 		
-		static uint8_t buffer[2000];
-		packet->Serialize(buffer, 2000);
-		uint32_t  hash = Hash32((char*)buffer, 2000);
-
-		m_timeoutPackets.at(hash);
-
-		Simulator::Remove(m_timeoutPackets[hash]);
 	}
 
 	void HrWpanMac::SetAddress(const Mac48Address & mac)
@@ -301,12 +297,8 @@ namespace ns3 {
 	void HrWpanMac::AckExpired(Ptr<Packet> packet)
 	{
 		NS_LOG_FUNCTION(this << packet);
-		
-		static uint8_t buffer[2000];
-		packet->Serialize(buffer, 2000);
-		uint32_t  hash = Hash32((char*)buffer, 2000);
 
-		m_timeoutPackets.erase(hash);
+		m_timeoutPackets.erase(packet);
 
 		//NS_LOG_INFO("Packet expired" << packet);
 		HrWpan::RetrasmissionTag retrasmissionTag;

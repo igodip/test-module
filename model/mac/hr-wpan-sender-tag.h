@@ -24,6 +24,7 @@
 
 #include <ns3/object.h>
 #include <ns3/tag.h>
+#include <ns3/hr-wpan-mac.h>
 
 namespace ns3
 {
@@ -38,18 +39,22 @@ namespace ns3
 			virtual void Serialize(TagBuffer i) const;
 			virtual void Deserialize(TagBuffer i);
 
-			// these are our accessors to our tag structure
-			void IncCounter();
-			uint8_t GetCounter(void) const;
+			void SetSenderMac(Ptr<HrWpanMac> mac);
+			void SetSenderPacket(Ptr<Packet> packet);
+
+			Ptr<HrWpanMac> GetSenderMac() const;
+			Ptr<Packet> GetSenderPacket() const;
 
 			void Print(std::ostream &os) const;
 
 		private:
-			uint8_t m_counter;
+
+			Ptr<HrWpanMac> m_senderMac;
+			Ptr<Packet> m_senderPacket;
 		};
 
 	} //namespace HrWpan
 
 } //namespace ns3
 
-#endif //HR_WPAN_RETRASMISSION_H
+#endif //HR_WPAN_SENDER_TAG_H

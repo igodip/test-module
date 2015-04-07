@@ -26,6 +26,7 @@
 #include <ns3/hr-wpan-net-device.h>
 #include <ns3/hr-wpan-timestamp-tag.h>
 #include <ns3/hr-wpan-retrasmission-tag.h>
+#include <ns3/hr-wpan-sender-tag.h>
 #include <ns3/hr-wpan-topology-aggregator.h>
 #include <ns3/simulator.h>
 
@@ -56,17 +57,14 @@ namespace ns3
 			if (paramsAsync.m_trgtId == m_netDevice->GetMac()->GetDevId() || paramsAsync.m_trgtId == DevId::GetBroadcast())
 			{
 				//Set the trace to sent
-				//NS_LOG_INFO("Packet being forwarded");
+				//NS_LOG_INFO("Packet being forwarded")				
 
-				//Get the mac
-				Ptr<Link> link = HrWpan::TopologyAggregator::getInstance().getLineByNode(m_netDevice->GetNode());
-				
-				Ptr<HrWpanNetDevice> senderDev = DynamicCast<HrWpanNetDevice>(link->GetSender()->GetDevice(0));
-				
-				NS_LOG_INFO(senderDev->GetMac()->m_timeoutPackets.size());
-				
+				HrWpan::SenderTag senderTag;
+				Ptr<Packet> packet = paramsAsync.m_data;
 
-				senderDev->GetMac()->AckReceived(paramsAsync.m_data);
+				packet->PeekPacketTag(senderTag);
+
+				//senderTag.GetSenderMac()->AckReceived(senderTag.GetSenderPacket());
 
 				m_mac->m_macRxTrace(paramsAsync.m_data);
 				m_netDevice->Receive(paramsAsync.m_data, paramsAsync.m_orgId);
@@ -109,10 +107,14 @@ namespace ns3
 			HrWpan::RetrasmissionTag retrasmissionTag;
 			retrasmissionTag.SetAttribute("Counter", IntegerValue(0));
 
+			HrWpan::SenderTag senderTag;
+			senderTag.SetSenderMac(m_mac);
+			senderTag.SetSenderPacket(packet);
+
 			packet->AddHeader(header);
 			packet->AddPacketTag(timestamp);
 			packet->AddPacketTag(retrasmissionTag);
-
+			packet->AddPacketTag(senderTag);
 			
 
 			m_mac->m_macTxTrace(packet);
