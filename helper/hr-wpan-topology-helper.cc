@@ -330,7 +330,7 @@ namespace ns3
 				
 					OnOffHelper onoff("ns3::UdpSocketFactory",
 						Address(InetSocketAddress(receiverIpv4, 15)));
-					onoff.SetConstantRate(DataRate("3Mb/s"));
+					onoff.SetConstantRate(DataRate("6Mb/s"));
 					onoff.SetAttribute("OffTime",StringValue( "ns3::ConstantRandomVariable[Constant=0.0]"));
 
 					ApplicationContainer app = onoff.Install(sender);
