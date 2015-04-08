@@ -16,6 +16,7 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *
 * Author: Igor Di Paolo <igor.di.paolo@gmail.com>
+* Author:
 */
 
 #include <ns3/log.h>
@@ -23,17 +24,38 @@
 
 using namespace ns3;
 
-NS_LOG_COMPONENT_DEFINE("HrWpanTopologyTestCase");
+NS_LOG_COMPONENT_DEFINE("HrWpanTagTestCase");
 
 /********************* TEST CASE *********************/
 
-class HrWpanTopologyTestCase : public TestCase
+class HrWpanTagTestCase : public TestCase
 {
 public:
-	HrWpanTopologyTestCase();
-	virtual ~HrWpanTopologyTestCase();
+	HrWpanTagTestCase();
+	virtual ~HrWpanTagTestCase();
 
 private:
 	virtual void DoRun(void);
 };
-//
+/********************** SUITE TEST ********************/
+
+class HrWpanTopologyTestSuite : public TestSuite
+{
+public:
+	HrWpanTopologyTestSuite();
+};
+
+
+HrWpanTopologyTestSuite::HrWpanTopologyTestSuite()
+	: TestSuite("hr-wpan-topology-test", UNIT)
+{
+	AddTestCase(new HrWpanTopologyTestCase, TestCase::QUICK);
+	AddTestCase(new HrWpanPlacingObstaclesTestCase, TestCase::QUICK);
+	AddTestCase(new HrWpanPlacingNodesTestCase, TestCase::QUICK);
+	AddTestCase(new HrWpanSteeringAntennaTestCase(Vector(0, 0, 0), Vector(1, 0, 0)), TestCase::QUICK);
+	AddTestCase(new HrWpanSteeringAntennaTestCase(Vector(0, 0, 0), Vector(0, 1, 0)), TestCase::QUICK);
+	AddTestCase(new HrWpanSteeringAntennaTestCase(Vector(0, 0, 0), Vector(-1, 0, 0)), TestCase::QUICK);
+	AddTestCase(new HrWpanSteeringAntennaTestCase(Vector(0, 0, 0), Vector(0, -1, 0)), TestCase::QUICK);
+}
+
+static HrWpanTopologyTestSuite hrWpanTopologyTestSuite;

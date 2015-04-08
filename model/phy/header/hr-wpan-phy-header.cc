@@ -28,8 +28,6 @@ namespace ns3 {
 	namespace HrWpan
 	{
 
-		
-
 		PhyHeader::~PhyHeader()
 		{
 			NS_LOG_FUNCTION(this);

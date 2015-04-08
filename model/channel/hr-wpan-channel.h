@@ -22,11 +22,22 @@
 #ifndef HR_WPAN_CHANNEL_H
 #define HR_WPAN_CHANNEL_H
 
+#include <ns3/spectrum-channel.h>
+
 namespace ns3
 {
 	namespace HrWpan
 	{
+		class Channel : public SpectrumChannel
+		{
 
+		public:
+
+		protected:
+
+		private:
+
+		};
 	} // namespace HrWpan
 
 } // namespace ns3
