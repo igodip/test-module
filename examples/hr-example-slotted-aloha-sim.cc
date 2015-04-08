@@ -83,8 +83,8 @@ int main(int argc, char ** argv)
 	Config::SetDefault("ns3::HrWpan::SectorAntenna::Beamwidth", DoubleValue(DegreesToRadians(beamwidth)));
 	Config::SetDefault("ns3::HrWpanMac::TrasProb", DoubleValue(trasProb));
 
-	int pairLam = pairDensity*lengthTop*lengthTop;
-	int obstacleLam = obstacleDensity*lengthTop*lengthTop;
+	double pairLam = pairDensity*lengthTop*lengthTop;
+	double obstacleLam = obstacleDensity*lengthTop*lengthTop;
 
 	Ptr<ErlangRandomVariable> pairPoisson = CreateObject<ErlangRandomVariable>();
 	pairPoisson->SetAttribute("Lambda", DoubleValue(pairLam));
@@ -106,21 +106,14 @@ int main(int argc, char ** argv)
 		NS_LOG_INFO("-----------------------------------");
 		NS_LOG_INFO("Rounds " << i << " of " << rounds);
 
-		int pairNumber = pairPoisson->GetInteger();
+		int pairNumber = pairPoisson->GetInteger()+1;
 		int obstacleNumber = obstaclePoisson->GetInteger();
 
 		NS_LOG_INFO("pairNumber " << pairNumber);
 		NS_LOG_INFO("obstacleNumber " << obstacleNumber);
 
-		if (pairNumber == 0)
-		{
-			continue;
-		}
-
-		int nodeNumbers = pairNumber != 0 ? pairNumber * 2 : 2;
-
 		NodeContainer nodeContainer;
-		nodeContainer.Create(nodeNumbers);
+		nodeContainer.Create(pairNumber*2);
 
 		topologyAggregator->clear();
 		HrWpan::TopologyHelper topologyHelper(lengthTop, lengthTop, obsMaxSize, topologyAggregator);
@@ -189,7 +182,7 @@ int main(int argc, char ** argv)
 		NS_LOG_INFO("TotalRetrasmissions = " << macStatHelper.getRtPackets());
 		NS_LOG_INFO("AvgRetrasmission = " << macStatHelper.getAvgRtsPackets());
 
-		outfile << nodeNumbers / 2 << ",";
+		outfile << pairNumber<< ",";
 		outfile << obstacleNumber << ",";
 
 		outfile << phyStatHelper.getRxBegin() << ",";
