@@ -172,15 +172,17 @@ namespace ns3 {
 	{
 
 		NS_LOG_FUNCTION(this << spectrumRxParams);
+		//m_signal->AddSignal(spectrumRxParams->psd);
 
 		m_currentState->StartRx(spectrumRxParams);
 		
-
+		
 	}
 
 	void HrWpanPhy::EndRx(Ptr <SpectrumSignalParameters> spectrumRxParams)
 	{
 		NS_LOG_FUNCTION(this << spectrumRxParams);
+		//m_signal->RemoveSignal(spectrumRxParams->psd);
 
 		m_currentState->EndRx(spectrumRxParams);
 		

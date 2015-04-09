@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * Author:
- *  Sascha Alexander Jopen <jopen@cs.uni-bonn.de>
+ *  Igor Di Paolo <igor.di.paolo@gmail.com>
  */
 #ifndef HR_WPAN_INTERFERENCE_HELPER_H
 #define HR_WPAN_INTERFERENCE_HELPER_H
@@ -27,97 +27,101 @@
 
 namespace ns3 {
 
-class SpectrumValue;
-class SpectrumModel;
+	class SpectrumValue;
+	class SpectrumModel;
 
-/**
- * \ingroup hr-wpan
- *
- * \brief This class provides helper functions for LrWpan interference handling.
- */
-class HrWpanInterferenceHelper : public SimpleRefCount<HrWpanInterferenceHelper>
-{
-public:
-  /**
-   * Create a new interference helper for the given SpectrumModel.
-   *
-   * \param spectrumModel the SpectrumModel to be used
-   */
-  HrWpanInterferenceHelper (Ptr<const SpectrumModel> spectrumModel);
+	/**
+	 * \ingroup hr-wpan
+	 *
+	 * \brief This class provides helper functions for LrWpan interference handling.
+	 */
+	namespace HrWpan
+	{
+		class InterferenceHelper : public SimpleRefCount < InterferenceHelper >
+		{
+		public:
+			/**
+			* Create a new interference helper for the given SpectrumModel.
+			*
+			* \param spectrumModel the SpectrumModel to be used
+			*/
+			InterferenceHelper(Ptr<const SpectrumModel> spectrumModel);
 
-  ~HrWpanInterferenceHelper (void);
+			~InterferenceHelper(void);
 
-  /**
-   * Add the given signal to the set of accumulated signals. Never add the same
-   * signal more than once. The SpectrumModels of the signal and the one used
-   * for instantiation of the helper have to be the same.
-   *
-   * \param signal the signal to be added
-   * \return false, if the signal was not added because the SpectrumModel of the
-   * signal does not match the one of the helper, true otherwise.
-   */
-  bool AddSignal (Ptr<const SpectrumValue> signal);
+			/**
+			* Add the given signal to the set of accumulated signals. Never add the same
+			* signal more than once. The SpectrumModels of the signal and the one used
+			* for instantiation of the helper have to be the same.
+			*
+			* \param signal the signal to be added
+			* \return false, if the signal was not added because the SpectrumModel of the
+			* signal does not match the one of the helper, true otherwise.
+			*/
+			bool AddSignal(Ptr<const SpectrumValue> signal);
 
-  /**
-   * Remove the given signal to the set of accumulated signals.
-   *
-   * \param signal the signal to be removed
-   * \return false, if the signal was not removed (because it was not added
-   * before), true otherwise.
-   */
-  bool RemoveSignal (Ptr<const SpectrumValue> signal);
+			/**
+			* Remove the given signal to the set of accumulated signals.
+			*
+			* \param signal the signal to be removed
+			* \return false, if the signal was not removed (because it was not added
+			* before), true otherwise.
+			*/
+			bool RemoveSignal(Ptr<const SpectrumValue> signal);
 
-  /**
-   * Remove all currently accumulated signals.
-   */
-  void ClearSignals (void);
+			/**
+			* Remove all currently accumulated signals.
+			*/
+			void ClearSignals(void);
 
-  /**
-   * Get the sum of all accumulated signals.
-   *
-   * \return the sum of the signals
-   */
-  Ptr<SpectrumValue> GetSignalPsd (void) const;
+			/**
+			* Get the sum of all accumulated signals.
+			*
+			* \return the sum of the signals
+			*/
+			Ptr<SpectrumValue> GetSignalPsd(void) const;
 
-  /**
-   * Get the SpectrumModel used by the helper.
-   *
-   * \return the helpers SpectrumModel
-   */
-  Ptr<const SpectrumModel> GetSpectrumModel (void) const;
-private:
-  // Disable implicit copy constructors
-  /**
-   * \brief Copy constructor - defined and not implemented.
-   */
-  HrWpanInterferenceHelper (HrWpanInterferenceHelper const &);
-  /**
-   * \brief Copy constructor - defined and not implemented.
-   * \returns
-   */
-  HrWpanInterferenceHelper& operator= (HrWpanInterferenceHelper const &);
-  /**
-   * The helpers SpectrumModel.
-   */
-  Ptr<const SpectrumModel> m_spectrumModel;
+			/**
+			* Get the SpectrumModel used by the helper.
+			*
+			* \return the helpers SpectrumModel
+			*/
+			Ptr<const SpectrumModel> GetSpectrumModel(void) const;
+		private:
+			// Disable implicit copy constructors
+			/**
+			* \brief Copy constructor - defined and not implemented.
+			*/
+			InterferenceHelper(InterferenceHelper const &);
+			/**
+			* \brief Copy constructor - defined and not implemented.
+			* \returns
+			*/
+			InterferenceHelper& operator= (InterferenceHelper const &);
+			/**
+			* The helpers SpectrumModel.
+			*/
+			Ptr<const SpectrumModel> m_spectrumModel;
 
-  /**
-   * The set of accumulated signals.
-   */
-  std::set<Ptr<const SpectrumValue> > m_signals;
+			/**
+			* The set of accumulated signals.
+			*/
+			std::set<Ptr<const SpectrumValue> > m_signals;
 
-  /**
-   * The precomputed sum of all accumulated signals.
-   */
-  mutable Ptr<SpectrumValue> m_signal;
+			/**
+			* The precomputed sum of all accumulated signals.
+			*/
+			mutable Ptr<SpectrumValue> m_signal;
 
-  /**
-   * Mark m_signal as dirty, whenever a signal is added or removed. m_signal has
-   * to be recomputed before next use.
-   */
-  mutable bool m_dirty;
-};
+			/**
+			* Mark m_signal as dirty, whenever a signal is added or removed. m_signal has
+			* to be recomputed before next use.
+			*/
+			mutable bool m_dirty;
+		};
 
-}
+	} //namespace HrWpan
+
+} // namespace ns3
 
 #endif /* HR_WPAN_INTERFERENCE_HELPER_H */

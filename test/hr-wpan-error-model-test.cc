@@ -35,158 +35,157 @@
 
 using namespace ns3;
 
-NS_LOG_COMPONENT_DEFINE ("hr-wpan-error-model-test");
+NS_LOG_COMPONENT_DEFINE("hr-wpan-error-model-test");
 
 class HrWpanErrorDistanceTestCase : public TestCase
 {
 public:
-  HrWpanErrorDistanceTestCase ();
-  virtual ~HrWpanErrorDistanceTestCase ();
-  uint32_t GetReceived (void) const
-  {
-    return m_received;
-  }
+	HrWpanErrorDistanceTestCase();
+	virtual ~HrWpanErrorDistanceTestCase();
+	uint32_t GetReceived(void) const
+	{
+		return m_received;
+	}
 
 private:
-  virtual void DoRun (void);
-  void Callback (McpsDataIndicationParams params, Ptr<Packet> p);
-  uint32_t m_received;
+	virtual void DoRun(void);
+	void Callback(McpsDataIndicationParams params, Ptr<Packet> p);
+	uint32_t m_received;
 };
 
-class LrWpanErrorModelTestCase : public TestCase
+class HrWpanErrorModelTestCase : public TestCase
 {
 public:
-  LrWpanErrorModelTestCase ();
-  virtual ~LrWpanErrorModelTestCase ();
+	HrWpanErrorModelTestCase();
+	virtual ~HrWpanErrorModelTestCase();
 
 private:
-  virtual void DoRun (void);
+	virtual void DoRun(void);
 };
 
-HrWpanErrorDistanceTestCase::HrWpanErrorDistanceTestCase ()
-  : TestCase ("Test the 802.15.4 error model vs distance"),
-    m_received (0)
+HrWpanErrorDistanceTestCase::HrWpanErrorDistanceTestCase()
+	: TestCase("Test the 802.15.3c error model vs distance"),
+	m_received(0)
 {
 }
 
-HrWpanErrorDistanceTestCase::~HrWpanErrorDistanceTestCase ()
+HrWpanErrorDistanceTestCase::~HrWpanErrorDistanceTestCase()
 {
-}
-
-void
-HrWpanErrorDistanceTestCase::Callback (McpsDataIndicationParams params, Ptr<Packet> p)
-{
-  m_received++;
 }
 
 void
-HrWpanErrorDistanceTestCase::DoRun (void)
+HrWpanErrorDistanceTestCase::Callback(McpsDataIndicationParams params, Ptr<Packet> p)
 {
-  // Set the random seed and run number for this test
-  RngSeedManager::SetSeed (1);
-  RngSeedManager::SetRun (6);
+	m_received++;
+}
 
-  Ptr<Node> n0 = CreateObject <Node> ();
-  Ptr<Node> n1 = CreateObject <Node> ();
-  Ptr<LrWpanNetDevice> dev0 = CreateObject<LrWpanNetDevice> ();
-  Ptr<LrWpanNetDevice> dev1 = CreateObject<LrWpanNetDevice> ();
+void
+HrWpanErrorDistanceTestCase::DoRun(void)
+{
+	// Set the random seed and run number for this test
+	RngSeedManager::SetSeed(1);
+	RngSeedManager::SetRun(6);
 
-  // Make random variable stream assignment deterministic
-  dev0->AssignStreams (0);
-  dev1->AssignStreams (10);
+	Ptr<Node> n0 = CreateObject <Node>();
+	Ptr<Node> n1 = CreateObject <Node>();
+	Ptr<LrWpanNetDevice> dev0 = CreateObject<LrWpanNetDevice>();
+	Ptr<LrWpanNetDevice> dev1 = CreateObject<LrWpanNetDevice>();
 
-  dev0->SetAddress (Mac16Address ("00:01"));
-  dev1->SetAddress (Mac16Address ("00:02"));
-  Ptr<SingleModelSpectrumChannel> channel = CreateObject<SingleModelSpectrumChannel> ();
-  Ptr<LogDistancePropagationLossModel> model = CreateObject<LogDistancePropagationLossModel> ();
-  channel->AddPropagationLossModel (model);
-  dev0->SetChannel (channel);
-  dev1->SetChannel (channel);
-  n0->AddDevice (dev0);
-  n1->AddDevice (dev1);
-  Ptr<ConstantPositionMobilityModel> mob0 = CreateObject<ConstantPositionMobilityModel> ();
-  dev0->GetPhy ()->SetMobility (mob0);
-  Ptr<ConstantPositionMobilityModel> mob1 = CreateObject<ConstantPositionMobilityModel> ();
-  dev1->GetPhy ()->SetMobility (mob1);
+	// Make random variable stream assignment deterministic
+	dev0->AssignStreams(0);
+	dev1->AssignStreams(10);
 
-  McpsDataIndicationCallback cb0;
-  cb0 = MakeCallback (&HrWpanErrorDistanceTestCase::Callback, this);
-  dev1->GetMac ()->SetMcpsDataIndicationCallback (cb0);
+	dev0->SetAddress(Mac16Address("00:01"));
+	dev1->SetAddress(Mac16Address("00:02"));
+	Ptr<SingleModelSpectrumChannel> channel = CreateObject<SingleModelSpectrumChannel>();
+	Ptr<LogDistancePropagationLossModel> model = CreateObject<LogDistancePropagationLossModel>();
+	channel->AddPropagationLossModel(model);
+	dev0->SetChannel(channel);
+	dev1->SetChannel(channel);
+	n0->AddDevice(dev0);
+	n1->AddDevice(dev1);
+	Ptr<ConstantPositionMobilityModel> mob0 = CreateObject<ConstantPositionMobilityModel>();
+	dev0->GetPhy()->SetMobility(mob0);
+	Ptr<ConstantPositionMobilityModel> mob1 = CreateObject<ConstantPositionMobilityModel>();
+	dev1->GetPhy()->SetMobility(mob1);
 
-  McpsDataRequestParams params;
-  params.m_srcAddrMode = SHORT_ADDR;
-  params.m_dstAddrMode = SHORT_ADDR;
-  params.m_dstPanId = 0;
-  params.m_dstAddr = Mac16Address ("00:02");
-  params.m_msduHandle = 0;
-  params.m_txOptions = 0;
 
-  Ptr<Packet> p;
-  mob0->SetPosition (Vector (0,0,0));
-  mob1->SetPosition (Vector (100,0,0));
-  for (int i = 0; i < 1000; i++)
-    {
-      p = Create<Packet> (20);
-      Simulator::Schedule (Seconds (i),
-                           &LrWpanMac::McpsDataRequest,
-                           dev0->GetMac (), params, p);
-    }
+	cb0 = MakeCallback(&HrWpanErrorDistanceTestCase::Callback, this);
+	dev1->GetMac()->SetMcpsDataIndicationCallback(cb0);
 
-  Simulator::Run ();
+	params.m_srcAddrMode = SHORT_ADDR;
+	params.m_dstAddrMode = SHORT_ADDR;
+	params.m_dstPanId = 0;
+	params.m_dstAddr = Mac16Address("00:02");
+	params.m_msduHandle = 0;
+	params.m_txOptions = 0;
 
-  // Test that we received 977 packets out of 1000, at distance of 100 m
-  // with default power of 0
-  NS_TEST_ASSERT_MSG_EQ (GetReceived (), 977, "Model fails");
+	Ptr<Packet> p;
+	mob0->SetPosition(Vector(0, 0, 0));
+	mob1->SetPosition(Vector(100, 0, 0));
+	for (int i = 0; i < 1000; i++)
+	{
+		p = Create<Packet>(20);
+		Simulator::Schedule(Seconds(i),
+			&LrWpanMac::McpsDataRequest,
+			dev0->GetMac(), params, p);
+	}
 
-  Simulator::Destroy ();
+	Simulator::Run();
+
+	// Test that we received 977 packets out of 1000, at distance of 100 m
+	// with default power of 0
+	NS_TEST_ASSERT_MSG_EQ(GetReceived(), 977, "Model fails");
+
+	Simulator::Destroy();
 }
 
 // ==============================================================================
-LrWpanErrorModelTestCase::LrWpanErrorModelTestCase ()
-  : TestCase ("Test the 802.15.4 error model")
+LrWpanErrorModelTestCase::LrWpanErrorModelTestCase()
+	: TestCase("Test the 802.15.4 error model")
 {
 }
 
-LrWpanErrorModelTestCase::~LrWpanErrorModelTestCase ()
+LrWpanErrorModelTestCase::~LrWpanErrorModelTestCase()
 {
 }
 
 void
-LrWpanErrorModelTestCase::DoRun (void)
+LrWpanErrorModelTestCase::DoRun(void)
 {
 
-  Ptr<LrWpanErrorModel> model = CreateObject<LrWpanErrorModel> ();
+	Ptr<LrWpanErrorModel> model = CreateObject<LrWpanErrorModel>();
 
-  // Test a few values
-  double snr = 5;
-  double ber = 1.0 - model->GetChunkSuccessRate (pow (10.0, snr / 10.0), 1);
-  NS_TEST_ASSERT_MSG_EQ_TOL (ber, 7.38e-14, 0.01e-14, "Model fails for SNR = " << snr);
-  snr = 2;
-  ber = 1.0 - model->GetChunkSuccessRate (pow (10.0, snr / 10.0), 1);
-  NS_TEST_ASSERT_MSG_EQ_TOL (ber, 5.13e-7, 0.01e-7, "Model fails for SNR = " << snr);
-  snr = -1;
-  ber = 1.0 - model->GetChunkSuccessRate (pow (10.0, snr / 10.0), 1);
-  NS_TEST_ASSERT_MSG_EQ_TOL (ber, 0.00114, 0.00001, "Model fails for SNR = " << snr);
-  snr = -4;
-  ber = 1.0 - model->GetChunkSuccessRate (pow (10.0, snr / 10.0), 1);
-  NS_TEST_ASSERT_MSG_EQ_TOL (ber, 0.0391, 0.0001, "Model fails for SNR = " << snr);
-  snr = -7;
-  ber = 1.0 - model->GetChunkSuccessRate (pow (10.0, snr / 10.0), 1);
-  NS_TEST_ASSERT_MSG_EQ_TOL (ber, 0.175, 0.001, "Model fails for SNR = " << snr);
+	// Test a few values
+	double snr = 5;
+	double ber = 1.0 - model->GetChunkSuccessRate(pow(10.0, snr / 10.0), 1);
+	NS_TEST_ASSERT_MSG_EQ_TOL(ber, 7.38e-14, 0.01e-14, "Model fails for SNR = " << snr);
+	snr = 2;
+	ber = 1.0 - model->GetChunkSuccessRate(pow(10.0, snr / 10.0), 1);
+	NS_TEST_ASSERT_MSG_EQ_TOL(ber, 5.13e-7, 0.01e-7, "Model fails for SNR = " << snr);
+	snr = -1;
+	ber = 1.0 - model->GetChunkSuccessRate(pow(10.0, snr / 10.0), 1);
+	NS_TEST_ASSERT_MSG_EQ_TOL(ber, 0.00114, 0.00001, "Model fails for SNR = " << snr);
+	snr = -4;
+	ber = 1.0 - model->GetChunkSuccessRate(pow(10.0, snr / 10.0), 1);
+	NS_TEST_ASSERT_MSG_EQ_TOL(ber, 0.0391, 0.0001, "Model fails for SNR = " << snr);
+	snr = -7;
+	ber = 1.0 - model->GetChunkSuccessRate(pow(10.0, snr / 10.0), 1);
+	NS_TEST_ASSERT_MSG_EQ_TOL(ber, 0.175, 0.001, "Model fails for SNR = " << snr);
 }
 
 // ==============================================================================
 class LrWpanErrorModelTestSuite : public TestSuite
 {
 public:
-  LrWpanErrorModelTestSuite ();
+	LrWpanErrorModelTestSuite();
 };
 
-LrWpanErrorModelTestSuite::LrWpanErrorModelTestSuite ()
-  : TestSuite ("lr-wpan-error-model", UNIT)
+LrWpanErrorModelTestSuite::LrWpanErrorModelTestSuite()
+	: TestSuite("lr-wpan-error-model", UNIT)
 {
-  AddTestCase (new LrWpanErrorModelTestCase, TestCase::QUICK);
-  AddTestCase (new HrWpanErrorDistanceTestCase, TestCase::QUICK);
+	AddTestCase(new LrWpanErrorModelTestCase, TestCase::QUICK);
+	AddTestCase(new HrWpanErrorDistanceTestCase, TestCase::QUICK);
 }
 
 static LrWpanErrorModelTestSuite lrWpanErrorModelTestSuite;

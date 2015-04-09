@@ -1,6 +1,6 @@
 /* -*-  Mode: C++; c-file-style: "gnu"; indent-tabs-mode:nil; -*- */
 /*
-* Copyright (c) 2015
+* Copyright (c) 2015 KTH
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License version 2 as
@@ -15,30 +15,24 @@
 * along with this program; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *
-* Author: Igor Di Paolo <igor.di.paolo@gmail.com>
-*
+* Authors:
+*  Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#include <ns3/spectrum-value.h>
-#include <ns3/log.h>
+#ifndef HR_WPAN_FLOOD_APP_HELPER_H
+#define HR_WPAN_FLOOD_APP_HELPER_H
 
-namespace ns3 {
+namespace ns3
+{
 
-	class HrWpanSpectrumModelFactory {
-	public:
-		static HrWpanSpectrumModelFactory& getInstance(void);
-		Ptr<SpectrumModel> getSpectrumModel(void);
+	namespace HrWpan
+	{
+		class FloodAppHelper
+		{
 
-	private:
-
-		HrWpanSpectrumModelFactory(void);
-		void createBands(void);
-
-		Ptr<SpectrumModel> m_ptrSpectrumModel;
-
-
-	};
-
-	
+		};
+	}
 
 }
+
+#endif

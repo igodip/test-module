@@ -19,7 +19,6 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-
 #include <ns3/log.h>
 #include <ns3/node-container.h>
 #include <ns3/animation-interface.h>

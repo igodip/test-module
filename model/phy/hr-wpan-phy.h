@@ -39,7 +39,7 @@ namespace ns3 {
 	class Packet;
 	class SpectrumValue;
 	class HrWpanErrorModel;
-	//struct HrWpanSpectrumSignalParameters;
+
 	class MobilityModel;
 	class SpectrumChannel;
 	class SpectrumModel;
@@ -51,6 +51,7 @@ namespace ns3 {
 	public:
 
 		//Friends
+		friend class HrWpanPhyAbsState;
 		friend class HrWpanPhyRxOnState;
 		friend class HrWpanPhyRxBusyState;
 		friend class HrWpanPhyTxOnState;
@@ -122,6 +123,7 @@ namespace ns3 {
 		/** \brief	The channel. */
 		Ptr<SpectrumChannel> m_channel;
 
+		/** \brief Traces */
 		TracedCallback<Ptr<const Packet> > m_phyRxBeginTrace;
 		TracedCallback<Ptr<const Packet> > m_phyRxDropTrace;
 		TracedCallback<Ptr<const Packet> > m_phyRxEndTrace;
@@ -142,7 +144,9 @@ namespace ns3 {
 		Ptr<HrWpanPhyStateFactory> m_stateFactory;
 
 		Ptr<HrWpanSpectrumSignalParameters> m_currentPacket;
-
+		
+		Ptr<HrWpan::InterferenceHelper> m_signal;
+		
 		HrWpanPhyUser* m_phyUser;
 
 		EventId m_receiveOn;

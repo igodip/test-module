@@ -62,8 +62,8 @@ namespace ns3
 			m_uRandomVar_x->SetAttribute("Max", DoubleValue(max_x));
 			m_uRandomVar_x->SetAttribute("Min", DoubleValue(0));
 
-			m_uRandomVar_x->SetAttribute("Max", DoubleValue(max_x));
-			m_uRandomVar_x->SetAttribute("Min", DoubleValue(0));
+			m_uRandomVar_y->SetAttribute("Max", DoubleValue(max_y));
+			m_uRandomVar_y->SetAttribute("Min", DoubleValue(0));
 			
 			m_uRandomOrientation->SetAttribute("Max", DoubleValue(2 * M_PI));
 			m_uRandomOrientation->SetAttribute("Min", DoubleValue(0));
@@ -89,11 +89,15 @@ namespace ns3
 			m_randomRectanglePositionAllocator->Dispose();
 			m_uRandomVar_x->Dispose();
 			m_uRandomVar_y->Dispose();
+			m_uRandomOrientation->Dispose();
+			m_uRandomSize->Dispose();
 
 			m_randomRectanglePositionAllocator = 0;
 			m_uRandomVar_x = 0;
 			m_uRandomVar_y = 0;
 			m_topologyAggregator = 0;
+			m_uRandomOrientation = 0;
+			m_uRandomSize = 0;
 		}
 
 		void TopologyHelper::PlaceNodesPair(Ptr<Node> sender, Ptr<Node> receiver)

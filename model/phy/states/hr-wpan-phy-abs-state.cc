@@ -53,6 +53,8 @@ namespace ns3 {
 	void HrWpanPhyAbsState::StartRx(Ptr<SpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
+
+		//TODO:
 	}
 
 	void HrWpanPhyAbsState::DoDispose(void)
