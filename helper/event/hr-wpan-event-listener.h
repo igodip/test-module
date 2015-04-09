@@ -19,21 +19,27 @@
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
 
-#ifndef HR_WPAN_NET_DEVICE_EVENT_MANAGER_H
-#define HR_WPAN_NET_DEVICE_EVENT_MANAGER_H
+#ifndef HR_WPAN_EVENT_LISTENER_H
+#define HR_WPAN_EVENT_LISTENER_H
 
-#include <map>
+#include <ns3/object.h>
+#include <string>
 
 namespace ns3
 {
 	namespace HrWpan
 	{
-		class NetDeviceEventManager
+
+		class EventListener : public Object
 		{
 
-		//protected:
-			//std::multimap< Event 
+			virtual std::string GetEventName() = 0;
+
+			template<class T>
+			virtual void Run(const T & t) = 0;
+
 		};
+
 	}
 }
 
