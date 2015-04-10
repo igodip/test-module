@@ -18,25 +18,3 @@
 * Author:
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
 */
-
-#ifndef HR_WPAN_PHY_HEADER_FACTORY_H
-#define HR_WPAN_PHY_HEADER_FACTORY_H
-
-#include <ns3/packet.h>
-#include <ns3/object.h>
-#include "hr-wpan-phy-header.h"
-
-namespace ns3
-{
-	namespace HrWpan
-	{
-		class HrWpanPhyHeaderFactory : public Object
-		{
-		public:
-			void InsertPhyHeader(Ptr<Packet> packet) const;
-			void RemovePhyHeader(Ptr<Packet> packet) const;
-		};
-	}
-}
-
-#endif
