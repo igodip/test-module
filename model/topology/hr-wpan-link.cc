@@ -56,7 +56,11 @@ namespace ns3
 
 		void Link::DoDispose()
 		{
-			Line::DoDispose();
+			NS_LOG_FUNCTION(this);
+
+			m_sender = 0;
+			m_receiver = 0;
+
 		}
 
 		void Link::SetSender(Ptr<Node> sender)

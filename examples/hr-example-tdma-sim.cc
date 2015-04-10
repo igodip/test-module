@@ -52,8 +52,8 @@ NS_LOG_COMPONENT_DEFINE("HrWpanTdmaSim");
 int main(int argc, char ** argv)
 {
 	LogComponentEnable("HrWpanTdmaSim", LOG_LEVEL_ALL);
-	//LogComponentEnable("SingleModelSpectrumChannel", LOG_LEVEL_ALL);
-	//LogComponentEnable("HrWpan::TopologyHelper", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpanNetDevice", LOG_LEVEL_INFO);
+	//LogComponentEnable("Node", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpanObstaclePropagationModel", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpan::SectorAntenna", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpanMac", LOG_LEVEL_INFO);

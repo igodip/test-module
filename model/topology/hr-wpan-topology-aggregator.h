@@ -34,14 +34,14 @@ namespace ns3
 	namespace HrWpan
 	{
 
-		
-
 		class TopologyAggregator : public Object
 		{
 		public:
-			static TypeId GetTypeId();
+
 			TopologyAggregator();
 
+			static TypeId GetTypeId();
+			//Singleton
 			static TopologyAggregator & getInstance();
 
 			void addLine(Ptr<Line> line);
@@ -51,8 +51,6 @@ namespace ns3
 			void clear();
 
 		protected:
-
-			
 
 			std::list<Ptr<Line> > m_lines;
 			std::map<Ptr<Node>, Ptr<Link> > m_nodes_map;

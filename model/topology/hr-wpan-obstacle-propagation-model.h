@@ -45,6 +45,9 @@ namespace ns3
 
 			virtual ~ObstaclePropagationLossModel();
 
+		protected:
+			virtual void DoDispose();
+
 		private:
 			/**
 			* \brief Copy constructor

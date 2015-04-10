@@ -38,8 +38,7 @@ namespace ns3
 			
 			// inherited from Object
 			static TypeId GetTypeId(void);
-			virtual void DoDispose();
-
+			
 			void setStart(const Vector3D & start);
 			void setEnd(const Vector3D & end);
 
@@ -47,6 +46,10 @@ namespace ns3
 			virtual Vector3D getEnd() ;
 
 		protected:
+
+			// inherited from Object
+			virtual void DoDispose();
+
 			Vector3D m_start;
 			Vector3D m_end;
 		};

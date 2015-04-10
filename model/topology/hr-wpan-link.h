@@ -39,7 +39,7 @@ namespace ns3
 
 			// inherited from Object
 			static TypeId GetTypeId(void);
-			virtual void DoDispose();
+			
 
 			void SetSender(Ptr<Node> sender);
 			void SetReceiver(Ptr<Node> receiver);
@@ -51,6 +51,8 @@ namespace ns3
 			virtual Vector3D getEnd();
 
 		protected:
+			virtual void DoDispose();
+
 			Ptr<Node> m_sender;
 			Ptr<Node> m_receiver;
 

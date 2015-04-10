@@ -146,7 +146,6 @@ namespace ns3 {
 
 
 		Object::DoInitialize();
-		//m_queue = CreateObject<HrWpan::MacQueue>();
 		
 	}
 

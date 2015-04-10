@@ -38,9 +38,12 @@ namespace ns3
 
 			// inherited from Object
 			static TypeId GetTypeId(void);
-			virtual void DoDispose();
+			
 
 			virtual ~Obstacle();
+
+		protected:
+			virtual void DoDispose();
 
 		};
 

@@ -60,11 +60,28 @@ namespace ns3 {
 		NS_LOG_FUNCTION(this);
 	}
 
+	void HrWpanPhy::DoDispose()
+	{
+		NS_LOG_FUNCTION(this);
+
+		//Dispose
+		m_stateFactory->Dispose();
+
+		//Resetting pointers
+		m_stateFactory = 0;
+		
+	}
+
+	void HrWpanPhy::DoInitialize()
+	{
+		//
+	}
+
 	TypeId HrWpanPhy::GetTypeId(void)
 	{
 
 		static TypeId tid = TypeId("ns3::HrWpanPhy")
-			.SetParent<Object>()
+			.SetParent<SpectrumPhy>()
 			.AddConstructor<HrWpanPhy>().
 			AddTraceSource("PhyRxBegin",
 			"Trace source indicating a packet has begun"
@@ -101,15 +118,6 @@ namespace ns3 {
 			"ns3::HrWpanPhy::RxDropTrace");;
 
 		return tid;
-	}
-
-	void HrWpanPhy::DoDispose(void)
-	{
-
-		NS_LOG_FUNCTION(this);
-
-		SpectrumPhy::DoDispose();
-
 	}
 
 	Ptr<NetDevice> HrWpanPhy::GetDevice(void)

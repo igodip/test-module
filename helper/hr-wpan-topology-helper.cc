@@ -310,11 +310,6 @@ namespace ns3
 			const std::list<Ptr<Line> > lines = HrWpan::TopologyAggregator::getInstance().getContainer();
 
 			std::list<Ptr<Line> >::const_iterator it = lines.begin();
-			
-			Ptr<UniformRandomVariable> uRandVar = CreateObject<UniformRandomVariable>();
-
-			uRandVar->SetAttribute("Min", DoubleValue(0.0));
-			uRandVar->SetAttribute("Max", DoubleValue(1.0));
 
 			while (it != lines.end())
 			{

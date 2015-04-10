@@ -100,6 +100,13 @@ namespace ns3
 
 		}
 
+		void ObstaclePropagationLossModel::DoDispose()
+		{
+			NS_LOG_FUNCTION(this);
+
+			m_topologyAggregator = 0;
+		}
+
 		int64_t ObstaclePropagationLossModel::DoAssignStreams(int64_t stream)
 		{
 			NS_LOG_FUNCTION(this << stream);

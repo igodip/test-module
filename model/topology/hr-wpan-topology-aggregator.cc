@@ -64,6 +64,7 @@ namespace ns3
 			static TypeId tid = TypeId("TopologyAggregator")
 				.SetParent<Object>()
 				.AddConstructor<TopologyAggregator>();
+
 			return tid;
 		}
 

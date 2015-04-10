@@ -34,6 +34,8 @@ namespace ns3 {
 
 	namespace HrWpan
 	{
+
+		class SectorAntenna;
 		
 		class HrWpanNetDevice : public NetDevice {
 
@@ -92,6 +94,11 @@ namespace ns3 {
 			void LinkDown(void);
 
 			void CompleteConfig(void);
+			/**
+			* The antenna
+			*/
+			Ptr<SectorAntenna> m_antenna;
+
 			/**
 			* The MAC for this NetDevice.
 			*/

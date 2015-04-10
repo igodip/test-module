@@ -57,11 +57,11 @@ namespace ns3
 			m_mac->SetNetDevice(this);
 			m_phy->SetPhyUser(m_mac->GetPointer());
 			
-			NS_LOG_INFO(m_mac->GetAddress());
+			//NS_LOG_INFO(m_mac->GetAddress());
 
 			//Antenna
-			Ptr<SectorAntenna> sectorAntenna = CreateObject<SectorAntenna>();
-			m_phy->SetAntenna(sectorAntenna);
+			m_antenna = CreateObject<SectorAntenna>();
+			m_phy->SetAntenna(m_antenna);
 
 			//Sap Providers
 
@@ -80,9 +80,6 @@ namespace ns3
 		HrWpanNetDevice:: ~HrWpanNetDevice(void)
 		{
 			NS_LOG_FUNCTION(this);
-
-			//delete userAsync;
-			//delete providerAsync;
 
 		}
 
@@ -185,7 +182,7 @@ namespace ns3
 			// inventing a fake ethertype and packet tag for McpsDataRequest
 			NS_LOG_FUNCTION(this << packet << dest << protocolNumber);
 
-			NS_LOG_INFO(dest);
+			//NS_LOG_INFO(dest);
 
 			HrWpan::MacSapRequestParamsAsync requestParams;
 			
@@ -218,12 +215,14 @@ namespace ns3
 			NS_LOG_FUNCTION(this);
 			m_mac->Dispose();
 			m_phy->Dispose();
+			m_antenna->Dispose();
 
 			m_phy = 0;
 			m_mac = 0;
 			m_node = 0;
+			m_antenna = 0;
 
-			NetDevice::DoDispose();
+			NS_LOG_INFO("Do dispose");
 		}
 
 		void HrWpanNetDevice::DoInitialize(void)

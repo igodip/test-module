@@ -29,14 +29,14 @@ namespace ns3
 {
 	namespace HrWpan
 	{
-
+		
 		class EventListener : public Object
 		{
 
 			virtual std::string GetEventName() = 0;
 
-			template<class T>
-			virtual void Run(const T & t) = 0;
+			
+			virtual void Run(void * t) = 0;
 
 		};
 

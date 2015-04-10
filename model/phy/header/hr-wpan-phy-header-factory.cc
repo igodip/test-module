@@ -25,7 +25,7 @@ namespace ns3
 {
 	namespace HrWpan
 	{
-
+		
 	} // namespace HrWpan
 
 }// namespace ns3

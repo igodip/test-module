@@ -88,8 +88,6 @@ namespace ns3 {
 		void StartTx(Ptr<HrWpanSpectrumSignalParameters> params);
 		void EndTx(Ptr<HrWpanSpectrumSignalParameters> params);
 
-		virtual void DoDispose();
-
 		//Rx methods
 		bool IsRxOn() const;
 		void RxOn();
@@ -108,6 +106,11 @@ namespace ns3 {
 		HrWpanPhyUser* GetPhyUser() const;
 
 		HrWpanPhy* GetPointer() const;
+
+	protected:
+
+		virtual void DoDispose(void);
+		virtual void DoInitialize(void);
 
 	private:
 

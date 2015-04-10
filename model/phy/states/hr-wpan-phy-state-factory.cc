@@ -92,6 +92,14 @@ namespace ns3
 
 	}
 
+	TypeId HrWpanPhyStateFactory::GetTypeId()
+	{
+		static TypeId tid = TypeId("ns3::HrWpanPhyStateFactory")
+			.SetParent<Object>();
+
+		return tid;
+	}
+
 }
 
 

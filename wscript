@@ -37,9 +37,9 @@ def build(bld):
 		'model/phy/states/hr-wpan-phy-tx-busy-state.cc',
 		'model/phy/states/hr-wpan-phy-switch-state.cc',
 		'model/phy/states/hr-wpan-phy-state-factory.cc',
-		'model/mac/hr-wpan-timestamp-tag.cc',
-		'model/mac/hr-wpan-retrasmission-tag.cc',
-		'model/mac/hr-wpan-sender-tag.cc',
+		'model/mac/tag/hr-wpan-timestamp-tag.cc',
+		'model/mac/tag/hr-wpan-retrasmission-tag.cc',
+		'model/mac/tag/hr-wpan-sender-tag.cc',
 		'helper/hr-wpan-phy-stat-helper.cc',
 		'helper/hr-wpan-mac-stat-helper.cc',
 		'helper/phy/hr-wpan-spectrum-model-factory.cc',
@@ -48,7 +48,8 @@ def build(bld):
 		'helper/hr-wpan-topology-helper.cc',
 		'helper/hr-wpan-devid-helper.cc',
 		'helper/hr-wpan-helper.cc',
-		
+		'helper/event/hr-wpan-event-listener.cc',
+		'helper/event/hr-wpan-event-manager.cc'
         ]
 
     module_test = bld.create_ns3_module_test_library('hr-wpan')
@@ -105,9 +106,9 @@ def build(bld):
 		'model/mac/manager-sync/hr-wpan-mac-slotted-aloha-sync.h',
 		'model/mac/manager-sync/hr-wpan-mac-tdma-sync.h',
 		'model/mac/hr-wpan-mac-pib.h',
-		'model/mac/hr-wpan-timestamp-tag.h',
-		'model/mac/hr-wpan-retrasmission-tag.h',
-		'model/mac/hr-wpan-sender-tag.h',
+		'model/mac/tag/hr-wpan-timestamp-tag.h',
+		'model/mac/tag/hr-wpan-retrasmission-tag.h',
+		'model/mac/tag/hr-wpan-sender-tag.h',
 		'helper/hr-wpan-phy-stat-helper.h',
 		'helper/hr-wpan-mac-stat-helper.h',
 		'helper/phy/hr-wpan-spectrum-model-factory.h',
@@ -116,6 +117,8 @@ def build(bld):
 		'helper/hr-wpan-topology-helper.h',
 		'helper/hr-wpan-devid-helper.h',
 		'helper/hr-wpan-helper.h',
+		'helper/event/hr-wpan-event-listener.h',
+		'helper/event/hr-wpan-event-manager.h'
         ]
 
     if (bld.env['ENABLE_EXAMPLES']):
