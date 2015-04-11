@@ -62,6 +62,7 @@ namespace ns3
 		{
 		public:
 			MacSapUserAsync(HrWpanNetDevice * netDevice,HrWpanMac * mac);
+			virtual ~MacSapUserAsync() {}
 
 			virtual void Confirm(const MacSapConfirmParams & confirmParams);
 			virtual void Indication(const MacSapIndicationParams & indicationParams);
@@ -97,6 +98,7 @@ namespace ns3
 		{
 		public:
 			MacSapProviderAsync(HrWpanMac * mac);
+			virtual ~MacSapProviderAsync() {}
 
 			virtual void Request(const MacSapRequestParams & requestParams);
 			virtual void Response(const MacSapResponseParams & responseParams);

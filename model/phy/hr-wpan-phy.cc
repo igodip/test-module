@@ -69,6 +69,8 @@ namespace ns3 {
 
 		//Resetting pointers
 		m_stateFactory = 0;
+		m_currentState = 0;
+		m_currentPacket = 0;
 		
 	}
 

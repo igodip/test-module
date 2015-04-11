@@ -81,6 +81,16 @@ namespace ns3
 		{
 			NS_LOG_FUNCTION(this);
 
+			std::map< std::string, MacSapProvider * >::iterator i = m_sapProviders.begin();
+
+			while (i == m_sapProviders.end())
+			{
+				delete ((MacSapProviderAsync * )i->second);
+				i++;
+			}
+
+			m_sapProviders.clear();
+
 		}
 
 		TypeId HrWpanNetDevice::GetTypeId(void)

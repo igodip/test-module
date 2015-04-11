@@ -49,6 +49,16 @@ namespace ns3 {
 	HrWpanMac::~HrWpanMac()
 	{
 		NS_LOG_FUNCTION(this);
+
+		std::map< std::string, HrWpan::MacSapUser * >::iterator i = m_sapUsers.begin();
+
+		while (i == m_sapUsers.end())
+		{
+			delete ((HrWpan::MacSapUserAsync * ) i->second);
+			i++;
+		}
+
+		m_sapUsers.clear();
 	}
 
 	TypeId HrWpanMac::GetTypeId()
@@ -105,7 +115,10 @@ namespace ns3 {
 	{
 		NS_LOG_FUNCTION(this);
 		m_queue->Dispose();
-		Object::DoDispose();
+		m_timeoutPackets.clear();
+		
+		m_netDevice = 0;
+		m_queue = 0;
 	}
 
 	void HrWpanMac::AssociatePhyProvider(HrWpanPhyProvider* hrWpanPhyProvider)

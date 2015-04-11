@@ -53,10 +53,11 @@ int main(int argc, char ** argv)
 {
 	LogComponentEnable("HrWpanTdmaSim", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpanNetDevice", LOG_LEVEL_INFO);
-	//LogComponentEnable("Node", LOG_LEVEL_ALL);
+	//LogComponentEnable("Node", LOG_LEVEL_WARN);
 	//LogComponentEnable("HrWpanObstaclePropagationModel", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpan::SectorAntenna", LOG_LEVEL_ALL);
-	//LogComponentEnable("HrWpanMac", LOG_LEVEL_INFO);
+	//LogComponentEnable("HrWpanMac", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpanPhy", LOG_LEVEL_ALL);
 
 	double lengthTop = 10;
 	double obsMaxSize = 1;
