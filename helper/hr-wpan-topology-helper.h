@@ -26,6 +26,7 @@
 #include <ns3/position-allocator.h>
 #include <ns3/node.h>
 #include <ns3/hr-wpan-topology-aggregator.h>
+#include <ns3/net-device-container.h>
 
 namespace ns3
 {
@@ -54,6 +55,9 @@ namespace ns3
 
 			void InstallApplication();
 
+			NetDeviceContainer getSenderDevices() const;
+			NetDeviceContainer getReceiverDevices() const;
+
 		protected:
 
 			Ptr<RandomRectanglePositionAllocator> m_randomRectanglePositionAllocator;
@@ -65,6 +69,9 @@ namespace ns3
 			Ptr<UniformRandomVariable> m_uRandomSize;
 
 			Ptr<TopologyAggregator> m_topologyAggregator;
+
+			NetDeviceContainer senderDevices;
+			NetDeviceContainer receiverDevices;
 
 		private:
 			

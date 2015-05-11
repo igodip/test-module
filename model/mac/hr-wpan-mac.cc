@@ -231,7 +231,7 @@ namespace ns3 {
 
 		//Removing packet
 		Ptr<Packet> packet = m_queue->Dequeue();
-		
+
 		if (packet == 0)
 		{
 			//NS_LOG_INFO("No packet inside queue!");

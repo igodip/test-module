@@ -23,6 +23,8 @@
 #include "hr-wpan-mac-tdma-sync.h"
 #include <ns3/nstime.h>
 #include <ns3/log.h>
+#include <iostream>
+
 
 namespace ns3
 {
@@ -68,7 +70,7 @@ namespace ns3
 			}
 
 			if (nextTrigger < m_endTime)
-			{
+			{	
 				Simulator::Schedule(m_timeSlot, &MacTdmaSync::nextDevice, this);
 			}
 

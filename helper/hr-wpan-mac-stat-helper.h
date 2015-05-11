@@ -39,16 +39,18 @@ namespace ns3
 
 			void attach();
 
-			uint32_t getTx() const;
-			uint32_t getRx() const;
-			uint32_t getQueueDrop() const;
-			uint32_t getQueueIn() const;
-			uint32_t getQueueOut() const;
-			uint32_t getQueueReIn() const;
+			uint64_t getTx() const;
+			uint64_t getRx() const;
+			uint64_t getQueueDrop() const;
+			uint64_t getQueueIn() const;
+			uint64_t getQueueOut() const;
+			uint64_t getQueueReIn() const;
 			Time getTotalDelay() const;
 			Time getAvgDelay() const;
-			uint32_t getRtPackets() const;
+			uint64_t getRtPackets() const;
 			double getAvgRtsPackets() const;
+			uint64_t getRtDistrib(uint8_t index) const;
+
 			
 
 		private:
@@ -62,13 +64,14 @@ namespace ns3
 			
 
 			Time m_totalDelay;
-			uint32_t m_tx;
-			uint32_t m_rx;
-			uint32_t m_queueDrop;
-			uint32_t m_queueIn;
-			uint32_t m_queueOut;
-			uint32_t m_queueReIn;
-			uint32_t m_rtPackets;
+			uint64_t m_tx;
+			uint64_t m_rx;
+			uint64_t m_queueDrop;
+			uint64_t m_queueIn;
+			uint64_t m_queueOut;
+			uint64_t m_queueReIn;
+			uint64_t m_rtPackets;
+			uint64_t m_rtDistrib[12];
 
 		};
 

@@ -54,6 +54,7 @@ namespace ns3
 
 			std::list<Ptr<Line> > m_lines;
 			std::map<Ptr<Node>, Ptr<Link> > m_nodes_map;
+			std::multimap<int, Ptr<Node> > m_nodes_orient;
 
 		};
 

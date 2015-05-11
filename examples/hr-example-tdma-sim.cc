@@ -65,6 +65,8 @@ int main(int argc, char ** argv)
 	double obstacleDensity = 0.25;
 	int rounds = 50;
 	double beamwidth = 10;
+	std::string bitRate = "6Mb/s";
+	uint32_t packetSize = 512;
 	std::string reportFilename = "stats.csv";
 
 	CommandLine cmd;
@@ -75,9 +77,13 @@ int main(int argc, char ** argv)
 	cmd.AddValue("reportFilename", "Filename of the report", reportFilename);
 	cmd.AddValue("beamwidth", "Beamwidth", beamwidth);
 	cmd.AddValue("rounds", "Rounds per simulation", rounds);
+	cmd.AddValue("bitRate", "Bit Rate", bitRate);
+	cmd.AddValue("packetSize", "Packet Size", packetSize);
 	cmd.Parse(argc, argv);
 
 	Config::SetDefault("ns3::HrWpan::SectorAntenna::Beamwidth", DoubleValue(DegreesToRadians(beamwidth)));
+	Config::SetDefault("ns3::OnOffApplication::DataRate", DataRateValue(DataRate(bitRate)));
+	Config::SetDefault("ns3::OnOffApplication::PacketSize", UintegerValue(packetSize));
 	//Config::SetDefault("ns3::HrWpan::SectorAntenna::Beamwidth",)
 
 	double pairLam = pairDensity*lengthTop*lengthTop;
@@ -149,7 +155,7 @@ int main(int argc, char ** argv)
 		NS_LOG_INFO("Setting up the manager");
 		Ptr<HrWpan::MacTdmaSync> tdmaSync = CreateObject<HrWpan::MacTdmaSync>();
 		
-		tdmaSync->AddListeners(netDevices);
+		tdmaSync->AddListeners(topologyHelper.getSenderDevices());
 		tdmaSync->Activate();
 		
 		NS_LOG_INFO("Running simulation.");
@@ -197,7 +203,14 @@ int main(int argc, char ** argv)
 		outfile << macStatHelper.getQueueOut() << ",";
 		outfile << macStatHelper.getQueueReIn() << ",";
 		outfile << macStatHelper.getAvgRtsPackets() << ",";
-		outfile << macStatHelper.getAvgDelay() << std::endl;
+		outfile << macStatHelper.getAvgDelay()<<",";
+
+		for (int rtDis = 0; rtDis < 12; rtDis++)
+		{
+			outfile << macStatHelper.getRtDistrib(rtDis) << ",";
+		}
+
+		outfile << std::endl;
 		
 		outfile.flush();
 	}

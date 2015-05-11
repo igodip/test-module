@@ -89,7 +89,7 @@ namespace ns3
 				if (TopologyHelper::intersect(line, obstacle))
 				{
 					NS_LOG_INFO("Found obstacle!");
-					return txPowerDbm - 200;
+					return txPowerDbm - 400;
 				}
 
 			}

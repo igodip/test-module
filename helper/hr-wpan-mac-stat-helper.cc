@@ -71,6 +71,11 @@ namespace ns3
 			m_totalDelay = Seconds(0);
 			m_rtPackets = 0;
 
+			for (int i = 0; i < 12; i++)
+			{
+				m_rtDistrib[i] = 0;
+			}
+
 		}
 
 		void MacStatHelper::incRx(std::string str, Ptr<const Packet> p)
@@ -102,6 +107,14 @@ namespace ns3
 			{
 				NS_LOG_INFO((int)retrasmissionTag.GetCounter());
 				m_rtPackets += retrasmissionTag.GetCounter();
+
+				int rtDistrib = retrasmissionTag.GetCounter();
+
+				if (rtDistrib > 10){
+					rtDistrib = 11;
+				}
+
+				m_rtDistrib[rtDistrib]++;
 			}
 
 		}
@@ -112,32 +125,32 @@ namespace ns3
 
 		}
 
-		uint32_t MacStatHelper::getRx() const
+		uint64_t MacStatHelper::getRx() const
 		{
 			return m_rx;
 		}
 
-		uint32_t MacStatHelper::getTx() const
+		uint64_t MacStatHelper::getTx() const
 		{
 			return m_tx;
 		}
 
-		uint32_t MacStatHelper::getQueueDrop() const
+		uint64_t MacStatHelper::getQueueDrop() const
 		{
 			return m_queueDrop;
 		}
 
-		uint32_t MacStatHelper::getQueueIn() const
+		uint64_t MacStatHelper::getQueueIn() const
 		{
 			return m_queueIn;
 		}
 
-		uint32_t MacStatHelper::getQueueReIn() const
+		uint64_t MacStatHelper::getQueueReIn() const
 		{
 			return m_queueReIn;
 		}
 
-		uint32_t MacStatHelper::getQueueOut() const
+		uint64_t MacStatHelper::getQueueOut() const
 		{
 			NS_LOG_FUNCTION(this);
 			return m_queueOut;
@@ -183,7 +196,7 @@ namespace ns3
 			return m_totalDelay / double(getRx());
 		}
 
-		uint32_t MacStatHelper::getRtPackets() const
+		uint64_t MacStatHelper::getRtPackets() const
 		{
 			NS_LOG_FUNCTION(this);
 
@@ -198,6 +211,12 @@ namespace ns3
 				return 0;
 			}
 			return m_rtPackets / double(getRx());
+		}
+
+		uint64_t MacStatHelper::getRtDistrib(uint8_t index) const
+		{
+			NS_LOG_FUNCTION(this);
+			return m_rtDistrib[index];
 		}
 
 	} //namespace HrWpan

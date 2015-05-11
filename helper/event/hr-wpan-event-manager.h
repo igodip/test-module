@@ -35,10 +35,13 @@ namespace ns3
 		class NetDeviceEventManager : public Object
 		{
 
+			NetDeviceEventManager();
+
+			static TypeId GetTypeId();
 
 
 		protected:
-			std::multimap< std::string, Ptr<EventListener> > eventList;
+			std::map< std::string, std::list<Ptr<EventListener> > > eventList;
 
 		};
 	}

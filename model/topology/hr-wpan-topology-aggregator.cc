@@ -53,8 +53,11 @@ namespace ns3
 			{
 				m_nodes_map[link->GetSender()] = link;
 				m_nodes_map[link->GetReceiver()] = link;
+
 			}
 
+			
+			
 			m_lines.push_back(line);
 		}
 

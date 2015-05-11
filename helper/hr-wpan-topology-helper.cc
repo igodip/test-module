@@ -35,6 +35,7 @@
 #include <ns3/hr-wpan-sector-antenna.h>
 #include <ns3/hr-wpan-net-device.h>
 #include <ns3/on-off-helper.h>
+#include <ns3/bulk-send-helper.h>
 #include <ns3/internet-module.h>
 #include <ns3/packet-sink-helper.h>
 
@@ -165,7 +166,7 @@ namespace ns3
 			double size = m_uRandomSize->GetValue();
 
 			double xdiff = cos(orientation)*(size / double(2));
-			double ydiff = cos(orientation)*(size / double(2));
+			double ydiff = sin(orientation)*(size / double(2));
 
 			center_point = m_randomRectanglePositionAllocator->GetNext();
 
@@ -329,20 +330,29 @@ namespace ns3
 				
 					OnOffHelper onoff("ns3::UdpSocketFactory",
 						Address(InetSocketAddress(receiverIpv4, 15)));
-					onoff.SetConstantRate(DataRate("6Mb/s"));
+					onoff.SetAttribute("OnTime", StringValue("ns3::ConstantRandomVariable[Constant=1000.0]"));
 					onoff.SetAttribute("OffTime",StringValue( "ns3::ConstantRandomVariable[Constant=0.0]"));
+
+					/*BulkSendHelper bulkSend("ns3::UdpSocketFactory",
+						Address(InetSocketAddress(receiverIpv4, 15)));
+					bulkSend.SetAttribute*/
 
 					ApplicationContainer app = onoff.Install(sender);
 					
 					app.Start(Seconds(0.0));
 					app.Stop(Seconds(4.0));
 
+					senderDevices.Add(sender->GetDevice(0));
+
 					PacketSinkHelper sink("ns3::UdpSocketFactory",
 						Address(InetSocketAddress(Ipv4Address::GetAny(), 15)));
+
 
 					app = sink.Install(receiver);
 					app.Start(Seconds(0.0));
 					app.Stop(Seconds(4.0));
+
+					receiverDevices.Add(receiver->GetDevice(0));
 
 					//Populate arp cache
 					Ptr<ArpCache> arpSender = sender->GetObject<Ipv4L3Protocol>()->GetInterface(1)->GetArpCache();
@@ -361,6 +371,16 @@ namespace ns3
 				++it;
 			}
 
+		}
+
+		NetDeviceContainer TopologyHelper::getSenderDevices() const
+		{
+			return senderDevices;
+		}
+
+		NetDeviceContainer TopologyHelper::getReceiverDevices() const
+		{
+			return receiverDevices;
 		}
 
 	} // namespace HrWpan

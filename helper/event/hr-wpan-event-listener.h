@@ -35,6 +35,7 @@ namespace ns3
 
 			virtual std::string GetEventName() = 0;
 
+			virtual uint8_t GetPriority() = 0;
 			
 			virtual void Run(void * t) = 0;
 

@@ -63,7 +63,7 @@ namespace ns3
 					MakeDoubleChecker<double>()).
 				AddAttribute("Epsilon",
 					"Side lobe gain (db) ",
-					DoubleValue(-30),
+					DoubleValue(-150),
 					MakeDoubleAccessor(&SectorAntenna::m_epsilon),
 					MakeDoubleChecker<double>());
 
@@ -96,7 +96,7 @@ namespace ns3
 			{
 				NS_LOG_INFO("Inside main lobe");
 				double r = (2 * M_PI - (2 * M_PI - m_beamwidth)*epsilon_w) / m_beamwidth;
-				return 10 * log10(r );
+				return 10 * log10(r);
 			}
 
 			return m_epsilon;
