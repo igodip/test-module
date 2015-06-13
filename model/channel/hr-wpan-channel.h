@@ -22,17 +22,18 @@
 #ifndef HR_WPAN_CHANNEL_H
 #define HR_WPAN_CHANNEL_H
 
-#include <ns3/spectrum-channel.h>
+#include <ns3/single-model-spectrum-channel.h>
 
 namespace ns3
 {
 	namespace HrWpan
 	{
-		class Channel : public SpectrumChannel
+		class HrWpanChannel : public SingleModelSpectrumChannel
 		{
 
 		public:
-
+			static TypeId GetTypeId(void);
+			virtual void StartTx(Ptr<SpectrumSignalParameters> txParams);
 		protected:
 
 		private:

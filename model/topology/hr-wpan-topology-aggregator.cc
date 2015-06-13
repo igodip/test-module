@@ -21,6 +21,8 @@
 
 #include "hr-wpan-topology-aggregator.h"
 #include <ns3/log.h>
+#include <ns3/hr-wpan-net-device.h>
+#include <ns3/hr-wpan-sector-antenna.h>
 
 namespace ns3
 {
@@ -54,10 +56,18 @@ namespace ns3
 				m_nodes_map[link->GetSender()] = link;
 				m_nodes_map[link->GetReceiver()] = link;
 
+				Ptr<HrWpanNetDevice> receiverDev = DynamicCast<HrWpanNetDevice>(link->GetReceiver()->GetDevice(0));
+
+				NS_ASSERT_MSG(receiverDev != 0, "No HrWpanNetDevice");
+
+				Ptr<SectorAntenna> receiverAntenna = DynamicCast<SectorAntenna>(receiverDev->GetPhy()->GetRxAntenna());
+
+				m_nodes_orient.insert(
+					std::pair<double, Ptr< Node > >(receiverAntenna->GetOrientation(), link->GetReceiver())
+				);
+
 			}
 
-			
-			
 			m_lines.push_back(line);
 		}
 
@@ -91,6 +101,69 @@ namespace ns3
 
 			m_lines.clear();
 			m_nodes_map.clear();
+			m_beamwidth = 0;
+			m_nodes_orient.clear();
+		}
+
+		std::set<Ptr<Node > > TopologyAggregator::GetSteeredReceivers(double senderOrientation)
+		{
+			NS_LOG_FUNCTION(this);
+			
+			std::set<Ptr<Node> > result;
+
+			double module = 2 * M_PI;
+			//NS_LOG_INFO(module);
+			double low_limit = fmod( senderOrientation + M_PI - m_beamwidth / 2, module);
+			double up_limit = fmod( senderOrientation + M_PI + m_beamwidth / 2, module);
+
+			
+
+			if (low_limit > up_limit)
+			{
+				
+				std::multimap<double, Ptr<Node> >::iterator itlow1,itlow2, itup1, itup2;
+				itlow1 = m_nodes_orient.lower_bound(0);
+				itup1 = m_nodes_orient.upper_bound(up_limit);
+
+				itlow2 = m_nodes_orient.lower_bound(low_limit);
+				itup2 = m_nodes_orient.upper_bound(2 * M_PI);
+
+				while (itlow1 != itup1)
+				{
+					result.insert(((*itlow1).second));
+					++itlow1;
+				}
+
+				while (itlow2 != itup2)
+				{
+					result.insert(((*itlow2).second));
+					++itlow2;
+				}
+
+			}
+			else
+			{
+
+				std::multimap<double,Ptr<Node> >::iterator itlow, itup;
+				itlow = m_nodes_orient.lower_bound(low_limit);
+				itup = m_nodes_orient.upper_bound(up_limit);
+
+				while (itlow != itup)
+				{
+					
+					result.insert(((*itlow).second));
+					++itlow;
+				}
+
+			}
+
+			return result;
+
+		}
+
+		void TopologyAggregator::SetBeamwidth(double beamwidth)
+		{
+			m_beamwidth = beamwidth;
 		}
 
 	} // namespace HrWpan

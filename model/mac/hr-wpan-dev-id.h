@@ -36,7 +36,7 @@ namespace ns3 {
 		class DevId {
 		public:
 			/**
-			*
+			* Constructor
 			*/
 			DevId(void);
 			/**
@@ -82,6 +82,7 @@ namespace ns3 {
 			*/
 			static DevId Allocate(void);
 			/*
+			*
 			*/
 			static DevId GetBroadcast(void);
 			/**

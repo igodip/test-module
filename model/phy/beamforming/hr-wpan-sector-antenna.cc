@@ -103,6 +103,11 @@ namespace ns3
 			
 		}
 
+		double SectorAntenna::GetOrientation() const
+		{
+			return m_orientation;
+		}
+
 	} // HrWpan namespace
 
 } // ns3 namespace

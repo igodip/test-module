@@ -182,7 +182,6 @@ namespace ns3 {
 	{
 
 		NS_LOG_FUNCTION(this << spectrumRxParams);
-		//m_signal->AddSignal(spectrumRxParams->psd);
 
 		m_currentState->StartRx(spectrumRxParams);
 		
@@ -192,7 +191,6 @@ namespace ns3 {
 	void HrWpanPhy::EndRx(Ptr <SpectrumSignalParameters> spectrumRxParams)
 	{
 		NS_LOG_FUNCTION(this << spectrumRxParams);
-		//m_signal->RemoveSignal(spectrumRxParams->psd);
 
 		m_currentState->EndRx(spectrumRxParams);
 		
@@ -221,7 +219,7 @@ namespace ns3 {
 
 	void HrWpanPhy::SetMobility(Ptr<MobilityModel> m)
 	{
-		//Ma
+		
 	}
 
 	bool HrWpanPhy::IsRxOn() const {

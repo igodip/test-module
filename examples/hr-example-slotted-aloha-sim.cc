@@ -122,6 +122,7 @@ int main(int argc, char ** argv)
 		nodeContainer.Create(pairNumber*2);
 
 		topologyAggregator->clear();
+		topologyAggregator->SetBeamwidth(DegreesToRadians(beamwidth));
 		HrWpan::TopologyHelper topologyHelper(lengthTop, lengthTop, obsMaxSize, topologyAggregator);
 		HrWpan::HrWpanHelper wpanHelper(topologyAggregator);
 

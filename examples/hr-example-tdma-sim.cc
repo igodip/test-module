@@ -52,7 +52,8 @@ NS_LOG_COMPONENT_DEFINE("HrWpanTdmaSim");
 int main(int argc, char ** argv)
 {
 	LogComponentEnable("HrWpanTdmaSim", LOG_LEVEL_ALL);
-	//LogComponentEnable("HrWpanNetDevice", LOG_LEVEL_INFO);
+	//LogComponentEnable("HrWpanChannel", LOG_LEVEL_ALL);
+	//LogComponentEnable("HrWpan::TopologyAggregator", LOG_LEVEL_ALL);
 	//LogComponentEnable("Node", LOG_LEVEL_WARN);
 	//LogComponentEnable("HrWpanObstaclePropagationModel", LOG_LEVEL_ALL);
 	//LogComponentEnable("HrWpan::SectorAntenna", LOG_LEVEL_ALL);
@@ -119,6 +120,7 @@ int main(int argc, char ** argv)
 		nodeContainer.Create(pairNumber*2);
 
 		topologyAggregator->clear();
+		topologyAggregator->SetBeamwidth(DegreesToRadians(beamwidth));
 		HrWpan::TopologyHelper topologyHelper(lengthTop, lengthTop, obsMaxSize, topologyAggregator);
 		HrWpan::HrWpanHelper wpanHelper(topologyAggregator);
 

@@ -24,6 +24,7 @@
 
 #include <list>
 #include <map>
+#include <set>
 #include <ns3/object.h>
 #include <ns3/node.h>
 #include "hr-wpan-line.h"
@@ -48,13 +49,18 @@ namespace ns3
 			const std::list<Ptr<Line> > & getContainer() const;
 			Ptr<Link> getLineByNode(Ptr<Node> node);
 
+			void SetBeamwidth(double beamwidth);
+
 			void clear();
+			
+			std::set<Ptr<Node > > GetSteeredReceivers(double senderOrientation);
 
 		protected:
 
 			std::list<Ptr<Line> > m_lines;
 			std::map<Ptr<Node>, Ptr<Link> > m_nodes_map;
-			std::multimap<int, Ptr<Node> > m_nodes_orient;
+			std::multimap<double, Ptr<Node> > m_nodes_orient;
+			double m_beamwidth; // Radiants
 
 		};
 

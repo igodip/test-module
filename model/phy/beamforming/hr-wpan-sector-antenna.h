@@ -40,6 +40,7 @@ namespace ns3
 			static TypeId GetTypeId();
 
 			virtual double GetGainDb(Angles a);
+			double GetOrientation() const;
 
 		protected:
 
