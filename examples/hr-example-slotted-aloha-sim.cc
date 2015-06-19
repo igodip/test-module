@@ -52,12 +52,6 @@ NS_LOG_COMPONENT_DEFINE("HrSlottedAlohaSim");
 int main(int argc, char ** argv)
 {
 	LogComponentEnable("HrSlottedAlohaSim", LOG_LEVEL_ALL);
-	//LogComponentEnable("HrWpanMacStatHelper", LOG_LEVEL_INFO);
-	//LogComponentEnable("HrWpanMacSapAsync", LOG_LEVEL_ALL);
-	//LogComponentEnable("HrWpanPhyRxOnState", LOG_LEVEL_ALL);
-	//LogComponentEnable("HrWpan::TopologyHelper", LOG_LEVEL_ALL);
-	//LogComponentEnable("ArpL3Protocol", LOG_LEVEL_ALL);
-	//LogComponentEnable("HrWpanDevIDHelper", LOG_LEVEL_ALL);
 
 	double lengthTop = 10;
 	double obsMaxSize = 1;

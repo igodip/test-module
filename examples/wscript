@@ -17,6 +17,6 @@ def build(bld):
 	obj.source = 'hr-example-tdma-sim.cc'
 	obj = bld.create_ns3_program('hr-example-slotted-aloha-sim',['hr-wpan'])
 	obj.source = 'hr-example-slotted-aloha-sim.cc'
-	obj = bld.create_ns3_program('hr-wpan-mis.cc',['hr-wpan'])
+	obj = bld.create_ns3_program('hr-wpan-mis',['hr-wpan'])
 	obj.source = 'hr-wpan-mis.cc'
 	

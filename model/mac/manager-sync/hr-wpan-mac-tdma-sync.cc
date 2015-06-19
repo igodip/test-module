@@ -45,7 +45,7 @@ namespace ns3
 		MacTdmaSync::MacTdmaSync()
 		{
 			m_startTime = Seconds(0.0);
-			m_endTime = Seconds(4.0);
+			m_endTime = Seconds(0.4);
 			m_timeSlot = MicroSeconds(800.0);
 		}
 
