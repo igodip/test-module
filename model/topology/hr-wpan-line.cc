@@ -20,10 +20,13 @@
 */
 
 #include "hr-wpan-line.h"
+#include <ns3/log.h>
 
 
 namespace ns3
 {
+
+	NS_LOG_COMPONENT_DEFINE("HrWpanLine");
 
 	namespace HrWpan
 	{
@@ -31,17 +34,18 @@ namespace ns3
 		Line::Line() :
 			m_start(0, 0, 0), m_end(0, 0, 0)
 		{
-
+			NS_LOG_FUNCTION(this);
 		}
 
 		Line::Line(double start_x, double start_y, double end_x, double end_y) :
 			m_start(start_x, start_y, 0), m_end(end_x, end_y, 0)
 		{
-
+			NS_LOG_FUNCTION(this);
 		}
 
 		TypeId Line::GetTypeId()
 		{
+
 			static TypeId tid = TypeId("HrWpan::Line").
 				SetParent<Object>().
 				AddConstructor<Line>();
@@ -51,7 +55,7 @@ namespace ns3
 
 		void Line::DoDispose()
 		{
-
+			NS_LOG_FUNCTION(this);
 		}
 
 		void Line::setStart(const Vector3D & start)

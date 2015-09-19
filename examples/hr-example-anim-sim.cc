@@ -60,7 +60,7 @@ int main(int argc, char ** argv)
 	double obsMaxSize = 2;
 	double pairDensity = 0.5;
 	double obstacleDensity = 0.1;
-	int rounds = 10;
+	uint32_t rounds = 10;
 	double beamwidth = 10;
 	std::string reportFilename = "stats.csv";
 
@@ -93,7 +93,7 @@ int main(int argc, char ** argv)
 		NS_ABORT_MSG("Can't create the file");
 	}
 
-	for (int i = 1; i <= rounds; i++)
+	for (uint32_t i = 1; i <= rounds; i++)
 	{
 		NS_LOG_INFO("-----------------------------------");
 		NS_LOG_INFO("Rounds " << i << " of " << rounds);

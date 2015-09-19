@@ -101,6 +101,8 @@ namespace ns3 {
 		//HrWpanPhyProvider
 		virtual void SendMacPdu(Ptr<Packet> p);
 		virtual void SendHrWpanControlMessage(Ptr<HrWpanPhyControlMessage> msg);
+
+		bool IsChannelIdle() const;
 		
 		void SetPhyUser(HrWpanPhyUser* phyUser);
 		HrWpanPhyUser* GetPhyUser() const;

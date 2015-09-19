@@ -223,7 +223,7 @@ namespace ns3 {
 
 		if (val > m_trasProb)
 		{
-			NS_LOG_INFO("Don't Trasmit");
+			NS_LOG_INFO("Don't Transmit");
 			return;
 		}
 		
@@ -271,7 +271,7 @@ namespace ns3 {
 		}
 		else
 		{
-			NS_LOG_INFO("Problema! Received");
+			NS_LOG_INFO("Problem! Received");
 		}
 		
 	}

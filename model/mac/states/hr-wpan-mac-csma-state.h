@@ -22,12 +22,18 @@
 #ifndef HR_WPAN_CSMA_STATE_H
 #define HR_WPAN_CSMA_STATE_H
 
+#include <ns3/hr-wpan-mac-abs-state.h>
+
 namespace ns3
 {
-	namespace HrWpan
-	{
 
-	} // namespace HrWpan
+	class HrWpanCsmaState
+	{
+	public:
+
+	protected:
+
+	};
 
 } // namespace ns3
 

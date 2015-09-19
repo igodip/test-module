@@ -131,10 +131,6 @@ HrWpanPacketTypeTestCase::~HrWpanPacketTypeTestCase()
 void HrWpanPacketTypeTestCase::DoRun(void)
 {
 
-
-
-
-
 }
 
 // ==============================================================================
@@ -148,7 +144,7 @@ private:
 };
 
 HrWpanPacketHeaderTestCase::HrWpanPacketHeaderTestCase()
-	: TestCase("Test the 802.15.3c MAC header and trailer classes")
+	: TestCase("Test the 802.15.3c MAC header classes")
 {}
 
 HrWpanPacketHeaderTestCase::~HrWpanPacketHeaderTestCase()

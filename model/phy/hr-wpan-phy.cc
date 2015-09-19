@@ -76,6 +76,7 @@ namespace ns3 {
 
 	void HrWpanPhy::DoInitialize()
 	{
+		NS_LOG_FUNCTION(this);
 		//
 	}
 
@@ -95,29 +96,29 @@ namespace ns3 {
 			"completely received from the channel medium"
 			"by the device",
 			MakeTraceSourceAccessor(&HrWpanPhy::m_phyRxEndTrace),
-			"ns3::HrWpanPhy::RxEndTracedCallback").
+			"ns3::Packet::TracedCallback").
 			AddTraceSource("PhyTxBegin",
 			"Trace source indicating a packet has begun "
 			"being sent to the channel medium"
 			"by the device",
 			MakeTraceSourceAccessor(&HrWpanPhy::m_phyTxBeginTrace),
-			"ns3::HrWpanPhy::TxBeginTracedCallback").
+			"ns3::Packet::TracedCallback").
 			AddTraceSource("PhyTxEnd",
 			"Trace source indicating a packet has been"
 			"completely sent to the channel medium"
 			"by the device",
 			MakeTraceSourceAccessor(&HrWpanPhy::m_phyTxEndTrace),
-			"ns3::HrWpanPhy::TxEndTrace").
+			"ns3::Packet::TracedCallback").
 			AddTraceSource("PhyTxDrop",
 			"Trace source indicating a packet has been"
 			"dropped by the device during transmission",
 			MakeTraceSourceAccessor(&HrWpanPhy::m_phyTxDropTrace),
-			"ns3::HrWpanPhy::TxDropTrace").
+			"ns3::Packet::TracedCallback").
 			AddTraceSource("PhyRxDrop",
 			"Trace source indicating a packet has been"
 			"dropped by the device during reception",
 			MakeTraceSourceAccessor(&HrWpanPhy::m_phyRxDropTrace),
-			"ns3::HrWpanPhy::RxDropTrace");;
+			"ns3::Packet::TracedCallback");;
 
 		return tid;
 	}
@@ -214,12 +215,13 @@ namespace ns3 {
 	Ptr<MobilityModel> HrWpanPhy::GetMobility(void)
 	{
 		NS_LOG_FUNCTION(this);
+
 		return (DynamicCast<HrWpan::HrWpanNetDevice>(m_netdevice))->GetNode()->GetObject<MobilityModel>();
 	}
 
 	void HrWpanPhy::SetMobility(Ptr<MobilityModel> m)
 	{
-		
+		//TODO
 	}
 
 	bool HrWpanPhy::IsRxOn() const {
@@ -289,12 +291,36 @@ namespace ns3 {
 
 	void HrWpanPhy::RxOn(void)
 	{
+		NS_LOG_FUNCTION(this);
 		m_currentState = m_stateFactory->GetRxOnState();
 	}
 
 	void HrWpanPhy::TxOn(void)
 	{
+		NS_LOG_FUNCTION(this);
 		m_currentState = m_stateFactory->GetTxOnState();
+	}
+
+	bool HrWpanPhy::IsChannelIdle(void) const
+	{
+		NS_LOG_FUNCTION(this);
+		//Check the state and check also if rx is on
+		if (!IsRxOn())
+		{
+			NS_ABORT_MSG("Rx is off, I can't check the channel");
+			return false;
+		}
+
+		bool occupied = false;
+
+		Ptr<HrWpanPhyRxBusyState> state = DynamicCast<HrWpanPhyRxBusyState>(m_currentState);
+
+		if (state != NULL)
+		{
+			occupied = true;
+		}
+
+		return occupied;
 	}
 
 } // namespace ns3

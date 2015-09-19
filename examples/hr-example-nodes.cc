@@ -33,14 +33,7 @@ using namespace ns3;
 
 int main(int argc, char** argv)
 {
-	//LogComponentEnableAll(LOG_PREFIX_FUNC);
-	//LogComponentEnable("HrWpanHelper",LOG_ALL);
-	//LogComponentEnable("HrWpanNetDevice", LOG_ALL);
-	//LogComponentEnable("HrWpanMac", LOG_ALL);
-	//LogComponentEnable("HrWpanPhy", LOG_ALL);
 	LogComponentEnable("HrWpanMacSapAsync", LOG_ALL);
-	//LogComponentEnable("SingleModelSpectrumChannel", LOG_ALL);
-	//LogComponentEnable("Node", LOG_ALL);
 
 	NodeContainer nodeContainer;
 	nodeContainer.Create(2);

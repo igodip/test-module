@@ -20,7 +20,6 @@
 */
 
 #include <ns3/spectrum-value.h>
-#include <ns3/log.h>
 
 namespace ns3 {
 

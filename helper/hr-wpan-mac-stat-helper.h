@@ -51,7 +51,6 @@ namespace ns3
 			double getAvgRtsPackets() const;
 			uint64_t getRtDistrib(uint8_t index) const;
 
-			
 
 		private:
 
@@ -61,7 +60,7 @@ namespace ns3
 			void incQueueIn(std::string str, Ptr<const Packet> p);
 			void incQueueOut(std::string str, Ptr<const Packet> p);
 			void incQueueReIn(std::string str, Ptr<const Packet> p);
-			
+
 
 			Time m_totalDelay;
 			uint64_t m_tx;
@@ -72,11 +71,9 @@ namespace ns3
 			uint64_t m_queueReIn;
 			uint64_t m_rtPackets;
 			uint64_t m_rtDistrib[12];
-
 		};
-
 	} //namespace HrWpan
-
 }// namespace ns3
 
 #endif //HR_WPAN_MAC_STAT_HELPER_H
+

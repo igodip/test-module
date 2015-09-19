@@ -162,7 +162,6 @@ namespace ns3
 		Address	HrWpanNetDevice::GetAddress(void) const
 		{
 			NS_LOG_FUNCTION(this);
-
 			return m_mac->GetAddress();
 		}
 
