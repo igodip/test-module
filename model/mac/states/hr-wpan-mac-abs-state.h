@@ -30,6 +30,8 @@ namespace ns3
 	{
 	public:
 
+		static TypeId GetTypeId();
+
 	protected:
 
 	};

@@ -32,6 +32,9 @@
 #include <ns3/double.h>
 #include <ns3/hr-wpan-retrasmission-tag.h>
 
+#include <algorithm>
+
+
 namespace ns3 {
 
 	NS_LOG_COMPONENT_DEFINE("HrWpanMac");
@@ -43,6 +46,19 @@ namespace ns3 {
 		NS_LOG_FUNCTION(this);
 
 		m_queue = CreateObject<HrWpan::MacQueue>();
+
+		m_rtsSent = false;
+		m_ctsSent = false;
+		m_dataSent = false;
+
+		m_tryNumber = 0;
+
+		m_ctrlFactory = & HrWpanCtrlPacketFactory::getInstance();
+		m_urv = CreateObject<UniformRandomVariable>();
+		m_urv->SetAttribute("Min", DoubleValue(1.0));
+		m_urv->SetAttribute("Max", DoubleValue(1024.0));
+
+		m_turnToWait = 0;
 
 	}
 
@@ -131,11 +147,58 @@ namespace ns3 {
 
 	void HrWpanMac::ReceivePhyPdu(Ptr<Packet> p)
 	{
+
+		//Check if cts / rts
+
 		NS_LOG_FUNCTION(this << p);
-		
+		NS_LOG_INFO(GetDevId() << " Receiving a packet");
+
 		HrWpan::MacHeader header;
 
 		p->PeekHeader(header);
+
+		if (header.getDstAddress() != GetDevId())
+		{
+			NS_LOG_INFO(GetDevId() << " Packet discarded not for me");
+
+			return;
+		}
+
+		if (header.IsCommand())
+		{
+			//RTS or CTS Packet
+			NS_LOG_INFO(GetDevId() << " Command");
+
+
+			if (m_rtsSent == true)
+			{
+				NS_LOG_INFO(GetDevId() << " Cts Received");
+				m_evtWaitingCts.Cancel();
+				SendData(p);
+				//So it's cts
+			}
+			else
+			{
+				//So it's rts
+				NS_LOG_INFO(GetDevId() << " Rts Received");
+				SendCts(p);
+			}
+
+			return;
+		}
+
+
+		if (header.IsImmediateAck())
+		{
+			//Ack received
+			NS_LOG_INFO(GetDevId() << " Imm Ack Received");
+			m_evtWaitingAck.Cancel();
+			AckReceived(p);
+			return;
+
+		}
+
+		NS_LOG_INFO(GetDevId() << " Data received");
 
 		HrWpan::MacSapIndicationParamsAsync indicationParams;
 		indicationParams.m_data = p;
@@ -144,6 +207,12 @@ namespace ns3 {
 
 		//Switch but for now only forward
 		m_sapUsers["MacSapUserAsync"]->Indication(indicationParams);
+
+		// Data received
+		m_evtWaitingData.Cancel();
+		//Send Ack
+
+		SendAck(p);
 
 	}
 
@@ -187,6 +256,12 @@ namespace ns3 {
 	void HrWpanMac::McpsDataRequest(Ptr<Packet> packet)
 	{
 		NS_LOG_FUNCTION(this << packet);
+		
+		//Check which type of packet we have received
+		//RTS -> so send a CTS back
+		//CTS -> send Data
+		//DATA -> 
+		//ACK -> ack recevied
 
 		m_queue->Enqueue(packet);
 	}
@@ -214,66 +289,150 @@ namespace ns3 {
 	{
 		NS_LOG_FUNCTION(this);
 
-		//Bernoulli probability
-		Ptr<UniformRandomVariable> urv = CreateObject<UniformRandomVariable>();
-		urv->SetAttribute("Max", DoubleValue(1));
-		urv->SetAttribute("Min", DoubleValue(0));
-
-		double val = urv->GetValue();
-
-		if (val > m_trasProb)
+		//If scheduled a retrasmission
+		if (m_evtTrasmission.IsRunning())
 		{
-			NS_LOG_INFO("Don't Transmit");
-			return;
-		}
-		
-		//NS_LOG_INFO("Trasmit");
-
-		//Removing packet
-		Ptr<Packet> packet = m_queue->Dequeue();
-
-		if (packet == 0)
-		{
-			//NS_LOG_INFO("No packet inside queue!");
-			return;
-		}
-		
-		m_timeoutPackets[packet] = Simulator::Schedule(MilliSeconds(10), &HrWpanMac::AckExpired, this, packet);
-		
-		m_phyProvider->SendMacPdu(packet);
-
-		/*
-		Time currentTime = Simulator::Now(); 
-		static Time sfis = MicroSeconds(2);
-		Time transmissionTime = m_netDevice->GetPhy()->CalculateTxTime(packet) + sfis;
-
-		if (remTime < transmissionTime)
-		{
-			NS_LOG_INFO("Expired");
+			NS_LOG_INFO(GetDevId() << " Already scheduled sent");
 			return;
 		}
 
-		m_phyProvider->SendMacPdu(packet);
+		//Check for Carrier sense
+		NS_LOG_INFO(GetDevId() << " Checking for carrier sense");
 
-		Simulator::Schedule(transmissionTime, &HrWpanMac::SendPkt,this, remTime-transmissionTime);
-		*/
+		m_phyProvider->RxOn();
+
+		if (!m_phyProvider->IsChannelIdle())
+		{
+			NS_LOG_WARN(GetDevId() << " channel is not Idle");
+			RescheduleTrasmission(true);
+
+			return;
+		}
+
+		if (m_queue->GetNPackets() == 0)
+		{
+			NS_LOG_INFO(GetDevId() << "No packets in queue");
+			return;
+		}
+
+		
+		m_phyProvider->TxOn();
+
+		SendRts();
+		
 	}
+
+	void HrWpanMac::SendRts()
+	{
+		NS_LOG_FUNCTION(this);
+
+		Ptr<const Packet> p = m_queue->Peek();
+		NS_LOG_INFO(GetDevId() << " Sending Rts " << m_queue->GetNPackets());
+
+		HrWpan::MacHeader header;
+		p->PeekHeader(header);
+		HrWpan::DevId receiver = header.getDstAddress();
+		HrWpan::DevId sender = header.getSrcAddress();
+		
+		Ptr<Packet> p2 = m_ctrlFactory->CreateRtsPacket(receiver, sender, MicroSeconds(200));
+
+		HrWpan::MacHeader headerRts;
+		headerRts.SetType(HrWpan::HRWPAN_FRAME_COMMAND);
+		headerRts.setDstAddress(header.getDstAddress());
+		headerRts.setSrcAddress(header.getSrcAddress());
+
+		p2->AddHeader(headerRts);
+		
+		m_phyProvider->SendMacPdu(p2);
+
+		m_evtWaitingCts = Simulator::Schedule(MicroSeconds(5.0), &HrWpanMac::CtsExpired, this);
+
+		//Turn Rx On
+		m_phyProvider->RxOn();
+		m_rtsSent = true;
+	}
+
+	
+
+	void HrWpanMac::CtsExpired()
+	{
+		NS_LOG_FUNCTION(this);
+		//Reset all
+		RescheduleTrasmission(true);
+		
+		m_rtsSent = false;
+	}
+
+	void HrWpanMac::SendCts(Ptr<const Packet> rts)
+	{
+		NS_LOG_FUNCTION(this);
+
+		m_phyProvider->TxOn();
+
+		HrWpan::MacHeader header;
+
+		rts->PeekHeader(header);
+
+		//Check that rts is for me
+		if (header.getDstAddress() != GetDevId())
+		{
+			NS_LOG_WARN(GetDevId() << "Rts was not for me");
+
+			m_ctsSent = false;
+			m_rtsSent = false;
+			m_dataSent = false;
+
+			//RescheduleTrasmission(true);
+
+			return;
+		}
+		//HrWpan::DevId receiver = header.getDstAddress();
+		HrWpan::DevId sender = header.getSrcAddress();
+
+		Ptr<Packet> cts = m_ctrlFactory->CreateCtsPacket(sender, MicroSeconds(200));
+
+		HrWpan::MacHeader headerCts;
+		headerCts.SetType(HrWpan::HRWPAN_FRAME_COMMAND);
+		//NS_LOG_INFO(header.getSrcAddress());
+
+		headerCts.setDstAddress(header.getSrcAddress());
+		headerCts.setSrcAddress(GetDevId());
+
+		NS_LOG_INFO(GetDevId() << " Sending Cts");
+
+		cts->AddHeader(headerCts);
+		m_phyProvider->SendMacPdu(cts);
+
+		m_evtWaitingData = Simulator::Schedule(MicroSeconds(5.0), &HrWpanMac::DataExpired, this);
+
+		m_phyProvider->RxOn();
+		m_ctsSent = true;
+
+	}
+
+	void HrWpanMac::DataExpired()
+	{
+		NS_LOG_FUNCTION(this);
+
+		m_ctsSent = false;
+		m_rtsSent = false;
+		m_dataSent = false;
+
+		RescheduleTrasmission(true);
+		m_phyProvider->RxOn();
+	}
+
 
 	void HrWpanMac::AckReceived(Ptr<Packet> packet)
 	{
 		NS_LOG_FUNCTION(this);
 
-		Simulator::Remove(m_timeoutPackets.at(packet));
+		NS_LOG_INFO(GetDevId() << " Ack received");
 
-		if (m_timeoutPackets.erase(packet) == 1)
+		if (m_queue->GetNPackets() != 0)
 		{
-			NS_LOG_INFO("Ok! Received");
+			RescheduleTrasmission(false);
 		}
-		else
-		{
-			NS_LOG_INFO("Problem! Received");
-		}
-		
 	}
 
 	void HrWpanMac::SetAddress(const Mac48Address & mac)
@@ -312,27 +471,98 @@ namespace ns3 {
 	{
 		NS_LOG_FUNCTION(this << packet);
 
-		if (m_timeoutPackets.erase(packet) == 1)
-		{
-			NS_LOG_INFO("Ok! Retrasmitted");
-		}
-		else
-		{
-			NS_LOG_INFO("Problema! Retrasmitted");
-		}
-
-		//NS_LOG_INFO("Packet expired" << packet);
-		HrWpan::RetrasmissionTag retrasmissionTag;
-		packet->PeekPacketTag(retrasmissionTag);
-		retrasmissionTag.IncCounter();
-
-		//NS_LOG_INFO("CurrentPacket" << retrasmissionTag.GetCounter());
-
-		packet->ReplacePacketTag(retrasmissionTag);
+		NS_LOG_INFO(GetDevId() << " Ack Expired");
 
 		m_queue->PushFront(packet);
+		RescheduleTrasmission(true);
 
 		return;
 	}
+
+	void HrWpanMac::SendData(Ptr<const Packet> cts)
+	{
+		NS_LOG_FUNCTION(this);
+
+		m_rtsSent = false;
+		m_ctsSent = false;
+
+		//Check that cts was for me
+		HrWpan::MacHeader header;
+		cts->PeekHeader(header);
+
+		//NS_LOG_INFO(header.getDstAddress());
+
+		if (header.getDstAddress() != GetDevId())
+		{
+			NS_LOG_WARN(GetDevId() << "Cts was not for me");
+
+			m_ctsSent = false;
+			m_rtsSent = false;
+			m_dataSent = false;
+
+			RescheduleTrasmission(true);
+
+			return;
+		}
+		
+		m_phyProvider->TxOn();
+
+		Ptr<Packet> p = m_queue->Dequeue();
+		m_phyProvider->SendMacPdu(p);
+
+		NS_LOG_INFO(GetDevId() << " Sending Data");
+
+		m_evtWaitingAck = Simulator::Schedule(MicroSeconds(5.0), &HrWpanMac::AckExpired, this, p);
+	}
+
+	void HrWpanMac::SendAck(Ptr<const Packet> p)
+	{
+		NS_LOG_FUNCTION(this);
+
+		NS_LOG_INFO(GetDevId() << " Sending Ack");
+
+
+		HrWpan::MacHeader header;
+		p->PeekHeader(header);
+
+		m_phyProvider->TxOn();
+
+		Ptr<Packet> p2 = HrWpanCtrlPacketFactory::getInstance().CreateAckPacket(header.getSrcAddress(), 0);
+
+		HrWpan::MacHeader headerAck;
+		headerAck.SetType(HrWpan::HRWPAN_FRAME_IMM_ACK);
+		headerAck.setDstAddress(header.getSrcAddress());
+		headerAck.setSrcAddress(header.getDstAddress());
+
+		p2->AddHeader(headerAck);
+
+		m_phyProvider->SendMacPdu(p2);
+
+		
+	}
+
+	void HrWpanMac::RescheduleTrasmission(bool collision)
+	{
+		NS_LOG_FUNCTION(this);
+
+		if (collision == false)
+		{
+			m_tryNumber = 0;
+		}
+
+		//NS_LOG_ERROR("Rescheduling trasmission");
+
+		m_tryNumber++;
+		m_tryNumber = m_tryNumber > 10 ? 10 : m_tryNumber;
+		uint32_t slots = 1 << m_tryNumber;
+		Time waitTime = MicroSeconds(5.0) * (m_urv->GetInteger() % slots);
+		NS_LOG_ERROR(GetDevId()  << "Time waiting " << waitTime);
+
+		m_evtTrasmission = Simulator::Schedule(waitTime, &HrWpanMac::SendPkt, this, Seconds(0));
+
+
+	}
+
+	
 
 } //namespace ns3

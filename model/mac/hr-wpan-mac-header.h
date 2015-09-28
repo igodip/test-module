@@ -63,6 +63,23 @@ namespace ns3
 			HRWPAN_POLICY_IMPACK = 0x5,
 			HRWPAN_POLICY_BLKACK = 0x9
 		};
+
+		/**
+		* The possible Frame Types, see IEEE 802.15.3c-2009, Table 39
+		*/
+		enum FrameType
+		{
+			HRWPAN_FRAME_BEACON = 0,        //!< HRWPAN_MAC_BEACON
+			HRWPAN_FRAME_IMM_ACK = 1,          //!< HRWPAN_MAC_DATA
+			HRWPAN_FRAME_DEL_ACK = 2,    //!< HRWPAN_MAC_ACKNOWLEDGMENT
+			HRWPAN_FRAME_COMMAND = 3,       //!< HRWPAN_MAC_COMMAND
+			HRWPAN_FRAME_DATA = 4,		//!< HRWPAN_MAC_DATA_FRAME
+			HRWPAN_FRAME_LLC = 5,       //!< HRWPAN_MAC_LLC
+			HRWPAN_FRAME_SYNC = 6,		//!< HRWPAN_MAC_SYNC
+			HRWPAN_MAC_RESERVED           //!< HRWPAN_MAC_RESERVED
+		};
+
+
 		/**
 		* \ingroup hr-wpan
 		* Represent the Mac Header with the Frame Control and Sequence Number fields
@@ -72,20 +89,6 @@ namespace ns3
 
 		public:
 
-			/**
-			* The possible Frame Types, see IEEE 802.15.3c-2009, Table 39
-			*/
-			enum FrameType
-			{
-				HRWPAN_FRAME_BEACON = 0,        //!< HRWPAN_MAC_BEACON
-				HRWPAN_FRAME_IMM_ACK = 1,          //!< HRWPAN_MAC_DATA
-				HRWPAN_FRAME_DEL_ACK = 2,    //!< HRWPAN_MAC_ACKNOWLEDGMENT
-				HRWPAN_FRAME_COMMAND = 3,       //!< HRWPAN_MAC_COMMAND
-				HRWPAN_FRAME_DATA = 4,		//!< HRWPAN_MAC_DATA_FRAME
-				HRWPAN_FRAME_LLC = 5,       //!< HRWPAN_MAC_LLC
-				HRWPAN_FRAME_SYNC = 6,		//!< HRWPAN_MAC_SYNC
-				HRWPAN_MAC_RESERVED           //!< HRWPAN_MAC_RESERVED
-			};
 
 			/**
 			*  The possible values of SEC bit, see IEEE 802.15.3, 7.2.1.3

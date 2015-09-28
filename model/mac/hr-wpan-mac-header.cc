@@ -66,7 +66,7 @@ namespace ns3 {
 		}
 
 
-		enum MacHeader::FrameType
+		enum FrameType
 			MacHeader::GetType(void) const
 		{
 
@@ -228,7 +228,7 @@ namespace ns3 {
 
 
 
-			return(true);
+			return(m_fctrlFrameType == HRWPAN_FRAME_IMM_ACK);
 		}
 
 		bool MacHeader::IsCommand(void) const

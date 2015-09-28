@@ -38,6 +38,16 @@ namespace ns3
 		* \param msg the Ideal Control Message to send
 		*/
 		virtual void SendHrWpanControlMessage(Ptr<HrWpanPhyControlMessage> msg) = 0;
+		/* Clear channel assessment*/
+		virtual bool IsChannelIdle() = 0;
+
+		//Rx methods
+		virtual bool IsRxOn() const = 0;
+		virtual void RxOn() = 0;
+
+		//Tx methods
+		virtual bool IsTxOn() const = 0;
+		virtual void TxOn() = 0;
 	};
 }
 

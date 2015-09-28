@@ -59,12 +59,12 @@ namespace ns3
 				//Set the trace to sent
 				//NS_LOG_INFO("Packet being forwarded")				
 
-				HrWpan::SenderTag senderTag;
-				Ptr<Packet> packet = paramsAsync.m_data;
+				//HrWpan::SenderTag senderTag;
+				//Ptr<Packet> packet = paramsAsync.m_data;
 
-				packet->PeekPacketTag(senderTag);
+				//packet->PeekPacketTag(senderTag);
 
-				senderTag.GetSenderMac()->AckReceived(senderTag.GetSenderPacket());
+				//senderTag.GetSenderMac()->AckReceived(senderTag.GetSenderPacket());
 
 				m_mac->m_macRxTrace(paramsAsync.m_data);
 				m_netDevice->Receive(paramsAsync.m_data, paramsAsync.m_orgId);
@@ -97,9 +97,12 @@ namespace ns3
 			//HrWpanPhyProvider* provider = m_mac->GetPhyProvider();
 			// Add header and trailer
 
-			HrWpan::MacHeader header;
+			MacHeader header;
 			header.setSrcAddress(m_mac->GetDevId());
 			header.setDstAddress(paramsAsync.m_trgtId);
+			header.SetType(HRWPAN_FRAME_DATA);
+
+			NS_LOG_INFO(paramsAsync.m_trgtId);
 
 			Ptr<Packet> packet = paramsAsync.m_data;
 			TimestampTag timestamp;
@@ -116,12 +119,13 @@ namespace ns3
 			packet->AddPacketTag(timestamp);
 			packet->AddPacketTag(retrasmissionTag);
 			packet->AddPacketTag(senderTag);
-			
 
 			m_mac->m_macTxTrace(packet);
 
 			//provider->SendMacPdu(paramsAsync.m_data);
 			m_mac->m_queue->Enqueue(packet);
+			//NS_LOG_INFO(m_mac->m_queue->GetNPackets());
+			m_mac->SendPkt(MicroSeconds(0));
 
 		}
 

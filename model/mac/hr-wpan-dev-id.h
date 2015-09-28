@@ -62,7 +62,7 @@ namespace ns3 {
 			*/
 			operator Address() const;
 			/**
-			* This function perform a tye check and asserts if the
+			* This function perform a type check and asserts if the
 			* type of the input address is not compatible with an
 			* HrWpanDevId
 			*

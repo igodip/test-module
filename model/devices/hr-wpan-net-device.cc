@@ -197,6 +197,7 @@ namespace ns3
 			
 			requestParams.m_data = packet;
 			requestParams.m_trgtId = HrWpan::DevIdHelper::GetInstance().GetDevIdByMac(Mac48Address::ConvertFrom(dest));
+			//NS_LOG_INFO(requestParams.m_trgtId);
 
 			m_sapProviders["MacSapProviderAsync"]->Request(requestParams);
 

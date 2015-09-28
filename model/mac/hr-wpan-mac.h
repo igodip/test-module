@@ -34,8 +34,10 @@
 #include <ns3/mac48-address.h>
 #include <ns3/event-id.h>
 #include <ns3/simulator.h>
+#include <ns3/random-variable-stream.h>
 
 #include <ns3/hr-wpan-mac-manager-listener.h>
+#include <ns3/hr-wpan-ctrl-packet-factory.h>
 
 #include <ns3/hr-wpan-mac-sap.h>
 #include <ns3/hr-wpan-mac-sap-async.h>
@@ -64,6 +66,16 @@ namespace ns3 {
 
 		virtual void ReceivePhyPdu(Ptr<Packet> p) ;
 		virtual void ReceivePhyControlMessage(Ptr<HrWpanPhyControlMessage> msg) ;
+
+		void SendCts(Ptr<const Packet> p);
+		void SendRts();
+		void SendData(Ptr<const Packet> cts);
+		void SendAck(Ptr<const Packet> p);
+
+		void RescheduleTrasmission(bool collision);
+
+		void CtsExpired();
+		void DataExpired();
 
 		HrWpanMac * GetPointer(void) const;
 
@@ -101,21 +113,43 @@ namespace ns3 {
 		TracedCallback<Ptr<const Packet> > m_macRxOkTrace;
 		TracedCallback<Ptr<const Packet> > m_macRxDropTrace;
 		TracedCallback<Ptr<const Packet> > m_snifferTrace;
+		TracedCallback<Ptr<const Packet> > m_ctsRxTrace;
+		TracedCallback<Ptr<const Packet> > m_rtsRxTrace;
+		TracedCallback<Ptr<const Packet> > m_dataRxTrace;
 
 	private:
 
 		HrWpanPhyProvider* m_phyProvider;
+		
+		HrWpanCtrlPacketFactory * m_ctrlFactory;
 
 		HrWpan::DevId m_devId;
 		Mac48Address m_macAddress;
 		Ptr<HrWpan::MacQueue> m_queue;
 
 		Ptr<HrWpan::HrWpanNetDevice> m_netDevice;
+		Ptr<UniformRandomVariable> m_urv;
 
 		std::map <std::string, HrWpan::MacSapUser *> m_sapUsers;
 		std::map<Ptr<Packet>, EventId> m_timeoutPackets;
 		
+		EventId m_evtWaitingCts;
+		EventId m_evtWaitingData;
+		EventId m_evtWaitingAck;
+
+		EventId m_evtTrasmission;
+
 		double m_trasProb;
+
+		uint32_t m_turnToWait;
+
+		bool m_rtsSent;
+		bool m_ctsSent;
+		bool m_dataSent;
+
+		uint8_t m_tryNumber;
+
+		Ptr<Packet> m_sentPacket;
 	};
 
 }

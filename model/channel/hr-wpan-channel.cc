@@ -73,28 +73,20 @@ namespace ns3
 				NS_ASSERT(*(txParams->psd->GetSpectrumModel()) == *m_spectrumModel);
 			}
 
-			NS_LOG_INFO("Computing the receivers");
 
-			TopologyAggregator aggregator = TopologyAggregator::getInstance();
-			Ptr<SectorAntenna> senAntenna = DynamicCast< SectorAntenna >(txParams->txAntenna);
-			std::set<Ptr<Node> > receivers = aggregator.GetSteeredReceivers(senAntenna->GetOrientation());
 
-			NS_LOG_INFO(receivers.size());
-			
+
 			Ptr<MobilityModel> senderMobility = txParams->txPhy->GetMobility();
 
-			for (std::set<Ptr<Node> >::const_iterator start_rx = receivers.begin(); start_rx != receivers.end();
-				++start_rx)
+			for (PhyList::const_iterator rxPhyIterator = m_phyList.begin();
+				rxPhyIterator != m_phyList.end();
+				++rxPhyIterator)
 			{
-
-				Ptr<HrWpanNetDevice> receiverDev = DynamicCast<HrWpanNetDevice>((*start_rx)->GetDevice(0));
-				Ptr<SpectrumPhy> phy = receiverDev->GetPhy();
-
-				if ( phy != txParams->txPhy)
+				if ((*rxPhyIterator) != txParams->txPhy)
 				{
 					Time delay = MicroSeconds(0);
 
-					Ptr<MobilityModel> receiverMobility = phy->GetMobility();
+					Ptr<MobilityModel> receiverMobility = (*rxPhyIterator)->GetMobility();
 					NS_LOG_LOGIC("copying signal parameters " << txParams);
 					Ptr<SpectrumSignalParameters> rxParams = txParams->Copy();
 
@@ -108,7 +100,7 @@ namespace ns3
 							NS_LOG_LOGIC("txAntennaGain = " << txAntennaGain << " dB");
 							pathLossDb -= txAntennaGain;
 						}
-						Ptr<AntennaModel> rxAntenna = phy->GetRxAntenna();
+						Ptr<AntennaModel> rxAntenna = (*rxPhyIterator)->GetRxAntenna();
 						if (rxAntenna != 0)
 						{
 							Angles rxAngles(senderMobility->GetPosition(), receiverMobility->GetPosition());
@@ -123,7 +115,7 @@ namespace ns3
 							pathLossDb -= propagationGainDb;
 						}
 						NS_LOG_LOGIC("total pathLoss = " << pathLossDb << " dB");
-						m_pathLossTrace(txParams->txPhy, phy, pathLossDb);
+						m_pathLossTrace(txParams->txPhy, *rxPhyIterator, pathLossDb);
 						if (pathLossDb > m_maxLossDb)
 						{
 							// beyond range
@@ -144,22 +136,22 @@ namespace ns3
 					}
 
 
-					Ptr<NetDevice> netDev = phy->GetDevice();
+					Ptr<NetDevice> netDev = (*rxPhyIterator)->GetDevice();
 					if (netDev)
 					{
 						// the receiver has a NetDevice, so we expect that it is attached to a Node
 						uint32_t dstNode = netDev->GetNode()->GetId();
-						Simulator::ScheduleWithContext(dstNode, delay, &HrWpanChannel::StartRx, this, rxParams, phy);
+						Simulator::ScheduleWithContext(dstNode, delay, &HrWpanChannel::StartRx, this, rxParams, *rxPhyIterator);
 					}
 					else
 					{
 						// the receiver is not attached to a NetDevice, so we cannot assume that it is attached to a node
 						Simulator::Schedule(delay, &HrWpanChannel::StartRx, this,
-							rxParams, phy);
+							rxParams, *rxPhyIterator);
 					}
 				}
-			}
-		}
-	} // namespace HrWpan
+			} // namespace HrWpan
 
-} // namespace ns3
+		} // namespace ns3
+	}
+}

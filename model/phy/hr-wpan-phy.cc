@@ -230,7 +230,8 @@ namespace ns3 {
 		return true;
 	}
 
-	bool HrWpanPhy::IsTxOn() const {
+	bool HrWpanPhy::IsTxOn() const 
+	{
 
 		NS_LOG_FUNCTION(this);
 		return true;
@@ -301,7 +302,7 @@ namespace ns3 {
 		m_currentState = m_stateFactory->GetTxOnState();
 	}
 
-	bool HrWpanPhy::IsChannelIdle(void) const
+	bool HrWpanPhy::IsChannelIdle(void)
 	{
 		NS_LOG_FUNCTION(this);
 		//Check the state and check also if rx is on
@@ -311,16 +312,16 @@ namespace ns3 {
 			return false;
 		}
 
-		bool occupied = false;
+		bool free = true;
 
 		Ptr<HrWpanPhyRxBusyState> state = DynamicCast<HrWpanPhyRxBusyState>(m_currentState);
-
+		NS_LOG_INFO(state);
 		if (state != NULL)
 		{
-			occupied = true;
+			free = false;
 		}
 
-		return occupied;
+		return free;
 	}
 
 } // namespace ns3

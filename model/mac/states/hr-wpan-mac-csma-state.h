@@ -27,7 +27,7 @@
 namespace ns3
 {
 
-	class HrWpanCsmaState
+	class HrWpanCsmaState : HrWpanMacAbsState
 	{
 	public:
 

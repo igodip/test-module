@@ -53,7 +53,7 @@ HrWpanPacketTestCase::DoRun(void)
 	
 	const char * addr = "11:12";
 
-	HrWpan::MacHeader macHdr(HrWpan::MacHeader::HRWPAN_FRAME_BEACON, 0);
+	HrWpan::MacHeader macHdr(HrWpan::HRWPAN_FRAME_BEACON, 0);
 	macHdr.SetSecDisable();
 	
 	HrWpan::DevId dstAddress(addr);
