@@ -28,7 +28,7 @@ namespace ns3
 {
 	namespace HrWpan
 	{
-		class HrWpanChannel : public SingleModelSpectrumChannel
+		class HrWpanChannell : public SingleModelSpectrumChannel
 		{
 
 		public:
