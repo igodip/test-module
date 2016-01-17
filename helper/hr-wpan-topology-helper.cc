@@ -39,6 +39,8 @@
 #include <ns3/internet-module.h>
 #include <ns3/packet-sink-helper.h>
 
+#include <ns3/hr-wpan-channel-matrix.h>
+
 #include <cmath>
 
 namespace ns3
@@ -148,6 +150,13 @@ namespace ns3
 			m_topologyAggregator->addLine(link);
 
 		}
+
+                void TopologyHelper::GenerateChannelMatrix()
+                {
+                        //HrWpan::ChannelMatrix channelMatrix();
+                        Ptr<HrWpan::ChannelMatrix> channelMatrix = &HrWpan::ChannelMatrix::getInstance();
+                        channelMatrix->GenerateChannelMatrix(m_topologyAggregator);
+                }
 
 		void TopologyHelper::PlaceObstacle()
 		{
