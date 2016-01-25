@@ -25,6 +25,10 @@
 #include <ns3/nstime.h>
 #include <ns3/address.h>
 #include <ns3/hr-wpan-dev-id.h>
+#include <complex>
+#include <ns3/double.h>
+#include <ns3/hr-wpan-mac-header.h>
+
 
 namespace ns3
 {
@@ -34,7 +38,8 @@ namespace ns3
 
 		static HrWpanCtrlPacketFactory & getInstance();
 
-		Ptr<Packet> CreateRtsPacket(HrWpan::DevId sender, HrWpan::DevId receiver, Time duration);
+		//Ptr<Packet> CreateRtsPacket(HrWpan::DevId sender, HrWpan::DevId receiver, Time duration);
+                Ptr<Packet> CreateRtsPacket(std::vector<std::complex<double> > rtsCssSequence, Time duration);
 		Ptr<Packet> CreateCtsPacket(HrWpan::DevId receiver, Time duration);
 
 		void ParseRtsPacket(Ptr<Packet> p,HrWpan::DevId & sender,HrWpan::DevId & receiver, Time & duration);
@@ -42,6 +47,7 @@ namespace ns3
 		void ParseAckPacket(Ptr<Packet> p, HrWpan::DevId & sender, uint32_t packetId);
 
 		Ptr<Packet> CreateAckPacket(HrWpan::DevId sender, uint32_t packetId);
+                HrWpan::MacHeader CreateRtsHeader(std::vector<std::complex<double> > rtsCssSequence, Time duration);
 
 
 	protected:

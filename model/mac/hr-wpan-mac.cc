@@ -157,12 +157,12 @@ namespace ns3 {
 
 		p->PeekHeader(header);
 
-		if (header.getDstAddress() != GetDevId())
+		/*if (header.getDstAddress() != GetDevId())
 		{
 			NS_LOG_INFO(GetDevId() << " Packet discarded not for me");
 
 			return;
-		}
+		}*/
 
 		if (header.IsCommand())
 		{
@@ -177,12 +177,17 @@ namespace ns3 {
 				SendData(p);
 				//So it's cts
 			}
-			else
+			/*else
 			{
 				//So it's rts
 				NS_LOG_INFO(GetDevId() << " Rts Received");
 				SendCts(p);
-			}
+			}*/
+                        else if (GetDevId() == "00:02") //if(header.IsCommand()) {xcorr(header.getRtsCssSeq, refRtsSeq) if (match){Rts rvd}}
+                        {
+                                NS_LOG_INFO(GetDevId() << "Rts Received");
+                                SendCts(p);
+                        }
 
 			return;
 		}
@@ -331,15 +336,18 @@ namespace ns3 {
 
 		HrWpan::MacHeader header;
 		p->PeekHeader(header);
-		HrWpan::DevId receiver = header.getDstAddress();
-		HrWpan::DevId sender = header.getSrcAddress();
+		/*HrWpan::DevId receiver = header.getDstAddress();
+		HrWpan::DevId sender = header.getSrcAddress();*/
+                std::vector<std::complex<double> > rtsCssSequences = header.getRtsCssSequence();
 		
-		Ptr<Packet> p2 = m_ctrlFactory->CreateRtsPacket(receiver, sender, MicroSeconds(200));
-
+		//Ptr<Packet> p2 = m_ctrlFactory->CreateRtsPacket(receiver, sender, MicroSeconds(200));
+                Ptr<Packet> p2 = m_ctrlFactory->CreateRtsPacket(rtsCssSequences, MicroSeconds(200));
 		HrWpan::MacHeader headerRts;
-		headerRts.SetType(HrWpan::HRWPAN_FRAME_COMMAND);
-		headerRts.setDstAddress(header.getDstAddress());
-		headerRts.setSrcAddress(header.getSrcAddress());
+		//headerRts.SetType(HrWpan::HRWPAN_FRAME_COMMAND);
+		/*headerRts.setDstAddress(header.getDstAddress());
+		headerRts.setSrcAddress(header.getSrcAddress());*/
+                headerRts.setRtsCssSequence(header.getRtsCssSequence());
+                headerRts.setDuration(header.getDuration());
 
 		p2->AddHeader(headerRts);
 		

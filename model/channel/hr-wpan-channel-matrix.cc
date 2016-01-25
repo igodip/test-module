@@ -19,7 +19,7 @@
 *	Mihret Getye Sidelel <mihretgetye@gmail.com>
 */
 
-#include "hr-wpan-antenna-array-response.h"
+//#include "hr-wpan-antenna-array-response.h"
 
 #include <ns3/spectrum-channel.h>
 #include <ns3/spectrum-phy.h>

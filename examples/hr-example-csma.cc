@@ -91,8 +91,19 @@ int main(int argc, char** argv)
 	Time t = Seconds(1.0);
 
 	NS_LOG_INFO("Rts Packet");
+        std::complex<double> firstVal;
+        firstVal.real(1.0);
+        firstVal.imag(0.0);
+        std::complex<double> secondVal;
+        secondVal.real(-0.9);
+        secondVal.imag(-0.2);
+        std::vector<std::complex<double> > rtsCssSequence;
+        rtsCssSequence.push_back(firstVal);
+        rtsCssSequence.push_back(secondVal);
+        //rtsCssSequence.push_back();
 
-	Ptr<Packet> p = factory.CreateRtsPacket(sender, receiver, t);
+	//Ptr<Packet> p = factory.CreateRtsPacket(sender, receiver, t);
+        Ptr<Packet> p = factory.CreateRtsPacket(rtsCssSequence, t);
 	
 	HrWpan::DevId sender2,receiver2;
 	Time t2;
