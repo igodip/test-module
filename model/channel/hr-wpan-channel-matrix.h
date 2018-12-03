@@ -16,26 +16,33 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *
 * Author:
-*	Igor Di Paolo <igor.di.paolo@gmail.com>
+*	Miret Getye Sidelel <mihretgetye@gmail.com>
 */
 
-#ifndef HR_WPAN_CHANNEL_H
-#define HR_WPAN_CHANNEL_H
+#ifndef HR_WPAN_CHANNEL_MATRIX_H
+#define HR_WPAN_CHANNEL_MATRIX_H
 
 #include <ns3/single-model-spectrum-channel.h>
+#include <complex>
 
 namespace ns3
 {
 	namespace HrWpan
 	{
-		class HrWpanChannel : public SingleModelSpectrumChannel
+		class ChannelMatrix : public Object
 		{
 
 		public:
-			static TypeId GetTypeId(void);
-			virtual void StartTx(Ptr<SpectrumSignalParameters> txParams);
+                        ChannelMatrix();
+			static TypeId GetTypeId();
+                        static ChannelMatrix & getInstance();
+                        std::vector<std::vector<std::complex<double> > > GetTranspose(std::vector<std::complex<double> > antennaResponse);
+                        void GenerateChannelMatrix(Ptr<TopologyAggregator> topologyAggregator);
+                        
 		protected:
 
+			int m_noAntennaElementsPerTx;
+			int m_noAntennaElementsPerRx;
 		private:
 
 		};
@@ -43,4 +50,4 @@ namespace ns3
 
 } // namespace ns3
 
-#endif //HR_WPAN_CHANNEL_H
+#endif //HR_WPAN_CHANNEL_MATRIX_H

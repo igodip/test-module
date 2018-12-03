@@ -43,7 +43,9 @@
 
 #include <ns3/header.h>
 #include "hr-wpan-dev-id.h"
-
+#include <ns3/double.h>
+#include <complex>
+#include <ns3/nstime.h>
 
 namespace ns3 
 {
@@ -267,6 +269,21 @@ namespace ns3
 			* \return piconetId
 			*/
 			HrWpan::DevId getDstAddress(void) const;
+
+                        void setRtsCssSequence(const std::vector<std::complex<double> > & rtsCssSequences);
+			/**
+			* getDstAddress
+			* \return piconetId
+			*/
+			std::vector<std::complex<double> > getRtsCssSequence(void) const;
+
+                        void setDuration(const Time & duration);
+			/**
+			* getDstAddress
+			* \return piconetId
+			*/
+			Time getDuration(void) const;
+
 			/**
 			* setSrcAddress
 			* \param piconetId
@@ -341,6 +358,9 @@ namespace ns3
 
 			/* Stream Index*/
 			uint8_t m_StreamIndex;			  //!< Stream index(1 Octet)
+
+                        std::vector<std::complex<double> > m_rtsCssSequences;
+                        Time m_duration;
 
 		}; //HrWpanMacHeader
 	}

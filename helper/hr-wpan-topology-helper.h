@@ -27,6 +27,7 @@
 #include <ns3/node.h>
 #include <ns3/hr-wpan-topology-aggregator.h>
 #include <ns3/net-device-container.h>
+//#include <ns3/hr-wpan-channel-matrix.h>
 
 namespace ns3
 {
@@ -54,6 +55,8 @@ namespace ns3
 			static void steerAntennas(Ptr<Link> link);
 
 			void InstallApplication();
+
+                        void GenerateChannelMatrix();
 
 			NetDeviceContainer getSenderDevices() const;
 			NetDeviceContainer getReceiverDevices() const;

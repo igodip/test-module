@@ -29,7 +29,9 @@ namespace ns3
 
 	NS_LOG_COMPONENT_DEFINE("HrWpanCtrlPacketFactory");
 
-	Ptr<Packet> HrWpanCtrlPacketFactory::CreateRtsPacket(HrWpan::DevId sender, HrWpan::DevId receiver, Time duration)
+	//Ptr<Packet> HrWpanCtrlPacketFactory::CreateRtsPacket(HrWpan::DevId sender, HrWpan::DevId receiver, Time duration)
+        
+	/*Ptr<Packet> HrWpanCtrlPacketFactory::CreateRtsPacket(std::vector<std::complex<double> > rtsCssSequence, Time duration)
 	{
 		NS_LOG_FUNCTION(this);
 
@@ -37,8 +39,9 @@ namespace ns3
 		
 		buffer[0] = 0x01; //RTS
 		buffer[1] = 0x00;
-		sender.CopyTo(buffer+2);
-		receiver.CopyTo(buffer+4);
+		//sender.CopyTo(buffer+2);
+		//receiver.CopyTo(buffer+4);
+                rtsCssSequence.CopyTo(buffer+2);
 		memcpy(buffer+6, ((uint8_t*) &duration), 8);
 
 		Ptr<Packet> p = Create<Packet>(buffer,14);
@@ -47,7 +50,40 @@ namespace ns3
 		
 
 		return p;
+	}*/
+
+
+        Ptr<Packet> HrWpanCtrlPacketFactory::CreateRtsPacket(std::vector<std::complex<double> > rtsCssSequence, Time duration)
+	{
+		NS_LOG_FUNCTION(this);
+
+		/*static uint8_t buffer[14];
+		
+		buffer[0] = 0x01; //RTS
+		buffer[1] = 0x00;
+		//sender.CopyTo(buffer+2);
+		//receiver.CopyTo(buffer+4);
+                rtsCssSequence.CopyTo(buffer+2);
+		memcpy(buffer+6, ((uint8_t*) &duration), 8);*/
+
+		Ptr<Packet> p = Create<Packet>(0);
+                p->AddHeader (CreateRtsHeader(rtsCssSequence, duration));
+
+		NS_LOG_INFO(duration);
+		
+
+		return p;
 	}
+
+        HrWpan::MacHeader
+        HrWpanCtrlPacketFactory::CreateRtsHeader(std::vector<std::complex<double> > rtsCssSequence, Time duration)
+        {
+                HrWpan::MacHeader rtsHeader;
+                //rtsHeader.setType(HRWPAN_FRAME_COMMAND);
+                rtsHeader.setRtsCssSequence(rtsCssSequence);
+                rtsHeader.setDuration(duration);
+                return rtsHeader;
+        }
 
 	Ptr<Packet> HrWpanCtrlPacketFactory::CreateCtsPacket(HrWpan::DevId receiver, Time duration)
 	{

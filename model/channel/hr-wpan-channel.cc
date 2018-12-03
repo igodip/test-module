@@ -15,8 +15,9 @@
 * along with this program; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *
-* Author:
+* Authors:
 *	Igor Di Paolo <igor.di.paolo@gmail.com>
+*       Mihret Getye Sidelel <mihretgetye@gmail.com>
 */
 
 #include "hr-wpan-channel.h"
@@ -37,6 +38,11 @@
 #include <ns3/hr-wpan-topology-aggregator.h>
 #include <ns3/hr-wpan-sector-antenna.h>
 #include <ns3/hr-wpan-net-device.h>
+
+#include <ns3/double.h>
+
+#include <math.h>
+#include <algorithm>
 
 namespace ns3
 {
@@ -92,28 +98,49 @@ namespace ns3
 
 					if (senderMobility && receiverMobility)
 					{
-						double pathLossDb = 0;
-						if (rxParams->txAntenna != 0)
-						{
-							Angles txAngles(receiverMobility->GetPosition(), senderMobility->GetPosition());
-							double txAntennaGain = rxParams->txAntenna->GetGainDb(txAngles);
-							NS_LOG_LOGIC("txAntennaGain = " << txAntennaGain << " dB");
-							pathLossDb -= txAntennaGain;
+						double a_out = 1/30; double b_out = 5.2; double a_los = 1/67.1;
+									
+                                                double pathLossDb = 0;
+
+                                                double m_distance = senderMobility->GetDistanceFrom(receiverMobility);
+                                                double p_out;
+                                                double p_LoS;
+                                                //double p_NLoS;
+                                                double linkState;
+                                                p_out = std::max(0.0, 1-exp((a_out*m_distance*-1)+b_out));
+						p_LoS = (1 - p_out )*exp(a_los*m_distance*-1);
+						//p_NLoS = 1 - p_out - p_LoS;
+						Ptr<UniformRandomVariable> x = CreateObject<UniformRandomVariable> ();
+						x->SetAttribute ("Min", DoubleValue (0));
+						x->SetAttribute ("Max", DoubleValue (1));
+						linkState = x->GetValue ();
+						if(linkState<p_out){
+							linkState = 0.0;
+						}else if(linkState<p_LoS){
+							linkState = 1.0;
+						}else if(linkState !=0.0 && linkState !=1.0){
+							linkState = 2.0;
 						}
-						Ptr<AntennaModel> rxAntenna = (*rxPhyIterator)->GetRxAntenna();
-						if (rxAntenna != 0)
-						{
-							Angles rxAngles(senderMobility->GetPosition(), receiverMobility->GetPosition());
-							double rxAntennaGain = rxAntenna->GetGainDb(rxAngles);
-							NS_LOG_LOGIC("rxAntennaGain = " << rxAntennaGain << " dB");
-							pathLossDb -= rxAntennaGain;
+						
+						double alpha_NLoS = 72.0; double beta_NLoS = 2.92; double sigma_NLoS = 8.7;
+						double alpha_LoS = 61.4; double beta_LoS = 2.0; double sigma_LoS = 5.8;
+						
+						if(linkState==0.0){
+							pathLossDb = 200.0;
+						}else if(linkState==1.0){
+							Ptr<NormalRandomVariable> x = CreateObject<NormalRandomVariable> ();
+							x->SetAttribute ("Mean", DoubleValue (0.0));
+							x->SetAttribute ("Variance", DoubleValue (sigma_LoS));
+							double normrnd = x->GetValue ();
+							pathLossDb = alpha_LoS + 10*beta_LoS*log10(m_distance) + normrnd;
+						}else if(linkState==2.0){
+							Ptr<NormalRandomVariable> x = CreateObject<NormalRandomVariable> ();
+							x->SetAttribute ("Mean", DoubleValue (0.0));
+							x->SetAttribute ("Variance", DoubleValue (sigma_NLoS));
+							double normrnd = x->GetValue ();
+							pathLossDb = alpha_NLoS + 10*beta_NLoS*log10(m_distance) + normrnd;
 						}
-						if (m_propagationLoss)
-						{
-							double propagationGainDb = m_propagationLoss->CalcRxPower(0, senderMobility, receiverMobility);
-							NS_LOG_LOGIC("propagationGainDb = " << propagationGainDb << " dB");
-							pathLossDb -= propagationGainDb;
-						}
+		
 						NS_LOG_LOGIC("total pathLoss = " << pathLossDb << " dB");
 						m_pathLossTrace(txParams->txPhy, *rxPhyIterator, pathLossDb);
 						if (pathLossDb > m_maxLossDb)

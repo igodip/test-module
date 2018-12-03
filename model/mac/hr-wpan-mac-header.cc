@@ -332,6 +332,35 @@ namespace ns3 {
 			return m_addrDstId;
 		}
 
+                void MacHeader::setRtsCssSequence(const std::vector<std::complex<double> > & rtsCssSequences)
+		{
+			NS_LOG_FUNCTION(this);
+
+			m_rtsCssSequences = rtsCssSequences;
+		}
+
+		std::vector<std::complex<double> > MacHeader::getRtsCssSequence(void) const
+		{
+			NS_LOG_FUNCTION(this);
+
+			return m_rtsCssSequences;
+		}
+
+                void MacHeader::setDuration(const Time & duration)
+		{
+			NS_LOG_FUNCTION(this);
+
+			m_duration = duration;
+		}
+
+		Time MacHeader::getDuration(void) const
+		{
+			NS_LOG_FUNCTION(this);
+
+			return m_duration;
+		}
+
+
 		void MacHeader::setSrcAddress(const HrWpan::DevId & wpanDevId)
 		{
 			NS_LOG_FUNCTION(this);
