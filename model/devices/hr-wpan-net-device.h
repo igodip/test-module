@@ -34,6 +34,8 @@ namespace ns3 {
 
 	namespace HrWpan
 	{
+
+		class SectorAntenna;
 		
 		class HrWpanNetDevice : public NetDevice {
 
@@ -51,6 +53,8 @@ namespace ns3 {
 			Ptr<HrWpanPhy> GetPhy(void) const;
 
 			void SetChannel(Ptr<SpectrumChannel> channel);
+
+			void Receive(Ptr<Packet> p,const Address & address);
 
 			//From NetDevice
 			virtual void SetIfIndex(const uint32_t index);
@@ -79,7 +83,7 @@ namespace ns3 {
 			virtual void SetPromiscReceiveCallback(PromiscReceiveCallback cb);
 			virtual bool SupportsSendFrom(void) const;
 
-			void registerMacSapProvider(MacSapProvider * sapProvider);
+			void RegisterMacSapProvider(MacSapProvider * sapProvider);
 
 		protected:
 
@@ -90,6 +94,11 @@ namespace ns3 {
 			void LinkDown(void);
 
 			void CompleteConfig(void);
+			/**
+			* The antenna
+			*/
+			Ptr<SectorAntenna> m_antenna;
+
 			/**
 			* The MAC for this NetDevice.
 			*/
@@ -129,7 +138,7 @@ namespace ns3 {
 			 * \property	std::map < std::string, MacSapProvider * > mSapProviders
 			 */
 
-			std::map < std::string, MacSapProvider * > mSapProviders;
+			std::map < std::string, MacSapProvider * > m_sapProviders;
 		};
 
 	} //namespace HrWpan

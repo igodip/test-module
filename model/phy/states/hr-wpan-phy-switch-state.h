@@ -38,6 +38,7 @@ namespace ns3
 		virtual void StartTx(Ptr<HrWpanSpectrumSignalParameters> params);
 		virtual void EndTx(Ptr<HrWpanSpectrumSignalParameters> params);
 	};
+
 } //namespace ns3
 
 #endif //HR_WPAN_HY_SWITCH_STATE

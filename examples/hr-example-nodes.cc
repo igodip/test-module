@@ -21,33 +21,48 @@
 
 #include <ns3/hr-wpan-helper.h>
 #include <ns3/simulator.h>
+#include <ns3/hr-wpan-topology-aggregator.h>
+#include <ns3/hr-wpan-dev-id.h>
+#include <ns3/mac48-address.h>
+#include <ns3/hr-wpan-devid-helper.h>
+#include <ns3/constant-position-mobility-model.h>
 #include <ns3/log.h>
 
 using namespace ns3;
 
+
 int main(int argc, char** argv)
 {
-	LogComponentEnableAll(LOG_PREFIX_FUNC);
-	LogComponentEnable("HrWpanHelper",LOG_ALL);
-	LogComponentEnable("HrWpanMac", LOG_ALL);
-	LogComponentEnable("HrWpanPhy", LOG_ALL);
+	LogComponentEnable("HrWpanMacSapAsync", LOG_ALL);
 
 	NodeContainer nodeContainer;
 	nodeContainer.Create(2);
 
-	HrWpan::HrWpanHelper hrWpanHelper;
-	NetDeviceContainer netDeviceContainer = hrWpanHelper.install(nodeContainer);
+	Ptr<HrWpan::TopologyAggregator> topologyAggregator = CreateObject<HrWpan::TopologyAggregator>();
+
+	HrWpan::HrWpanHelper hrWpanHelper(topologyAggregator);
+
+	Ptr<Node> node1 = nodeContainer.Get(0);
+	Ptr<Node> node2 = nodeContainer.Get(1);
+
+	Ptr<MobilityModel> senderMobility = CreateObject<ConstantPositionMobilityModel>();
+	Ptr<MobilityModel> receiverMobility = CreateObject<ConstantPositionMobilityModel>();
+
+	node1->AggregateObject(senderMobility);
+	node2->AggregateObject(receiverMobility);
+
+	NetDeviceContainer netDeviceContainer = hrWpanHelper.Install(nodeContainer);
 
 	Ptr<NetDevice> netDevice1 = netDeviceContainer.Get(0);
 	Ptr<NetDevice> netDevice2 = netDeviceContainer.Get(1);
 
-	//netDevice1->Send()
-	//netDevice2->Send()
+	netDevice1->SetAddress(Mac48Address::Allocate());
+	netDevice2->SetAddress(Mac48Address::Allocate());
+
+	HrWpan::DevIdHelper::GetInstance().Install(netDeviceContainer);
 
 	Simulator::Stop(Seconds(10.0));
-
-	//Simulator::Schedule(Seconds(1.0), &SendOnePacket, sender, receiver);
-
+	//Simulator::ScheduleWithContext(1,Seconds(2.0), &SendOnePacket, netDevice1);
 	Simulator::Run();
 
 	Simulator::Destroy();

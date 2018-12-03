@@ -25,7 +25,9 @@
 #include <ns3/ptr.h>
 #include <ns3/node-container.h>
 #include <ns3/net-device-container.h>
+#include <ns3/hr-wpan-topology-helper.h>
 #include <ns3/hr-wpan-phy.h>
+#include <ns3/trace-helper.h>
 
 namespace ns3 {
 
@@ -33,7 +35,7 @@ namespace ns3 {
 	class MobilityModel;
 	namespace HrWpan
 	{
-		class HrWpanHelper {
+		class HrWpanHelper : public PcapHelperForDevice, public AsciiTraceHelperForDevice {
 		public:
 			/**
 			 * \fn	HrWpanHelper::HrWpanHelper(void);
@@ -42,7 +44,7 @@ namespace ns3 {
 			 *
 			 */
 
-			HrWpanHelper(void);
+			HrWpanHelper(Ptr<TopologyAggregator> topologyAggregator);
 
 			/**
 			 * \fn	HrWpanHelper::HrWpanHelper(bool useMultiModelSpectrumChannel);
@@ -52,7 +54,7 @@ namespace ns3 {
 			 * \param	useMultiModelSpectrumChannel	true to use multi model spectrum channel.
 			 */
 
-			HrWpanHelper(bool useMultiModelSpectrumChannel);
+			HrWpanHelper(Ptr<TopologyAggregator> topologyAggregator,bool useMultiModelSpectrumChannel);
 
 			/**
 			 * \fn	virtual HrWpanHelper::~HrWpanHelper(void);
@@ -92,9 +94,29 @@ namespace ns3 {
 			 * \return	A NetDeviceContainer.
 			 */
 
-			NetDeviceContainer install(NodeContainer c);
+			NetDeviceContainer Install(NodeContainer c);
+
+
 
 		private:
+
+			virtual void EnablePcapInternal(std::string prefix, Ptr<NetDevice> nd, bool promiscuous, bool explicitFilename);
+
+			/**
+			* \brief Enable ascii trace output on the indicated net device.
+			*
+			* NetDevice-specific implementation mechanism for hooking the trace and
+			* writing to the trace file.
+			*
+			* \param stream The output stream object to use when logging ascii traces.
+			* \param prefix Filename prefix to use for ascii trace files.
+			* \param nd Net device for which you want to enable tracing.
+			* \param explicitFilename Treat the prefix as an explicit filename if true
+			*/
+			virtual void EnableAsciiInternal(Ptr<OutputStreamWrapper> stream,
+				std::string prefix,
+				Ptr<NetDevice> nd,
+				bool explicitFilename);
 
 			/** \brief	channel to be used for the devices. */
 			Ptr<SpectrumChannel> m_channel;

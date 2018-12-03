@@ -32,13 +32,14 @@
 #include <ns3/hr-wpan-phy-state-factory.h>
 #include <ns3/hr-wpan-phy-provider.h>
 #include <ns3/hr-wpan-phy-user.h>
+#include <ns3/hr-wpan-interference-helper.h>
 
 namespace ns3 {
 
 	class Packet;
 	class SpectrumValue;
 	class HrWpanErrorModel;
-	//struct HrWpanSpectrumSignalParameters;
+
 	class MobilityModel;
 	class SpectrumChannel;
 	class SpectrumModel;
@@ -46,14 +47,17 @@ namespace ns3 {
 	class NetDevice;
 	class UniformRandomVariable;
 
-	
-
 	class HrWpanPhy : public SpectrumPhy, public HrWpanPhyProvider {
 	public:
 
 		//Friends
-		friend class HrWpanRxOnState;
-		friend class HrWpanRxBusyState;
+		friend class HrWpanPhyAbsState;
+		friend class HrWpanPhyRxOnState;
+		friend class HrWpanPhyRxBusyState;
+		friend class HrWpanPhyTxOnState;
+		friend class HrWpanPhyTxBusyState;
+		friend class HrWpanPhyIdleState;
+		friend class HrWpanPhySwitchState;
 
 		static TypeId GetTypeId(void);
 
@@ -78,11 +82,11 @@ namespace ns3 {
 		void SetNoisePowerSpectralDensity(Ptr<const SpectrumValue> noisePsd);
 		Ptr<const SpectrumValue> GetNoisePowerSpectralDensity(void);
 
-		void StartRx(Ptr<SpectrumSignalParameters> spectrumRxParams);
-
+		void StartRx(Ptr<SpectrumSignalParameters> params);
 		void EndRx(Ptr<SpectrumSignalParameters> params);
 
-		virtual void DoDispose();
+		void StartTx(Ptr<HrWpanSpectrumSignalParameters> params);
+		void EndTx(Ptr<HrWpanSpectrumSignalParameters> params);
 
 		//Rx methods
 		bool IsRxOn() const;
@@ -92,14 +96,23 @@ namespace ns3 {
 		bool IsTxOn() const;
 		void TxOn();
 
+		Time CalculateTxTime(Ptr<const Packet> packet);
+
 		//HrWpanPhyProvider
 		virtual void SendMacPdu(Ptr<Packet> p);
 		virtual void SendHrWpanControlMessage(Ptr<HrWpanPhyControlMessage> msg);
+
+		virtual bool IsChannelIdle();
 		
 		void SetPhyUser(HrWpanPhyUser* phyUser);
 		HrWpanPhyUser* GetPhyUser() const;
 
 		HrWpanPhy* GetPointer() const;
+
+	protected:
+
+		virtual void DoDispose(void);
+		virtual void DoInitialize(void);
 
 	private:
 
@@ -115,9 +128,13 @@ namespace ns3 {
 		/** \brief	The channel. */
 		Ptr<SpectrumChannel> m_channel;
 
+		/** \brief Traces */
 		TracedCallback<Ptr<const Packet> > m_phyRxBeginTrace;
-		TracedCallback<Ptr<const Packet>, double > m_phyRxEndTrace;
-
+		TracedCallback<Ptr<const Packet> > m_phyRxDropTrace;
+		TracedCallback<Ptr<const Packet> > m_phyRxEndTrace;
+		TracedCallback<Ptr<const Packet> > m_phyTxDropTrace;
+		TracedCallback<Ptr<const Packet> > m_phyTxEndTrace;
+		TracedCallback<Ptr<const Packet> > m_phyTxBeginTrace;
 
 		/** \brief	The noise. */
 		Ptr<const SpectrumValue> m_noise;
@@ -131,7 +148,13 @@ namespace ns3 {
 		Ptr<HrWpanPhyAbsState> m_currentState;
 		Ptr<HrWpanPhyStateFactory> m_stateFactory;
 
+		Ptr<HrWpanSpectrumSignalParameters> m_currentPacket;
+		
+		Ptr<HrWpan::InterferenceHelper> m_signal;
+		
 		HrWpanPhyUser* m_phyUser;
+
+		EventId m_receiveOn;
 	};
 
 }

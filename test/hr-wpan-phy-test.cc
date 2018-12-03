@@ -20,25 +20,25 @@
 
 #include <ns3/test.h>
 #include <ns3/log.h>
-#include <ns3/callback.h>
-#include <ns3/packet.h>
-#include <ns3/simulator.h>
-#include <ns3/hr-wpan-error-model.h>
-#include <ns3/propagation-loss-model.h>
-#include <ns3/hr-wpan-net-device.h>
-#include <ns3/hr-wpan-mac.h>
-#include <ns3/node.h>
-#include <ns3/net-device.h>
-#include <ns3/single-model-spectrum-channel.h>
-#include <ns3/mac16-address.h>
-#include <ns3/constant-position-mobility-model.h>
-#include "ns3/rng-seed-manager.h"
+
+using namespace ns3;
+
+
+class HrWpanPhyTestCase : public TestCase
+{
+public:
+	HrWpanPhyTestCase();
+	virtual ~HrWpanPhyTestCase();
+
+private:
+	virtual void DoRun(void);
+};
 
 class HrWpanPhyTestSuite : public TestSuite
 {
 public:
 	HrWpanPhyTestSuite();
-	AddTestCase(new HrWpanPhyTestSuite(), TestCase::QUICK);
+	AddTestCase(new HrWpanPhyTestCase(), TestCase::QUICK);
 }
 
-static LrWpanPacketTestSuite lrWpanPacketTestSuite;
+static HrWpanPhyTestSuite hrWpanPhyTestSuite;

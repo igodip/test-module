@@ -25,85 +25,89 @@
 
 namespace ns3 {
 
-NS_LOG_COMPONENT_DEFINE ("HrWpanInterferenceHelper");
+	NS_LOG_COMPONENT_DEFINE("HrWpan::InterferenceHelper");
 
-HrWpanInterferenceHelper::HrWpanInterferenceHelper (Ptr<const SpectrumModel> spectrumModel)
-  : m_spectrumModel (spectrumModel),
-    m_dirty (false)
-{
-  m_signal = Create<SpectrumValue> (m_spectrumModel);
-}
+	namespace HrWpan
+	{
+		InterferenceHelper::InterferenceHelper(Ptr<const SpectrumModel> spectrumModel)
+			: m_spectrumModel(spectrumModel),
+			m_dirty(false)
+		{
+			NS_LOG_FUNCTION(this << spectrumModel);
 
-HrWpanInterferenceHelper::~HrWpanInterferenceHelper (void)
-{
-  m_spectrumModel = 0;
-  m_signal = 0;
-  m_signals.clear ();
-}
+			m_signal = Create<SpectrumValue>(m_spectrumModel);
+		}
 
-bool
-HrWpanInterferenceHelper::AddSignal (Ptr<const SpectrumValue> signal)
-{
-  NS_LOG_FUNCTION (this << signal);
+		InterferenceHelper::~InterferenceHelper(void)
+		{
 
-  bool result = false;
+			NS_LOG_FUNCTION(this);
 
-  if (signal->GetSpectrumModel () == m_spectrumModel)
-    {
-      result = m_signals.insert (signal).second;
-      if (result && !m_dirty)
-        {
-          *m_signal += *signal;
-        }
-    }
-  return result;
-}
+			m_spectrumModel = 0;
+			m_signal = 0;
+			m_signals.clear();
+		}
 
-bool
-HrWpanInterferenceHelper::RemoveSignal (Ptr<const SpectrumValue> signal)
-{
-  NS_LOG_FUNCTION (this << signal);
+		bool InterferenceHelper::AddSignal(Ptr<const SpectrumValue> signal)
+		{
+			NS_LOG_FUNCTION(this << signal);
 
-  bool result = false;
+			bool result = false;
 
-  if (signal->GetSpectrumModel () == m_spectrumModel)
-    {
-      result = (m_signals.erase (signal) == 1);
-      if (result)
-        {
-          m_dirty = true;
-        }
-    }
-  return result;
-}
+			if (signal->GetSpectrumModel() == m_spectrumModel)
+			{
+				result = m_signals.insert(signal).second;
+				if (result && !m_dirty)
+				{
+					*m_signal += *signal;
+				}
+			}
+			return result;
+		}
 
-void
-HrWpanInterferenceHelper::ClearSignals (void)
-{
-  NS_LOG_FUNCTION (this);
+		bool InterferenceHelper::RemoveSignal(Ptr<const SpectrumValue> signal)
+		{
+			NS_LOG_FUNCTION(this << signal);
 
-  m_signals.clear ();
-  m_dirty = true;
-}
+			bool result = false;
 
-Ptr<SpectrumValue>
-HrWpanInterferenceHelper::GetSignalPsd (void) const
-{
-  NS_LOG_FUNCTION (this);
+			if (signal->GetSpectrumModel() == m_spectrumModel)
+			{
+				result = (m_signals.erase(signal) == 1);
+				if (result)
+				{
+					m_dirty = true;
+				}
+			}
+			return result;
+		}
 
-  if (m_dirty)
-    {
-      // Sum up the current interference PSD.
-      std::set<Ptr<const SpectrumValue> >::const_iterator it;
-      m_signal = Create<SpectrumValue> (m_spectrumModel);
-      for (it = m_signals.begin (); it != m_signals.end (); ++it)
-        {
-          *m_signal += *(*it);
-        }
-      m_dirty = false;
-    }
+		void InterferenceHelper::ClearSignals(void)
+		{
+			NS_LOG_FUNCTION(this);
 
-  return m_signal->Copy ();
-}
+			m_signals.clear();
+			m_dirty = true;
+		}
+
+		Ptr<SpectrumValue> InterferenceHelper::GetSignalPsd(void) const
+		{
+			NS_LOG_FUNCTION(this);
+
+			if (m_dirty)
+			{
+				// Sum up the current interference PSD.
+				std::set<Ptr<const SpectrumValue> >::const_iterator it;
+				m_signal = Create<SpectrumValue>(m_spectrumModel);
+				for (it = m_signals.begin(); it != m_signals.end(); ++it)
+				{
+					*m_signal += *(*it);
+				}
+				m_dirty = false;
+			}
+
+			return m_signal->Copy();
+		}
+	}
 
 }

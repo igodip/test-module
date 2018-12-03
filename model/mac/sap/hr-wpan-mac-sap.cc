@@ -15,8 +15,8 @@ namespace ns3
 
 		}
 
-		MacSapUser::MacSapUser(HrWpanNetDevice * netDevice) :
-			m_netDevice(netDevice)
+		MacSapUser::MacSapUser(HrWpanNetDevice * netDevice,HrWpanMac * mac) :
+			m_netDevice(netDevice), m_mac(mac)
 		{
 
 		}

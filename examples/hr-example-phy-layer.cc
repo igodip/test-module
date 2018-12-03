@@ -27,9 +27,8 @@
 #include <ns3/single-model-spectrum-channel.h>
 #include <ns3/constant-position-mobility-model.h>
 #include <ns3/propagation-loss-model.h>
-#include <ns3/hr-wpan-phy-ula-antenna.h>
-#include <ns3/hr-wpan-phy-ula-beamforming.h>
 
+#include <ns3/parabolic-antenna-model.h>
 
 using namespace ns3;
 
@@ -64,18 +63,6 @@ int main(int argc, char ** argv)
 	sender->SetChannel(channel);
 	receiver->SetChannel(channel);
 
-	Ptr<HrWpanPhyUlaAntenna> receiverAntenna = CreateObject<HrWpanPhyUlaAntenna>();
-	Ptr<HrWpanPhyUlaAntenna> senderAntenna = CreateObject<HrWpanPhyUlaAntenna>();
-
-	receiverAntenna->SetOrientation(180);
-	senderAntenna->SetOrientation(0);
-
-	HrWpanPhyUlaParams recParams = HrWpanPhyUlaBeamforming::GetInstance().GetParamsBySectorNumber(2,3);
-	HrWpanPhyUlaParams senParams = HrWpanPhyUlaBeamforming::GetInstance().GetParamsBySectorNumber(1, 1);
-
-	receiverAntenna->SetUlaParams(recParams);
-	senderAntenna->SetUlaParams(senParams);
-
 	Ptr<ParabolicAntennaModel> senderAntenna2 = CreateObject<ParabolicAntennaModel>();
 	
 	senderAntenna2->SetBeamwidth(3);
@@ -106,7 +93,6 @@ int main(int argc, char ** argv)
 	Simulator::Stop(Seconds(10.0));
 
 	Simulator::Schedule(Seconds(1.0), &SendOnePacket, sender, receiver,receiverAntenna2);
-
 	Simulator::Schedule(Seconds(2.0), &SendOnePacket, sender, receiver, receiverAntenna2);
 	Simulator::Schedule(Seconds(3.0), &SendOnePacket, sender, receiver, receiverAntenna2);
 	Simulator::Schedule(Seconds(4.0), &SendOnePacket, sender, receiver, receiverAntenna2);

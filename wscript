@@ -1,8 +1,12 @@
 ## -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
 
 def build(bld):
-    obj = bld.create_ns3_module('hr-wpan', ['core', 'network', 'mobility', 'spectrum', 'propagation'])
+    obj = bld.create_ns3_module('hr-wpan', ['core', 'network', 'mobility', 'spectrum', 'propagation','netanim'])
     obj.source = [
+		'model/mac/manager-sync/hr-wpan-mac-manager-listener.cc',
+		'model/mac/manager-sync/hr-wpan-mac-manager-sync.cc',
+		'model/mac/manager-sync/hr-wpan-mac-slotted-aloha-sync.cc',
+		'model/mac/manager-sync/hr-wpan-mac-tdma-sync.cc',
         'model/mac/hr-wpan-mac-header.cc',
         'model/mac/hr-wpan-mac-trailer.cc',
 		'model/mac/hr-wpan-dev-id.cc',
@@ -11,13 +15,19 @@ def build(bld):
 		'model/mac/sap/hr-wpan-mac-sap-isoch.cc',
 		'model/mac/sap/hr-wpan-mac-sap-start.cc',
 		'model/mac/hr-wpan-mac.cc',
+		'model/mac/hr-wpan-mac-queue.cc',
+		'model/topology/hr-wpan-line.cc',
+		'model/topology/hr-wpan-link.cc',
+		'model/topology/hr-wpan-obstacle.cc',
+		'model/topology/hr-wpan-obstacle-propagation-model.cc',
+		'model/topology/hr-wpan-topology-aggregator.cc',
 		'model/channel/hr-wpan-spectrum-signal-parameters.cc',
 		'model/channel/hr-wpan-error-model.cc',
+		'model/channel/hr-wpan-channel.cc',
+                'model/channel/hr-wpan-channel-matrix.cc',
 		'model/phy/messages/hr-wpan-phy-control-message.cc',
 		'model/phy/messages/hr-wpan-phy-control-message-factory.cc',
-		'model/phy/beamforming/hr-wpan-phy-ula-antenna.cc',
-		'model/phy/beamforming/hr-wpan-phy-ula-beamforming.cc',
-		'model/phy/beamforming/hr-wpan-phy-ula-params.cc',
+		'model/phy/beamforming/hr-wpan-sector-antenna.cc',
 		'model/phy/hr-wpan-phy.cc',
 		'model/devices/hr-wpan-net-device.cc',
 		'model/phy/states/hr-wpan-phy-abs-state.cc',
@@ -28,11 +38,22 @@ def build(bld):
 		'model/phy/states/hr-wpan-phy-tx-busy-state.cc',
 		'model/phy/states/hr-wpan-phy-switch-state.cc',
 		'model/phy/states/hr-wpan-phy-state-factory.cc',
+		'model/mac/tag/hr-wpan-timestamp-tag.cc',
+		'model/mac/tag/hr-wpan-retrasmission-tag.cc',
+		'model/mac/tag/hr-wpan-sender-tag.cc',
+		'model/mac/states/hr-wpan-mac-csma-state.cc',
+		'model/mac/states/hr-wpan-mac-abs-state.cc',
+		'model/mac/hr-wpan-ctrl-packet-factory.cc',
+		'helper/hr-wpan-phy-stat-helper.cc',
+		'helper/hr-wpan-mac-stat-helper.cc',
 		'helper/phy/hr-wpan-spectrum-model-factory.cc',
 		'helper/phy/hr-wpan-spectrum-value-helper.cc',
 		'helper/phy/hr-wpan-interference-helper.cc',
+		'helper/hr-wpan-topology-helper.cc',
+		'helper/hr-wpan-devid-helper.cc',
 		'helper/hr-wpan-helper.cc',
-		
+		'helper/event/hr-wpan-event-listener.cc',
+		'helper/event/hr-wpan-event-manager.cc'
         ]
 
     module_test = bld.create_ns3_module_test_library('hr-wpan')
@@ -40,9 +61,11 @@ def build(bld):
     module_test.source = [
         'test/hr-wpan-packet-test.cc',
 		'test/hr-wpan-spectrum-value-helper-test.cc',
-		'test/hr-wpan-ula-beamforming-test.cc',
-		'test/hr-wpan-phy-state-test.cc',
-		'test/hr-wpan-mac-queue-test.cc'
+		'test/hr-wpan-mac-queue-test.cc',
+		'test/hr-wpan-topology-test.cc',
+		'test/hr-wpan-obstacle-prop-test.cc',
+		'test/hr-wpan-sector-antenna-test.cc',
+		'test/hr-wpan-interference-test.cc'
         ]
      
     headers = bld(features='ns3header')
@@ -52,13 +75,19 @@ def build(bld):
         'model/mac/hr-wpan-mac-trailer.h',
 		'model/mac/hr-wpan-dev-id.h',
 		'model/mac/hr-wpan-mac.h',
+		'model/mac/hr-wpan-mac-queue.h',
+		'model/topology/hr-wpan-line.h',
+		'model/topology/hr-wpan-link.h',
+		'model/topology/hr-wpan-obstacle.h',
+		'model/topology/hr-wpan-obstacle-propagation-model.h',
+		'model/topology/hr-wpan-topology-aggregator.h',
 		'model/channel/hr-wpan-spectrum-signal-parameters.h',
 		'model/channel/hr-wpan-error-model.h',
+		'model/channel/hr-wpan-channel.h',
+                'model/channel/hr-wpan-channel-matrix.h',
 		'model/phy/messages/hr-wpan-phy-control-message.h',
 		'model/phy/messages/hr-wpan-phy-control-message-factory.h',
-		'model/phy/beamforming/hr-wpan-phy-ula-antenna.h',
-		'model/phy/beamforming/hr-wpan-phy-ula-beamforming.h',
-		'model/phy/beamforming/hr-wpan-phy-ula-params.h',
+		'model/phy/beamforming/hr-wpan-sector-antenna.h',
 		'model/phy/hr-wpan-phy-user.h',
 		'model/phy/hr-wpan-phy-provider.h',
 		'model/phy/hr-wpan-phy.h',
@@ -76,11 +105,28 @@ def build(bld):
 		'model/mac/sap/hr-wpan-mac-sap-async.h',
 		'model/mac/sap/hr-wpan-mac-sap-isoch.h',
 		'model/mac/sap/hr-wpan-mac-sap-start.h',
-		'model/mac/hr-wpan-mac-pib.h'
+		'model/mac/sap/hr-wpan-mac-sap-values.h',
+		'model/mac/states/hr-wpan-mac-abs-state.h',
+		'model/mac/states/hr-wpan-mac-csma-state.h',
+		'model/mac/manager-sync/hr-wpan-mac-manager-listener.h',
+		'model/mac/manager-sync/hr-wpan-mac-manager-sync.h',
+		'model/mac/manager-sync/hr-wpan-mac-slotted-aloha-sync.h',
+		'model/mac/manager-sync/hr-wpan-mac-tdma-sync.h',
+		'model/mac/hr-wpan-mac-pib.h',
+		'model/mac/tag/hr-wpan-timestamp-tag.h',
+		'model/mac/tag/hr-wpan-retrasmission-tag.h',
+		'model/mac/tag/hr-wpan-sender-tag.h',
+		'model/mac/hr-wpan-ctrl-packet-factory.h',
+		'helper/hr-wpan-phy-stat-helper.h',
+		'helper/hr-wpan-mac-stat-helper.h',
 		'helper/phy/hr-wpan-spectrum-model-factory.h',
 		'helper/phy/hr-wpan-spectrum-value-helper.h',
 		'helper/phy/hr-wpan-interference-helper.h',
+		'helper/hr-wpan-topology-helper.h',
+		'helper/hr-wpan-devid-helper.h',
 		'helper/hr-wpan-helper.h',
+		'helper/event/hr-wpan-event-listener.h',
+		'helper/event/hr-wpan-event-manager.h'
         ]
 
     if (bld.env['ENABLE_EXAMPLES']):

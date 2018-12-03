@@ -1,10 +1,23 @@
 # -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
 
 def build(bld):
-    obj = bld.create_ns3_program('hr-example-phy-layer', ['hr-wpan'])
-    obj.source = 'hr-example-phy-layer.cc'
-    obj = bld.create_ns3_program('hr-example-mac-layer', ['hr-wpan'])
-    obj.source = 'hr-example-mac-layer.cc'
-    obj = bld.create_ns3_program('hr-example-nodes',['hr-wpan'])
-    obj.source = 'hr-example-nodes.cc'
-
+	obj = bld.create_ns3_program('hr-example-phy-layer', ['hr-wpan'])
+	obj.source = 'hr-example-phy-layer.cc'
+	obj = bld.create_ns3_program('hr-example-mac-layer', ['hr-wpan'])
+	obj.source = 'hr-example-mac-layer.cc'
+	obj = bld.create_ns3_program('hr-example-nodes',['hr-wpan'])
+	obj.source = 'hr-example-nodes.cc'
+	obj = bld.create_ns3_program('hr-example-simulation',['hr-wpan'])
+	obj.source = 'hr-example-simulation.cc'
+	obj = bld.create_ns3_program('hr-example-anim-sim',['hr-wpan'])
+	obj.source = 'hr-example-anim-sim.cc'
+	obj = bld.create_ns3_program('hr-example-ping',['hr-wpan'])
+	obj.source = 'hr-example-ping.cc'
+	obj = bld.create_ns3_program('hr-example-tdma-sim',['hr-wpan'])
+	obj.source = 'hr-example-tdma-sim.cc'
+	obj = bld.create_ns3_program('hr-example-slotted-aloha-sim',['hr-wpan'])
+	obj.source = 'hr-example-slotted-aloha-sim.cc'
+	obj = bld.create_ns3_program('hr-wpan-mis',['hr-wpan'])
+	obj.source = 'hr-wpan-mis.cc'
+	obj = bld.create_ns3_program('hr-example-csma',['hr-wpan'])
+	obj.source = 'hr-example-csma.cc'

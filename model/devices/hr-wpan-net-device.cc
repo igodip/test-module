@@ -27,6 +27,14 @@
 #include <ns3/channel.h>
 #include <ns3/mobility-model.h>
 #include <ns3/spectrum-channel.h>
+#include <ns3/hr-wpan-sector-antenna.h>
+#include <ns3/hr-wpan-devid-helper.h>
+
+//Mac sap
+#include <ns3/hr-wpan-mac-sap-async.h>
+
+#include <ns3/simulator.h>
+
 
 namespace ns3
 {
@@ -43,6 +51,27 @@ namespace ns3
 
 			m_mac = CreateObject<HrWpanMac>();
 			m_phy = CreateObject<HrWpanPhy>();
+			
+			m_mac->SetPhyProvider(m_phy->GetPointer()); 
+			m_mac->SetAddress(Mac48Address::Allocate());
+			m_mac->SetNetDevice(this);
+			m_phy->SetPhyUser(m_mac->GetPointer());
+			
+			//NS_LOG_INFO(m_mac->GetAddress());
+
+			//Antenna
+			m_antenna = CreateObject<SectorAntenna>();
+			m_phy->SetAntenna(m_antenna);
+
+			//Sap Providers
+
+			HrWpan::MacSapProviderAsync * providerAsync = new HrWpan::MacSapProviderAsync(m_mac->GetPointer());
+			RegisterMacSapProvider(providerAsync);
+
+			//Sap users
+			
+			HrWpan::MacSapUserAsync * userAsync = new HrWpan::MacSapUserAsync(this,m_mac->GetPointer());
+			m_mac->RegisterSapUser(userAsync);
 
 			CompleteConfig();
 
@@ -51,6 +80,16 @@ namespace ns3
 		HrWpanNetDevice:: ~HrWpanNetDevice(void)
 		{
 			NS_LOG_FUNCTION(this);
+
+			std::map< std::string, MacSapProvider * >::iterator i = m_sapProviders.begin();
+
+			while (i == m_sapProviders.end())
+			{
+				delete ((MacSapProviderAsync * )i->second);
+				i++;
+			}
+
+			m_sapProviders.clear();
 
 		}
 
@@ -75,6 +114,7 @@ namespace ns3
 			return tid;
 
 		}
+
 		void HrWpanNetDevice::SetIfIndex(const uint32_t index)
 		{
 			NS_LOG_FUNCTION(this << index);
@@ -116,14 +156,13 @@ namespace ns3
 		void HrWpanNetDevice::SetAddress(Address address)
 		{
 			NS_LOG_FUNCTION(this);
-			//m_mac->SetShortAddress(Mac16Address::ConvertFrom(address));
+			m_mac->SetAddress(Mac48Address::ConvertFrom(address));
 		}
 
 		Address	HrWpanNetDevice::GetAddress(void) const
 		{
 			NS_LOG_FUNCTION(this);
-
-			return m_mac->GetDevId();
+			return m_mac->GetAddress();
 		}
 
 		bool HrWpanNetDevice::SetMtu(const uint16_t mtu)
@@ -139,7 +178,7 @@ namespace ns3
 			//                        = 127      - 2             - 1     - (2+2+2+2)  - 0        - 2
 			//                        = 114
 			// assuming no security and addressing with only 16 bit addresses without pan id compression.
-			return 114;
+			return 1500;
 		}
 
 		bool HrWpanNetDevice::Send(Ptr<Packet> packet, const Address& dest, uint16_t protocolNumber)
@@ -152,7 +191,17 @@ namespace ns3
 			// inventing a fake ethertype and packet tag for McpsDataRequest
 			NS_LOG_FUNCTION(this << packet << dest << protocolNumber);
 
-			return false;
+			//NS_LOG_INFO(dest);
+
+			HrWpan::MacSapRequestParamsAsync requestParams;
+			
+			requestParams.m_data = packet;
+			requestParams.m_trgtId = HrWpan::DevIdHelper::GetInstance().GetDevIdByMac(Mac48Address::ConvertFrom(dest));
+			//NS_LOG_INFO(requestParams.m_trgtId);
+
+			m_sapProviders["MacSapProviderAsync"]->Request(requestParams);
+
+			return true;
 		}
 
 		Ptr<Node> HrWpanNetDevice::GetNode(void) const
@@ -176,11 +225,14 @@ namespace ns3
 			NS_LOG_FUNCTION(this);
 			m_mac->Dispose();
 			m_phy->Dispose();
+			m_antenna->Dispose();
+
 			m_phy = 0;
 			m_mac = 0;
 			m_node = 0;
+			m_antenna = 0;
 
-			NetDevice::DoDispose();
+			NS_LOG_INFO("Do dispose");
 		}
 
 		void HrWpanNetDevice::DoInitialize(void)
@@ -227,7 +279,7 @@ namespace ns3
 		{
 			NS_LOG_FUNCTION(this);
 
-			return HrWpanDevId("ff");
+			return Mac48Address::GetBroadcast();
 		}
 
 		bool HrWpanNetDevice::IsBroadcast(void) const
@@ -246,14 +298,18 @@ namespace ns3
 
 		Address	HrWpanNetDevice::GetMulticast(Ipv4Address multicastGroup) const
 		{
-			NS_ABORT_MSG("Unimplemented");
-			return Address();
+			NS_LOG_FUNCTION(this << multicastGroup);
+
+			Mac48Address ad = Mac48Address::GetMulticast(multicastGroup);
+			return ad;
 		}
 
 		Address	HrWpanNetDevice::GetMulticast(Ipv6Address multicastGroup) const
 		{
-			NS_ABORT_MSG("Unimplemented");
-			return Address();
+			NS_LOG_FUNCTION(this << multicastGroup);
+
+			Mac48Address ad = Mac48Address::GetMulticast(multicastGroup);
+			return ad;
 		}
 
 		bool HrWpanNetDevice::IsBridge(void) const
@@ -293,11 +349,11 @@ namespace ns3
 				return;
 			}
 
-			m_mac->SetPhyProvider(m_phy->GetPointer());
+
 			m_phy->SetMobility(m_node->GetObject<MobilityModel>());
+			m_phy->SetDevice(GetObject<NetDevice>());
 			
 			//Create mac Sap
-
 			m_configComplete = true;
 		}
 
@@ -322,14 +378,26 @@ namespace ns3
 		{
 			NS_LOG_FUNCTION(this << channel);
 			m_phy->SetChannel(channel);
+			channel->AddRx(m_phy);
+			
 		}
 
-		void HrWpanNetDevice::registerMacSapProvider(MacSapProvider * sapProvider)
+		void HrWpanNetDevice::RegisterMacSapProvider(MacSapProvider * sapProvider)
 		{
 			NS_LOG_FUNCTION(this << sapProvider);
 			
-			mSapProviders[sapProvider->GetName()] = sapProvider;
+			m_sapProviders[sapProvider->GetName()] = sapProvider;
 		}
+
+		void HrWpanNetDevice::Receive(Ptr<Packet> p,const Address & address)
+		{
+			NS_LOG_FUNCTION(this << p);
+			
+			Mac48Address mac = HrWpan::DevIdHelper::GetInstance().GetMacByDevId(HrWpan::DevId::convertFrom(address));
+
+			m_receiveCallback(this,p,0,Mac48Address::ConvertFrom(mac));
+		}
+
 
 	}// HrWpan namespace
 

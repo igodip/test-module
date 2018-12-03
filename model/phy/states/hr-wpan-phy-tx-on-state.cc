@@ -20,8 +20,11 @@
 */
 
 #include "hr-wpan-phy-tx-on-state.h"
+
 #include <ns3/hr-wpan-phy.h>
+#include <ns3/simulator.h>
 #include <ns3/log.h>
+#include <ns3/spectrum-channel.h>
 
 namespace ns3
 {
@@ -39,24 +42,38 @@ namespace ns3
 	void HrWpanPhyTxOnState::StartRx(Ptr<SpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
+
+		NS_LOG_WARN("Tx mode on No end Rx for us");
 	}
 
 
 	void HrWpanPhyTxOnState::EndRx(Ptr<SpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
+
+		NS_LOG_WARN("Tx mode on No end Rx for us");
 	}
 
 
 	void HrWpanPhyTxOnState::StartTx(Ptr<HrWpanSpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
+
+		m_hrWpanPhy->m_phyTxBeginTrace(params->packetBurst->GetPackets().front());
+		m_hrWpanPhy->m_channel->StartTx(params);
+
+		m_hrWpanPhy->m_currentState = m_hrWpanPhy->m_stateFactory->GetTxBusyState();
+		
+		Simulator::Schedule(params->duration, &HrWpanPhy::EndTx, m_hrWpanPhy->GetPointer(), params);
+
 	}
 
 
 	void HrWpanPhyTxOnState::EndTx(Ptr<HrWpanSpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
+
+		NS_LOG_WARN("Tx mode on No end Rx for us");
 	}
 }
 

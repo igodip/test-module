@@ -24,6 +24,7 @@
 #include <ns3/object.h>
 
 #include <cstring>
+#include <iostream>
 
 
 namespace ns3
@@ -31,8 +32,21 @@ namespace ns3
 	class HrWpanMac;
 	
 
+
 	namespace HrWpan
 	{
+
+		class MacSapConfirmParams
+		{
+		public:
+			virtual ~MacSapConfirmParams() {}
+		};
+
+		class MacSapIndicationParams
+		{
+		public:
+			virtual ~MacSapIndicationParams() {}
+		};
 
 		class HrWpanNetDevice;
 
@@ -40,17 +54,8 @@ namespace ns3
 		{
 		public:
 
-			class MacSapConfirmParams
-			{
-
-			};
-
-			class MacSapIndicationParams
-			{
-
-			};
-
-			MacSapUser(HrWpanNetDevice * netDevice);
+			MacSapUser(HrWpanNetDevice * netDevice,HrWpanMac * mac);
+			virtual ~MacSapUser() {}
 
 			virtual void Confirm (const MacSapConfirmParams & confirmParams) {}
 			virtual void Indication (const MacSapIndicationParams & indicationParams) {}
@@ -59,7 +64,20 @@ namespace ns3
 
 		protected:
 			HrWpanNetDevice * m_netDevice;
+			HrWpanMac * m_mac;
 
+		};
+
+		class MacSapRequestParams
+		{
+		public:
+			virtual ~MacSapRequestParams() {}
+		};
+
+		class MacSapResponseParams
+		{
+		public:
+			virtual ~MacSapResponseParams() {}
 		};
 
 		class MacSapProvider
@@ -68,18 +86,9 @@ namespace ns3
 		public:
 
 			MacSapProvider(HrWpanMac * mac);
+			virtual ~MacSapProvider() {}
 
-			class MacSapRequestParams
-			{
-
-			};
-
-			class MacSapResponseParams
-			{
-
-			};
-
-			virtual void Request (const MacSapRequestParams & requestParams) {};
+			virtual void Request(const MacSapRequestParams & requestParams) {};
 			virtual void Response (const MacSapResponseParams & responseParams) {};
 
 			virtual std::string GetName() const { return ""; }

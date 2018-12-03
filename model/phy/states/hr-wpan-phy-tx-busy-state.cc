@@ -40,6 +40,9 @@ namespace ns3
 	void HrWpanPhyTxBusyState::StartTx(Ptr<HrWpanSpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
+
+		NS_LOG_WARN("Tx On can't transmit another packet");
+
 	}
 
 
@@ -58,6 +61,9 @@ namespace ns3
 	void HrWpanPhyTxBusyState::EndTx(Ptr<HrWpanSpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
+
+		m_hrWpanPhy->m_phyTxEndTrace(params->packetBurst->GetPackets().front());
+		m_hrWpanPhy->m_currentState = m_hrWpanPhy->m_stateFactory->GetTxOnState();
 	}
 }
 

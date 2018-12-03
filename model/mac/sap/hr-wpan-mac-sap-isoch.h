@@ -36,21 +36,21 @@ namespace ns3
 
 		class HrWpanNetDevice;
 
+		class MacSapRequestParamsIsoch : public MacSapRequestParams
+		{
+
+		};
+
+		class MacSapResponseParamsIsoch : public MacSapResponseParams
+		{
+
+		};
+
 		class MacSapProviderIsoch : MacSapProvider
 		{
 		public:
 
 			MacSapProviderIsoch(HrWpanMac * mac);
-
-			class MacSapRequestParamsIsoch : public MacSapRequestParams
-			{
-
-			};
-
-			class MacSapResponseParamsIsoch : public MacSapResponseParams
-			{
-
-			};
 
 			virtual void Request(const MacSapRequestParamsIsoch & requestParams);
 			virtual void Response(const MacSapResponseParamsIsoch & responseParams);
@@ -58,21 +58,21 @@ namespace ns3
 			virtual std::string GetName() const { return "MacSapProviderIsoch"; }
 		};
 
+		class MacSapConfirmParamsIsoch : public MacSapConfirmParams
+		{
+
+		};
+
+		class MacSapIndicationParamsIsoch : public MacSapIndicationParams
+		{
+
+		};
+
 		class MacSapUserIsoch : MacSapUser
 		{
 		public:
 
-			MacSapUserIsoch(HrWpanNetDevice * netDevice);
-
-			class MacSapConfirmParamsIsoch : public MacSapConfirmParams
-			{
-
-			};
-
-			class MacSapIndicationParamsIsoch : public MacSapIndicationParams
-			{
-
-			};
+			MacSapUserIsoch(HrWpanNetDevice * netDevice,HrWpanMac * mac);
 
 			virtual void Confirm(const MacSapConfirmParamsIsoch & confirmParams);
 			virtual void Indication(const MacSapIndicationParamsIsoch & indicationParams);

@@ -30,7 +30,7 @@ namespace ns3 {
 
 	namespace HrWpan {
 
-		class HrWpanMacSubheader : public Header
+		class MacSubheader : public Header
 		{
 
 		public:

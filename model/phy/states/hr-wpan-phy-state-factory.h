@@ -36,17 +36,8 @@ namespace ns3
 {
 	class HrWpanPhy;
 
-	class HrWpanPhyStateFactory : public Object{
-	protected:
-
-		Ptr<HrWpanPhy> m_wpanPhy;
-		Ptr<HrWpanPhyIdleState> m_idleState;
-		Ptr<HrWpanPhyTxOnState> m_txOnState;
-		Ptr<HrWpanPhyTxBusyState> m_txBusyState;
-		Ptr<HrWpanPhyRxOnState> m_rxOnState;
-		Ptr<HrWpanPhyRxBusyState> m_rxBusyState;
-		Ptr<HrWpanPhySwitchState> m_switchState;
-
+	class HrWpanPhyStateFactory : public Object
+	{
 
 	public:
 		HrWpanPhyStateFactory(Ptr<HrWpanPhy> hrWpanPhy);
@@ -58,8 +49,20 @@ namespace ns3
 		Ptr<HrWpanPhyTxBusyState> GetTxBusyState() const;
 		Ptr<HrWpanPhySwitchState> GetSwitchState() const;
 
+		static TypeId GetTypeId(void);
+
+	protected:
+
 		virtual void DoDispose(void);
 
+		Ptr<HrWpanPhy> m_wpanPhy;
+		Ptr<HrWpanPhyIdleState> m_idleState;
+		Ptr<HrWpanPhyTxOnState> m_txOnState;
+		Ptr<HrWpanPhyTxBusyState> m_txBusyState;
+		Ptr<HrWpanPhyRxOnState> m_rxOnState;
+		Ptr<HrWpanPhyRxBusyState> m_rxBusyState;
+		Ptr<HrWpanPhySwitchState> m_switchState;
+	
 	};
 }
 

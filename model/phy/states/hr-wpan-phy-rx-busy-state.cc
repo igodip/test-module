@@ -20,7 +20,11 @@
 */
 
 #include "hr-wpan-phy-rx-busy-state.h"
+
 #include <ns3/hr-wpan-phy.h>
+#include <ns3/hr-wpan-spectrum-value-helper.h>
+#include <ns3/spectrum-value.h>
+#include <ns3/simulator.h>
 #include <ns3/log.h>
 
 namespace ns3
@@ -39,21 +43,52 @@ namespace ns3
 	void HrWpanPhyRxBusyState::StartRx(Ptr<SpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
+		NS_LOG_WARN("Collision");
+
+		//Remove schedule
+		if (m_hrWpanPhy->m_receiveOn.IsRunning())
+		{
+			Simulator::Remove(m_hrWpanPhy->m_receiveOn);
+		}
+
+		m_hrWpanPhy->m_phyRxDropTrace(m_hrWpanPhy->m_currentPacket->packetBurst->GetPackets().front());
+
+		m_hrWpanPhy->m_currentPacket = 0;
+		m_hrWpanPhy->m_currentState = m_hrWpanPhy->m_stateFactory->GetRxOnState();
 	}
 
 	void HrWpanPhyRxBusyState::EndRx(Ptr<SpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
+
+		Ptr<HrWpanSpectrumSignalParameters> hrWpanParams = DynamicCast<HrWpanSpectrumSignalParameters>(params);
+
+		if (hrWpanParams != 0)
+		{
+			Ptr<Packet> packet = (hrWpanParams->packetBurst->GetPackets()).front();
+			((HrWpanPhyUser *) (m_hrWpanPhy->GetPhyUser()))->ReceivePhyPdu(packet);
+
+			m_hrWpanPhy->m_phyRxEndTrace(packet);
+		}
+
+
+		m_hrWpanPhy->m_currentPacket = 0;
+		m_hrWpanPhy->m_currentState = m_hrWpanPhy->m_stateFactory->GetRxOnState();
+
 	}
 
 	void HrWpanPhyRxBusyState::StartTx(Ptr<HrWpanSpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
+
+		NS_LOG_WARN("Tx not allowed!");
 	}
 
 	void HrWpanPhyRxBusyState::EndTx(Ptr<HrWpanSpectrumSignalParameters> params)
 	{
 		NS_LOG_FUNCTION(this << params);
+
+		NS_LOG_WARN("Tx not allowed!");
 	}
 
 

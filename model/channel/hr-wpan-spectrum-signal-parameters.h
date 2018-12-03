@@ -23,10 +23,9 @@
 
 
 #include <ns3/spectrum-signal-parameters.h>
+#include <ns3/packet-burst.h>
 
 namespace ns3 {
-
-class PacketBurst;
 
 /**
  * \ingroup lr-wpan

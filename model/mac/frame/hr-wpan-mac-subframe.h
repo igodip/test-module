@@ -25,9 +25,12 @@
 
 #include<ns3/address.h>
 
-namespace ns3::HrWpan {
+namespace ns3 {
 
+	namespace HrWpan
+	{
 
+	}
 
 
 }

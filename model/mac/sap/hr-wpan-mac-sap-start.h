@@ -31,21 +31,21 @@ namespace ns3
 	{
 		class HrWpanNetDevice;
 
+		class MacSapConfirmParamsStart : public MacSapConfirmParams
+		{
+
+		};
+
+		class MacSapIndicationParamsStart : public MacSapIndicationParams
+		{
+
+		};
+
 		class MacSapUserStart : public MacSapUser
 		{
 		public:
 
-			MacSapUserStart(HrWpanNetDevice * netDevice);
-
-			class MacSapConfirmParamsStart : public MacSapConfirmParams
-			{
-
-			};
-
-			class MacSapIndicationParamsStart : public MacSapIndicationParams
-			{
-
-			};
+			MacSapUserStart(HrWpanNetDevice * netDevice,HrWpanMac * mac);
 
 			virtual void Confirm(const MacSapConfirmParams & confirmParams);
 			virtual void Indication(const MacSapIndicationParams & indicationParams);
@@ -53,20 +53,20 @@ namespace ns3
 			virtual std::string GetName() const { return "MacSapUserStart"; }
 		};
 
+		class MacSapRequestParamsStart : public MacSapRequestParams
+		{
+
+		};
+
+		class MacSapResponseParamsStart : public MacSapResponseParams
+		{
+
+		};
+
 		class MacSapProviderStart : public MacSapProvider
 		{
 		public:
 			MacSapProviderStart(HrWpanMac * mac);
-
-			class MacSapRequestParamsStart : public MacSapRequestParams
-			{
-
-			};
-
-			class MacSapResponseParamsStart : public MacSapResponseParams
-			{
-
-			};
 
 			virtual void Request(const MacSapRequestParamsStart & requestParams);
 			virtual void Response(const MacSapResponseParamsStart & responseParams);

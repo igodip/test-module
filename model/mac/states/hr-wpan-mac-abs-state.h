@@ -22,11 +22,17 @@
 #ifndef HR_WPAN_MAC_ABS_STATE_H
 #define HR_WPAN_MAC_ABS_STATE_H
 
+#include <ns3/object.h>
+
 namespace ns3 
 {
-	class HrWpanMacAbsState
+	class HrWpanMacAbsState : public Object
 	{
 	public:
+
+		static TypeId GetTypeId();
+
+	protected:
 
 	};
 }

@@ -30,19 +30,36 @@
 #include <ns3/hr-wpan-mac.h>
 #include <ns3/hr-wpan-mac-header.h>
 #include <ns3/hr-wpan-mac-trailer.h>
+#include <ns3/hr-wpan-mac-queue.h>
 #include <ns3/mac48-address.h>
 #include <ns3/event-id.h>
+#include <ns3/simulator.h>
+#include <ns3/random-variable-stream.h>
+
+#include <ns3/hr-wpan-mac-manager-listener.h>
+#include <ns3/hr-wpan-ctrl-packet-factory.h>
 
 #include <ns3/hr-wpan-mac-sap.h>
+#include <ns3/hr-wpan-mac-sap-async.h>
 
 #include <cstring>
 #include <map>
 
+
 namespace ns3 {
 
-	class HrWpanMac : public HrWpanPhyUser , public Object{
+	
+
+	class HrWpanMac : public Object, public HrWpanPhyUser , public HrWpan::MacManagerListener
+	{
+
+		friend class HrWpan::MacSapProviderAsync;
+		friend class HrWpan::MacSapUserAsync;
+
 	public:
+
 		HrWpanMac();
+		virtual ~HrWpanMac();
 		
 		static TypeId GetTypeId();
 
@@ -51,8 +68,15 @@ namespace ns3 {
 		virtual void ReceivePhyPdu(Ptr<Packet> p) ;
 		virtual void ReceivePhyControlMessage(Ptr<HrWpanPhyControlMessage> msg) ;
 
-		void AckWaitTimeout(void);
-		void PrepareRetransmission(void);
+		void SendCts(Ptr<const Packet> p);
+		void SendRts();
+		void SendData(Ptr<const Packet> cts);
+		void SendAck(Ptr<const Packet> p);
+
+		void RescheduleTrasmission(bool collision);
+
+		void CtsExpired();
+		void DataExpired();
 
 		HrWpanMac * GetPointer(void) const;
 
@@ -61,36 +85,72 @@ namespace ns3 {
 
 		void McpsDataRequest(Ptr<Packet> p);
 
-		HrWpanDevId GetDevId() const;
-		void SetDevId(HrWpanDevId devId);
+		HrWpan::DevId GetDevId() const;
+		void SetDevId(HrWpan::DevId devId);
 
 		void RegisterSapUser(HrWpan::MacSapUser * macSapUser);
 		
+		virtual void SendPkt(Time endTime);
+
+		void SetAddress(const Mac48Address & mac);
+		Mac48Address GetAddress() const;
+
+		void SetNetDevice(Ptr<HrWpan::HrWpanNetDevice> netDevice);
+		Ptr<HrWpan::HrWpanNetDevice> GetNetDevice() const;
+
+		void AckExpired(Ptr<Packet> packet);
+		void AckReceived(Ptr<Packet> packet);
 
 	protected:
 
 		virtual void DoInitialize(void);
 		virtual void DoDispose();
 		
+		TracedCallback<Ptr<const Packet>, uint8_t, uint8_t > m_sentPktTrace;
+		TracedCallback<Ptr<const Packet> > m_macTxOkTrace;
+		TracedCallback<Ptr<const Packet> > m_macTxDropTrace;
+		TracedCallback<Ptr<const Packet> > m_macTxTrace;
+		TracedCallback<Ptr<const Packet> > m_macRxTrace;
+		TracedCallback<Ptr<const Packet> > m_macRxOkTrace;
+		TracedCallback<Ptr<const Packet> > m_macRxDropTrace;
+		TracedCallback<Ptr<const Packet> > m_snifferTrace;
+		TracedCallback<Ptr<const Packet> > m_ctsRxTrace;
+		TracedCallback<Ptr<const Packet> > m_rtsRxTrace;
+		TracedCallback<Ptr<const Packet> > m_dataRxTrace;
 
 	private:
 
 		HrWpanPhyProvider* m_phyProvider;
-
-		HrWpanDevId m_devId;
-		Mac48Address m_macAddress;
 		
-		TracedCallback<Ptr<const Packet>, uint8_t, uint8_t > m_sentPktTrace;
+		HrWpanCtrlPacketFactory * m_ctrlFactory;
 
-		TracedCallback<Ptr<const Packet> > m_macTxOkTrace;
+		HrWpan::DevId m_devId;
+		Mac48Address m_macAddress;
+		Ptr<HrWpan::MacQueue> m_queue;
 
-		TracedCallback<Ptr<const Packet> > m_macTxDropTrace;
-
-		EventId m_ackWaitTimeout;
+		Ptr<HrWpan::HrWpanNetDevice> m_netDevice;
+		Ptr<UniformRandomVariable> m_urv;
 
 		std::map <std::string, HrWpan::MacSapUser *> m_sapUsers;
+		std::map<Ptr<Packet>, EventId> m_timeoutPackets;
 		
+		EventId m_evtWaitingCts;
+		EventId m_evtWaitingData;
+		EventId m_evtWaitingAck;
 
+		EventId m_evtTrasmission;
+
+		double m_trasProb;
+
+		uint32_t m_turnToWait;
+
+		bool m_rtsSent;
+		bool m_ctsSent;
+		bool m_dataSent;
+
+		uint8_t m_tryNumber;
+
+		Ptr<Packet> m_sentPacket;
 	};
 
 }

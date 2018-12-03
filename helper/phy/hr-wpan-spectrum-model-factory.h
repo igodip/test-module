@@ -15,12 +15,11 @@
 * along with this program; if not, write to the Free Software
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *
-* Author: Igor Di Paolo <igor.di.paolo>
+* Author: Igor Di Paolo <igor.di.paolo@gmail.com>
 *
 */
 
 #include <ns3/spectrum-value.h>
-#include <ns3/log.h>
 
 namespace ns3 {
 

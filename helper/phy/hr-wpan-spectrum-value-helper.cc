@@ -48,7 +48,7 @@ namespace ns3 {
 		Ptr<SpectrumValue> txPsd = Create<SpectrumValue>(HrWpanSpectrumModelFactory::getInstance().getSpectrumModel());
 
 		//txPower is expressed in dBm. We must convert it into natural unit (W).
-		txPower = pow(10, (txPower - 30) / 10);
+		txPower = pow(10, (txPower  / 10));
 
 		//The effective occupied bandwidth of the signal is modelled to be 2.16 Ghz.
 		double txPowerDensity = txPower / 2.160e9;
@@ -104,6 +104,8 @@ namespace ns3 {
 		}
 		
 		totalAvgPower *= 3.0e6;
+
+		totalAvgPower = 10 * log10(totalAvgPower);
 
 		return totalAvgPower;
 	}
